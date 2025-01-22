@@ -18,7 +18,8 @@ fun interface OnGrantedListener {
     fun onGranted()
 }
 
-private const val TAG = "CheckPermission_싸피"
+private const val TAG = "PermissionChecker_SSAFY"
+
 class PermissionChecker(activityOrFragment: Any) {
     private lateinit var context:Context
 
@@ -39,7 +40,7 @@ class PermissionChecker(activityOrFragment: Any) {
         return true
     }
 
-    // 권한 호출한 이후 결과받아서 처리할 Launcher (startPermissionRequestResult )
+    // 권한 호출한 이후 결과받아서 처리할 Launcher (startPermissionRequestResult)
     val requestPermissionLauncher: ActivityResultLauncher<Array<String>> = when (activityOrFragment) {
         is AppCompatActivity -> {
             activityOrFragment.registerForActivityResult(
