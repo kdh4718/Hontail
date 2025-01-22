@@ -14,5 +14,5 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     FragmentCocktailListBinding::bind,
     R.layout.fragment_cocktail_list
 ) {
-  
+
 }
