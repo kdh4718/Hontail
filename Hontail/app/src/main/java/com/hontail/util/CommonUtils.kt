@@ -33,6 +33,22 @@ object CommonUtils {
     }
 
     enum class MainFragmentName(var str: String) {
-
+        HOME_FRAGMENT("HomeFragment"),
+        ALARM_FRAGMENT("AlarmFragment"),
+        BARTENDER_FRAGMENT("BatenderFragment"),
+        COCKTAIL_DETAIL_FRAGMENT("CocktailDetailFragment"),
+        COCKTAIL_LIST_FRAGMENT("CocktailListFragment"),
+        COCKTAIL_RECIPE_FRAGMENT("CocktailRecipeFragment"),
+        COCKTAIL_SEARCH_FRAGMENT("CocktailSearchFragment"),
+        CUSTOM_COCKTAIL_FRAGMENT("CustomCocktailFragment"),
+        CUSTOM_COCKTAIL_MODIFY_FRAGMENT("CustomCocktailModifyFragment"),
+        INGREDIENT_ADD_FRAGMENT("IngredientAddFragment"),
+        INGREDIENT_LIST_FRAGMENT("IngredientListFragment"),
+        MY_PAGE_FRAGMENT("MyPageFragment"),
+        MY_PAGE_MODIFY_FRAGMENT("MyPageModifyFragment"),
+        COCKTAIL_PICTURE_RESULT_FRAGMENT("CocktailPictureResultFragment"),
+        COCKTAIL_TAKE_PICTURE_FRAGMENT("CocktailTakePictureFragment"),
+        PROFILE_FRAGMENT("ProfileFragment"),
+        ZZIM_FRAGMENT("ZzimFragment")
     }
 }
