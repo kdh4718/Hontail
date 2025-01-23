@@ -4,4 +4,10 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="basic_purple">#510C43</color>
+    <color name="basic_pink">#FE4DDD</color>
+    <color name="basic_white">#FAFAFA</color>
+    <color name="basic_sky">#0FFAFC</color>
+    <color name="basic_black">#0C0F14</color>
+    <color name="secondary_black">#25282D</color>
+    <color name="basic_grey">#89919A</color>
 </resources>
