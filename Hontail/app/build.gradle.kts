@@ -67,4 +67,8 @@ dependencies {
 
     //framework ktx dependency 추가
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    implementation("com.google.android.material:material:1.9.0")
+
+    implementation("com.google.android:flexbox:3.0.0")
 }

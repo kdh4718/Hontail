@@ -19,7 +19,7 @@
             android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewHomeLogo"
+                android:id="@+id/cardViewHomeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:backgroundTint="@color/basic_grey"
@@ -73,7 +73,7 @@
                 android:layout_marginTop="40dp"
                 android:text="내 냉장고 속 재료로 완성되는 칵테일 한 잔!"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewHomeLogo" />
+                app:layout_constraintTop_toBottomOf="@+id/cardViewHomeTitle" />
 
             <TextView
                 android:id="@+id/textViewHomePictureBig"
