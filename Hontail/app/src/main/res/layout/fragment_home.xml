@@ -32,6 +32,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/textViewHomeLogo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="40dp"
@@ -135,7 +136,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewHomeCategory" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHomeTopTen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="82dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewHomeTopTen" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </ScrollView>
 
@@ -149,6 +162,7 @@
         android:src="@drawable/bartender"
         app:circularflow_radiusInDP="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:shapeAppearanceOverlay="@style/FAB.FullRound" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
