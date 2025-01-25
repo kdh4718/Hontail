@@ -3,6 +3,9 @@
     <style name="Base.Theme.Hontail" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowBackground">@color/basic_black</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="cardViewStyle">@style/CardView.Ingredient</item>
     </style>
 
     <style name="Theme.Hontail" parent="Base.Theme.Hontail" />
@@ -10,5 +13,14 @@
 
     <style name="FAB.FullRound" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerSize">50%</item> <!-- 50%로 설정하면 완전한 원형 -->
+    </style>
+    
+    <style name="CardView.Ingredient">
+        <item name="android:background">@drawable/ingredient_background</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:radius">5dp</item>
     </style>
 </resources>
