@@ -31,6 +31,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
+        initEvent()
     }
 
     fun initAdapter() {
@@ -51,22 +52,13 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
 //        recyclerView.adapter = TextAdapter(dataList)
     }
 
-}
-
-class TextAdapter(private val items: List<String>) :
-    RecyclerView.Adapter<TextAdapter.TextViewHolder>() {
-
-    class TextViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextViewHolder {
-        val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item_picture_result_ingredient, parent, false) as TextView
-        return TextViewHolder(textView)
+    fun initEvent(){
+        binding.apply {
+            imageViewPictureResultFilter.setOnClickListener {
+                val bottomSheetFragment = FilterBottomSheetFragment()
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: TextViewHolder, position: Int) {
-        holder.textView.text = items[position]
-    }
-
-    override fun getItemCount(): Int = items.size
 }

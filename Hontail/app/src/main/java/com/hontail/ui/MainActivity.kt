@@ -25,6 +25,7 @@ import com.hontail.ui.mypage.MyPageFragment
 import com.hontail.ui.mypage.MyPageModifyFragment
 import com.hontail.ui.picture.CocktailPictureResultFragment
 import com.hontail.ui.picture.CocktailTakePictureFragment
+import com.hontail.ui.picture.FilterBottomSheetFragment
 import com.hontail.ui.profile.ProfileFragment
 import com.hontail.ui.zzim.ZzimFragment
 import com.hontail.util.CommonUtils
@@ -36,7 +37,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         window.statusBarColor = Color.GRAY
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
+        changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
     }
 
     fun changeFragment(name: CommonUtils.MainFragmentName) {
@@ -109,6 +110,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.ZZIM_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, ZzimFragment())
+            }
+
+            CommonUtils.MainFragmentName.FILTERBOTTOMSHEETFRAGMENT -> {
+                transaction.replace(R.id.frameLayoutMainFragment, FilterBottomSheetFragment())
             }
         }
 

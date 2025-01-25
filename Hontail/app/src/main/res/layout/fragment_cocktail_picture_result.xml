@@ -22,7 +22,7 @@
                 android:id="@+id/cardViewPictureResultTitle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:backgroundTint="@color/basic_grey"
+                android:backgroundTint="@color/basic_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -103,7 +103,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/recyclerViewPictureResultIngredient" />
 
                 <ImageView
-                    android:id="@+id/imageViewPictureResultCategory"
+                    android:id="@+id/imageViewPictureResultFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/category"
@@ -112,10 +112,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/textViewPictureResultCocktailList" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewPictureResultCategory"
+                    android:id="@+id/recyclerViewPictureResultFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toStartOf="@+id/imageViewPictureResultCategory"
+                    app:layout_constraintEnd_toStartOf="@+id/imageViewPictureResultFilter"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewPictureResultCocktailList" />
 
@@ -125,7 +125,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageViewPictureResultCategory" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewPictureResultFilter" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
