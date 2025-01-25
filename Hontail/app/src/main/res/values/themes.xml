@@ -23,4 +23,67 @@
         <item name="android:paddingEnd">8dp</item>
         <item name="android:radius">5dp</item>
     </style>
+
+    <!-- Suit Bold -->
+    <style name="Font.Bold_16">
+        <item name="android:fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Font.Bold_18">
+        <item name="android:fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Font.Bold_20">
+        <item name="android:fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="Font.Bold_22">
+        <item name="android:fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <!-- Suit SemiBold -->
+    <style name="Font.SemiBold_14">
+        <item name="android:fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Font.SemiBold_16">
+        <item name="android:fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Font.SemiBold_18">
+        <item name="android:fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Font.SemiBold_20">
+        <item name="android:fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="Font.SemiBold_22">
+        <item name="android:fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <!-- Suit Medium -->
+    <style name="Font.Medium_12">
+        <item name="android:fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="Font.Medium_14">
+        <item name="android:fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Font.Medium_16">
+        <item name="android:fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Font.Medium_18">
+        <item name="android:fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="Font.Medium_22">
+        <item name="android:fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
 </resources>
