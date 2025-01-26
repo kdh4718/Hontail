@@ -1,6 +1,7 @@
 package com.hontail.ui.picture
 
 import android.content.Context
+import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -18,5 +19,15 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainActivity.hideBottomNav(true)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mainActivity.hideBottomNav(false)
     }
 }

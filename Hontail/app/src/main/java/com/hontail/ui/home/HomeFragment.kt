@@ -20,6 +20,7 @@ import com.hontail.databinding.FragmentHomeBinding
 import com.hontail.databinding.ListItemHomeToptenBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
 
 private const val TAG = "HomeFragment_SSAFY"
 
@@ -38,6 +39,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        initEvent()
     }
 
     fun initAdapter() {
@@ -67,6 +69,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
         val pagerSnapHelper = PagerSnapHelper()
         pagerSnapHelper.attachToRecyclerView(recyclerView)
+    }
+
+    fun initEvent(){
+        binding.apply {
+            imageViewHomePicture.setOnClickListener {
+                mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_TAKE_PICTURE_FRAGMENT)
+            }
+        }
     }
 }
 

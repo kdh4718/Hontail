@@ -40,7 +40,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -53,20 +52,29 @@ dependencies {
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
-    // https://github.com/square/retrofit
+    // Retrofit & OkHttp
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
-
-    // https://github.com/square/okhttp
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
-
-    // https://github.com/square/retrofit/tree/master/retrofit-converters/gson
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
 
     //framework ktx dependency 추가
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 
+    // Material Components
     implementation("com.google.android.material:material:1.9.0")
+
+    // Google Cloud Vision & ML Kit
+    implementation("com.google.cloud:google-cloud-vision:3.27.0")
+    implementation("com.google.android.gms:play-services-mlkit-text-recognition:16.1.3")
+
+    // gRPC 의존성 추가
+    implementation("io.grpc:grpc-okhttp:1.45.0")  // HTTP/2를 통한 gRPC 통신을 위한 OkHttp 의존성
+    implementation("io.grpc:grpc-stub:1.45.0")    // gRPC 클라이언트/서버 생성에 필요한 의존성
+    implementation("io.grpc:grpc-netty-shaded:1.45.0") // gRPC Netty 의존성
+
+    // CameraX
+    implementation("androidx.camera:camera-camera2:1.4.1")
+    implementation("androidx.camera:camera-lifecycle:1.4.1")
+    implementation("androidx.camera:camera-view:1.4.1")
 }
