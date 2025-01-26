@@ -37,6 +37,11 @@ android {
     viewBinding {
         enable = true
     }
+
+    packagingOptions {
+        exclude("META-INF/INDEX.LIST")
+        exclude("META-INF/DEPENDENCIES")
+    }
 }
 
 dependencies {
