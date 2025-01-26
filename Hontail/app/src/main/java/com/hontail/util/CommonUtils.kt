@@ -49,6 +49,7 @@ object CommonUtils {
         COCKTAIL_PICTURE_RESULT_FRAGMENT("CocktailPictureResultFragment"),
         COCKTAIL_TAKE_PICTURE_FRAGMENT("CocktailTakePictureFragment"),
         PROFILE_FRAGMENT("ProfileFragment"),
-        ZZIM_FRAGMENT("ZzimFragment")
+        ZZIM_FRAGMENT("ZzimFragment"),
+        FILTERBOTTOMSHEETFRAGMENT("FilterBottomSheetFragment")
     }
 }

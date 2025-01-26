@@ -1,10 +1,12 @@
 package com.hontail.ui
 
+import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hontail.R
@@ -25,11 +27,17 @@ import com.hontail.ui.mypage.MyPageFragment
 import com.hontail.ui.mypage.MyPageModifyFragment
 import com.hontail.ui.picture.CocktailPictureResultFragment
 import com.hontail.ui.picture.CocktailTakePictureFragment
+import com.hontail.ui.picture.FilterBottomSheetFragment
 import com.hontail.ui.profile.ProfileFragment
 import com.hontail.ui.zzim.ZzimFragment
 import com.hontail.util.CommonUtils
+import com.hontail.util.PermissionChecker
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+
+    /** permission check **/
+    private val checker = PermissionChecker(this)
+    private val runtimePermissions = arrayOf(Manifest.permission.CAMERA)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +45,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         window.statusBarColor = Color.GRAY
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
+        checkPermissions()
         changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
+    }
+
+    fun checkPermissions() {
+        /* permission check */
+        if (!checker.checkPermission(this, runtimePermissions)) {
+            checker.requestPermissionLauncher.launch(runtimePermissions)
+        }
     }
 
     fun changeFragment(name: CommonUtils.MainFragmentName) {
@@ -102,6 +118,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.COCKTAIL_TAKE_PICTURE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CocktailTakePictureFragment())
+                    .addToBackStack(null)
             }
 
             CommonUtils.MainFragmentName.PROFILE_FRAGMENT -> {
@@ -111,9 +128,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.ZZIM_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, ZzimFragment())
             }
+
+            CommonUtils.MainFragmentName.FILTERBOTTOMSHEETFRAGMENT -> {
+                transaction.replace(R.id.frameLayoutMainFragment, FilterBottomSheetFragment())
+            }
         }
 
-        transaction.addToBackStack(null)  // 뒤로 가기 가능하도록 설정
+
         transaction.commit()
     }
 

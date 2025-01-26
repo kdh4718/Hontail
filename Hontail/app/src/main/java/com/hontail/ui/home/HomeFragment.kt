@@ -1,25 +1,19 @@
 package com.hontail.ui.home
 
+import android.Manifest
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentHomeBinding
-import com.hontail.databinding.ListItemHomeToptenBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
+import com.hontail.util.PermissionChecker
 
 private const val TAG = "HomeFragment_SSAFY"
 
@@ -38,6 +32,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        initEvent()
     }
 
     fun initAdapter() {
@@ -67,6 +62,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
         val pagerSnapHelper = PagerSnapHelper()
         pagerSnapHelper.attachToRecyclerView(recyclerView)
+    }
+
+
+    fun initEvent() {
+        binding.apply {
+            imageViewHomePicture.setOnClickListener {
+                mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_TAKE_PICTURE_FRAGMENT)
+            }
+        }
     }
 }
 
