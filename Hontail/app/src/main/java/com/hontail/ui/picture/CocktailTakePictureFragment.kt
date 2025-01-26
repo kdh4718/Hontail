@@ -48,6 +48,8 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        visionService = VisionService(requireContext())
+
         openCamera()
         initEvent()
     }
@@ -56,7 +58,7 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
         binding.apply {
             imageViewTakePictureCancel.setOnClickListener {
                 mainActivity.hideBottomNav(false)
-                mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
+                mainActivity.changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
             }
 
             imageViewTakePictureExplanationCancel.setOnClickListener {
@@ -121,7 +123,12 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
         resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream) // 압축 비율 설정
         val byteArray = stream.toByteArray()
 
+        byteArray?.let {
+            val detectedText = visionService.detectTextAndLabelsFromImage(bitmap)
+            Log.d(TAG, "imageAdjustment: ${detectedText}")
 
+            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
+        }
     }
 
     // 이미지 크기를 리사이즈하는 함수
