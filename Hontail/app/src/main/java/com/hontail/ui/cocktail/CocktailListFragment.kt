@@ -13,6 +13,7 @@ import com.hontail.databinding.FragmentBatenderBinding
 import com.hontail.databinding.FragmentCocktailListBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.picture.FilterBottomSheetFragment
 
 class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     FragmentCocktailListBinding::bind,
@@ -21,8 +22,23 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mainActivity.hideBottomNav(true)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainActivity = context as MainActivity
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initEvent()
+    }
+
+    fun initEvent(){
+        binding.apply {
+            imageViewCocktailListCategory.setOnClickListener {
+                val bottomSheetFragment = FilterBottomSheetFragment.newInstance(false)
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+            }
+        }
     }
 }
