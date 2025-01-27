@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Bold 22 basic white -->
+    <style name="Font_Bold_22_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 22 basic pink -->
+    <style name="Font_Bold_22_Basic_Pink">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 22 basic sky -->
+    <style name="Font_Bold_22_Basic_Sky">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_sky</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 20 basic white -->
+    <style name="Font_Bold_20_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 20 basic gray -->
+    <style name="Font_Bold_20_Basic_Gray">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 18 basic white -->
+    <style name="Font_Bold_18_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 16 basic white -->
+    <style name="Font_Bold_16_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 16 basic pink -->
+    <style name="Font_Bold_16_Basic_Pink">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 22 basic white -->
+    <style name="Font_SemiBold_22_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 20 basic white -->
+    <style name="Font_SemiBold_20_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 20 basic gray -->
+    <style name="Font_SemiBold_20_Basic_Gray">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 18 basic white -->
+    <style name="Font_SemiBold_18_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 18 basic pink -->
+    <style name="Font_SemiBold_18_Basic_Pink">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic white -->
+    <style name="Font_SemiBold_16_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic gray -->
+    <style name="Font_SemiBold_16_Basic_Gray">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic sky -->
+    <style name="Font_SemiBold_16_Basic_Sky">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_sky</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic pink -->
+    <style name="Font_SemiBold_16_Basic_Pink">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 14 basic white -->
+    <style name="Font_SemiBold_14_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 22 basic white -->
+    <style name="Font_Medium_22_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 18 basic white -->
+    <style name="Font_Medium_18_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 18 basic gray -->
+    <style name="Font_Medium_18_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 16 basic white -->
+    <style name="Font_Medium_16_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 16 basic gray -->
+    <style name="Font_Medium_16_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 16 basic pink -->
+    <style name="Font_Medium_16_Basic_Pink">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 14 basic white -->
+    <style name="Font_Medium_14_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 14 basic gray -->
+    <style name="Font_Medium_14_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 12 basic white -->
+    <style name="Font_Medium_12_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 12 basic gray -->
+    <style name="Font_Medium_12_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+</resources>
