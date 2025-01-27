@@ -21,8 +21,8 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        mainActivity = context as MainActivity
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mainActivity.hideBottomNav(true)
     }
 }
