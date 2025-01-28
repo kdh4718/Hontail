@@ -3,133 +3,92 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_marginTop="30dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <ImageView
+        android:id="@+id/imageViewListItemCocktailCocktail"
         android:layout_width="176dp"
         android:layout_height="176dp"
-        app:cardCornerRadius="10dp"
+        android:background="@drawable/ingredient_background"
+        android:src="@drawable/ic_sample"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/basic_gray" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageViewCocktailCocktail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/cocktail_sample"
-                tools:layout_editor_absoluteX="68dp"
-                tools:layout_editor_absoluteY="68dp" />
-
-            <ImageView
-                android:id="@+id/imageViewCocktailZzim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_bottom_navi_zzim_unselected"
-                android:tint="@color/basic_pink"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewCocktailCategory"
+    <ImageView
+        android:id="@+id/imageViewListItemCocktailZzim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/CardView.Ingredient"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="리큐어"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewCocktailIngredientCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/cardViewCocktailCategory"
-        app:layout_constraintTop_toBottomOf="@+id/cardView">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            style="@style/CardView.Ingredient"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="재료 2개"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_bottom_navi_zzim_unselected"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailCocktail" />
 
     <TextView
-        android:id="@+id/textViewCocktailName"
+        android:id="@+id/textViewListItemCocktailBaseSpirit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="리큐어"
+        style="@style/Font_Medium_12_Basic_White"
+        android:background="@drawable/textview_list_item_cocktail_label_background"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewListItemCocktailCocktail" />
+
+    <TextView
+        android:id="@+id/textViewListItemCocktailIngredientCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="재료 2개"
+        style="@style/Font_Medium_12_Basic_White"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/textview_list_item_cocktail_label_background"
+        app:layout_constraintStart_toEndOf="@+id/textViewListItemCocktailBaseSpirit"
+        app:layout_constraintTop_toTopOf="@+id/textViewListItemCocktailBaseSpirit"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCocktailBaseSpirit"/>
+
+    <TextView
+        android:id="@+id/textViewListItemCocktailName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="깔루아 밀크"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardViewCocktailCategory" />
+        style="@style/Font_SemiBold_20_Basic_White"
+        app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailBaseSpirit" />
 
     <ImageView
-        android:id="@+id/imageViewCocktailTotalZzim"
+        android:id="@+id/imageViewListItemCocktailTotalZzim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_bottom_navi_zzim_selected"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailName"
+        app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailName"
         app:tint="@color/basic_pink" />
 
     <TextView
-        android:id="@+id/textViewCocktailTotalZzim"
+        android:id="@+id/textViewListItemCocktailTotalZzim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:text="1231"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailName" />
+        android:layout_marginStart="4dp"
+        android:text="1,231"
+        style="@style/Font_Medium_12_Basic_White"
+        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"
+        app:layout_constraintStart_toEndOf="@+id/imageViewListItemCocktailTotalZzim"/>
 
     <TextView
-        android:id="@+id/textViewCocktailAlcoholContent"
+        android:id="@+id/textViewListItemCocktailAlcoholContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="5%"
-        android:layout_marginTop="14dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailName" />
+        style="@style/Font_SemiBold_16_Basic_Sky"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
