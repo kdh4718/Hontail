@@ -111,6 +111,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.MY_PAGE_MODIFY_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, MyPageModifyFragment())
+                    .addToBackStack("MyPageModifyFragment")
             }
 
             CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT -> {

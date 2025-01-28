@@ -8,6 +8,13 @@ import com.hontail.databinding.ListItemMypageProfileBinding
 
 class MyPageCocktailAdapter(private val items: List<MyPageItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    lateinit var myPageProfileListener: ItemOnClickListener
+    lateinit var myPageIngredientListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClick()
+    }
+
     companion object {
         const val VIEW_TYPE_PROFILE = 0
         const val VIEW_TYPE_COCKTAIL = 1
@@ -56,6 +63,16 @@ class MyPageCocktailAdapter(private val items: List<MyPageItem>): RecyclerView.A
             binding.apply {
                 textViewMyPageNickname.text = item.userName
                 textViewMyPageCocktailCount.text = "레시피 ${item.recipeCnt}"
+
+                // 프로필 관리
+                buttonProfileManagement.setOnClickListener {
+                    myPageProfileListener.onClick()
+                }
+
+                // 재료 요청
+                buttonRequestMaterial.setOnClickListener {
+                    myPageIngredientListener.onClick()
+                }
             }
         }
     }

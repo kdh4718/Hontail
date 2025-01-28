@@ -13,6 +13,7 @@ import com.hontail.databinding.FragmentMyPageBinding
 import com.hontail.ui.LoginActivity
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
 
 
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
@@ -85,7 +86,6 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                 add(MyPageItem.Cocktail("에스프레소 마티니", "리큐어", 3, 1231, 22))
                 add(MyPageItem.Cocktail("깔루아 콜라", "리큐어", 2, 1231, 16))
                 add(MyPageItem.Cocktail("B-52", "리큐어", 5, 1231, 26))
-
             }
 
             myPageCocktailAdapter = MyPageCocktailAdapter(items)
@@ -112,7 +112,19 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
         binding.apply {
 
+            // 프로필 관리
+            myPageCocktailAdapter.myPageProfileListener = object : MyPageCocktailAdapter.ItemOnClickListener {
+                override fun onClick() {
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.MY_PAGE_MODIFY_FRAGMENT)
+                }
+            }
 
+            // 재료 요청
+            myPageCocktailAdapter.myPageIngredientListener = object : MyPageCocktailAdapter.ItemOnClickListener {
+                override fun onClick() {
+                    TODO("Not yet implemented")
+                }
+            }
         }
     }
 }
