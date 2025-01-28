@@ -33,7 +33,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/heart_not_selected"
+                android:src="@drawable/ic_bottom_navi_zzim_unselected"
+                android:tint="@color/basic_pink"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,9 +108,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:src="@drawable/heart_selected"
+        android:src="@drawable/ic_bottom_navi_zzim_selected"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailName" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailName"
+        app:tint="@color/basic_pink" />
 
     <TextView
         android:id="@+id/textViewCocktailTotalZzim"
