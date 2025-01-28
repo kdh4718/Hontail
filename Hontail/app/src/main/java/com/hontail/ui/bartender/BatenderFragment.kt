@@ -14,6 +14,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentBatenderBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
 
 class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
     FragmentBatenderBinding::bind,
@@ -84,6 +85,17 @@ class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
                 if(hasFocus) {
                     scrollToLastMessage()
                 }
+            }
+
+            // 음성 녹음 이벤트
+            imageViewBartenderVoice.setOnClickListener {
+                val dialog = BartenderDialogFragment(CommonUtils.BartenderRecordMode.READY)
+                dialog.show(parentFragmentManager, "BartenderDialog")
+            }
+
+            // 보내기 이벤트
+            imageViewBartenderSend.setOnClickListener {
+
             }
         }
     }
