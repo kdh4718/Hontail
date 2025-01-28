@@ -46,7 +46,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
-        changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
+        changeFragment(CommonUtils.MainFragmentName.BARTENDER_FRAGMENT)
     }
 
     fun checkPermissions() {
@@ -70,6 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.BARTENDER_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, BatenderFragment())
+                    .addToBackStack("bartenderFragment")
             }
 
             CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT -> {
