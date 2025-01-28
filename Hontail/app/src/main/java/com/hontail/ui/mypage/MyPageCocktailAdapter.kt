@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemMypageProfileBinding
+import com.hontail.util.CommonUtils
 
 class MyPageCocktailAdapter(private val items: List<MyPageItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -86,7 +87,7 @@ class MyPageCocktailAdapter(private val items: List<MyPageItem>): RecyclerView.A
                 textViewListItemCocktailName.text = item.cocktailName
                 textViewListItemCocktailBaseSpirit.text = item.cocktailBaseSpirit
                 textViewListItemCocktailIngredientCount.text = "재료 ${item.cocktailIngredientCnt}개"
-                textViewListItemCocktailTotalZzim.text = item.cocktailZzimCnt.toString()
+                textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.cocktailZzimCnt)
                 textViewListItemCocktailAlcoholContent.text = "${item.cocktailAlcholContent}%"
             }
         }
