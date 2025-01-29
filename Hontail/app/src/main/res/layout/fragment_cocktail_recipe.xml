@@ -1,14 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.cocktail.CocktailRecipeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarCocktailRecipeTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="쉐리 칵테일 레시피"
+        app:titleTextColor="@color/basic_white" />
 
-</FrameLayout>
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/indicatorCocktailRecipeIndcator"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbarCocktailRecipeTitle" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerCocktailRecipeViewPager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/indicatorCocktailRecipeIndcator" />
+
+    <ImageButton
+        android:id="@+id/imageButtonCocktailRecipeSideBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:background="@color/basic_black"
+        android:contentDescription="메뉴"
+        android:src="@drawable/side_bar"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarCocktailRecipeTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintMarginEnd="20dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewCocktailRecipeMicrophone"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="@color/secondary_black"
+        app:cardCornerRadius="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:strokeColor="@color/basic_gray"
+        app:strokeWidth="2dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageViewCocktailRecipeMicrophone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/microphone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
