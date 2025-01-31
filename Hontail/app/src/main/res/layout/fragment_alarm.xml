@@ -12,7 +12,7 @@
         android:id="@+id/viewAlarmBackground"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/basic_grey"
+        android:background="@color/basic_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="20dp"
-        android:src="@drawable/right_arrow"
+        android:src="@drawable/go_back"
         app:layout_constraintBottom_toBottomOf="@+id/viewAlarmBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/viewAlarmBackground" />
@@ -42,7 +42,7 @@
         android:layout_width="372dp"
         android:layout_height="66dp"
         android:layout_marginTop="32dp"
-        android:backgroundTint="@color/basic_grey"
+        android:backgroundTint="@color/basic_gray"
         app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
