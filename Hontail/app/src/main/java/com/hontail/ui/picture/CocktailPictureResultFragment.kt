@@ -57,7 +57,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     fun initEvent(){
         binding.apply {
             imageViewPictureResultFilter.setOnClickListener {
-                val bottomSheetFragment = FilterBottomSheetFragment()
+                val bottomSheetFragment = FilterBottomSheetFragment.newInstance(true)
                 bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
 
