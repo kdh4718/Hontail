@@ -52,4 +52,10 @@ object CommonUtils {
         ZZIM_FRAGMENT("ZzimFragment"),
         FILTERBOTTOMSHEETFRAGMENT("FilterBottomSheetFragment")
     }
+
+    enum class BartenderRecordMode {
+        READY,
+        RECORDING,
+        COMPLETED
+    }
 }

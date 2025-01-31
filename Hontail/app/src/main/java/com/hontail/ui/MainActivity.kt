@@ -70,6 +70,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.BARTENDER_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, BatenderFragment())
+                    .addToBackStack("bartenderFragment")
             }
 
             CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT -> {
