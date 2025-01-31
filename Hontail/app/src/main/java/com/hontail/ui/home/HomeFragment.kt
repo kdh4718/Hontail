@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -83,6 +84,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
             HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
         )
+
+        recyclerViewBaseCategory.layoutManager = GridLayoutManager(context, 3)
+
     }
 
     fun initText(){
