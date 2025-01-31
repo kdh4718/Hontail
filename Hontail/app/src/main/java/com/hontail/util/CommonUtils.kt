@@ -11,7 +11,7 @@ object CommonUtils {
     //천단위 콤마
     fun makeComma(num: Int): String {
         val comma = DecimalFormat("#,###")
-        return "${comma.format(num)} ₩"
+        return "${comma.format(num)}"
     }
 
     //날짜 포맷 출력
@@ -46,6 +46,7 @@ object CommonUtils {
         INGREDIENT_LIST_FRAGMENT("IngredientListFragment"),
         MY_PAGE_FRAGMENT("MyPageFragment"),
         MY_PAGE_MODIFY_FRAGMENT("MyPageModifyFragment"),
+        MY_PAGE_NICKNAME_MODIFY_FRAGMENT("MyPageNicknameModifyFragment"),
         COCKTAIL_PICTURE_RESULT_FRAGMENT("CocktailPictureResultFragment"),
         COCKTAIL_TAKE_PICTURE_FRAGMENT("CocktailTakePictureFragment"),
         PROFILE_FRAGMENT("ProfileFragment"),
