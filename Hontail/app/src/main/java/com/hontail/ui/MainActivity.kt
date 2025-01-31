@@ -47,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
-        changeFragment(CommonUtils.MainFragmentName.MY_PAGE_FRAGMENT)
+        changeFragment(CommonUtils.MainFragmentName.PROFILE_FRAGMENT)
     }
 
     fun checkPermissions() {
@@ -131,6 +131,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.PROFILE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, ProfileFragment())
+                    .addToBackStack("ProfileFragment")
             }
 
             CommonUtils.MainFragmentName.ZZIM_FRAGMENT -> {
