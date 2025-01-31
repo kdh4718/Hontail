@@ -18,4 +18,6 @@ public class CocktailDetailDto {
     private String imageUrl;
     private List<CocktailIngredientDetailDto> ingredients;
     private List<RecipeDetailDto> recipes;
+    private List<LikeDto> likes;
+    private List<CommentDto> comments;
 }

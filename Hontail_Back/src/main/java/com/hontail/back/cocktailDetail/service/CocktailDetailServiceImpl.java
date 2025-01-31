@@ -4,6 +4,8 @@ import com.hontail.back.cocktailDetail.dto.CocktailDetailDto;
 import com.hontail.back.cocktailDetail.dto.CocktailIngredientDetailDto;
 import com.hontail.back.cocktailDetail.dto.IngredientDetailDto;
 import com.hontail.back.cocktailDetail.dto.RecipeDetailDto;
+import com.hontail.back.cocktailDetail.dto.CommentDto;
+import com.hontail.back.cocktailDetail.dto.LikeDto;
 import com.hontail.back.db.entity.Cocktail;
 import com.hontail.back.db.repository.CocktailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,21 @@ public class CocktailDetailServiceImpl implements CocktailDetailService {
                                 r.getId(),
                                 r.getRecipeGuide(),
                                 r.getSequence()
+                        ))
+                        .toList(),
+                cocktail.getLikes().stream()
+                        .map(l -> new LikeDto(
+                                l.getId(),
+                                cocktail.getId(),
+                                l.getUser().getId()
+                        ))
+                        .toList(),
+                cocktail.getComments().stream()
+                        .map(c -> new CommentDto(
+                                c.getId(),
+                                cocktail.getId(),
+                                c.getContent(),
+                                c.getCommentCreatedAt().toString()
                         ))
                         .toList()
         );
