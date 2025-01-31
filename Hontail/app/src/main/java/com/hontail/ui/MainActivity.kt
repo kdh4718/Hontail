@@ -47,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
-        changeFragment(CommonUtils.MainFragmentName.PROFILE_FRAGMENT)
+        changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_FRAGMENT)
     }
 
     fun checkPermissions() {
@@ -92,6 +92,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailFragment())
+                    .addToBackStack("CustomCocktailFragment")
             }
 
             CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_MODIFY_FRAGMENT -> {

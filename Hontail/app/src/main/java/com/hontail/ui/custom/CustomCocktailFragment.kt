@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailBinding
@@ -21,8 +23,68 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
+    private lateinit var customCocktailAdapter: CustomCocktailAdapter
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        mainActivity.hideBottomNav(true)
+        initToolbar()
+        initAdapter()
+    }
+
+    // 툴바 설정
+    private fun initToolbar() {
+
+        binding.apply {
+
+            toolbarCustomCocktail.apply {
+
+                setNavigationIcon(R.drawable.go_back)
+                setNavigationOnClickListener {
+                    parentFragmentManager.popBackStack("CustomCocktailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                }
+            }
+        }
+    }
+
+    // 리사이클러뷰 어댑터 연결
+    private fun initAdapter() {
+
+        binding.apply {
+
+            val items = mutableListOf<CustomCocktailItem>().apply {
+                add(CustomCocktailItem.IngredientItem("오렌지", "1/2 개"))
+                add(CustomCocktailItem.IngredientItem("에스프레소", "20 ml"))
+            }
+
+            val items2 = mutableListOf<CustomCocktailItem>().apply {
+                if(isIngredientListEmpty()) {
+                    add(CustomCocktailItem.EmptyItem)
+                }
+            }
+
+            customCocktailAdapter = CustomCocktailAdapter(items2)
+
+            recyclerViewCustomCocktail.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+            recyclerViewCustomCocktail.adapter = customCocktailAdapter
+        }
+    }
+
+    // 재료가 있는지 확인
+    private fun isIngredientListEmpty(): Boolean {
+        return true
+    }
+
+}
+
+sealed class CustomCocktailItem {
+
+    data class IngredientItem(val ingredientName: String, val ingredientQuantity: String): CustomCocktailItem()
+    object EmptyItem: CustomCocktailItem()
 }
