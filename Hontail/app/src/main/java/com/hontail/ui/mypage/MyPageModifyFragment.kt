@@ -10,6 +10,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentMyPageModifyBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
 
 class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
     FragmentMyPageModifyBinding::bind,
@@ -26,6 +27,7 @@ class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainActivity.hideBottomNav(state = true)
         initToolbar()
         initEvent()
     }
@@ -58,6 +60,7 @@ class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
             // 닉네임 변경
             buttonMyPageModifyNicknameChange.setOnClickListener {
 
+                mainActivity.changeFragment(CommonUtils.MainFragmentName.MY_PAGE_NICKNAME_MODIFY_FRAGMENT)
             }
         }
     }

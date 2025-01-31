@@ -46,7 +46,7 @@ object CommonUtils {
         INGREDIENT_LIST_FRAGMENT("IngredientListFragment"),
         MY_PAGE_FRAGMENT("MyPageFragment"),
         MY_PAGE_MODIFY_FRAGMENT("MyPageModifyFragment"),
-//        MY_PAGE_NICKNAME_MODIFY_FRAGMENT("MyPageNicknameModifyFragment"),
+        MY_PAGE_NICKNAME_MODIFY_FRAGMENT("MyPageNicknameModifyFragment"),
         COCKTAIL_PICTURE_RESULT_FRAGMENT("CocktailPictureResultFragment"),
         COCKTAIL_TAKE_PICTURE_FRAGMENT("CocktailTakePictureFragment"),
         PROFILE_FRAGMENT("ProfileFragment"),

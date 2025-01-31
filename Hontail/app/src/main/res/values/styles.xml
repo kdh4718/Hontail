@@ -193,6 +193,14 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <!-- Medium 16 basic sky -->
+    <style name="Font_Medium_16_Basic_Sky">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_sky</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <!-- Medium 14 basic white -->
     <style name="Font_Medium_14_Basic_White">
         <item name="fontFamily">@font/suit_medium</item>

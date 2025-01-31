@@ -8,4 +8,6 @@
         android:color="@color/basic_gray"/>
 
     <corners android:radius="5dp"/>
+
+    <padding android:top="4dp" android:bottom="4dp" android:left="36dp" android:right="36dp" />
 </shape>
