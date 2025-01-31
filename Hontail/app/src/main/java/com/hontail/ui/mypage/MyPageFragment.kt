@@ -88,6 +88,13 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                 add(MyPageItem.Cocktail("B-52", "리큐어", 5, 1231, 26))
             }
 
+            val items2 = mutableListOf<MyPageItem>().apply {
+                add(MyPageItem.Profile("hyuun", 5))
+                if(isCocktailListEmpty()) {
+                    add(MyPageItem.Empty)
+                }
+            }
+
             myPageCocktailAdapter = MyPageCocktailAdapter(items)
 
             val layoutManager = GridLayoutManager(mainActivity, 2)
@@ -97,6 +104,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                     return when(myPageCocktailAdapter.getItemViewType(position)) {
                         MyPageCocktailAdapter.VIEW_TYPE_PROFILE -> 2 // 프로필은 2개 영역을 차지
                         MyPageCocktailAdapter.VIEW_TYPE_COCKTAIL -> 1 // 칵테일 아이템은 1개 영역을 차지
+                        MyPageCocktailAdapter.VIEW_TYPE_EMPTY -> 2 // 빈 영역 메시지는 2개 영역을 차지
                         else -> 1
                     }
                 }
@@ -127,10 +135,16 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
             }
         }
     }
+
+    // 레시피가 존재하는지 확인
+    private fun isCocktailListEmpty(): Boolean {
+        return true
+    }
 }
 
 sealed class MyPageItem {
 
     data class Profile(val userName: String, val recipeCnt: Int): MyPageItem()
     data class Cocktail(val cocktailName: String, val cocktailBaseSpirit: String, val cocktailIngredientCnt: Int, val cocktailZzimCnt: Int, val cocktailAlcholContent: Int): MyPageItem()
+    object Empty: MyPageItem()
 }
