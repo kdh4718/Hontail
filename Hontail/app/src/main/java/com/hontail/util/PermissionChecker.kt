@@ -23,7 +23,7 @@ private const val TAG = "PermissionChecker_SSAFY"
 class PermissionChecker(activityOrFragment: Any) {
     private lateinit var context:Context
 
-    private lateinit var permitted : OnGrantedListener
+    private var permitted: OnGrantedListener? = null
     fun setOnGrantedListener(listener: OnGrantedListener){
         permitted = listener
     }
@@ -64,10 +64,10 @@ class PermissionChecker(activityOrFragment: Any) {
     private fun resultChecking(result: Map<String, Boolean>){
         Log.d(TAG, "requestPermissionLauncher: 건수 : ${result.size}")
 
-        if(result.values.contains(false)){ //false가 있는 경우라면..
+        if(result.values.contains(false)) { // false가 있는 경우라면
             moveToSettings()
-        }else{
-            permitted.onGranted()
+        } else {
+            permitted?.onGranted() // permitted가 null이 아닐 때만 실행
         }
     }
 
