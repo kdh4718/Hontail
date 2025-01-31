@@ -4,7 +4,11 @@ import android.Manifest
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.hontail.R
@@ -24,6 +28,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
+    private lateinit var topTenAdapter: TopTenAdapter
+    private lateinit var baseCategoryAdapter: BaseCategoryAdapter
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -32,11 +39,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        initText()
         initEvent()
     }
 
     fun initAdapter() {
-        val recyclerView = binding.recyclerViewHomeTopTen
+        val recyclerViewTopTen = binding.recyclerViewHomeTopTen
 
         val items = listOf(
             HomeTopTenItem(1, "네그로니\n스발리아토", R.drawable.topten_sample),
@@ -52,18 +60,74 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         )
 
         // 초기 스크롤 위치를 리스트 중앙으로 설정
-        recyclerView.layoutManager = SlowScrollLinearLayoutManager(requireContext())
-        recyclerView.adapter = TopTenAdapter(requireContext(), items)
+        recyclerViewTopTen.layoutManager = SlowScrollLinearLayoutManager(requireContext())
+        topTenAdapter = TopTenAdapter(requireContext(), items)
+        recyclerViewTopTen.adapter = topTenAdapter
 
         val startPosition = items.size * 100 // 시작 위치를 중간으로 설정
-        recyclerView.scrollToPosition(startPosition)
+        recyclerViewTopTen.scrollToPosition(startPosition)
 
-        recyclerView.addOnScrollListener(CenterScrollListener()) // 중앙 확대 효과 적용
+        recyclerViewTopTen.addOnScrollListener(CenterScrollListener()) // 중앙 확대 효과 적용
 
         val pagerSnapHelper = PagerSnapHelper()
-        pagerSnapHelper.attachToRecyclerView(recyclerView)
+        pagerSnapHelper.attachToRecyclerView(recyclerViewTopTen)
+
+        val recyclerViewBaseCategory = binding.recyclerViewHomeCategory
+
+        val categoryItems = listOf(
+            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+        )
     }
 
+    fun initText(){
+        var fullText = "지금 당신을 위한\n완벽한 레시피를\n추천해드릴게요!"
+        var spannableString = SpannableString(fullText)
+        var startIndex = fullText.indexOf("완벽한 레시피")
+        var endIndex = startIndex + "완벽한 레시피".length
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_pink)),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.textViewHomePictureBig.text = spannableString
+
+        fullText = "칵테일 초이스가 어렵다면\n베이스부터 골라보는 건 어떨까요?"
+        spannableString = SpannableString(fullText)
+        startIndex = fullText.indexOf("베이스")
+        endIndex = startIndex + "베이스".length
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_sky)),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.textViewHomeCategory.text = spannableString
+
+        fullText = "가장 많은 사랑을 받은\n인기 칵테일 TOP 10!"
+        spannableString = SpannableString(fullText)
+        startIndex = fullText.indexOf("TOP 10!")
+        endIndex = startIndex + "TOP 10!".length
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_pink)),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.textViewHomeTopTen.text = spannableString
+    }
 
     fun initEvent() {
         binding.apply {
@@ -80,4 +144,9 @@ data class HomeTopTenItem(
     val imageRes: Int     // 이미지 리소스 ID
 )
 
+data class HomeCategoryItem(
+    val name: String,
+    val explanation: String,
+    val imageRes: Int
+)
 

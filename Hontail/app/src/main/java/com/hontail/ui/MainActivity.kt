@@ -42,11 +42,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.statusBarColor = Color.GRAY
+        window.statusBarColor = Color.TRANSPARENT
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
-        changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
+        changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
     }
 
     fun checkPermissions() {
