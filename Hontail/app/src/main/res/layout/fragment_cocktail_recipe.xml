@@ -43,7 +43,6 @@
         android:src="@drawable/side_bar"
         app:layout_constraintBottom_toBottomOf="@id/toolbarCocktailRecipeTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintMarginEnd="20dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.card.MaterialCardView
