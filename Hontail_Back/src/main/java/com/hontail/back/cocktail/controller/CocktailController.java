@@ -18,16 +18,16 @@ public class CocktailController {
     @Autowired
     CocktailService cocktailService;
 
-    @GetMapping("")
-    @Operation(summary = "좋아요, 알코올, 등록일 순으로 정렬하여 조회")
-    public Page<CocktailSummaryDto> getFilteredCocktails(
+    @GetMapping("/filtering")
+    @Operation(summary = "칵테일 필터링 조회")
+    public Page<CocktailSummaryDto> getCocktailsByFilter(
+            @RequestParam(required = false, defaultValue = "id") String orderBy,
+            @RequestParam(required = false, defaultValue = "asc", value = "direction") String direction,
             @RequestParam(required = false) String baseSpirit,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "cocktail_id" ) String sortBy,
-            @RequestParam(defaultValue = "asc" ) String sortDirection
+            @RequestParam(defaultValue = "20") int size
     ) {
-        return cocktailService.getFilteredCocktails(page, size, baseSpirit, sortBy, sortDirection);
+        return cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size);
     }
 
 }
