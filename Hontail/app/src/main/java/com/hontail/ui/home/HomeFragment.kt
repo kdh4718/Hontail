@@ -77,19 +77,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
         val categoryItems = listOf(
             HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
-            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
-            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
-            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
-            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
-            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
-            HomeCategoryItem("진", "허브와 시트러스 향", R.drawable.category_jin),
+            HomeCategoryItem("럼", "사탕수수의 달콤함", R.drawable.category_rum),
+            HomeCategoryItem("보드카", "중립적이고 깨끗한 맛", R.drawable.category_vodka),
+            HomeCategoryItem("위스키", "깊고 진한 풍미", R.drawable.category_whiskey),
+            HomeCategoryItem("데킬라", "선명하고 강렬한 맛", R.drawable.category_tequila),
+            HomeCategoryItem("리큐어", "과일, 허브 ,향신료", R.drawable.category_liqueur),
+            HomeCategoryItem("와인", "과일향과 부드러운 여운", R.drawable.category_wine),
+            HomeCategoryItem("브랜디", "부드러운 목넘김", R.drawable.category_brandy),
+            HomeCategoryItem("기타", "K-술, 무알콜 등", R.drawable.category_etc)
         )
 
-        recyclerViewBaseCategory.layoutManager = GridLayoutManager(context, 3)
+        val gridLayoutManager = GridLayoutManager(context, 3)
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return 1 // 모든 아이템 동일한 크기 유지
+            }
+        }
 
+        baseCategoryAdapter = BaseCategoryAdapter(requireContext(), categoryItems)
+
+        // RecyclerView 설정
+        recyclerViewBaseCategory.apply {
+            layoutManager = gridLayoutManager
+            adapter = baseCategoryAdapter
+            setHasFixedSize(true) // 성능 최적화
+        }
+        recyclerViewBaseCategory.adapter = baseCategoryAdapter
     }
 
-    fun initText(){
+    fun initText() {
         var fullText = "지금 당신을 위한\n완벽한 레시피를\n추천해드릴게요!"
         var spannableString = SpannableString(fullText)
         var startIndex = fullText.indexOf("완벽한 레시피")
