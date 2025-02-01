@@ -8,6 +8,12 @@ import com.hontail.databinding.ListItemCustomCocktailExistBinding
 
 class CustomCocktailAdapter(private val items: List<CustomCocktailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    lateinit var customCocktailIngredientDeleteListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClick()
+    }
+
     companion object {
 
         const val VIEW_TYPE_INGREDIENT = 0
@@ -61,6 +67,10 @@ class CustomCocktailAdapter(private val items: List<CustomCocktailItem>): Recycl
             binding.apply {
                 textViewListItemCustomCocktailExistIngredientName.text = item.ingredientName
                 textViewListItemCustomCocktailExistIngredientQuantity.text = item.ingredientQuantity
+
+                imageViewListItemCustomCocktailExistDelete.setOnClickListener {
+                    customCocktailIngredientDeleteListener.onClick()
+                }
             }
         }
     }

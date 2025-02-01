@@ -42,6 +42,7 @@ object CommonUtils {
         COCKTAIL_SEARCH_FRAGMENT("CocktailSearchFragment"),
         CUSTOM_COCKTAIL_FRAGMENT("CustomCocktailFragment"),
         CUSTOM_COCKTAIL_MODIFY_FRAGMENT("CustomCocktailModifyFragment"),
+        CUSTOM_COCKTAIL_SEARCH_FRAGMENT("CustomCocktailSearchFragment"),
         INGREDIENT_ADD_FRAGMENT("IngredientAddFragment"),
         INGREDIENT_LIST_FRAGMENT("IngredientListFragment"),
         MY_PAGE_FRAGMENT("MyPageFragment"),

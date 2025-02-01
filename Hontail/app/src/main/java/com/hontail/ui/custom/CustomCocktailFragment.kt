@@ -15,6 +15,7 @@ import com.hontail.databinding.FragmentCustomCocktailBinding
 import com.hontail.databinding.FragmentLoginBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
 
 class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
     FragmentCustomCocktailBinding::bind,
@@ -36,6 +37,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         mainActivity.hideBottomNav(true)
         initToolbar()
         initAdapter()
+        initEvent()
     }
 
     // 툴바 설정
@@ -79,6 +81,30 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
     // 재료가 있는지 확인
     private fun isIngredientListEmpty(): Boolean {
         return true
+    }
+
+    // 이벤트
+    private fun initEvent() {
+
+        binding.apply {
+
+            // 재료 삭제
+            customCocktailAdapter.customCocktailIngredientDeleteListener = object : CustomCocktailAdapter.ItemOnClickListener {
+                override fun onClick() {
+                    TODO("Not yet implemented")
+                }
+            }
+
+            // 재료 추가
+            fabCustomCocktailIngredientAdd.setOnClickListener {
+                mainActivity.changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_SEARCH_FRAGMENT)
+            }
+
+            // 다음으로 넘어가기
+            buttonCustomCocktailNext.setOnClickListener {
+
+            }
+        }
     }
 
 }
