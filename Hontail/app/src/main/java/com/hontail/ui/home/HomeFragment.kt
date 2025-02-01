@@ -82,7 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             HomeCategoryItem("위스키", "깊고 진한 풍미", R.drawable.category_whiskey),
             HomeCategoryItem("데킬라", "선명하고 강렬한 맛", R.drawable.category_tequila),
             HomeCategoryItem("리큐어", "과일, 허브 ,향신료", R.drawable.category_liqueur),
-            HomeCategoryItem("와인", "과일향과 부드러운 여운", R.drawable.category_wine),
+            HomeCategoryItem("와인", "부드러운 여운", R.drawable.category_wine),
             HomeCategoryItem("브랜디", "부드러운 목넘김", R.drawable.category_brandy),
             HomeCategoryItem("기타", "K-술, 무알콜 등", R.drawable.category_etc)
         )
