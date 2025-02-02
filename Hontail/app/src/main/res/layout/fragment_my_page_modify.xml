@@ -1,14 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.mypage.MyPageModifyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarMyPageModify"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="60dp"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/textViewMyPageModifyToolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="프로필 관리"
+            style="@style/Font_Bold_22_Basic_White" />
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ImageView
+        android:id="@+id/imageViewMyPageModifyProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="20dp"
+        android:src="@drawable/ic_bottom_navi_profile_selected"
+        app:tint="@color/secondary_black"
+        android:background="@drawable/profile_background"
+        android:layout_marginTop="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMyPageModify"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewMyPageModifyProfileEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사진 수정"
+        style="@style/Font_Bold_16_Basic_Pink"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewMyPageModifyProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewMyPageModifyProfileEdit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/textViewMyPageModifyProfileInformationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필 정보"
+            style="@style/Font_SemiBold_22_Basic_White"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewMyPageModifyNicknameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닉네임"
+            style="@style/Font_SemiBold_20_Basic_White"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyPageModifyProfileInformationTitle"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewMyPageModifyNickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hyuun"
+            style="@style/Font_Medium_16_Basic_White"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyPageModifyNicknameTitle"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonMyPageModifyNicknameChange"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="변경"
+            style="@style/Font_Medium_16_Basic_White"
+            android:background="@drawable/button_mypage_outline"
+            app:layout_constraintTop_toTopOf="@+id/textViewMyPageModifyNickname"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewMyPageModifyNickname"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerMyPageModify1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dividerColor="@color/basic_gray"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyPageModifyNickname"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewMyPageModifyLoginAccountTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="로그인 계정"
+            style="@style/Font_SemiBold_20_Basic_White"
+            android:layout_marginTop="32dp"
+            app:layout_constraintTop_toBottomOf="@+id/dividerMyPageModify1"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewMyPageModifyLoginAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hyuun119@naver.com"
+            style="@style/Font_Medium_16_Basic_White"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyPageModifyLoginAccountTitle"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerMyPageModify2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dividerColor="@color/basic_gray"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMyPageModifyLoginAccount"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

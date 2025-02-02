@@ -25,6 +25,7 @@ import com.hontail.ui.ingredient.IngredientAddFragment
 import com.hontail.ui.ingredient.IngredientListFragment
 import com.hontail.ui.mypage.MyPageFragment
 import com.hontail.ui.mypage.MyPageModifyFragment
+import com.hontail.ui.mypage.MyPageNicknameModifyFragment
 import com.hontail.ui.picture.CocktailPictureResultFragment
 import com.hontail.ui.picture.CocktailTakePictureFragment
 import com.hontail.ui.picture.FilterBottomSheetFragment
@@ -111,6 +112,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.MY_PAGE_MODIFY_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, MyPageModifyFragment())
+                    .addToBackStack("MyPageModifyFragment")
+            }
+
+            CommonUtils.MainFragmentName.MY_PAGE_NICKNAME_MODIFY_FRAGMENT -> {
+                transaction.replace(R.id.frameLayoutMainFragment, MyPageNicknameModifyFragment())
+                    .addToBackStack("MyPageNicknameModifyFragment")
             }
 
             CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT -> {
@@ -124,6 +131,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.PROFILE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, ProfileFragment())
+                    .addToBackStack("ProfileFragment")
             }
 
             CommonUtils.MainFragmentName.ZZIM_FRAGMENT -> {
