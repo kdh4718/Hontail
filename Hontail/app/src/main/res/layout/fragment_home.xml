@@ -22,7 +22,7 @@
                 android:id="@+id/cardViewHomeTitle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:backgroundTint="@color/basic_gray"
+                android:backgroundTint="@color/basic_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -31,12 +31,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/textViewHomeLogo"
+                    <ImageView
+                        android:id="@+id/ImageViewHomeLogo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:text="Logo"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/logo_home"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -45,20 +45,10 @@
                         android:id="@+id/imageViewHomeBell"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="40dp"
+                        android:layout_marginEnd="20dp"
                         android:src="@drawable/bell"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/imageViewHomeStunFace"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="30dp"
-                        android:src="@drawable/stun_face"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageViewHomeBell"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -67,6 +57,7 @@
 
             <TextView
                 android:id="@+id/textViewHomePictureSmall"
+                style="@style/Font_Medium_14_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -77,6 +68,7 @@
 
             <TextView
                 android:id="@+id/textViewHomePictureBig"
+                style="@style/Font_Medium_22_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -96,9 +88,9 @@
 
             <ImageView
                 android:id="@+id/imageViewHomePicture"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="15.5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="20dp"
                 android:src="@drawable/camera_home_picture"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -106,6 +98,7 @@
 
             <TextView
                 android:id="@+id/textViewHomeCategory"
+                style="@style/Font_Bold_22_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -121,15 +114,17 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="14dp"
+                android:clipToPadding="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewHomeCategory" />
 
             <TextView
                 android:id="@+id/textViewHomeTopTen"
+                style="@style/Font_Bold_22_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="26dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="76dp"
                 android:text="가장 많은 사랑을 받은\n인기 칵테일 TOP 10!"
                 app:layout_constraintStart_toStartOf="parent"
@@ -139,10 +134,10 @@
                 android:id="@+id/recyclerViewHomeTopTen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="80dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginBottom="82dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewHomeTopTen" />
 
@@ -155,7 +150,7 @@
         android:id="@+id/fabHomeBartender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="18dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/basic_gray"
         android:src="@drawable/bartender"
