@@ -9,11 +9,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/basic_black"
+        android:background="@color/secondary_black"
         tools:context=".ui.picture.FilterBottomSheetFragment">
 
         <TextView
             android:id="@+id/textViewFilterFilter"
+            style="@style/Font_Bold_20_Basic_White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -24,15 +25,17 @@
 
         <TextView
             android:id="@+id/textViewFilterZzim"
+            style="@style/Font_SemiBold_20_Basic_White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="56dp"
             android:text="찜"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            style="@style/Font_Medium_16_Basic_Gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp"
@@ -46,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,6 +58,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterZzimHigh"
+                style="@style/Font_Medium_16_Basic_Gray"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.08"
@@ -65,6 +69,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterZzimLow"
+                style="@style/Font_Medium_16_Basic_Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -89,10 +94,11 @@
 
         <TextView
             android:id="@+id/textViewFilterTime"
+            style="@style/Font_SemiBold_20_Basic_White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="31dp"
+            android:layout_marginTop="32dp"
             android:text="시간"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewFilterZzim" />
@@ -102,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,6 +117,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterTimeHigh"
+                style="@style/Font_Medium_16_Basic_Gray"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -121,6 +128,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterTimeLow"
+                style="@style/Font_Medium_16_Basic_Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -145,10 +153,11 @@
 
         <TextView
             android:id="@+id/textViewFilterAlcoholContent"
+            style="@style/Font_SemiBold_20_Basic_White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="31dp"
+            android:layout_marginTop="32dp"
             android:text="도수"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewFilterTime" />
@@ -158,7 +167,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -167,6 +176,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterAlcoholContentHigh"
+                style="@style/Font_Medium_16_Basic_Gray"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -177,6 +187,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterAlcoholContentLow"
+                style="@style/Font_Medium_16_Basic_Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -206,6 +217,7 @@
 
             <TextView
                 android:id="@+id/textViewFilterBase"
+                style="@style/Font_SemiBold_20_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -217,13 +229,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="95dp"
+                android:layout_marginTop="96dp"
                 android:layout_marginEnd="20dp"
                 android:columnCount="3"
                 android:rowCount="3">
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseJin"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1.5"
@@ -234,6 +247,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseRum"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1.5"
@@ -244,6 +258,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseVodka"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -254,6 +269,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseWhiskey"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -264,6 +280,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseTequila"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -274,6 +291,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseLiqueur"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -284,6 +302,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseWine"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -294,6 +313,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseBrandy"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -304,6 +324,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseEtc"
+                    style="@style/Font_Medium_16_Basic_Gray"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -329,6 +350,7 @@
 
         <TextView
             android:id="@+id/textViewFilterSearch"
+            style="@style/Font_Bold_20_Basic_White"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
