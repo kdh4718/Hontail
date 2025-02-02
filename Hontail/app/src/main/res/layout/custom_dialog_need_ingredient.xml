@@ -25,9 +25,10 @@
 
             <!-- 제목 텍스트 -->
             <TextView
+                style="@style/Font_SemiBold_20_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="32dp"
                 android:gravity="center"
                 android:text="혹시 찍은 재료가 없나요?"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -37,6 +38,7 @@
             <!-- 설명 텍스트 -->
             <TextView
                 android:id="@+id/textView"
+                style="@style/Font_SemiBold_16_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
@@ -48,9 +50,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:gravity="center"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
+                android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -58,15 +60,15 @@
                 <!-- 취소 버튼 -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonCustomDialogCancel"
+                    style="@style/Font_SemiBold_16_Basic_Pink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="@color/basic_black"
                     android:text="취소"
-                    android:textColor="@color/basic_pink"
+                    app:cornerRadius="5dp"
                     app:strokeColor="@color/basic_pink"
-                    app:strokeWidth="2dp"
-                    app:cornerRadius="5dp"/>
+                    app:strokeWidth="2dp" />
 
                 <View
                     android:layout_width="16dp"
@@ -75,12 +77,13 @@
                 <!-- 확인 버튼 -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonCustomDialogConfirm"
+                    style="@style/Font_SemiBold_16_Basic_White"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="@color/basic_pink"
                     android:text="확인"
-                    app:cornerRadius="5dp"/>
+                    app:cornerRadius="5dp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
