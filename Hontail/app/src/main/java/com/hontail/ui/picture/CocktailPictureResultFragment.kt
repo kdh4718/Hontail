@@ -3,10 +3,14 @@ package com.hontail.ui.picture
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -33,6 +37,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
+        initText()
         initEvent()
     }
 
@@ -52,6 +57,22 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
 //        )
 //
 //        recyclerView.adapter = TextAdapter(dataList)
+    }
+
+    fun initText(){
+        val fullText = "hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?"
+        var spannableString = SpannableString(fullText)
+        var startIndex = fullText.indexOf("hyunn")
+        var endIndex = startIndex + "hyunn".length
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_sky)),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.textViewPictureResultSuggestion.text = spannableString
     }
 
     fun initEvent(){
