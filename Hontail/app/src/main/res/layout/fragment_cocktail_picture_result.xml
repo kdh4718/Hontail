@@ -22,7 +22,7 @@
                 android:id="@+id/cardViewPictureResultTitle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:backgroundTint="@color/basic_gray"
+                android:backgroundTint="@color/basic_black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -43,6 +43,7 @@
 
                     <TextView
                         android:id="@+id/textViewPictureResultTitle"
+                        style="@style/Font_Bold_22_Basic_White"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="칵테일 추천"
@@ -94,6 +95,7 @@
 
                 <TextView
                     android:id="@+id/textViewPictureResultCocktailList"
+                    style="@style/Font_Bold_18_Basic_White"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -106,8 +108,8 @@
                     android:id="@+id/imageViewPictureResultFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
                     android:src="@drawable/category"
-                    android:layout_marginTop="38dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewPictureResultCocktailList" />
 
@@ -116,6 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="20dp"
                     app:layout_constraintEnd_toStartOf="@+id/imageViewPictureResultFilter"
                     app:layout_constraintStart_toStartOf="parent"
