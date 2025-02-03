@@ -3,29 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="32dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal">
+    android:padding="12dp"
+    android:background="@drawable/list_item_custom_cocktail_ingredient_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/textViewListItemCustomCocktailSearchResultIngredientName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="오렌지"
-        style="@style/Font_Medium_16_Basic_White"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewListItemCustomCocktailSearchResultIngredient"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@drawable/logo_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageViewListItemCustomCocktailSearchResultDelete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/close"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintTop_toTopOf="@+id/textViewListItemCustomCocktailSearchResultIngredientName"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCustomCocktailSearchResultIngredientName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/basic_gray" />
+        <TextView
+            android:id="@+id/textViewListItemCustomCocktailSearchResultIngredientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오렌지"
+            style="@style/Font_SemiBold_16_Basic_White"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toTopOf="@+id/imageViewListItemCustomCocktailSearchResultIngredient"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCustomCocktailSearchResultIngredient"
+            app:layout_constraintStart_toEndOf="@+id/imageViewListItemCustomCocktailSearchResultIngredient" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

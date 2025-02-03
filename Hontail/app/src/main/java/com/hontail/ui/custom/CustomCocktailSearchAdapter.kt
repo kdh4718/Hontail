@@ -10,7 +10,6 @@ import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
 class CustomCocktailSearchAdapter(private val items: List<CustomCocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var customCocktailSearchCancelListener: ItemOnClickListener
-    lateinit var customCocktailSearchDeleteListener: ItemOnClickListener
     lateinit var customCocktailSearchIngredientListener: ItemOnClickListener
 
     interface ItemOnClickListener {
@@ -104,10 +103,6 @@ class CustomCocktailSearchAdapter(private val items: List<CustomCocktailSearchIt
 
                 textViewListItemCustomCocktailSearchResultIngredientName.setOnClickListener {
                     customCocktailSearchIngredientListener.onClick(0)
-                }
-
-                imageViewListItemCustomCocktailSearchResultDelete.setOnClickListener {
-                    customCocktailSearchDeleteListener.onClick(0)
                 }
             }
         }

@@ -77,13 +77,6 @@ class CustomCocktailSearchFragment: BaseFragment<FragmentCustomCocktailSearchBin
 
                 }
             }
-
-            // 재료 삭제
-            customCocktailSearchAdapter.customCocktailSearchDeleteListener = object : CustomCocktailSearchAdapter.ItemOnClickListener {
-                override fun onClick(position: Int?) {
-                    customCocktailSearchAdapter.notifyItemRemoved(position!!)
-                }
-            }
         }
     }
 
