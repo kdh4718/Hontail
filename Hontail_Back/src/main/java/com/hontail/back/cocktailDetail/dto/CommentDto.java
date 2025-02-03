@@ -11,7 +11,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CommentDto {
     private Integer commentId;
-    private Integer cocktailId;
+    private Integer userId;
+    private String userNickname;
+    private String userEmail;
+    private String userImageUrl;
     private String content;
     private String commentCreatedAt;
 }
