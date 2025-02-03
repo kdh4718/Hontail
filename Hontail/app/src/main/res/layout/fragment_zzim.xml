@@ -12,7 +12,7 @@
         android:id="@+id/viewZzimBackground"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/basic_gray"
+        android:background="@color/basic_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,6 +21,8 @@
         android:id="@+id/textViewZzimHeadline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:fontFamily="@font/suit_bold"
         android:text="찜"
         app:layout_constraintBottom_toBottomOf="@+id/viewZzimBackground"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,10 +34,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewZzimBackground" />
-
+        android:padding="4dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/viewZzimBackground" />
 </androidx.constraintlayout.widget.ConstraintLayout>

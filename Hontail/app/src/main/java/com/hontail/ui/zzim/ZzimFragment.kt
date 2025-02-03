@@ -1,10 +1,12 @@
 package com.hontail.ui.zzim
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
 import com.hontail.databinding.FragmentZzimBinding
 import com.hontail.ui.MainActivity
@@ -46,10 +48,33 @@ class ZzimFragment : Fragment(R.layout.fragment_zzim) {
         binding.recyclerViewZzim.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = zzimAdapter
+            addItemDecoration(GridSpacingItemDecoration(2, 8))
+        }
+    }
+
+    // Grid 간격을 위한 ItemDecoration 클래스 추가
+    inner class GridSpacingItemDecoration(
+        private val spanCount: Int,
+        private val spacing: Int
+    ) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view)
+            val column = position % spanCount
+
+            outRect.left = spacing - column * spacing / spanCount
+            outRect.right = (column + 1) * spacing / spanCount
+
+            if (position >= spanCount) {
+                outRect.top = spacing
+            }
         }
     }
 }
-
 data class ZzimItem(
     val title: String
 )
