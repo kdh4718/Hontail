@@ -91,9 +91,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional 
-    public void deleteComment(Integer cocktailId, Integer commentId) {
+    public void deleteComment(Integer cocktailId, Integer commentId, Integer userId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("댓글을 찾을 수 없습니다."));
+
+        // 댓글 작성자 확인
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new RuntimeException("댓글 작성자가 아닙니다.");
+        }
         
         commentRepository.delete(comment); // 댓글 삭제
     }
