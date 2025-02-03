@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -27,6 +28,13 @@ public class CocktailController {
             @RequestParam(defaultValue = "20") int size
     ) {
         return cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size);
+    }
+
+    @GetMapping("/top-liked")
+    @Operation(summary = "좋아요 상위 10개 칵테일 조회")
+    public ResponseEntity<List<CocktailSummaryDto>> getTopLikedCocktails() {
+        List<CocktailSummaryDto> topCocktails = cocktailService.getTopLikedCocktails();
+        return ResponseEntity.ok(topCocktails);
     }
 
 }

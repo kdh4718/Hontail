@@ -13,5 +13,6 @@ public interface CocktailService {
             @RequestParam(required = false, defaultValue = "asc", value = "direction") String direction,
             @RequestParam(required = false) String baseSpirit,
             int page, int size);
+    List<CocktailSummaryDto> getTopLikedCocktails();
 
 }
