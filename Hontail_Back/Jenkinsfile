@@ -11,7 +11,7 @@ pipeline {
         EC2_IP = credentials('EC2_IP')
         SSH_KEY = credentials('SSH_KEY')
 
-        SPRING_PROFILES_ACTIVE = 'local'
+        SPRING_PROFILES_ACTIVE = 'dev'
         DB_URL = credentials('DB_URL')
         DB_USERNAME = credentials('DB_USERNAME')
         DB_PASSWORD = credentials('DB_PASSWORD')
