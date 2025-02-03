@@ -22,8 +22,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- 제목 텍스트 -->
             <TextView
+                android:id="@+id/textViewCustomDialogIngredientTop"
                 style="@style/Font_SemiBold_20_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -34,9 +34,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- 설명 텍스트 -->
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewCustomDialogIngredientBottom"
                 style="@style/Font_SemiBold_16_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,11 +53,11 @@
                 android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="@+id/textViewCustomDialogIngredientBottom">
 
                 <!-- 취소 버튼 -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonCustomDialogCancel"
+                    android:id="@+id/buttonCustomDialogIngredientCancel"
                     style="@style/Font_SemiBold_16_Basic_Pink"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
 
                 <!-- 확인 버튼 -->
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonCustomDialogConfirm"
+                    android:id="@+id/buttonCustomDialogIngredientConfirm"
                     style="@style/Font_SemiBold_16_Basic_White"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
