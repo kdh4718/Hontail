@@ -1,14 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.login.LoginFragment">
+    tools:context=".ui.home.HomeFragment"
+    tools:ignore="ExtraText">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/textViewLoginHeadline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suit_bold"
+        android:textSize="20dp"
+        android:layout_marginBottom="8dp"
+        android:text="그럴 때 있지 않나요?"
+        app:layout_constraintBottom_toTopOf="@+id/textViewLoginHeadline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/textViewLoginHeadline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="48dp"
+        android:fontFamily="@font/suit_bold"
+        android:textSize="20dp"
+        android:text="술이 한 잔 생각나는 밤이요"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewCenterImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewCenterImage"
+        android:layout_width="wrap_content"
+        android:layout_height="360dp"
+        android:src="@drawable/login1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewPinkCircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pink_circle"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="11dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewGrayCircle1"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCenterImage" />
+
+    <ImageView
+        android:id="@+id/imageViewGrayCircle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/gray_circle"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCenterImage" />
+
+    <ImageView
+        android:id="@+id/imageViewGrayCircle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="11dp"
+        android:src="@drawable/gray_circle"
+        app:layout_constraintStart_toEndOf="@+id/imageViewGrayCircle1"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCenterImage" />
+
+    <ImageView
+        android:id="@+id/imageViewKakao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="36dp"
+        android:src="@drawable/kakaotalk"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewNaver"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCenterImage" />
+
+    <ImageView
+        android:id="@+id/imageViewNaver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/naver"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCenterImage" />
+
+    <ImageView
+        android:id="@+id/imageViewGoogle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/google"
+        android:layout_marginTop="64dp"
+        android:layout_marginStart="36dp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewNaver"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCenterImage" />
+
+    <TextView
+        android:id="@+id/textViewLoginHeadline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/suit_bold"
+        android:text="비회원으로 시작하기"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
