@@ -7,6 +7,7 @@ import com.hontail.back.cocktailDetail.dto.RecipeDetailDto;
 import com.hontail.back.cocktailDetail.dto.CommentDto;
 import com.hontail.back.cocktailDetail.dto.LikeDto;
 import com.hontail.back.db.entity.Cocktail;
+import com.hontail.back.db.entity.User;
 import com.hontail.back.db.repository.CocktailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,12 +54,18 @@ public class CocktailDetailServiceImpl implements CocktailDetailService {
                         ))
                         .toList(),
                 cocktail.getComments().stream()
-                        .map(c -> new CommentDto(
-                                c.getId(),
-                                cocktail.getId(),
-                                c.getContent(),
-                                c.getCommentCreatedAt().toString()
-                        ))
+                        .map(c -> {
+                            User user = c.getUser();
+                            return new CommentDto(
+                                    c.getId(),
+                                    user.getId(),
+                                    user.getUserNickname(),
+                                    user.getUserEmail(),
+                                    user.getUserImageUrl(),
+                                    c.getContent(),
+                                    c.getCommentCreatedAt().toString()
+                            );
+                        })
                         .toList()
         );
     }
