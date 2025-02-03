@@ -20,6 +20,14 @@
             android:layout_height="match_parent"
             android:padding="30dp">
 
+            <ImageView
+                android:id="@+id/imageViewCustomDialogShakeClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/textViewCustomDialogShakeTop"
                 style="@style/Font_SemiBold_20_Basic_White"
