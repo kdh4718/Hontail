@@ -87,7 +87,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             HomeCategoryItem("기타", "K-술, 무알콜 등", R.drawable.category_etc)
         )
 
-        val gridLayoutManager = GridLayoutManager(context, 3)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return 1 // 모든 아이템 동일한 크기 유지
