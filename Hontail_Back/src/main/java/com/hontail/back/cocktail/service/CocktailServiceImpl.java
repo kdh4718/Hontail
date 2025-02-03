@@ -4,16 +4,13 @@ import com.hontail.back.cocktail.dto.CocktailSummaryDto;
 import com.hontail.back.db.entity.Cocktail;
 import com.hontail.back.db.repository.CocktailIngredientRepository;
 import com.hontail.back.db.repository.CocktailRepository;
-import com.hontail.back.db.repository.CocktailSummaryProjection;
+import com.hontail.back.db.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CocktailServiceImpl implements CocktailService {
@@ -23,6 +20,8 @@ public class CocktailServiceImpl implements CocktailService {
 
     @Autowired
     private CocktailIngredientRepository cocktailIngredientRepository;
+    @Autowired
+    private LikeRepository likeRepository;
 
     @Override
     public Page<CocktailSummaryDto> getCocktailsByFilter(String orderBy, String direction, String baseSpirit, int page, int size) {
@@ -44,11 +43,12 @@ public class CocktailServiceImpl implements CocktailService {
 
         return cocktails.map(cocktail -> {
             Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
+            Long likesCnt = likeRepository.countByCocktail(cocktail);
             return new CocktailSummaryDto(
                     cocktail.getId(),
                     cocktail.getCocktailName(),
                     cocktail.getImageUrl(),
-                    cocktail.getLikesCnt(),
+                    likesCnt,
                     cocktail.getAlcoholContent(),
                     cocktail.getBaseSpirit(),
                     cocktail.getCreatedAt(),
