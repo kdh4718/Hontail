@@ -29,7 +29,14 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>(
         val dummyAlarms = listOf(
             Alarm("[공지사항] 혼테일 알림창 테스트 1", "2025.01.24", R.drawable.cocktail_sample),
             Alarm("[업데이트] 새로운 기능 추가", "2025.01.25", R.drawable.cocktail_sample),
-            Alarm("[이벤트] 특별 할인 행사", "2025.01.26", R.drawable.cocktail_sample)
+            Alarm("[이벤트] 특별 할인 행사", "2025.01.26", R.drawable.cocktail_sample),
+            Alarm("[공지사항] 서버 점검 안내", "2025.01.27", R.drawable.cocktail_sample),
+            Alarm("[이벤트] 신규 칵테일 레시피 공개", "2025.01.28", R.drawable.cocktail_sample),
+            Alarm("[안내] 앱 사용 가이드 업데이트", "2025.01.29", R.drawable.cocktail_sample),
+            Alarm("[이벤트] 주간 인기 칵테일 TOP 10", "2025.01.30", R.drawable.cocktail_sample),
+            Alarm("[공지사항] 커뮤니티 이용 수칙 안내", "2025.01.31", R.drawable.cocktail_sample),
+            Alarm("[업데이트] 버그 수정 및 안정성 개선", "2025.02.01", R.drawable.cocktail_sample),
+            Alarm("[이벤트] 2월 시즌 한정 칵테일 출시", "2025.02.02", R.drawable.cocktail_sample)
         )
 
         val alarmAdapter = AlarmAdapter(dummyAlarms)

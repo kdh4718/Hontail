@@ -12,7 +12,7 @@
         android:id="@+id/viewAlarmBackground"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/basic_gray"
+        android:background="@color/basic_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/basic_purple">
 
             <TextView
                 android:id="@+id/textViewAlarmAlert1"
@@ -59,6 +60,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="기기 알림을 켜주세요"
+                android:textColor="@color/basic_pink"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,6 +71,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="소식을 앱 푸시로 받아보세요"
+                android:textColor="@color/basic_pink"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -79,6 +82,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="알림 켜기"
+                android:textSize="16sp"
+                android:textColor="@color/basic_white"
+                android:backgroundTint="@color/basic_pink"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
