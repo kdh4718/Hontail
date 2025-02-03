@@ -57,6 +57,14 @@ class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktai
                 val bottomSheetFragment = CustomCocktailBottomSheetFragment()
                 bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
+
+            // 재료 추가하기
+            buttonCustomCocktailIngredientDetail.setOnClickListener {
+                parentFragmentManager.apply {
+                    popBackStack("CustomCocktailIngredientDetailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    popBackStack("CustomCocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                }
+            }
         }
     }
 }

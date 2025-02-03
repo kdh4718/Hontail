@@ -71,7 +71,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
                 }
             }
 
-            customCocktailAdapter = CustomCocktailAdapter(items2)
+            customCocktailAdapter = CustomCocktailAdapter(items)
 
             recyclerViewCustomCocktail.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktail.adapter = customCocktailAdapter
@@ -102,7 +102,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
 
             // 다음으로 넘어가기
             buttonCustomCocktailNext.setOnClickListener {
-
+                mainActivity.changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_RECIPE_FRAGMENT)
             }
         }
     }

@@ -145,6 +145,14 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <!-- SemiBold 14 basic pink -->
+    <style name="Font_SemiBold_14_Basic_Pink">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <!-- Medium 22 basic white -->
     <style name="Font_Medium_22_Basic_White">
         <item name="fontFamily">@font/suit_medium</item>

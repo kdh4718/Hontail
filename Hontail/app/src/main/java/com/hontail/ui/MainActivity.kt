@@ -22,6 +22,7 @@ import com.hontail.ui.custom.CustomCocktailBottomSheetFragment
 import com.hontail.ui.custom.CustomCocktailFragment
 import com.hontail.ui.custom.CustomCocktailIngredientDetailFragment
 import com.hontail.ui.custom.CustomCocktailModifyFragment
+import com.hontail.ui.custom.CustomCocktailRecipeFragment
 import com.hontail.ui.custom.CustomCocktailSearchFragment
 import com.hontail.ui.home.HomeFragment
 import com.hontail.ui.ingredient.IngredientAddFragment
@@ -46,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        window.statusBarColor = Color.GRAY
+        window.statusBarColor = Color.TRANSPARENT
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
@@ -114,6 +115,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_BOTTOM_SHEET_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailBottomSheetFragment())
+            }
+
+            CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_RECIPE_FRAGMENT -> {
+                transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailRecipeFragment())
+                    .addToBackStack("CustomCocktailRecipeFragment")
             }
 
             CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT -> {
