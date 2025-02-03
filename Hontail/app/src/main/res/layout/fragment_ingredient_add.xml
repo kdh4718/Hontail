@@ -1,14 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ingredient.IngredientAddFragment">
+    tools:context=".ui.home.HomeFragment"
+    tools:ignore="ExtraText">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <View
+        android:id="@+id/viewIngredientBackground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="60dp"
+        android:background="@color/basic_black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/textViewIngredientHeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="재료 요청"
+        android:textSize="22sp"
+        android:fontFamily="@font/suit_bold"
+        android:textColor="@color/basic_white"
+        app:layout_constraintBottom_toBottomOf="@+id/viewIngredientBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewIngredientArrow"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/left_white_arrow"
+        app:layout_constraintBottom_toBottomOf="@+id/viewIngredientBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewIngredientBackground" />
+
+    <EditText
+        android:id="@+id/editTextIngredientName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="@null"
+        android:layout_marginTop="32dp"
+        android:hint="재료 이름을 적어주세요."
+        android:textColorHint="@color/basic_gray"
+        android:textColor="@color/basic_white"
+        android:fontFamily="@font/suit_semibold"
+        android:padding="10dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewIngredientBackground" />
+
+    <View
+        android:id="@+id/IngredientFirstline"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/basic_gray"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintTop_toBottomOf="@id/editTextIngredientName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextIngredientCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="재료 카테고리 설정"
+        android:textColorHint="@color/basic_gray"
+        android:textColor="@color/basic_white"
+        android:fontFamily="@font/suit_semibold"
+        android:layout_marginTop="32dp"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintEnd_toStartOf="@id/cardViewCategory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextIngredientName" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCategory"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        app:cardCornerRadius="5dp"
+        android:layout_marginEnd="21dp"
+        app:layout_constraintBottom_toBottomOf="@id/editTextIngredientCategory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/editTextIngredientCategory"
+        app:layout_constraintTop_toTopOf="@id/editTextIngredientCategory">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textViewIngredientSort"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/secondary_black"
+                android:fontFamily="@font/suit_semibold"
+                android:gravity="center"
+                android:text="분류"
+                android:textColor="@color/basic_white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <View
+        android:id="@+id/IngredientSecondline"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/basic_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextIngredientCategory" />
+
+    <EditText
+        android:id="@+id/editTextIngredientAlcohol"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:background="@null"
+        android:layout_marginTop="32dp"
+        android:hint="도수를 적어주세요."
+        android:textColorHint="@color/basic_gray"
+        android:textColor="@color/basic_white"
+        android:fontFamily="@font/suit_semibold"
+        android:padding="10dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextIngredientCategory" />
+
+    <View
+        android:id="@+id/IngredientThirdline"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/basic_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextIngredientAlcohol" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewIngredientContainer"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:backgroundTint="@color/basic_gray"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewIngredientRequest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/suit_semibold"
+            android:textColor="@color/basic_white"
+            android:background="@color/secondary_black"
+            android:gravity="center"
+            android:text="재료 요청하기"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
