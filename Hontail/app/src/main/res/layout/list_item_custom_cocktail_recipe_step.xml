@@ -16,6 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <ImageView
+        android:id="@+id/imageViewListItemCustomCocktailRecipeStepDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trashcan"
+        app:tint="@color/basic_pink"
+        app:layout_constraintTop_toTopOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle" />
+
     <RadioGroup
         android:id="@+id/radioGroupListItemCustomCocktailRecipeStep"
         android:layout_width="0dp"
