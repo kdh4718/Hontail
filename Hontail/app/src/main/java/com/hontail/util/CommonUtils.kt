@@ -44,6 +44,7 @@ object CommonUtils {
         CUSTOM_COCKTAIL_MODIFY_FRAGMENT("CustomCocktailModifyFragment"),
         CUSTOM_COCKTAIL_SEARCH_FRAGMENT("CustomCocktailSearchFragment"),
         CUSTOM_COCKTAIL_INGREDIENT_DETAIL_FRAGMENT("CustomCocktailIngredientDetailFragment"),
+        CUSTOM_COCKTAIL_BOTTOM_SHEET_FRAGMENT("CustomCocktailBottomSheetFragment"),
         INGREDIENT_ADD_FRAGMENT("IngredientAddFragment"),
         INGREDIENT_LIST_FRAGMENT("IngredientListFragment"),
         MY_PAGE_FRAGMENT("MyPageFragment"),

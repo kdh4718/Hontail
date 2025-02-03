@@ -54,6 +54,8 @@ class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktai
             // 바텀 시트 띄우기.
             imageViewCustomCocktailIngredientDetailUnit.setOnClickListener {
 
+                val bottomSheetFragment = CustomCocktailBottomSheetFragment()
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
         }
     }
