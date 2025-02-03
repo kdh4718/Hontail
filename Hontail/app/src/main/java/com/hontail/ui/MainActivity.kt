@@ -18,8 +18,11 @@ import com.hontail.ui.cocktail.CocktailDetailFragment
 import com.hontail.ui.cocktail.CocktailListFragment
 import com.hontail.ui.cocktail.CocktailRecipeFragment
 import com.hontail.ui.cocktail.CocktailSearchFragment
+import com.hontail.ui.custom.CustomCocktailBottomSheetFragment
 import com.hontail.ui.custom.CustomCocktailFragment
-import com.hontail.ui.custom.CustomCocktailModifyFragment
+import com.hontail.ui.custom.CustomCocktailIngredientDetailFragment
+import com.hontail.ui.custom.CustomCocktailRecipeFragment
+import com.hontail.ui.custom.CustomCocktailSearchFragment
 import com.hontail.ui.home.HomeFragment
 import com.hontail.ui.ingredient.IngredientAddFragment
 import com.hontail.ui.ingredient.IngredientListFragment
@@ -92,10 +95,26 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailFragment())
+                    .addToBackStack("CustomCocktailFragment")
             }
 
-            CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_MODIFY_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailModifyFragment())
+            CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_SEARCH_FRAGMENT  -> {
+                transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailSearchFragment())
+                    .addToBackStack("CustomCocktailSearchFragment")
+            }
+
+            CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_INGREDIENT_DETAIL_FRAGMENT -> {
+                transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailIngredientDetailFragment())
+                    .addToBackStack("CustomCocktailIngredientDetailFragment")
+            }
+
+            CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_BOTTOM_SHEET_FRAGMENT -> {
+                transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailBottomSheetFragment())
+            }
+
+            CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_RECIPE_FRAGMENT -> {
+                transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailRecipeFragment())
+                    .addToBackStack("CustomCocktailRecipeFragment")
             }
 
             CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT -> {

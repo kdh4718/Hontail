@@ -41,7 +41,10 @@ object CommonUtils {
         COCKTAIL_RECIPE_FRAGMENT("CocktailRecipeFragment"),
         COCKTAIL_SEARCH_FRAGMENT("CocktailSearchFragment"),
         CUSTOM_COCKTAIL_FRAGMENT("CustomCocktailFragment"),
-        CUSTOM_COCKTAIL_MODIFY_FRAGMENT("CustomCocktailModifyFragment"),
+        CUSTOM_COCKTAIL_SEARCH_FRAGMENT("CustomCocktailSearchFragment"),
+        CUSTOM_COCKTAIL_INGREDIENT_DETAIL_FRAGMENT("CustomCocktailIngredientDetailFragment"),
+        CUSTOM_COCKTAIL_BOTTOM_SHEET_FRAGMENT("CustomCocktailBottomSheetFragment"),
+        CUSTOM_COCKTAIL_RECIPE_FRAGMENT("CustomCocktailRecipeFragment"),
         INGREDIENT_ADD_FRAGMENT("IngredientAddFragment"),
         INGREDIENT_LIST_FRAGMENT("IngredientListFragment"),
         MY_PAGE_FRAGMENT("MyPageFragment"),
@@ -58,5 +61,11 @@ object CommonUtils {
         READY,
         RECORDING,
         COMPLETED
+    }
+
+    enum class CustomCocktailRecipeAnimationType {
+        STIR,
+        POUR,
+        SHAKE
     }
 }
