@@ -6,15 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".ui.cocktail.CocktailRecipeFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarCocktailRecipeTitle"
-        android:layout_width="0dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCocktailRecipeTitle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="쉐리 칵테일 레시피"
-        app:titleTextColor="@color/basic_white" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/basic_black"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/imageViewCocktailRecipeGoBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/go_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewCocktailRecipeTitle"
+                style="@style/Font_Bold_22_Basic_White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="쉐리 칵테일 레시피"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCocktailRecipeGoBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/imageButtonCocktailRecipeSideBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:background="@color/basic_black"
+                android:contentDescription="메뉴"
+                android:src="@drawable/side_bar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/indicatorCocktailRecipeIndcator"
@@ -22,7 +62,7 @@
         android:layout_height="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarCocktailRecipeTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/cardViewCocktailRecipeTitle" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerCocktailRecipeViewPager"
@@ -31,19 +71,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/indicatorCocktailRecipeIndcator" />
-
-    <ImageButton
-        android:id="@+id/imageButtonCocktailRecipeSideBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
-        android:background="@color/basic_black"
-        android:contentDescription="메뉴"
-        android:src="@drawable/side_bar"
-        app:layout_constraintBottom_toBottomOf="@id/toolbarCocktailRecipeTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/indicatorCocktailRecipeIndcator" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewCocktailRecipeMicrophone"
