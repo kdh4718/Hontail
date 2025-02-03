@@ -6,6 +6,8 @@
         <item name="android:windowBackground">@color/basic_black</item>
         <item name="android:textColor">@color/basic_white</item>
         <item name="cardViewStyle">@style/CardView.Ingredient</item>
+
+        <item name="colorPrimary">@color/basic_white</item>
     </style>
 
     <style name="Theme.Hontail" parent="Base.Theme.Hontail" />
