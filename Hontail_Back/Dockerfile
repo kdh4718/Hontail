@@ -5,7 +5,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # 3. 빌드된 JAR 파일 복사
-COPY build/libs/back-0.0.1-SNAPSHOT-plain.jar app.jar
+COPY build/libs/back-0.0.1-SNAPSHOT.jar app.jar
 
 # 4. 컨테이너에서 노출할 포트
 EXPOSE 9090
