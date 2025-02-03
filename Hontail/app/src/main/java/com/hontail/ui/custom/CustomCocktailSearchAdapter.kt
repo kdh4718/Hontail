@@ -101,7 +101,7 @@ class CustomCocktailSearchAdapter(private val items: List<CustomCocktailSearchIt
 
                 textViewListItemCustomCocktailSearchResultIngredientName.text = item.ingredientName
 
-                textViewListItemCustomCocktailSearchResultIngredientName.setOnClickListener {
+                root.setOnClickListener {
                     customCocktailSearchIngredientListener.onClick(0)
                 }
             }

@@ -11,6 +11,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailSearchBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
 
 class CustomCocktailSearchFragment: BaseFragment<FragmentCustomCocktailSearchBinding>(
     FragmentCustomCocktailSearchBinding::bind,
@@ -74,7 +75,7 @@ class CustomCocktailSearchFragment: BaseFragment<FragmentCustomCocktailSearchBin
             // 재료 선택
             customCocktailSearchAdapter.customCocktailSearchIngredientListener = object : CustomCocktailSearchAdapter.ItemOnClickListener {
                 override fun onClick(position: Int?) {
-
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_INGREDIENT_DETAIL_FRAGMENT)
                 }
             }
         }
