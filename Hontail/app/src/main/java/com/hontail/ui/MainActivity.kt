@@ -21,7 +21,6 @@ import com.hontail.ui.cocktail.CocktailSearchFragment
 import com.hontail.ui.custom.CustomCocktailBottomSheetFragment
 import com.hontail.ui.custom.CustomCocktailFragment
 import com.hontail.ui.custom.CustomCocktailIngredientDetailFragment
-import com.hontail.ui.custom.CustomCocktailModifyFragment
 import com.hontail.ui.custom.CustomCocktailRecipeFragment
 import com.hontail.ui.custom.CustomCocktailSearchFragment
 import com.hontail.ui.home.HomeFragment
@@ -97,10 +96,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailFragment())
                     .addToBackStack("CustomCocktailFragment")
-            }
-
-            CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_MODIFY_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, CustomCocktailModifyFragment())
             }
 
             CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_SEARCH_FRAGMENT  -> {
