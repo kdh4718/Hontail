@@ -16,4 +16,10 @@ import java.util.List;
 
 public interface CocktailRepository extends JpaRepository<Cocktail, Integer> {
     Page<Cocktail> findByBaseSpirit(String baseSpirit, Pageable pageable);
+
+    @Query("SELECT c FROM Cocktail c LEFT JOIN c.likes l " +
+            "GROUP BY c.id, c.cocktailName, c.imageUrl, c.alcoholContent, c.baseSpirit, c.createdAt " +
+            "ORDER BY COUNT(l) DESC, c.id ASC")
+    List<Cocktail> findTopLiked(Pageable pageable);
+    // 쿼리문 serviceImpl보다 repository에서 작성하는게 더 낫다길래 여기다 써봄
 }

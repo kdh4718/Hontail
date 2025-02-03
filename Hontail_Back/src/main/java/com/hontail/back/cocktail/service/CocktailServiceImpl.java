@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class CocktailServiceImpl implements CocktailService {
@@ -56,5 +57,27 @@ public class CocktailServiceImpl implements CocktailService {
             );
         });
 
+    }
+
+    @Override
+    public List<CocktailSummaryDto> getTopLikedCocktails() {
+        Pageable topTen = PageRequest.of(0, 10);
+        return cocktailRepository.findTopLiked(topTen)
+                .stream()
+                .map(cocktail -> {
+                    Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
+                    Long likesCnt = likeRepository.countByCocktail(cocktail);
+                    return new CocktailSummaryDto(
+                            cocktail.getId(),
+                            cocktail.getCocktailName(),
+                            cocktail.getImageUrl(),
+                            likesCnt,
+                            cocktail.getAlcoholContent(),
+                            cocktail.getBaseSpirit(),
+                            cocktail.getCreatedAt(),
+                            ingredientCnt
+                    );
+                })
+                .toList();
     }
 }
