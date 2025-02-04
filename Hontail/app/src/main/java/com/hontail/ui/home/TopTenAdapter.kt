@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.hontail.databinding.ListItemHomeToptenBinding
+import com.hontail.databinding.ListItemHomeToptenToptenBinding
 
 class TopTenAdapter(val context: Context, var topTenList: List<HomeTopTenItem>) : RecyclerView.Adapter<TopTenAdapter.TopTenHolder>() {
 
-    inner class TopTenHolder(private val binding: ListItemHomeToptenBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bindInfo(item : HomeTopTenItem){
+    inner class TopTenHolder(private val binding: ListItemHomeToptenToptenBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(item : HomeTopTenItem){
             binding.textViewHomeTopTenNumber.text = item.rank.toString()
             binding.textViewHomeTopTenName.text = item.name
             binding.imageViewHomeTopTen.setImageResource(item.imageRes)
@@ -20,7 +20,7 @@ class TopTenAdapter(val context: Context, var topTenList: List<HomeTopTenItem>) 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TopTenHolder {
-        val binding = ListItemHomeToptenBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListItemHomeToptenToptenBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TopTenHolder(binding)
     }
 
@@ -30,7 +30,7 @@ class TopTenAdapter(val context: Context, var topTenList: List<HomeTopTenItem>) 
 
     override fun onBindViewHolder(holder: TopTenHolder, position: Int) {
         val actualPosition = position % topTenList.size
-        holder.bindInfo(topTenList[actualPosition])
+        holder.bind(topTenList[actualPosition])
     }
 }
 
