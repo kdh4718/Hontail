@@ -35,6 +35,15 @@ pipeline {
                     credentialsId: 'GitLab-PAT'
             }
         }
+        stage('.env download') {
+            steps {
+                withCredentials([file(credentialsId: 'ENV', variable: 'envFile')]) {
+                    script {
+                        sh 'cp $envFile Hontail_Back/.env'
+                    }
+                }
+            }
+        }
         stage('Build Application') {
             steps {
                 echo 'Building the application with Gradle Wrapper...'
