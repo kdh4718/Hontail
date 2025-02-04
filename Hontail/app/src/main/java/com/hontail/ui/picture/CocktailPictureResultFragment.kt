@@ -61,19 +61,8 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     }
 
     fun initText() {
-        val fullText = "hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?"
-        var spannableString = SpannableString(fullText)
-        var startIndex = fullText.indexOf("hyunn")
-        var endIndex = startIndex + "hyunn".length
-
-        spannableString.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_sky)),
-            startIndex,
-            endIndex,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        binding.textViewPictureResultSuggestion.text = spannableString
+        binding.textViewPictureResultSuggestion.text =
+            CommonUtils.changeTextColor(requireContext(), "hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?", "hyunn", R.color.basic_sky)
     }
 
     fun initEvent() {

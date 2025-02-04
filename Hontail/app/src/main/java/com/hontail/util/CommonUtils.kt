@@ -2,9 +2,14 @@ package com.hontail.util
 
 import android.app.AlertDialog
 import android.content.Context
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.hontail.R
 import java.text.DecimalFormat
@@ -19,6 +24,26 @@ object CommonUtils {
     fun makeComma(num: Int): String {
         val comma = DecimalFormat("#,###")
         return "${comma.format(num)}"
+    }
+
+    fun changeTextColor(
+        context: Context,
+        fullText: String,
+        changeText: String,
+        color: Int
+    ): SpannableString {
+        val spannableString = SpannableString(fullText)
+        val startIndex = fullText.indexOf(changeText)
+        val endIndex = startIndex + changeText.length
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(context, color)),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return spannableString
     }
 
     fun showDialog(
