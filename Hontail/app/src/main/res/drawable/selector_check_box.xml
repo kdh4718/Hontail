@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 비활성화된 상태 -->
+    <item android:alpha="0.38" android:color="@color/basic_gray" android:state_enabled="false"/>
+    <!-- 체크된 상태 -->
+    <item android:color="@color/basic_pink" android:state_checked="true"/>
+    <!-- 체크되지 않은 상태 -->
+    <item android:color="@color/basic_gray" android:state_checked="false"/>
+</selector>

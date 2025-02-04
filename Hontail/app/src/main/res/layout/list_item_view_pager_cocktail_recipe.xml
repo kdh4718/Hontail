@@ -52,6 +52,7 @@
 
             <TextView
                 android:id="@+id/textViewCocktailRecipeStep"
+                style="@style/Font_SemiBold_18_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Step 1"
@@ -66,6 +67,7 @@
 
     <TextView
         android:id="@+id/textViewCocktailRecipeStepExplanation"
+        style="@style/Font_Medium_18_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"

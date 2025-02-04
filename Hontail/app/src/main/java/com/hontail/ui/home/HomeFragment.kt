@@ -87,7 +87,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             HomeCategoryItem("기타", "K-술, 무알콜 등", R.drawable.category_etc)
         )
 
-        val gridLayoutManager = GridLayoutManager(context, 3)
+        val gridLayoutManager = GridLayoutManager(requireContext(), 3)
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return 1 // 모든 아이템 동일한 크기 유지
@@ -106,47 +106,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     }
 
     fun initText() {
-        var fullText = "지금 당신을 위한\n완벽한 레시피를\n추천해드릴게요!"
-        var spannableString = SpannableString(fullText)
-        var startIndex = fullText.indexOf("완벽한 레시피")
-        var endIndex = startIndex + "완벽한 레시피".length
+        binding.apply {
+            textViewHomePictureBig.text =
+                CommonUtils.changeTextColor(requireContext(), "지금 당신을 위한\n완벽한 레시피를\n추천해드릴게요!", "완벽한 레시피", R.color.basic_pink)
 
-        spannableString.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_pink)),
-            startIndex,
-            endIndex,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+            textViewHomeCategory.text =
+                CommonUtils.changeTextColor(requireContext(), "칵테일 초이스가 어렵다면\n베이스부터 골라보는 건 어떨까요?", "베이스", R.color.basic_sky)
 
-        binding.textViewHomePictureBig.text = spannableString
-
-        fullText = "칵테일 초이스가 어렵다면\n베이스부터 골라보는 건 어떨까요?"
-        spannableString = SpannableString(fullText)
-        startIndex = fullText.indexOf("베이스")
-        endIndex = startIndex + "베이스".length
-
-        spannableString.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_sky)),
-            startIndex,
-            endIndex,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        binding.textViewHomeCategory.text = spannableString
-
-        fullText = "가장 많은 사랑을 받은\n인기 칵테일 TOP 10!"
-        spannableString = SpannableString(fullText)
-        startIndex = fullText.indexOf("TOP 10!")
-        endIndex = startIndex + "TOP 10!".length
-
-        spannableString.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_pink)),
-            startIndex,
-            endIndex,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        binding.textViewHomeTopTen.text = spannableString
+            textViewHomeTopTen.text =
+                CommonUtils.changeTextColor(requireContext(), "가장 많은 사랑을 받은\n인기 칵테일 TOP 10!", "TOP 10!", R.color.basic_pink)
+        }
     }
 
     fun initEvent() {

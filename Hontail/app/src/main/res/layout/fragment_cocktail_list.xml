@@ -35,6 +35,7 @@
 
             <TextView
                 android:id="@+id/textViewCocktailListSearch"
+                style="@style/Font_Medium_18_Basic_Gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -71,11 +72,13 @@
         app:tabTextColor="@color/basic_gray">
 
         <com.google.android.material.tabs.TabItem
+            style="@style/Font_SemiBold_16_Basic_White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="디폴트 칵테일" />
 
         <com.google.android.material.tabs.TabItem
+            style="@style/Font_SemiBold_16_Basic_White"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="나만의 칵테일" />
