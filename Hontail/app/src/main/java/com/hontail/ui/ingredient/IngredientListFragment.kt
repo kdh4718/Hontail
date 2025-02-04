@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,27 +36,44 @@ class IngredientListFragment : BaseFragment<FragmentIngredientListBinding>(
 
     private fun setupRecyclerView() {
         ingredientAdapter = IngredientAdapter()
-        recyclerView = view?.findViewById(R.id.recyclerViewIngredients) ?: return
+        recyclerView = binding.recyclerViewIngredient
         recyclerView.apply {
             adapter = ingredientAdapter
             layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(IngredientItemDecoration())
         }
     }
 
     private fun loadDummyData() {
         val dummyIngredients = listOf(
-            Ingredient("당근", "채소"),
-            Ingredient("양파", "채소"),
-            Ingredient("돼지고기", "육류"),
-            Ingredient("소고기", "육류"),
-            Ingredient("계란", "기타"),
-            Ingredient("우유", "유제품")
+            Ingredient("감미료 및 시럽"),
+            Ingredient("신선한 과일 및 장식"),
+            Ingredient("주스 및 퓌레"),
+            Ingredient("베이스 주류"),
+            Ingredient("맥주 및 사이다"),
+            Ingredient("향신료 및 조미료"),
+            Ingredient("비터스"),
+            Ingredient("차 및 인퓨전"),
+            Ingredient("무알코올 음료"),
+            Ingredient("기타"),
         )
         ingredientAdapter.submitList(dummyIngredients)
+    }
+
+    inner class IngredientItemDecoration : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val density = resources.displayMetrics.density
+            val spacingInPixels = (32 * density).toInt()
+            outRect.bottom = spacingInPixels
+        }
     }
 }
 
 data class Ingredient(
     val name: String,
-    val category: String
 )

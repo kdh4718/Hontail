@@ -47,7 +47,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
-        changeFragment(CommonUtils.MainFragmentName.INGREDIENT_LIST_FRAGMENT)
+        changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
     }
 
     fun checkPermissions() {
