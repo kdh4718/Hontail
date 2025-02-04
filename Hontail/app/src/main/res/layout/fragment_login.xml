@@ -78,11 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="36dp"
-<<<<<<< HEAD
         android:src="@drawable/kakao"
-=======
-        android:src="@drawable/kakaotalk"
->>>>>>> e044da95bd5c7e704f62fd62a2ac8874c8b56d20
         app:layout_constraintEnd_toStartOf="@+id/imageViewNaver"
         app:layout_constraintTop_toBottomOf="@+id/imageViewCenterImage" />
 
