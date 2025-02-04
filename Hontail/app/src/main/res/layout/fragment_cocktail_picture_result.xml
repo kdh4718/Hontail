@@ -59,7 +59,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="20dp"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,8 @@
                     android:id="@+id/textViewPictureResultSuggestion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="22dp"
                     android:text="hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -78,7 +79,8 @@
                     android:id="@+id/imageViewPictureResultAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="10dp"
                     android:src="@drawable/add_ingredient"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textViewPictureResultSuggestion" />
@@ -98,7 +100,7 @@
                     style="@style/Font_Bold_18_Basic_White"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="28dp"
                     android:text="칵테일 24개"
                     app:layout_constraintStart_toStartOf="parent"
@@ -109,6 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
+                    android:layout_marginEnd="10dp"
                     android:src="@drawable/category"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewPictureResultCocktailList" />
@@ -128,6 +131,8 @@
                     android:id="@+id/recyclerViewPictureResultCocktailList"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewPictureResultFilter" />

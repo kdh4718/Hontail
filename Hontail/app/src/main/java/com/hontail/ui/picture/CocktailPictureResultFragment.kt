@@ -13,6 +13,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.button.MaterialButton
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -43,21 +46,21 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     }
 
     fun initAdapter() {
-//        val recyclerView = binding.recyclerViewPictureResultIngredient // RecyclerView ID에 맞게 수정
-//
-//        val layoutManager = FlexboxLayoutManager(requireContext()).apply {
-//            flexWrap = FlexWrap.WRAP
-//            justifyContent = JustifyContent.FLEX_START
-//        }
-//        recyclerView.layoutManager = layoutManager
-//
-//        val dataList = listOf(
-//            "Salt", "Mint", "Sugar", "Lime", "Ice",
-//            "Rum", "Soda", "Basil", "Peach", "Cherry",
-//            "Lemon", "Orange"
-//        )
-//
-//        recyclerView.adapter = TextAdapter(dataList)
+        val recyclerView = binding.recyclerViewPictureResultIngredient
+
+        val layoutManager = FlexboxLayoutManager(requireContext()).apply {
+            flexWrap = FlexWrap.WRAP
+            justifyContent = JustifyContent.FLEX_START
+        }
+        recyclerView.layoutManager = layoutManager
+
+        val dataList = listOf(
+            "Salt", "Mint", "Sugar", "Lime", "Ice",
+            "Rum", "Soda", "Basil", "Peach", "Cherry",
+            "Lemon", "Orange"
+        )
+
+        recyclerView.adapter = PictureTextAdapter(requireContext(), dataList)
     }
 
     fun initText() {
