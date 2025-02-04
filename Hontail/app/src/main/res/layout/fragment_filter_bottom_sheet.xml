@@ -58,7 +58,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterZzimHigh"
-                style="@style/Font_Medium_16_Basic_Gray"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.08"
@@ -69,11 +69,12 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterZzimLow"
-                style="@style/Font_Medium_16_Basic_Gray"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:button="@drawable/custom_radio_button"
+                android:buttonTint="@color/basic_pink"
                 android:padding="10dp"
                 android:text="찜 적은 순"
                 android:textColor="@drawable/custom_radio_button_text" />
@@ -117,7 +118,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterTimeHigh"
-                style="@style/Font_Medium_16_Basic_Gray"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -128,7 +129,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterTimeLow"
-                style="@style/Font_Medium_16_Basic_Gray"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -176,7 +177,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterAlcoholContentHigh"
-                style="@style/Font_Medium_16_Basic_Gray"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -187,7 +188,7 @@
 
             <RadioButton
                 android:id="@+id/radioButtonFilterAlcoholContentLow"
-                style="@style/Font_Medium_16_Basic_Gray"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -236,7 +237,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseJin"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1.5"
@@ -247,7 +248,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseRum"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1.5"
@@ -258,7 +259,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseVodka"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -269,7 +270,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseWhiskey"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -280,7 +281,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseTequila"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -291,7 +292,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseLiqueur"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -302,7 +303,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseWine"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -313,7 +314,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseBrandy"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -324,7 +325,7 @@
 
                 <RadioButton
                     android:id="@+id/radioButtonFilterBaseEtc"
-                    style="@style/Font_Medium_16_Basic_Gray"
+                    style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
