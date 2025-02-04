@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/s3")
 public class S3Controller {
 
-    @Value("${AWS_S3_BUCKET}")
+    @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
     @Autowired

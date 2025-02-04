@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3ServiceImpl {
 
-    @Value("${AWS_S3_BUCKET}")
+    @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
     @Autowired
