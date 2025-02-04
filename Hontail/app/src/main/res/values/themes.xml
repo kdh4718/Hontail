@@ -7,7 +7,6 @@
         <item name="android:textColor">@color/basic_white</item>
         <item name="cardViewStyle">@style/CardView.Ingredient</item>
 
-        <item name="colorPrimary">@color/basic_white</item>
     </style>
 
     <style name="Theme.Hontail" parent="Base.Theme.Hontail" />
@@ -16,7 +15,7 @@
     <style name="FAB.FullRound" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerSize">50%</item> <!-- 50%로 설정하면 완전한 원형 -->
     </style>
-    
+
     <style name="CardView.Ingredient">
         <item name="android:background">@drawable/ingredient_background</item>
         <item name="android:paddingTop">6dp</item>

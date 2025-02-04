@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="MyRadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="colorControlActivated">@color/basic_pink</item> <!-- 선택된 색상 -->
+        <item name="colorControlNormal">@color/basic_gray</item> <!-- 기본 색상 -->
+    </style>
+
     <!-- Bold 22 basic white -->
     <style name="Font_Bold_22_Basic_White">
         <item name="fontFamily">@font/suit_bold</item>
@@ -191,6 +196,15 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/basic_gray</item>
         <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Font_Medium_16_Basic_Gray_Check_Box">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="buttonTint">@drawable/selector_check_box</item>
+        <item name="buttonIconTint">@drawable/selector_check_box_icon</item>
     </style>
 
     <!-- Medium 16 basic pink -->
