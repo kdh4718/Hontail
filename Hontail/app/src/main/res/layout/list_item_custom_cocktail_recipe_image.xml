@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textViewListItemCustomCocktailRecipeImageTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="완성된 칵테일"
+        style="@style/Font_SemiBold_22_Basic_White"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewListItemCustomCocktailRecipeImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="@color/basic_gray"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemCustomCocktailRecipeImageTitle"
+        app:layout_constraintStart_toStartOf="@+id/textViewListItemCustomCocktailRecipeImageTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textViewListItemCustomCocktailRecipeImageTitle" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageViewListItemCustomCocktailRecipeAddImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/textViewListItemCustomCocktailRecipeImageGuide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="완성된 칵테일 사진을 넣어주세요."
+                    style="@style/Font_SemiBold_20_Basic_White"
+                    android:layout_marginTop="32dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewListItemCustomCocktailRecipeAddImage"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dividerListItemCustomCocktailRecipeImage"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="32dp"
+        app:dividerColor="@color/basic_gray"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewListItemCustomCocktailRecipeImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

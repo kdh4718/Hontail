@@ -11,12 +11,12 @@
         android:backgroundTint="@color/basic_gray"
         app:cardCornerRadius="55dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageViewCocktailCommentUserImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </androidx.cardview.widget.CardView>
 
@@ -24,9 +24,9 @@
         android:id="@+id/textViewCocktailCommentUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="hyunn"
-        android:layout_marginTop="5dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
+        android:text="hyunn"
         app:layout_constraintStart_toEndOf="@+id/cardViewCocktailCommentUserImage"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,10 +34,20 @@
         android:id="@+id/textViewCocktailCommentUserComment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="너무 앗있어요."
-        android:layout_marginTop="10dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="너무 앗있어요."
         app:layout_constraintStart_toEndOf="@+id/cardViewCocktailCommentUserImage"
         app:layout_constraintTop_toBottomOf="@+id/textViewCocktailCommentUserName" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/comment_option"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

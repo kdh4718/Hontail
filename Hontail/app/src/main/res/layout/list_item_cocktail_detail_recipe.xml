@@ -9,6 +9,7 @@
 
     <TextView
         android:id="@+id/textViewCocktailDetailRecipeNumber"
+        style="@style/Font_Medium_16_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="1."
@@ -17,9 +18,10 @@
 
     <TextView
         android:id="@+id/textViewCocktailDetailRecipeContent"
+        style="@style/Font_Medium_16_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="8dp"
         android:text="쉐이커에 슈퍼파인 슈가를 넣고 레몬과 오렌지 슬라이스\n를 추가합니다."
         app:layout_constraintStart_toEndOf="@+id/textViewCocktailDetailRecipeNumber"
         app:layout_constraintTop_toTopOf="parent" />

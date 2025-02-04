@@ -43,6 +43,7 @@
 
             <TextView
                 android:id="@+id/textViewCocktailDetailIngredientName"
+                style="@style/Font_SemiBold_16_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -53,6 +54,7 @@
 
             <TextView
                 android:id="@+id/textViewCocktailDetailIngredientAmount"
+                style="@style/Font_SemiBold_16_Basic_White"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1 T"
