@@ -35,11 +35,16 @@ pipeline {
                     credentialsId: 'GitLab-PAT'
             }
         }
-        stage('.env download') {
-            steps {
-                withCredentials([file(credentialsId: 'ENV', variable: 'envFile')]) {
-                    script {
-                        sh 'cp $envFile Hontail_Back/.env'
+        stage('secret download'){
+            steps{
+                withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]){
+                    script{
+                        sh '''
+                            cp $configFile $WORKSPACE/Hontail_Back/src/main/resources/application-dev.properties
+
+                            echo "Copy successful!"
+                            ls -l $WORKSPACE/Hontail_Back/src/main/resources/application-dev.properties
+                        '''
                     }
                 }
             }
