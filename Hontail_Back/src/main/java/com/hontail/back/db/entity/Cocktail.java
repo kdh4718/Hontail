@@ -48,11 +48,6 @@ public class Cocktail {
     @Column(name = "alcohol_content", nullable = false)
     private Integer alcoholContent;
 
-    @NotNull
-    @ColumnDefault("0")
-    @Column(name = "likes", nullable = false)
-    private Integer likesCnt;
-
     @Size(max = 255)
     @Column(name = "image_url")
     private String imageUrl;
@@ -80,15 +75,5 @@ public class Cocktail {
 
     @OneToMany(mappedBy = "cocktail")
     private List<Recipe> recipes = new ArrayList<>();
-
-    public void addLike() {
-        this.likesCnt++;
-    }
-
-    public void removeLike() {
-        if (this.likesCnt > 0) {
-            this.likesCnt--;
-        }
-    }
 
 }
