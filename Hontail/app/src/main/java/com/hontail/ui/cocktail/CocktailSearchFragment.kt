@@ -1,6 +1,8 @@
 package com.hontail.ui.cocktail
 
 import android.content.Context
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
@@ -24,13 +26,19 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
         mainActivity = context as MainActivity
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initAdapter()
+    }
+
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {
 
         binding.apply {
 
             val recentList = mutableListOf<RecentItem>().apply {
-                add(RecentItem("깔루아 밀크"))
+                add(RecentItem("깔루아 밀크12"))
                 add(RecentItem("에스프레소 마티니"))
                 add(RecentItem("몽키 숄더"))
             }
@@ -51,7 +59,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 add(CocktailSearchItem.Recent(recentList))
             }
 
-            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items)
+            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items2)
 
             recyclerViewCocktailSearch.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailSearch.adapter = cocktailSearchAdapter

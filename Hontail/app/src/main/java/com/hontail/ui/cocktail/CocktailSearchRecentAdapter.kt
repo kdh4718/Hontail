@@ -1,10 +1,12 @@
 package com.hontail.ui.cocktail
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailSearchRecentItemBinding
 
+private const val TAG = "CocktailSearchRecentAda"
 class CocktailSearchRecentAdapter(private val items: List<RecentItem>): RecyclerView.Adapter<CocktailSearchRecentAdapter.CocktailSearchRecentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailSearchRecentViewHolder {
@@ -18,6 +20,8 @@ class CocktailSearchRecentAdapter(private val items: List<RecentItem>): Recycler
 
     override fun onBindViewHolder(holder: CocktailSearchRecentViewHolder, position: Int) {
         holder.bind(items[position])
+        Log.d(TAG, "onBindViewHolder: $position")
+        
     }
 
     inner class CocktailSearchRecentViewHolder(private val binding: ListItemCocktailSearchRecentItemBinding): RecyclerView.ViewHolder(binding.root) {

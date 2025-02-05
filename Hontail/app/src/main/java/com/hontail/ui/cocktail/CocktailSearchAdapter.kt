@@ -11,6 +11,7 @@ import com.hontail.databinding.ListItemCocktailSearchRecentBinding
 import com.hontail.databinding.ListItemCocktailSearchResultBinding
 import com.hontail.databinding.ListItemCocktailSearchSearchBarBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
+import com.hontail.ui.MainActivity
 import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CocktailItemAdapter
 
@@ -85,6 +86,7 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
 
                 recyclerViewListItemCocktailRecent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recyclerViewListItemCocktailRecent.adapter = cocktailSearchRecentAdapter
+                recyclerViewListItemCocktailRecent.isNestedScrollingEnabled = false
             }
         }
     }
