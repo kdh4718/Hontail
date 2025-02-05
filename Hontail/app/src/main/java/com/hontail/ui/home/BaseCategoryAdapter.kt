@@ -4,13 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hontail.databinding.ListItemHomeCategoryBinding
+import com.hontail.databinding.ListItemHomeCategoryCategoryBinding
 
 class BaseCategoryAdapter(val context: Context, var categoryList: List<HomeCategoryItem>) :
     RecyclerView.Adapter<BaseCategoryAdapter.BaseCategoryHolder>() {
 
-    inner class BaseCategoryHolder(private val binding: ListItemHomeCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindInfo(item: HomeCategoryItem){
+    inner class BaseCategoryHolder(private val binding: ListItemHomeCategoryCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: HomeCategoryItem){
             binding.apply {
                 textViewHomeCategoryExplanation.text = item.explanation
                 textViewHomeCategoryName.text = item.name
@@ -20,12 +20,12 @@ class BaseCategoryAdapter(val context: Context, var categoryList: List<HomeCateg
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseCategoryHolder {
-        val binding = ListItemHomeCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListItemHomeCategoryCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return BaseCategoryHolder(binding)
     }
 
     override fun onBindViewHolder(holder: BaseCategoryHolder, position: Int) {
-        holder.bindInfo(categoryList[position])
+        holder.bind(categoryList[position])
     }
 
     override fun getItemCount(): Int {
