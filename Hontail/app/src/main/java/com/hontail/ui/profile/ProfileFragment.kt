@@ -2,21 +2,16 @@ package com.hontail.ui.profile
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentProfileBinding
-import com.hontail.databinding.FragmentZzimBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.mypage.MyPageCocktailAdapter
-import com.hontail.ui.mypage.MyPageItem
+import com.hontail.ui.mypage.MyPageAdapter
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(
     FragmentProfileBinding::bind,
@@ -82,9 +77,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(
             layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when(profileAdapter.getItemViewType(position)) {
-                        MyPageCocktailAdapter.VIEW_TYPE_PROFILE -> 2 // 프로필은 2개 영역을 차지
-                        MyPageCocktailAdapter.VIEW_TYPE_COCKTAIL -> 1 // 칵테일 아이템은 1개 영역을 차지
-                        MyPageCocktailAdapter.VIEW_TYPE_EMPTY -> 2 // 빈 영역 메시지는 2개 영역을 차지
+                        MyPageAdapter.VIEW_TYPE_PROFILE -> 2 // 프로필은 2개 영역을 차지
+                        MyPageAdapter.VIEW_TYPE_COCKTAIL -> 1 // 칵테일 아이템은 1개 영역을 차지
+                        MyPageAdapter.VIEW_TYPE_EMPTY -> 2 // 빈 영역 메시지는 2개 영역을 차지
                         else -> 1
                     }
                 }

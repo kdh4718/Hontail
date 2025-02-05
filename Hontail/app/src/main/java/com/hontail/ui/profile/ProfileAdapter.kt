@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemProfileEmptyBinding
 import com.hontail.databinding.ListItemProfileProfileBinding
-import com.hontail.ui.mypage.MyPageCocktailAdapter
+import com.hontail.ui.mypage.MyPageAdapter
 import com.hontail.util.CommonUtils
 
 class ProfileAdapter(private val items: List<ProfileItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -19,9 +19,9 @@ class ProfileAdapter(private val items: List<ProfileItem>): RecyclerView.Adapter
 
     override fun getItemViewType(position: Int): Int {
         return when(items[position]) {
-            is ProfileItem.Profile -> MyPageCocktailAdapter.VIEW_TYPE_PROFILE
-            is ProfileItem.Cocktail -> MyPageCocktailAdapter.VIEW_TYPE_COCKTAIL
-            is ProfileItem.Empty -> MyPageCocktailAdapter.VIEW_TYPE_EMPTY
+            is ProfileItem.Profile -> MyPageAdapter.VIEW_TYPE_PROFILE
+            is ProfileItem.Cocktail -> MyPageAdapter.VIEW_TYPE_COCKTAIL
+            is ProfileItem.Empty -> MyPageAdapter.VIEW_TYPE_EMPTY
         }
     }
 
