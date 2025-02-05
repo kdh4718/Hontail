@@ -24,7 +24,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     private lateinit var loginActivity: LoginActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
-    private lateinit var myPageCocktailAdapter: MyPageCocktailAdapter
+    private lateinit var myPageAdapter: MyPageAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -80,12 +80,16 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
         binding.apply {
 
+            val cocktailList = mutableListOf<Cocktail>().apply {
+                add(Cocktail("깔루아 밀크", "리큐어", 2, 1231, 5))
+                add(Cocktail("에스프레소 마티니", "리큐어", 3, 1231, 22))
+                add(Cocktail("깔루아 콜라", "리큐어", 2, 1231, 16))
+                add(Cocktail("B-52", "리큐어", 5, 1231, 26))
+            }
+
             val items = mutableListOf<MyPageItem>().apply {
                 add(MyPageItem.Profile("hyuun", 5))
-                add(MyPageItem.Cocktail("깔루아 밀크", "리큐어", 2, 1231, 5))
-                add(MyPageItem.Cocktail("에스프레소 마티니", "리큐어", 3, 1231, 22))
-                add(MyPageItem.Cocktail("깔루아 콜라", "리큐어", 2, 1231, 16))
-                add(MyPageItem.Cocktail("B-52", "리큐어", 5, 1231, 26))
+                add(MyPageItem.MyCocktail(cocktailList))
             }
 
             val items2 = mutableListOf<MyPageItem>().apply {
@@ -95,23 +99,10 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                 }
             }
 
-            myPageCocktailAdapter = MyPageCocktailAdapter(items)
+            myPageAdapter = MyPageAdapter(mainActivity, items)
 
-            val layoutManager = GridLayoutManager(mainActivity, 2)
-
-            layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return when(myPageCocktailAdapter.getItemViewType(position)) {
-                        MyPageCocktailAdapter.VIEW_TYPE_PROFILE -> 2 // 프로필은 2개 영역을 차지
-                        MyPageCocktailAdapter.VIEW_TYPE_COCKTAIL -> 1 // 칵테일 아이템은 1개 영역을 차지
-                        MyPageCocktailAdapter.VIEW_TYPE_EMPTY -> 2 // 빈 영역 메시지는 2개 영역을 차지
-                        else -> 1
-                    }
-                }
-            }
-
-            recyclerViewMyPage.layoutManager = layoutManager
-            recyclerViewMyPage.adapter = myPageCocktailAdapter
+            recyclerViewMyPage.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+            recyclerViewMyPage.adapter = myPageAdapter
         }
     }
 
@@ -121,14 +112,14 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         binding.apply {
 
             // 프로필 관리
-            myPageCocktailAdapter.myPageProfileListener = object : MyPageCocktailAdapter.ItemOnClickListener {
+            myPageAdapter.myPageProfileListener = object : MyPageAdapter.ItemOnClickListener {
                 override fun onClick() {
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.MY_PAGE_MODIFY_FRAGMENT)
                 }
             }
 
             // 재료 요청
-            myPageCocktailAdapter.myPageIngredientListener = object : MyPageCocktailAdapter.ItemOnClickListener {
+            myPageAdapter.myPageIngredientListener = object : MyPageAdapter.ItemOnClickListener {
                 override fun onClick() {
                     TODO("Not yet implemented")
                 }
@@ -145,6 +136,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 sealed class MyPageItem {
 
     data class Profile(val userName: String, val recipeCnt: Int): MyPageItem()
-    data class Cocktail(val cocktailName: String, val cocktailBaseSpirit: String, val cocktailIngredientCnt: Int, val cocktailZzimCnt: Int, val cocktailAlcholContent: Int): MyPageItem()
+    data class MyCocktail(val cocktailList: List<Cocktail>): MyPageItem()
     object Empty: MyPageItem()
 }
+
+data class Cocktail(val cocktailName: String, val cocktailBaseSpirit: String, val cocktailIngredientCnt: Int, val cocktailZzimCnt: Int, val cocktailAlcholContent: Int)
