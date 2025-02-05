@@ -62,11 +62,7 @@ class MyPageAdapter(private val context: Context, private val items: List<MyPage
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-//        when(holder) {
-//            is MyPageProfileViewHolder -> holder.bind(items[position] as MyPageItem.Profile)
-//            is MyPageCocktailViewHolder -> (holder as MyPageCocktailViewHolder).bind(items)
-//            is MyPageEmptyViewHolder -> holder.bind()
-//        }
+
         when(val item = items[position]) {
             is MyPageItem.Profile -> (holder as MyPageProfileViewHolder).bind(item)
             is MyPageItem.MyCocktail -> (holder as MyPageCocktailViewHolder).bind(item.cocktailList)
