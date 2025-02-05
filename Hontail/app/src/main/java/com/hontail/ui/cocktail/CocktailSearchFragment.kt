@@ -38,7 +38,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
         binding.apply {
 
             val recentList = mutableListOf<RecentItem>().apply {
-                add(RecentItem("깔루아 밀크12"))
+                add(RecentItem("깔루아 밀크"))
                 add(RecentItem("에스프레소 마티니"))
                 add(RecentItem("몽키 숄더"))
             }
@@ -59,7 +59,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 add(CocktailSearchItem.Recent(recentList))
             }
 
-            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items2)
+            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items)
 
             recyclerViewCocktailSearch.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailSearch.adapter = cocktailSearchAdapter
