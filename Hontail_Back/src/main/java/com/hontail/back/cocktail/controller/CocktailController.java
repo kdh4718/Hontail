@@ -25,9 +25,10 @@ public class CocktailController {
             @RequestParam(required = false, defaultValue = "asc", value = "direction") String direction,
             @RequestParam(required = false) String baseSpirit,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "false") boolean isCustom
     ) {
-        return cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size);
+        return cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size, isCustom);
     }
 
     @GetMapping("/top-liked")
