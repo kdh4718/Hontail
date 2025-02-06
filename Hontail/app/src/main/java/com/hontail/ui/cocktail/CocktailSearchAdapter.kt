@@ -17,6 +17,13 @@ import com.hontail.util.CocktailItemAdapter
 
 class CocktailSearchAdapter(private val context: Context, private val items: List<CocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    lateinit var cocktailSearchListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickCancel()
+        fun onClickCocktailItem()
+    }
+
     companion object {
         const val VIEW_TYPE_SEARCH_BAR = 0
         const val VIEW_TYPE_RECENT = 1
@@ -72,6 +79,13 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
 
         fun bind() {
 
+            binding.apply {
+
+                // 취소 이벤트
+                textViewListItemCocktailSearchBarCancel.setOnClickListener {
+                    cocktailSearchListener.onClickCancel()
+                }
+            }
         }
     }
 
@@ -87,6 +101,19 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
                 recyclerViewListItemCocktailRecent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recyclerViewListItemCocktailRecent.adapter = cocktailSearchRecentAdapter
                 recyclerViewListItemCocktailRecent.isNestedScrollingEnabled = false
+
+                cocktailSearchRecentAdapter.cocktailSearchRecentItemListener = object : CocktailSearchRecentAdapter.ItemOnClickListener {
+
+                    // 최근 검색 아이템 삭제.
+                    override fun onClickRecentDelete() {
+
+                    }
+
+                    // 최근 검색 아이템으로 상세 화면 가기.
+                    override fun onClickRecentItem() {
+                        cocktailSearchListener.onClickCocktailItem()
+                    }
+                }
             }
         }
     }
@@ -102,6 +129,14 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
 
                 recyclerViewListItemCocktailSearchResult.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemCocktailSearchResult.adapter = cocktailSearchResultAdapter
+
+                cocktailSearchResultAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
+
+                    // 칵테일 아이템으로 상세화면 가기.
+                    override fun onClickCocktailItem() {
+                        cocktailSearchListener.onClickCocktailItem()
+                    }
+                }
             }
         }
     }

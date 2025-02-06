@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageViewListItemCocktailRecentItem"
+        android:id="@+id/imageViewListItemCocktailRecentItemDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/close"

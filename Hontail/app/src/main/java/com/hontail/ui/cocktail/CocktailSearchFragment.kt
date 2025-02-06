@@ -3,6 +3,7 @@ package com.hontail.ui.cocktail
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
@@ -11,6 +12,7 @@ import com.hontail.databinding.FragmentCocktailSearchBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.mypage.Cocktail
+import com.hontail.util.CommonUtils
 
 class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
     FragmentCocktailSearchBinding::bind,
@@ -30,6 +32,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
+        initEvent()
     }
 
     // 리사이클러뷰 어댑터 연결
@@ -59,10 +62,29 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 add(CocktailSearchItem.Recent(recentList))
             }
 
-            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items)
+            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items2)
 
             recyclerViewCocktailSearch.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailSearch.adapter = cocktailSearchAdapter
+        }
+    }
+
+    // 이벤트
+    private fun initEvent() {
+
+        binding.apply {
+
+            // 취소
+            cocktailSearchAdapter.cocktailSearchListener = object : CocktailSearchAdapter.ItemOnClickListener {
+                override fun onClickCancel() {
+                    parentFragmentManager.popBackStack("CocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                }
+
+                // 최근 검색 아이템 or 칵테일 아이템으로 상세 화면 가기.
+                override fun onClickCocktailItem() {
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+                }
+            }
         }
     }
 }

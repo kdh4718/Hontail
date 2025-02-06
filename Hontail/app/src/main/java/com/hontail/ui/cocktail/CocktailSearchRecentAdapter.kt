@@ -9,6 +9,13 @@ import com.hontail.databinding.ListItemCocktailSearchRecentItemBinding
 private const val TAG = "CocktailSearchRecentAda"
 class CocktailSearchRecentAdapter(private val items: List<RecentItem>): RecyclerView.Adapter<CocktailSearchRecentAdapter.CocktailSearchRecentViewHolder>() {
 
+    lateinit var cocktailSearchRecentItemListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickRecentDelete()
+        fun onClickRecentItem()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailSearchRecentViewHolder {
         val binding = ListItemCocktailSearchRecentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CocktailSearchRecentViewHolder(binding)
@@ -31,6 +38,16 @@ class CocktailSearchRecentAdapter(private val items: List<RecentItem>): Recycler
             binding.apply {
 
                 textViewListItemCocktailRecentItemName.text = item.cocktailName
+
+                // 최근 검색 아이템으로 들어가기.
+                textViewListItemCocktailRecentItemName.setOnClickListener {
+                    cocktailSearchRecentItemListener.onClickRecentItem()
+                }
+
+                // 최근 검색 아이템 삭제하기.
+                imageViewListItemCocktailRecentItemDelete.setOnClickListener {
+                    cocktailSearchRecentItemListener.onClickRecentDelete()
+                }
             }
         }
     }

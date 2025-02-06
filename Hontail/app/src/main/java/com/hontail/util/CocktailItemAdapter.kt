@@ -8,6 +8,11 @@ import com.hontail.ui.mypage.Cocktail
 
 class CocktailItemAdapter(private val items: List<Cocktail>): RecyclerView.Adapter<CocktailItemAdapter.CocktailItemViewHolder>() {
 
+    lateinit var cocktailItemListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickCocktailItem()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailItemViewHolder {
         val binding = ListItemCocktailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,6 +37,10 @@ class CocktailItemAdapter(private val items: List<Cocktail>): RecyclerView.Adapt
                 textViewListItemCocktailIngredientCount.text = "재료 ${item.cocktailIngredientCnt}개"
                 textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.cocktailZzimCnt)
                 textViewListItemCocktailAlcoholContent.text = "${item.cocktailAlcholContent}%"
+
+                root.setOnClickListener {
+                    cocktailItemListener.onClickCocktailItem()
+                }
             }
         }
     }
