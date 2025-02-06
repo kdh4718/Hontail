@@ -22,7 +22,7 @@ public class S3Controller {
     @PostMapping("/presigned-url")
     @Operation(summary = "url 발급")
     public String getUrl(@RequestParam String fileName) {
-        return s3Service.getPreSignedUrl(bucket, fileName);
+        return s3Service.getPreSignedUrl(fileName);
     }
 
 }

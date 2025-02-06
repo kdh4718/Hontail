@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class S3ServiceImpl {
+public class S3ServiceImpl implements S3Service {
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
@@ -26,13 +26,10 @@ public class S3ServiceImpl {
 
     /**
      * presigned url 발급
-     * @param prefix 버킷 디렉토리 이름
      * @param fileName 클라이언트가 전달한 파일명 파라미터
      * @return presigned url
      */
-    public String getPreSignedUrl(String prefix, String fileName) {
-
-        fileName = createPath(prefix, fileName);
+    public String getPreSignedUrl(String fileName) {
 
         GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, fileName);
         URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
@@ -77,14 +74,15 @@ public class S3ServiceImpl {
         return UUID.randomUUID().toString();
     }
 
-    /**
-     * 파일의 전체 경로를 생성
-     * @param prefix 디렉토리 경로
-     * @return 파일의 전체 경로
-     */
-    private String createPath(String prefix, String fileName) {
-        String fileId = createFileId();
-        return String.format("%s/%s", prefix, fileId + fileName);
-    }
+//    /**
+//     * 파일의 전체 경로를 생성
+//     *
+//     * @param prefix 디렉토리 경로
+//     * @return 파일의 전체 경로
+//     */
+//    private String createPath(String prefix) {
+//        String fileId = createFileId();
+//        return String.format("%s/%s", prefix, fileId + fileName);
+//    }
 
 }
