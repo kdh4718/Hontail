@@ -74,8 +74,10 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
 
         binding.apply {
 
-            // 취소
+
             cocktailSearchAdapter.cocktailSearchListener = object : CocktailSearchAdapter.ItemOnClickListener {
+
+                // 취소
                 override fun onClickCancel() {
                     parentFragmentManager.popBackStack("CocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
