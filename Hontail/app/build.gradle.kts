@@ -86,4 +86,5 @@ dependencies {
     // 원형 이미지
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
+    implementation("me.relex:circleindicator:2.1.6")
 }
