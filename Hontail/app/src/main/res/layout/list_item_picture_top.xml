@@ -11,6 +11,8 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="22dp"
         android:text="hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?"
+        android:fontFamily="@font/suit_bold"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

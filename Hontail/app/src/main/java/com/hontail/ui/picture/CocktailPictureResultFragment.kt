@@ -1,5 +1,7 @@
 package com.hontail.ui.picture
 
+import PictureBottomAdapter
+import PictureTopAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.View
