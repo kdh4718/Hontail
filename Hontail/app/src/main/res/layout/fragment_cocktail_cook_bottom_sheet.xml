@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/secondary_black"
+    android:background="@drawable/bottom_sheet_background"
     android:padding="24dp"
     tools:context=".ui.cocktail.CocktailCookBottomSheetFragment">
 
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:text="화면을 가로로 돌리면\n요리 모드가 시작됩니다!"
+        android:text="아래 이미지를 터치하면\n요리 모드가 시작됩니다!"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

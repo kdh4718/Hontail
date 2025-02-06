@@ -12,6 +12,12 @@ import com.hontail.ui.ingredient.Ingredient
 
 class CocktailDetailAdapter(private val context: Context, private val items: List<CocktailDetailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    lateinit var cocktailDetailListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickRecipeBottomSheet()
+    }
+
     companion object {
         const val VIEW_TYPE_COCKTAIL_DETAIL_INFOS = 0
         const val VIEW_TYPE_COCKTAIL_DETAIL_INGREDIENTS = 1
@@ -104,6 +110,10 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
 
                 recyclerViewCocktailDetailRecipe.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recyclerViewCocktailDetailRecipe.adapter = cocktailDetailRecipeAdapter
+
+                imageViewCocktailDetailRecipeIcon.setOnClickListener {
+                    cocktailDetailListener.onClickRecipeBottomSheet()
+                }
             }
         }
     }

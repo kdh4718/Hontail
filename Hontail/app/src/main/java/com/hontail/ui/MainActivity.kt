@@ -88,6 +88,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.COCKTAIL_RECIPE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CocktailRecipeFragment())
+                    .addToBackStack("CocktailRecipeFragment")
             }
 
             CommonUtils.MainFragmentName.COCKTAIL_SEARCH_FRAGMENT -> {

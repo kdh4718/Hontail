@@ -79,8 +79,17 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     }
 
     fun initEvent(){
+
         binding.apply {
 
+            cocktailDetailAdapter.cocktailDetailListener = object : CocktailDetailAdapter.ItemOnClickListener {
+
+                // 레시피 쿠킹모드 바텀 시트
+                override fun onClickRecipeBottomSheet() {
+                    val bottomSheet = CocktailCookBottomSheetFragment()
+                    bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+                }
+            }
         }
     }
 }
