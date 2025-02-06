@@ -6,8 +6,8 @@
 </head>
 <body>
 <h1>Welcome to Hontail</h1>
-<a href="/logout">
-  <button>로그아웃</button>
-</a>
+<form th:action="@{/logout}" method="post">
+  <button type="submit">로그아웃</button>
+</form>
 </body>
 </html>

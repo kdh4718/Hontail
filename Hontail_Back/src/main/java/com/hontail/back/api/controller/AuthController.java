@@ -1,41 +1,60 @@
 package com.hontail.back.api.controller;
 
+import com.hontail.back.oauth.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "인증 관련 API")
 public class AuthController {
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("Hello, OAuth2 + JWT!");
+    private Map<String, Object> createUserInfoMap(CustomOAuth2User oauth2User) {
+        return Map.of(
+                "id", oauth2User.getUserId(),
+                "email", oauth2User.getUserEmail(),
+                "nickname", oauth2User.getName(),
+                "profileImage", oauth2User.getUserImageUrl()
+        );
     }
 
-    @GetMapping("/user-info")
-    @Operation(description = "유저정보 확인")
-    public ResponseEntity<Map<String, Object>> getUserInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
+    @GetMapping("/login-success")
+    @Operation(summary = "소셜 로그인 성공", description = "소셜 로그인 성공 후 사용자 정보 반환")
+    public ResponseEntity<Map<String, Object>> loginSuccess(@AuthenticationPrincipal CustomOAuth2User oauth2User) {
+        if (oauth2User == null) {
+            return ResponseEntity.badRequest().build();
+        }
 
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("email", oauth2User.getAttribute("email"));
-        userInfo.put("name", oauth2User.getAttribute("name"));
-        userInfo.put("picture", oauth2User.getAttribute("picture"));
-
-        return ResponseEntity.ok(userInfo);
+        return ResponseEntity.ok(createUserInfoMap(oauth2User));
     }
+
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃", description = "현재 사용자 로그아웃 처리")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        // 스프링 시큐리티 컨텍스트 클리어
+        SecurityContextHolder.clearContext();
+
+        // 세션 무효화 (옵션)
+        request.getSession().invalidate();
+        return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
+//    @GetMapping("/user-info")
+//    @Operation(summary = "현재 사용자 정보 조회", description = "로그인된 사용자의 정보를 반환")
+//    public ResponseEntity<Map<String, Object>> getCurrentUserInfo(@AuthenticationPrincipal CustomOAuth2User oauth2User) {
+//        if (oauth2User == null) {
+//            return ResponseEntity.status(401).body(Map.of("message", "로그인되지 않은 사용자"));
+//        }
+//
+//        return ResponseEntity.ok(createUserInfoMap(oauth2User));
+//    }
 }
