@@ -23,7 +23,7 @@ class CocktailListAdapter(private val context: Context, private val items: List<
         fun onClickCocktailItem()
         fun onClickSearch()
         fun onClickTab(position: Int)
-        fun onClickFilter()
+        fun onClickFilter(position: Int)
     }
 
     companion object {
@@ -134,6 +134,12 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
                 recyclerViewListItemCocktailListFilter.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 recyclerViewListItemCocktailListFilter.adapter = cocktailListFilterAdapter
+
+                cocktailListFilterAdapter.cocktailListFilterListener = object : CocktailListFilterAdapter.ItemOnClickListener {
+                    override fun onClickFilter(position: Int) {
+                        cocktailListListener.onClickFilter(position)
+                    }
+                }
             }
         }
     }

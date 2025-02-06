@@ -108,8 +108,9 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                 }
 
                 // 필터 눌렀을 때
-                override fun onClickFilter() {
-                    TODO("Not yet implemented")
+                override fun onClickFilter(position: Int) {
+                    val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
+                    bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
                 }
             }
         }
