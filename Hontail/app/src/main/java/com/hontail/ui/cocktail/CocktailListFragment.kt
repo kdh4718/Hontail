@@ -80,7 +80,8 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
 
                 // 랜덤 다이얼로그 띄우기.
                 override fun onClickRandom() {
-                    TODO("Not yet implemented")
+                    val dialog = CocktailRandomDialogFragment()
+                    dialog.show(parentFragmentManager, "CocktailRandomDialog")
                 }
 
                 // 칵테일 상세 화면으로 가기.

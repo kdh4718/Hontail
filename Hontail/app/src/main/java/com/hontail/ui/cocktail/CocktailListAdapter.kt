@@ -95,6 +95,11 @@ class CocktailListAdapter(private val context: Context, private val items: List<
                 constraintLayoutListItemCocktailListSearch.setOnClickListener {
                     cocktailListListener.onClickSearch()
                 }
+
+                // 랜덤 다이얼로그 띄우기.
+                imageViewCocktailListRandom.setOnClickListener {
+                    cocktailListListener.onClickRandom()
+                }
             }
         }
     }
