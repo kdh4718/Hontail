@@ -18,6 +18,11 @@ import java.util.Optional;
 public interface CocktailRepository extends JpaRepository<Cocktail, Integer> {
     Page<Cocktail> findByBaseSpirit(String baseSpirit, Pageable pageable);
 
+    // 기본/커스텀 전체 조회
+    Page<Cocktail> findByIsCustom(Byte isCustom, Pageable pageable);
+    // 기본/커스텀 필터링 (베이스 스피릿 포함)
+    Page<Cocktail> findByIsCustomAndBaseSpirit(Byte isCustom, String baseSpirit, Pageable pageable);
+
     // 좋아요 상위 10개 칵테일 조회를 위한 쿼리
     @Query("SELECT c FROM Cocktail c LEFT JOIN c.likes l " +
             "GROUP BY c.id, c.cocktailName, c.imageUrl, c.alcoholContent, c.baseSpirit, c.createdAt " +
