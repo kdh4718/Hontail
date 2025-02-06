@@ -24,7 +24,6 @@
                 android:id="@+id/imageViewCocktailRecipeGoBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:src="@drawable/go_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,10 +55,13 @@
 
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/indicatorCocktailRecipeIndcator"
+    <ProgressBar
+        android:id="@+id/indicatorCocktailRecipeIndicator"
         android:layout_width="0dp"
-        android:layout_height="4dp"
+        android:layout_height="2dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progress_selector"
+        android:progress="20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardViewCocktailRecipeTitle" />
@@ -71,7 +73,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/indicatorCocktailRecipeIndcator" />
+        app:layout_constraintTop_toBottomOf="@+id/indicatorCocktailRecipeIndicator" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewCocktailRecipeMicrophone"
