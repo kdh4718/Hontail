@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -54,9 +55,10 @@ public class Cocktail {
 
     @ColumnDefault("0")
     @Column(name = "is_custom")
-    private Byte isCustom;
+    private Integer isCustom;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
+    @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
