@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface LoginService {
-    @POST("/login")
+    @POST("/api/login")
     suspend fun socialLogin(@Body request: LoginRequest): Response<LoginResponse>
 }

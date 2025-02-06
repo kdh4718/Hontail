@@ -89,7 +89,7 @@ dependencies {
     implementation("me.relex:circleindicator:2.1.6")
 
     // kakao login
-    implementation("com.kakao.sdk:v2-user:2.12.1")
+//    implementation("com.kakao.sdk:v2-user:2.14.0")
     // naver login
     implementation("com.navercorp.nid:oauth:5.3.0")
     // google login
