@@ -86,4 +86,5 @@ dependencies {
     // 원형 이미지
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }
