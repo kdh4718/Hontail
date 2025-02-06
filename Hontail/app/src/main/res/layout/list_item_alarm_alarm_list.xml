@@ -51,6 +51,9 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
             android:text="[공지사항] 혼테일 알림창 텍스트 테스트 버전"
+            android:textSize="16sp"
+            android:textColor="@color/basic_white"
+            android:fontFamily="@font/suit_semibold"
             app:layout_constraintStart_toEndOf="@+id/textViewAlarmImage"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,6 +63,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="2025.01.24"
+            android:textSize="12sp"
+            android:textColor="@color/basic_gray"
+            android:fontFamily="@font/suit_medium"
             app:layout_constraintStart_toEndOf="@+id/textViewAlarmImage"
             app:layout_constraintTop_toBottomOf="@+id/textViewAlarmInfo" />
 
