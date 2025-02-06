@@ -89,6 +89,12 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
                     val bottomSheet = CocktailCookBottomSheetFragment()
                     bottomSheet.show(parentFragmentManager, bottomSheet.tag)
                 }
+
+                // 댓글 바텀 시트
+                override fun onClickCommentBottomSheet() {
+                    val bottomSheet = CocktailCommentBottomSheetFragment()
+                    bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
 
     interface ItemOnClickListener {
         fun onClickRecipeBottomSheet()
+        fun onClickCommentBottomSheet()
     }
 
     companion object {
@@ -80,6 +81,11 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
                 textViewCocktailDetailAlcoholLevel.text = "${item.cocktailAlcoholLevel}%"
                 textViewCocktailDetailZzimCount.text = item.cocktailZzims.toString()
                 textViewCocktailDetailCommentCount.text = item.cocktailComments.toString()
+
+                // 댓글 바텀시트 띄우기.
+                imageViewCocktailDetailComment.setOnClickListener {
+                    cocktailDetailListener.onClickCommentBottomSheet()
+                }
             }
         }
     }
