@@ -1,20 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>로그인</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .login-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .google-login {
+            background-color: #4285F4;
+            color: white;
+        }
+        .naver-login {
+            background-color: #2DB400;
+            color: white;
+        }
+        .kakao-login {
+            background-color: #FEE500;
+            color: black;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-<h1>Login</h1>
-<div>
-    <a href="/oauth2/authorization/google">Login with Google</a>
-</div>
-<div>
-    <a href="/oauth2/authorization/naver">Login with Naver</a>
-</div>
-<div>
-    <a href="/oauth2/authorization/kakao">Login with Kakao</a>
+<div class="login-container">
+    <h2>로그인</h2>
+
+    <div th:if="${param.error}" class="error-message">
+        로그인에 실패했습니다. 다시 시도해주세요.
+    </div>
+
+    <a href="/oauth2/authorization/google" class="login-button google-login">
+        Google로 로그인
+    </a>
+
+    <a href="/oauth2/authorization/naver" class="login-button naver-login">
+        Naver로 로그인
+    </a>
+
+    <a href="/oauth2/authorization/kakao" class="login-button kakao-login">
+        Kakao로 로그인
+    </a>
 </div>
 </body>
 </html>
