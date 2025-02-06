@@ -42,13 +42,19 @@ dependencies {
     //	p6spy
     implementation 'p6spy:p6spy:3.9.1'
 
+    // OpenAI GPT API 클라이언트 라이브러리
+    implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
+
+    //.env 파일 지원 라이브러리
+    // - 환경 변수를 .env 파일에서 관리
+    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+    
     // aws s3 연동
     implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.3.0'
 
     implementation 'software.amazon.awssdk:s3:2.30.11'
 
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
 }
 
 //tasks.named('test') {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/s3")
 public class S3Controller {
 
-    @Value("${AWS_S3_BUCKET}")
+    @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
     @Autowired
@@ -22,7 +22,7 @@ public class S3Controller {
     @PostMapping("/presigned-url")
     @Operation(summary = "url 발급")
     public String getUrl(@RequestParam String fileName) {
-        return s3Service.getPreSignedUrl(bucket, fileName);
+        return s3Service.getPreSignedUrl(fileName);
     }
 
 }

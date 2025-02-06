@@ -35,6 +35,20 @@ pipeline {
                     credentialsId: 'GitLab-PAT'
             }
         }
+        stage('secret download'){
+            steps{
+                withCredentials([file(credentialsId: 'application-secret', variable: 'configFile')]){
+                    script{
+                        sh '''
+                            cp $configFile $WORKSPACE/Hontail_Back/src/main/resources/application-dev.properties
+
+                            echo "Copy successful!"
+                            ls -l $WORKSPACE/Hontail_Back/src/main/resources/application-dev.properties
+                        '''
+                    }
+                }
+            }
+        }
         stage('Build Application') {
             steps {
                 echo 'Building the application with Gradle Wrapper...'
