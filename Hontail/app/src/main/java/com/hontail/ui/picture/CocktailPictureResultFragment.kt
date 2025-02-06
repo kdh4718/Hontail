@@ -48,9 +48,23 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         )
         bottomAdapter.setItem(bottomItem)
 
-        binding.recyclerViewPictureResult.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = ConcatAdapter(topAdapter, bottomAdapter)
+    fun initEvent() {
+        binding.apply {
+            imageViewPictureResultFilter.setOnClickListener {
+//                val bottomSheetFragment = FilterBottomSheetFragment.newInstance(true)
+//                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+            }
+
+            imageViewPictureResultAdd.setOnClickListener {
+
+                CommonUtils.showDialog(
+                    requireContext(),
+                    "혹시 찍은 재료가 없나요?",
+                    "없다면 재료를 등록해보세요!"
+                ){
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
+                }
+            }
         }
     }
 

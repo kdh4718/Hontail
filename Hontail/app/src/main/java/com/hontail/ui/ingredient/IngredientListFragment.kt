@@ -13,6 +13,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentIngredientListBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import org.threeten.bp.temporal.TemporalAmount
 
 class IngredientListFragment : BaseFragment<FragmentIngredientListBinding>(
     FragmentIngredientListBinding::bind,
@@ -46,16 +47,16 @@ class IngredientListFragment : BaseFragment<FragmentIngredientListBinding>(
 
     private fun loadDummyData() {
         val dummyIngredients = listOf(
-            Ingredient("감미료 및 시럽"),
-            Ingredient("신선한 과일 및 장식"),
-            Ingredient("주스 및 퓌레"),
-            Ingredient("베이스 주류"),
-            Ingredient("맥주 및 사이다"),
-            Ingredient("향신료 및 조미료"),
-            Ingredient("비터스"),
-            Ingredient("차 및 인퓨전"),
-            Ingredient("무알코올 음료"),
-            Ingredient("기타"),
+            Ingredient("감미료 및 시럽", null),
+            Ingredient("신선한 과일 및 장식", null),
+            Ingredient("주스 및 퓌레", null),
+            Ingredient("베이스 주류", null),
+            Ingredient("맥주 및 사이다", null),
+            Ingredient("향신료 및 조미료", null),
+            Ingredient("비터스", null),
+            Ingredient("차 및 인퓨전", null),
+            Ingredient("무알코올 음료", null),
+            Ingredient("기타", null),
         )
         ingredientAdapter.submitList(dummyIngredients)
     }
@@ -75,5 +76,5 @@ class IngredientListFragment : BaseFragment<FragmentIngredientListBinding>(
 }
 
 data class Ingredient(
-    val name: String,
+    val name: String, val amount: String?
 )
