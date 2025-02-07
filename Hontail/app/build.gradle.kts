@@ -86,5 +86,14 @@ dependencies {
     // 원형 이미지
     implementation ("de.hdodenhof:circleimageview:3.1.0")
 
+    implementation("me.relex:circleindicator:2.1.6")
+
+    // kakao login
+    implementation("com.kakao.sdk:v2-user:2.14.0")
+    // naver login
+    implementation("com.navercorp.nid:oauth:5.3.0")
+    // google login
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
+
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

@@ -1,10 +1,10 @@
 package com.hontail.data.remote
 
 import com.hontail.base.ApplicationClass
-import com.hontail.base.ApplicationClass.Companion.retrofit
 
 class RetrofitUtil {
     companion object{
+        val loginService = ApplicationClass.retrofit.create(LoginService::class.java)
 
         // 댓글 서비스
         val commentService = ApplicationClass.retrofit.create(CommentService::class.java)
