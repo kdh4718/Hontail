@@ -70,6 +70,7 @@ public class MyCocktailServiceImpl implements MyCocktailService {
                         .cocktail(savedCocktail)
                         .recipeGuide(recipeDto.getRecipeGuide())
                         .sequence(recipeDto.getSequence())
+                        .recipeAction(recipeDto.getRecipeAction())
                         .build())
                 .collect(Collectors.toList());
 

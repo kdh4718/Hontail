@@ -13,4 +13,5 @@ public class RecipeDetailDto {
     private Integer recipeId;
     private String recipeGuide;
     private Integer sequence;
+    private String recipeAction;
 }

@@ -43,7 +43,8 @@ public class CocktailDetailServiceImpl implements CocktailDetailService {
                         .map(r -> new RecipeDetailDto(
                                 r.getId(),
                                 r.getRecipeGuide(),
-                                r.getSequence()
+                                r.getSequence(),
+                                r.getRecipeAction()
                         ))
                         .toList(),
                 cocktail.getLikes().stream()
