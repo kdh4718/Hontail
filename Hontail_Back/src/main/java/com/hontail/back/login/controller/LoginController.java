@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/api")
+@RequestMapping("/api/login")
 public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
@@ -27,7 +27,7 @@ public class LoginController {
 //    public String login() {
 //        return "login";
 //    }
-    @PostMapping("/login")
+    @PostMapping("")
     @Operation(description = "로그인")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
         log.debug("Received login request1111: {}", request); // 요청 로그
