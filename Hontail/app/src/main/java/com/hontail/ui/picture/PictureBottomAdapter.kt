@@ -1,77 +1,91 @@
+package com.hontail.ui.picture
+
 import android.content.Context
+import android.graphics.Rect
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemPictureBottomBinding
-import com.hontail.databinding.ListItemCocktailBinding
-import com.hontail.ui.picture.PictureResultItem
+import com.hontail.ui.MainActivity
+import com.hontail.ui.cocktail.CocktailListFilterAdapter
+import com.hontail.ui.mypage.Cocktail
+import com.hontail.util.CocktailItemAdapter
 
-class PictureBottomAdapter : RecyclerView.Adapter<PictureBottomAdapter.BottomViewHolder>() {
-    private var item: PictureResultItem.BottomItem? = null
-    private lateinit var context: Context
+class PictureBottomAdapter(
+    private val context: Context,
+    private var data: CocktailPictureResultFragment.PictureResultType.Bottom
+) : RecyclerView.Adapter<PictureBottomAdapter.ViewHolder>() {
 
-    inner class BottomViewHolder(private val binding: ListItemPictureBottomBinding) :
+    // GridSpacing 클래스 추가
+    class GridSpacingItemDecoration(
+        private val spanCount: Int,
+        private val spacing: Int
+    ) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view)
+            val column = position % spanCount
+
+            outRect.left = spacing - column * spacing / spanCount
+            outRect.right = (column + 1) * spacing / spanCount
+        }
+    }
+
+    inner class ViewHolder(private val binding: ListItemPictureBottomBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: PictureResultItem.BottomItem) {
-            binding.apply {
-                textViewPictureResultCocktailList.text = item.cocktailCount
 
-                // Set up the cocktail RecyclerView with GridLayoutManager
-                recyclerViewPictureResultCocktailList.apply {
-                    layoutManager = GridLayoutManager(context, 2).apply {
-                        spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-                            override fun getSpanSize(position: Int): Int = 1
-                        }
-                    }
+        fun bind(item: CocktailPictureResultFragment.PictureResultType.Bottom) {
+            binding.textViewPictureResultCocktailList.text = item.cocktailCount
 
-                    // Remove any existing item decorations
-                    if (itemDecorationCount > 0) {
-                        removeItemDecorationAt(0)
-                    }
+            // 필터 리사이클러뷰 설정
+            val filters = listOf("찜", "시간", "도수", "베이스주")
+            val filterAdapter = CocktailListFilterAdapter(filters)
 
-                    // Add item decoration for spacing
-                    addItemDecoration(object : RecyclerView.ItemDecoration() {
-                        override fun getItemOffsets(
-                            outRect: android.graphics.Rect,
-                            view: android.view.View,
-                            parent: RecyclerView,
-                            state: RecyclerView.State
-                        ) {
-                            val position = parent.getChildAdapterPosition(view)
-                            val column = position % 2
+            binding.recyclerViewPictureResultFilter.apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = filterAdapter
+            }
 
-                            // Set horizontal spacing
-                            outRect.left = if (column == 0) 0 else 20 // 20dp for right item
-                            outRect.right = if (column == 0) 20 else 0 // 20dp for left item
+            // 칵테일 리스트 리사이클러뷰 설정
+            val cocktails = mutableListOf<Cocktail>().apply {
+                repeat(10) {
+                    add(Cocktail("깔루아 밀크", "리큐어", 2, 1231, 5))
+                }
+            }
 
-                            // Set vertical spacing - 32dp between rows
-                            if (position >= 2) {
-                                outRect.top = 32
-                            }
-                        }
-                    })
+            val cocktailAdapter = CocktailItemAdapter(cocktails)
 
-                    // Sample data for cocktails (10 items for 5 rows)
-                    val cocktailList = List(10) {
-                        CocktailItem(
-                            name = "깔루아 밀크",
-                            baseSpirit = "리큐어",
-                            ingredientCount = "재료 2개",
-                            alcoholContent = "5%",
-                            zzimCount = "1,231"
-                        )
-                    }
+            binding.recyclerViewPictureResultCocktailList.apply {
+                layoutManager = GridLayoutManager(context, 2)
+                adapter = cocktailAdapter
+                // ItemDecoration 추가
+                if (itemDecorationCount == 0) {
+                    addItemDecoration(GridSpacingItemDecoration(2, 20))
+                }
+            }
 
-                    adapter = CocktailListAdapter(cocktailList)
+            // 필터 클릭 이벤트 설정
+            filterAdapter.cocktailListFilterListener = object : CocktailListFilterAdapter.ItemOnClickListener {
+                override fun onClickFilter(position: Int) {
+                    val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
+                    bottomSheetFragment.show(
+                        (context as MainActivity).supportFragmentManager,
+                        bottomSheetFragment.tag
+                    )
                 }
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomViewHolder {
-        context = parent.context
-        return BottomViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(
             ListItemPictureBottomBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -80,57 +94,9 @@ class PictureBottomAdapter : RecyclerView.Adapter<PictureBottomAdapter.BottomVie
         )
     }
 
-    override fun onBindViewHolder(holder: BottomViewHolder, position: Int) {
-        item?.let { holder.bind(it) }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(data)
     }
 
-    override fun getItemCount(): Int = if (item != null) 1 else 0
-
-    fun setItem(newItem: PictureResultItem.BottomItem) {
-        item = newItem
-        notifyDataSetChanged()
-    }
-}
-
-// Data class for cocktail items
-data class CocktailItem(
-    val name: String,
-    val baseSpirit: String,
-    val ingredientCount: String,
-    val alcoholContent: String,
-    val zzimCount: String
-)
-
-// Adapter for cocktail items
-class CocktailListAdapter(private val cocktails: List<CocktailItem>) :
-    RecyclerView.Adapter<CocktailListAdapter.CocktailViewHolder>() {
-
-    inner class CocktailViewHolder(private val binding: ListItemCocktailBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: CocktailItem) {
-            binding.apply {
-                textViewListItemCocktailName.text = item.name
-                textViewListItemCocktailBaseSpirit.text = item.baseSpirit
-                textViewListItemCocktailIngredientCount.text = item.ingredientCount
-                textViewListItemCocktailAlcoholContent.text = item.alcoholContent
-                textViewListItemCocktailTotalZzim.text = item.zzimCount
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailViewHolder {
-        return CocktailViewHolder(
-            ListItemCocktailBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: CocktailViewHolder, position: Int) {
-        holder.bind(cocktails[position])
-    }
-
-    override fun getItemCount(): Int = cocktails.size
+    override fun getItemCount(): Int = 1
 }
