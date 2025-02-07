@@ -2,6 +2,7 @@ package com.hontail.back.db.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Getter
@@ -29,5 +30,9 @@ public class Recipe {
     @NotNull
     @Column(name = "sequence", nullable = false)
     private Integer sequence;
+
+    @Size(max = 45)
+    @Column(name = "recipe_action", length = 45)
+    private String recipeAction;
 
 }
