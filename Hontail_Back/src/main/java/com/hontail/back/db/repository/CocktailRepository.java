@@ -12,14 +12,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface CocktailRepository extends JpaRepository<Cocktail, Integer> {
     Page<Cocktail> findByBaseSpirit(String baseSpirit, Pageable pageable);
 
+    // 기본/커스텀 전체 조회
+    Page<Cocktail> findByIsCustom(Byte isCustom, Pageable pageable);
+    // 기본/커스텀 필터링 (베이스 스피릿 포함)
+    Page<Cocktail> findByIsCustomAndBaseSpirit(Byte isCustom, String baseSpirit, Pageable pageable);
+
+    // 좋아요 상위 10개 칵테일 조회를 위한 쿼리
     @Query("SELECT c FROM Cocktail c LEFT JOIN c.likes l " +
             "GROUP BY c.id, c.cocktailName, c.imageUrl, c.alcoholContent, c.baseSpirit, c.createdAt " +
             "ORDER BY COUNT(l) DESC, c.id ASC")
     List<Cocktail> findTopLiked(Pageable pageable);
-    // 쿼리문 serviceImpl보다 repository에서 작성하는게 더 낫다길래 여기다 써봄
+
+    // Bartender 랜덤 칵테일 추천을 위한 쿼리
+    @Query(value = "SELECT * FROM cocktail ORDER BY RAND() LIMIT 1",
+            nativeQuery = true)
+    Optional<Cocktail> findRandomCocktail();
 }

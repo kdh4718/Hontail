@@ -1,30 +1,35 @@
+//CocktailPictureResultFragment.kt
 package com.hontail.ui.picture
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCocktailPictureResultBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.util.CommonUtils
 
 class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResultBinding>(
     FragmentCocktailPictureResultBinding::bind,
     R.layout.fragment_cocktail_picture_result
 ) {
+    sealed class PictureResultType {
+        data class Top(
+            val suggestion: String,
+            val ingredients: List<String>
+        ) : PictureResultType()
+
+        data class Bottom(
+            val cocktailCount: String,
+            val filters: List<String>,
+            val cocktails: List<String>
+        ) : PictureResultType()
+    }
+
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val bottomSheet = FilterBottomSheetFragment()
@@ -36,52 +41,33 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initAdapter()
-        initText()
-        initEvent()
+        initRecyclerView()
     }
 
-    fun initAdapter() {
-//        val recyclerView = binding.recyclerViewPictureResultIngredient // RecyclerView ID에 맞게 수정
-//
-//        val layoutManager = FlexboxLayoutManager(requireContext()).apply {
-//            flexWrap = FlexWrap.WRAP
-//            justifyContent = JustifyContent.FLEX_START
-//        }
-//        recyclerView.layoutManager = layoutManager
-//
-//        val dataList = listOf(
-//            "Salt", "Mint", "Sugar", "Lime", "Ice",
-//            "Rum", "Soda", "Basil", "Peach", "Cherry",
-//            "Lemon", "Orange"
-//        )
-//
-//        recyclerView.adapter = TextAdapter(dataList)
-    }
+    private fun initRecyclerView() {
+        val dataList = listOf(
+            "Salt", "Mint", "Sugar", "Lime", "Ice",
+            "Rum", "Soda", "Basil", "Peach", "Cherry",
+            "Lemon", "Orange"
+        )
 
-    fun initText() {
-        binding.textViewPictureResultSuggestion.text =
-            CommonUtils.changeTextColor(requireContext(), "hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?", "hyunn", R.color.basic_sky)
-    }
+        val pictureTopData = PictureResultType.Top(
+            suggestion = "hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?",
+            ingredients = dataList
+        )
 
-    fun initEvent() {
-        binding.apply {
-            imageViewPictureResultFilter.setOnClickListener {
-                val bottomSheetFragment = FilterBottomSheetFragment.newInstance(true)
-                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
-            }
+        val pictureBottomData = PictureResultType.Bottom(
+            cocktailCount = "칵테일 24개",
+            filters = listOf(),  // 필터 데이터
+            cocktails = listOf() // 칵테일 데이터
+        )
 
-            imageViewPictureResultAdd.setOnClickListener {
-
-                CommonUtils.showDialog(
-                    requireContext(),
-                    "혹시 찍은 재료가 없나요?",
-                    "없다면 재료를 등록해보세요!"
-                ){
-                    mainActivity.changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
-                }
-            }
+        binding.recyclerViewPictureResult.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = ConcatAdapter(
+                PictureTopAdapter(requireContext(), pictureTopData),
+                PictureBottomAdapter(requireContext(), pictureBottomData)
+            )
         }
     }
 }

@@ -94,4 +94,6 @@ dependencies {
     implementation("com.navercorp.nid:oauth:5.3.0")
     // google login
     implementation("com.google.android.gms:play-services-auth:21.3.0")
+
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

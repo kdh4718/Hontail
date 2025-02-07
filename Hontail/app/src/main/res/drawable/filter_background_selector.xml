@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 선택된 상태일 때 -->
+    <item android:state_selected="true" android:drawable="@drawable/filter_selected_background" />
+
+    <!-- 기본 상태 -->
+    <item android:drawable="@drawable/filter_default_background" />
+</selector>

@@ -23,13 +23,23 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
     }
 
     fun initView(){
-        // 전달된 값 확인 (기본값 false)
-        val shouldHideBase = arguments?.getBoolean("hideBase", false) ?: false
 
-        if (shouldHideBase) {
-            binding?.frameLayoutFilterBase!!.visibility = View.GONE
-        } else {
-            binding?.frameLayoutFilterBase!!.visibility = View.VISIBLE
+        val filterPosition = arguments?.getInt("filter", 0) ?: 0
+
+        binding.apply {
+
+            constraintLayoutFilterBottomSheetZzim.visibility = View.GONE
+            constraintLayoutFilterBottomSheetTime.visibility = View.GONE
+            constraintLayoutFilterBottomSheetAlcoholContent.visibility = View.GONE
+            constraintLayoutFilterBottomSheetBase.visibility = View.GONE
+
+            when(filterPosition) {
+
+                0 -> constraintLayoutFilterBottomSheetZzim.visibility = View.VISIBLE
+                1 -> constraintLayoutFilterBottomSheetTime.visibility = View.VISIBLE
+                2 -> constraintLayoutFilterBottomSheetAlcoholContent.visibility = View.VISIBLE
+                3 -> constraintLayoutFilterBottomSheetBase.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -60,13 +70,19 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
                 }
             }
         }
+
+        binding.apply {
+            textViewFilterSearch.setOnClickListener {
+                dismiss()
+            }
+        }
     }
 
     companion object {
-        fun newInstance(hideBase: Boolean): FilterBottomSheetFragment {
+        fun newInstance(filter: Int): FilterBottomSheetFragment {
             val fragment = FilterBottomSheetFragment()
             val args = Bundle()
-            args.putBoolean("hideBase", hideBase)
+            args.putInt("filter", filter)
             fragment.arguments = args
             return fragment
         }

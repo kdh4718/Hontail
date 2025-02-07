@@ -25,7 +25,7 @@ public class CocktailServiceImpl implements CocktailService {
     private LikeRepository likeRepository;
 
     @Override
-    public Page<CocktailSummaryDto> getCocktailsByFilter(String orderBy, String direction, String baseSpirit, int page, int size) {
+    public Page<CocktailSummaryDto> getCocktailsByFilter(String orderBy, String direction, String baseSpirit, int page, int size, boolean isCustom) {
 
         Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
@@ -33,13 +33,15 @@ public class CocktailServiceImpl implements CocktailService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        Byte isCustomByte = isCustom ? (byte) 1 : (byte) 0;
+
         Page<Cocktail> cocktails;
 
 
         if (baseSpirit == null || baseSpirit.isEmpty()) {
-            cocktails = cocktailRepository.findAll(pageable);
+            cocktails = cocktailRepository.findByIsCustom(isCustomByte, pageable);
         } else {
-            cocktails = cocktailRepository.findByBaseSpirit(baseSpirit, pageable);
+            cocktails = cocktailRepository.findByIsCustomAndBaseSpirit(isCustomByte, baseSpirit, pageable);
         }
 
         return cocktails.map(cocktail -> {
@@ -62,6 +64,7 @@ public class CocktailServiceImpl implements CocktailService {
     @Override
     public List<CocktailSummaryDto> getTopLikedCocktails() {
         Pageable topTen = PageRequest.of(0, 10);
+
         return cocktailRepository.findTopLiked(topTen)
                 .stream()
                 .map(cocktail -> {

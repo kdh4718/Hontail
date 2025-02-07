@@ -50,7 +50,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
-        changeFragment(CommonUtils.MainFragmentName.ZZIM_FRAGMENT)
+        changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
     }
 
     fun checkPermissions() {
@@ -79,6 +79,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CocktailDetailFragment())
+                    .addToBackStack("CocktailDetailFragment")
             }
 
             CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT -> {
@@ -87,10 +88,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             CommonUtils.MainFragmentName.COCKTAIL_RECIPE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CocktailRecipeFragment())
+                    .addToBackStack("CocktailRecipeFragment")
             }
 
             CommonUtils.MainFragmentName.COCKTAIL_SEARCH_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, CocktailSearchFragment())
+                    .addToBackStack("CocktailSearchFragment")
             }
 
             CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_FRAGMENT -> {
