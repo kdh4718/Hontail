@@ -2,9 +2,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
+//import com.google.android.flexbox.FlexWrap
+//import com.google.android.flexbox.FlexboxLayoutManager
+//import com.google.android.flexbox.JustifyContent
 import com.hontail.R
 import com.hontail.databinding.ListItemPictureTopBinding
 import com.hontail.ui.picture.PictureResultItem
@@ -28,10 +28,10 @@ class PictureTopAdapter : RecyclerView.Adapter<PictureTopAdapter.TopViewHolder>(
 
                 // Set up the ingredient RecyclerView
                 recyclerViewPictureResultIngredient.apply {
-                    layoutManager = FlexboxLayoutManager(context).apply {
-                        flexWrap = FlexWrap.WRAP
-                        justifyContent = JustifyContent.FLEX_START
-                    }
+//                    layoutManager = FlexboxLayoutManager(context).apply {
+//                        flexWrap = FlexWrap.WRAP
+//                        justifyContent = JustifyContent.FLEX_START
+//                    }
 
                     val dataList = listOf(
                         "Salt", "Mint", "Sugar", "Lime", "Ice",

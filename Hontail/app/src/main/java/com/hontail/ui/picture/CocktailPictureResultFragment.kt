@@ -33,8 +33,8 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
-        initText()
-        initEvent()
+//        initText()
+//        initEvent()
     }
 
     private fun initAdapter() {
@@ -47,34 +47,36 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
             cocktailCount = "칵테일 24개"
         )
         bottomAdapter.setItem(bottomItem)
-
-    fun initEvent() {
-        binding.apply {
-            imageViewPictureResultFilter.setOnClickListener {
-//                val bottomSheetFragment = FilterBottomSheetFragment.newInstance(true)
-//                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
-            }
-
-            imageViewPictureResultAdd.setOnClickListener {
-
-                CommonUtils.showDialog(
-                    requireContext(),
-                    "혹시 찍은 재료가 없나요?",
-                    "없다면 재료를 등록해보세요!"
-                ){
-                    mainActivity.changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
-                }
-            }
-        }
     }
 
-    private fun initText() {
-        // 필요한 경우 텍스트 초기화
-    }
-
-    private fun initEvent() {
-        // 이벤트 처리 로직
-    }
+//    fun initEvent() {
+//        binding.apply {
+//            imageViewPictureResultFilter.setOnClickListener {
+////                val bottomSheetFragment = FilterBottomSheetFragment.newInstance(true)
+////                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+//            }
+//
+//            imageViewPictureResultAdd.setOnClickListener {
+//
+//                CommonUtils.showDialog(
+//                    requireContext(),
+//                    "혹시 찍은 재료가 없나요?",
+//                    "없다면 재료를 등록해보세요!"
+//                ){
+//                    mainActivity.changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
+//                }
+//            }
+//        }
+//    }
+//
+//
+//    private fun initText() {
+//        // 필요한 경우 텍스트 초기화
+//    }
+//
+//    private fun initEvent() {
+//        // 이벤트 처리 로직
+//    }
 }
 
 sealed class PictureResultItem {
