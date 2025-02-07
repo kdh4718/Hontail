@@ -1,4 +1,4 @@
-package com.hontail.back.api.dto.response;
+package com.hontail.back.login.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

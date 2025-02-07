@@ -39,21 +39,6 @@ public class User {
     @Column(name = "user_image_url")
     private String userImageUrl;
 
-    @NotNull
-    @Column(name = "provider_id", nullable = false)
-    private String providerId;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "provider_type", nullable = false)
-    private ProviderType providerType;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
-    @Builder.Default
-    private Role role = Role.USER;
-
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cocktail> cocktails = new ArrayList<>();
@@ -66,11 +51,4 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
-    public enum ProviderType {
-        GOOGLE, KAKAO, NAVER
-    }
-
-    public enum Role {
-        ADMIN, USER
-    }
 }

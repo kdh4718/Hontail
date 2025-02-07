@@ -1,6 +1,6 @@
 package com.hontail.back.config;
 
-import com.hontail.back.oauth.OAuth2UserService;
+import com.hontail.back.oauth.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final OAuth2UserService customOAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -35,7 +35,9 @@ public class SecurityConfig {
                                         "/login/oauth2/code/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
-                                        "/swagger-resources/**").permitAll()
+                                        "/swagger-resources/**",
+                                        "/api/login"
+                                ).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 ->
@@ -56,4 +58,5 @@ public class SecurityConfig {
 
         return http.build();
     }
+
 }

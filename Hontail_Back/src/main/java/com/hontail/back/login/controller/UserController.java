@@ -1,6 +1,6 @@
-package com.hontail.back.api.controller;
+package com.hontail.back.login.controller;
 
-import com.hontail.back.api.dto.response.UserResponse;
+import com.hontail.back.login.dto.response.UserResponse;
 import com.hontail.back.db.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,8 +45,6 @@ public class UserController {
                 .email(user.getUserEmail())
                 .nickname(user.getUserNickname())
                 .profileImage(user.getUserImageUrl())
-                .providerType(user.getProviderType().name())
-                .role(user.getRole().name())
                 .build();
 
         return ResponseEntity.ok(response);

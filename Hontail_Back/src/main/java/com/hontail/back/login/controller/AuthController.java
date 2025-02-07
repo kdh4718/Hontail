@@ -1,4 +1,4 @@
-package com.hontail.back.api.controller;
+package com.hontail.back.login.controller;
 
 import com.hontail.back.oauth.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
