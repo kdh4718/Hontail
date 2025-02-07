@@ -48,8 +48,6 @@ public class UserController {
                 .email(user.getUserEmail())
                 .nickname(user.getUserNickname())
                 .profileImage(user.getUserImageUrl())
-                .providerType(user.getProviderType().name())
-                .role(user.getRole().name())
                 .build();
 
         return ResponseEntity.ok(response);
