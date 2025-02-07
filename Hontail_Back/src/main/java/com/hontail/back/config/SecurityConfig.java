@@ -23,32 +23,36 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                                .maximumSessions(1)
+                                .maxSessionsPreventsLogin(true)
                 )
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers(
                                         "/",
                                         "/error",
-                                        "/login",
+                                        "/api/login",
                                         "/login/**",
                                         "/oauth2/**",
                                         "/login/oauth2/code/**",
                                         "/v3/api-docs/**",
                                         "/swagger-ui/**",
                                         "/swagger-resources/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 ->
                         oauth2
-                                .loginPage("/login")
+                                .loginPage("/api/login")
                                 .userInfoEndpoint(userInfo ->
                                         userInfo.userService(customOAuth2UserService)
                                 )
                                 .defaultSuccessUrl("/", true)
+                                .failureUrl("/api/login?error=true")
                 )
                 .logout(logout ->
                         logout
-                                .logoutSuccessUrl("/login")
+                                .logoutSuccessUrl("/api/login")
                                 .invalidateHttpSession(true)
                                 .clearAuthentication(true)
                                 .deleteCookies("JSESSIONID")

@@ -1,7 +1,8 @@
-package com.hontail.back.api.controller;
+package com.hontail.back.login.controller;
 
-import com.hontail.back.api.dto.response.UserResponse;
+import com.hontail.back.login.dto.response.UserResponse;
 import com.hontail.back.db.entity.User;
+import com.hontail.back.oauth.CustomOAuth2User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,7 +39,9 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(
             @Parameter(hidden = true)
-            @AuthenticationPrincipal User user) {
+            @AuthenticationPrincipal CustomOAuth2User oAuth2User) {
+
+        User user = oAuth2User.getUser();
 
         UserResponse response = UserResponse.builder()
                 .id(user.getId())
