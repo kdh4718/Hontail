@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/bartender")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class BartenderController {
     private final BartenderService bartenderService;
