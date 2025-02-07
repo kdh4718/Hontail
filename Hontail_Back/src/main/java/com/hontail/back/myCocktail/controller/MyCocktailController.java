@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/custom-cocktail")
-@CrossOrigin
+@CrossOrigin("*")
 public class MyCocktailController {
 
     @Autowired

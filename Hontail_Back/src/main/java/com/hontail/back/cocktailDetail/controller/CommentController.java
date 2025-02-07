@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cocktail/detail")
+@CrossOrigin("*")
 public class CommentController {
 
     @Autowired
