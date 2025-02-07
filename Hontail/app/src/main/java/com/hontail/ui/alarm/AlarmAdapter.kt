@@ -1,35 +1,82 @@
 package com.hontail.ui.alarm
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.hontail.R
+import com.hontail.databinding.ListItemAlarmAlarmListBinding
+import com.hontail.databinding.ListItemAlarmSettingAlertBinding
 
-class AlarmAdapter(private val alarmList: List<Alarm>) : RecyclerView.Adapter<AlarmAdapter.AlarmViewHolder>() {
+class AlarmAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class AlarmViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val alarmImage: ImageView = view.findViewById<CardView>(R.id.textViewAlarmImage)
-            .findViewById(R.id.imageViewAlarmImage)
-        val alarmTitle: TextView = view.findViewById(R.id.textViewAlarmInfo)
-        val alarmDate: TextView = view.findViewById(R.id.textViewAlarmDate)
+    private val items = mutableListOf<AlarmItem>()
+
+    companion object {
+        private const val VIEW_TYPE_SETTING = 0
+        private const val VIEW_TYPE_ALARM = 1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_alarm_card, parent, false)
-        return AlarmViewHolder(view)
+    class SettingViewHolder(
+        private val binding: ListItemAlarmSettingAlertBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: AlarmItem.Setting) {
+            binding.textViewAlarmAlert1.text = item.title1
+            binding.textViewAlarmAlert2.text = item.title2
+        }
     }
 
-    override fun onBindViewHolder(holder: AlarmViewHolder, position: Int) {
-        val alarm = alarmList[position]
-        holder.alarmTitle.text = alarm.title
-        holder.alarmDate.text = alarm.date
-        holder.alarmImage.setImageResource(alarm.imageResId)
+    class AlarmViewHolder(
+        private val binding: ListItemAlarmAlarmListBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: AlarmItem.AlarmContent) {
+            binding.textViewAlarmInfo.text = item.title
+            binding.textViewAlarmDate.text = item.date
+            binding.imageViewAlarmImage.setImageResource(item.imageResId)
+        }
     }
 
-    override fun getItemCount(): Int = alarmList.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            VIEW_TYPE_SETTING -> {
+                val binding = ListItemAlarmSettingAlertBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                SettingViewHolder(binding)
+            }
+            else -> {
+                val binding = ListItemAlarmAlarmListBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                binding.root.layoutParams = (binding.root.layoutParams as ViewGroup.MarginLayoutParams).apply {
+                    topMargin = 76
+                }
+                AlarmViewHolder(binding)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val item = items[position]) {
+            is AlarmItem.Setting -> (holder as SettingViewHolder).bind(item)
+            is AlarmItem.AlarmContent -> (holder as AlarmViewHolder).bind(item)
+        }
+    }
+
+    override fun getItemCount(): Int = items.size
+
+    override fun getItemViewType(position: Int): Int {
+        return when (items[position]) {
+            is AlarmItem.Setting -> VIEW_TYPE_SETTING
+            is AlarmItem.AlarmContent -> VIEW_TYPE_ALARM
+        }
+    }
+
+    fun submitList(newItems: List<AlarmItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
 }

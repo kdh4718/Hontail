@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
 import com.hontail.R
@@ -38,8 +39,12 @@ class CocktailRecipeFragment : Fragment() {
         _binding = DrawerCocktailRecipeBinding.inflate(inflater, container, false)
         mainActivity.hideBottomNav(true)
         // ✅ include된 fragment_cocktail_recipe.xml의 바인딩 직접 가져오기
-        _contentBinding =
-            FragmentCocktailRecipeBinding.bind(binding.includeDrawerCocktailRecipeInclude.root)
+        _contentBinding = FragmentCocktailRecipeBinding.bind(binding.includeDrawerCocktailRecipeInclude.root)
+
+        // 혹시 모르니 코드로도 투명 배경 적용(중복 설정일 수 있음)
+        binding.drawerLayoutDrawerCocktailRecipeDrawer.setBackgroundColor(
+            ContextCompat.getColor(requireContext(), android.R.color.transparent)
+        )
 
         return binding.root
     }
