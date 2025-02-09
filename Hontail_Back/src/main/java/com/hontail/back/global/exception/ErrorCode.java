@@ -29,6 +29,7 @@ public enum ErrorCode {
     COCKTAIL_NOT_FOUND(404, "조회된 칵테일이 없습니다."),
     INVALID_SORT_PARAMETER(400, "잘못된 정렬 파라미터입니다."),
     INVALID_BASE_SPIRIT(400, "잘못된 베이스 스피릿 종류입니다."),
+    SEARCH_KEYWORD_EMPTY(400, "검색어가 비어있습니다."),
 
     // Cocktail Detail Error Codes (칵테일 상세 도메인)
     COCKTAIL_DETAIL_NOT_FOUND(404, "칵테일을 찾을 수 없습니다."),
