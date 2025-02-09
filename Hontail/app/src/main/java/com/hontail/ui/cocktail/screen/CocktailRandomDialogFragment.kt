@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.screen
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
