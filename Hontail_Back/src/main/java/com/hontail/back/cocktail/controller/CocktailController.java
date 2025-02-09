@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import com.hontail.back.global.exception.ErrorResponse;
 
 import java.util.List;
 
@@ -49,6 +52,18 @@ public class CocktailController {
     public ResponseEntity<List<CocktailSummaryDto>> getTopLikedCocktails() {
         List<CocktailSummaryDto> topCocktails = cocktailService.getTopLikedCocktails();
         return ResponseEntity.ok(topCocktails);
+    }
+
+    @GetMapping("/liked")
+    @Operation(summary = "사용자가 좋아요 한 칵테일 목록 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "조회 성공"),
+            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음 또는 좋아요한 칵테일이 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity<List<CocktailSummaryDto>> getLikedCocktails(
+            @RequestParam Integer userId) {
+        return ResponseEntity.ok(cocktailService.getLikedCocktails(userId));
     }
 
 }
