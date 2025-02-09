@@ -1,8 +1,6 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.screen
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -20,6 +18,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCocktailTakePictureBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.picture.VisionService
 import com.hontail.util.CommonUtils
 import java.io.ByteArrayOutputStream
 

@@ -1,11 +1,7 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.screen
 
-import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hontail.R
 import com.hontail.base.BaseBottomSheetFragment
 import com.hontail.databinding.FragmentFilterBottomSheetBinding
