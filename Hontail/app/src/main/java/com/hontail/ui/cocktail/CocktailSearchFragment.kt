@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail.screen
+package com.hontail.ui.cocktail
 
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +11,6 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCocktailSearchBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.cocktail.adapter.CocktailSearchAdapter
 import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CommonUtils
 

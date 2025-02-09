@@ -1,11 +1,11 @@
-package com.hontail.ui.cocktail.adapter
+package com.hontail.ui.cocktail
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailCommentBinding
-import com.hontail.ui.cocktail.screen.Comment
 
 class CocktailCommentAdapter(val context: Context, var commentList: List<Comment>) : RecyclerView.Adapter<CocktailCommentAdapter.CocktailCommentHolder>() {
 

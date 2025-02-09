@@ -1,5 +1,6 @@
-package com.hontail.ui.cocktail.adapter
+package com.hontail.ui.cocktail
 
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

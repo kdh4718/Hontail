@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail.adapter
+package com.hontail.ui.cocktail
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailDetailInfosBinding
 import com.hontail.databinding.ListItemCocktailDetailIngredientsBinding
 import com.hontail.databinding.ListItemCocktailDetailRecipesBinding
-import com.hontail.ui.cocktail.screen.CocktailDetailItem
-import com.hontail.ui.cocktail.screen.Recipe
 import com.hontail.ui.ingredient.Ingredient
 
 class CocktailDetailAdapter(private val context: Context, private val items: List<CocktailDetailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {

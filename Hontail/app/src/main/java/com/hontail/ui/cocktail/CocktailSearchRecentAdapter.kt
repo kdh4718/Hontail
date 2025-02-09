@@ -1,14 +1,12 @@
-package com.hontail.ui.cocktail.adapter
+package com.hontail.ui.cocktail
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailSearchRecentItemBinding
-import com.hontail.ui.cocktail.screen.RecentItem
 
-private const val TAG = "CocktailSearchRecentAda_SSAFY"
-
+private const val TAG = "CocktailSearchRecentAda"
 class CocktailSearchRecentAdapter(private val items: List<RecentItem>): RecyclerView.Adapter<CocktailSearchRecentAdapter.CocktailSearchRecentViewHolder>() {
 
     lateinit var cocktailSearchRecentItemListener: ItemOnClickListener

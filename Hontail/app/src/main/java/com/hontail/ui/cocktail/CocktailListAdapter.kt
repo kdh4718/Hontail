@@ -1,5 +1,5 @@
 //CocktailListAdapter.kt
-package com.hontail.ui.cocktail.adapter
+package com.hontail.ui.cocktail
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,6 @@ import com.hontail.databinding.ListItemCocktailListCocktailItemBinding
 import com.hontail.databinding.ListItemCocktailListFilterBinding
 import com.hontail.databinding.ListItemCocktailListSearchBarBinding
 import com.hontail.databinding.ListItemCocktailListTabLayoutBinding
-import com.hontail.ui.cocktail.screen.CocktailListItem
 import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CocktailItemAdapter
 

@@ -9,10 +9,10 @@ import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
 import com.hontail.ui.alarm.AlarmFragment
 import com.hontail.ui.bartender.BatenderFragment
-import com.hontail.ui.cocktail.screen.CocktailDetailFragment
-import com.hontail.ui.cocktail.screen.CocktailListFragment
-import com.hontail.ui.cocktail.screen.CocktailRecipeFragment
-import com.hontail.ui.cocktail.screen.CocktailSearchFragment
+import com.hontail.ui.cocktail.CocktailDetailFragment
+import com.hontail.ui.cocktail.CocktailListFragment
+import com.hontail.ui.cocktail.CocktailRecipeFragment
+import com.hontail.ui.cocktail.CocktailSearchFragment
 import com.hontail.ui.custom.CustomCocktailBottomSheetFragment
 import com.hontail.ui.custom.CustomCocktailFragment
 import com.hontail.ui.custom.CustomCocktailIngredientDetailFragment

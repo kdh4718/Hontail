@@ -1,6 +1,7 @@
 //CocktailListFilterAdapter.kt
-package com.hontail.ui.cocktail.adapter
+package com.hontail.ui.cocktail
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

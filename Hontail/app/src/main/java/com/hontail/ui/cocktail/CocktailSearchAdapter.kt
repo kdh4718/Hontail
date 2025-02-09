@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail.adapter
+package com.hontail.ui.cocktail
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemCocktailSearchRecentBinding
 import com.hontail.databinding.ListItemCocktailSearchResultBinding
 import com.hontail.databinding.ListItemCocktailSearchSearchBarBinding
-import com.hontail.ui.cocktail.screen.CocktailSearchItem
-import com.hontail.ui.cocktail.screen.RecentItem
+import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
+import com.hontail.ui.MainActivity
 import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CocktailItemAdapter
 

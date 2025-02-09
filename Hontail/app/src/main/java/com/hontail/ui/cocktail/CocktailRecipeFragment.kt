@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail.screen
+package com.hontail.ui.cocktail
 
 import android.content.Context
 import android.content.pm.ActivityInfo
@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.activityViewModels
+import com.hontail.R
+import com.hontail.base.BaseFragment
 import com.hontail.databinding.DrawerCocktailRecipeBinding
 import com.hontail.databinding.FragmentCocktailRecipeBinding
+import com.hontail.databinding.FragmentZzimBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 
