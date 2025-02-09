@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
+    // Kotlin Annotation
+//    id ("org.jetbrains.kotlin.kapt")
+    id ("com.google.devtools.ksp")
 }
 
 android {
@@ -96,4 +100,11 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.3.0")
 
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+
+    // Room DB
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler-processing:2.6.1")
+//    kapt("androidx.room:room-compiler:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
 }
