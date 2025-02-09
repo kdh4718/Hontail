@@ -121,4 +121,34 @@ public class CocktailServiceImpl implements CocktailService {
                 })
                 .toList();
     }
+
+
+    @Override
+    public Page<CocktailSummaryDto> searchCocktails(String keyword, int page, int size) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new CustomException(ErrorCode.SEARCH_KEYWORD_EMPTY);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Cocktail> cocktails = cocktailRepository.searchByNameContaining(keyword.trim(), pageable);
+
+        if (cocktails.isEmpty()) {
+            throw new CustomException(ErrorCode.COCKTAIL_NOT_FOUND);
+        }
+
+        return cocktails.map(cocktail -> {
+            Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
+            Long likesCnt = likeRepository.countByCocktail(cocktail);
+            return new CocktailSummaryDto(
+                    cocktail.getId(),
+                    cocktail.getCocktailName(),
+                    cocktail.getImageUrl(),
+                    likesCnt,
+                    cocktail.getAlcoholContent(),
+                    cocktail.getBaseSpirit(),
+                    cocktail.getCreatedAt(),
+                    ingredientCnt
+            );
+        });
+    }
 }

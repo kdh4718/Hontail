@@ -66,4 +66,20 @@ public class CocktailController {
         return ResponseEntity.ok(cocktailService.getLikedCocktails(userId));
     }
 
+    @GetMapping("/search")
+    @Operation(summary = "칵테일 이름으로 검색")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "검색 성공"),
+            @ApiResponse(responseCode = "400", description = "검색어가 비어있음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "검색 결과가 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public ResponseEntity<Page<CocktailSummaryDto>> searchCocktails(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        return ResponseEntity.ok(cocktailService.searchCocktails(keyword, page, size));
+    }
+
 }

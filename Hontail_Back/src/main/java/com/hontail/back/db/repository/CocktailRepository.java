@@ -33,4 +33,8 @@ public interface CocktailRepository extends JpaRepository<Cocktail, Integer> {
     @Query(value = "SELECT * FROM cocktail ORDER BY RAND() LIMIT 1",
             nativeQuery = true)
     Optional<Cocktail> findRandomCocktail();
+
+    // 칵테일 이름으로 검색 (대소문자 구분 없이 + 일정 부분만 같은 결과도 포함)
+    @Query("SELECT c FROM Cocktail c WHERE LOWER(c.cocktailName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Cocktail> searchByNameContaining(@Param("keyword") String keyword, Pageable pageable);
 }
