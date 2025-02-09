@@ -1,6 +1,7 @@
 package com.hontail.ui.login
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentLoginBinding
 import com.hontail.ui.LoginActivity
+import com.hontail.ui.MainActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -97,6 +99,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
             imageViewLoginGoogle.setOnClickListener {
 
+            }
+
+            textViewLoginNonMember.setOnClickListener {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
             }
         }
     }

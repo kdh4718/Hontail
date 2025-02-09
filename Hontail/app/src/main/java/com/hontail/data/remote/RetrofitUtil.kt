@@ -4,6 +4,7 @@ import com.hontail.base.ApplicationClass
 
 class RetrofitUtil {
     companion object{
+        // 소셜 로그인 서비스
         val loginService = ApplicationClass.retrofit.create(LoginService::class.java)
 
         // 댓글 서비스

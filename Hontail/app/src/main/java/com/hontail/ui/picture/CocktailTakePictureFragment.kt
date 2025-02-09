@@ -125,7 +125,7 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
 
         byteArray?.let {
             val detectedText = visionService.detectTextAndLabelsFromImage(bitmap)
-            Log.d(TAG, "imageAdjustment: ${detectedText}")
+            Log.d(TAG, "Vision First: ${detectedText}")
 
             mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
         }
