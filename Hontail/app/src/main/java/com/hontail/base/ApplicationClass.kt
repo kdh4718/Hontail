@@ -5,22 +5,34 @@ import retrofit2.Retrofit
 import android.Manifest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.hontail.R
 import com.hontail.data.local.SharedPreferencesUtil
+import com.kakao.sdk.common.KakaoSdk
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
 
-    val SERVER_URL = "http://192.168.0.3:9987/"
+    val SERVER_URL = "http://192.168.100.146:8080/"
+
+//    val SERVER_URL = "http://192.168.0.7:8080/"
 
     override fun onCreate() {
         super.onCreate()
 
+        KakaoSdk.init(this, R.string.kakao_app_key.toString())
+
         sharedPreferencesUtil = SharedPreferencesUtil(applicationContext)
         // 앱이 처음 생성되는 순간, retrofit 인스턴스를 생성
 
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY // 요청 및 응답 본문을 로그로 출력
+        }
+
         val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
             .readTimeout(5000, TimeUnit.MILLISECONDS) // 읽기 시간 초과
             .connectTimeout(5000, TimeUnit.MILLISECONDS) // 연결 시간 초과
             .build()
