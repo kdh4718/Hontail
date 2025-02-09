@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ChatRequestDto {
     private String userMessage;
-    private String userId;
+    private Integer userId;
     private String nickname;
 }
