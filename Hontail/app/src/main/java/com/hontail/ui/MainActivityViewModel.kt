@@ -13,17 +13,17 @@ class MainActivityViewModel : ViewModel() {
     val userId: LiveData<Int>
         get() = _userId
 
-    fun setUserId(userI: Int){
+    fun setUserId(userI: Int) {
         _userId.postValue(userI)
         Log.d(TAG, "setUserId: ${_userId.value} - ${userI}")
     }
-    
+
     // 선택된 cocktailId
     private val _cocktailId = MutableLiveData<Int>()
     val cocktailId: LiveData<Int>
         get() = _cocktailId
 
-    fun setCocktailId(cocktailId: Int){
+    fun setCocktailId(cocktailId: Int) {
         _cocktailId.postValue(cocktailId)
     }
 
@@ -33,6 +33,7 @@ class MainActivityViewModel : ViewModel() {
 
     fun setIngredientId(ingredientId: Int) {
         _ingredientId.postValue(ingredientId)
+    }
 
     // 필터 관련 코드 추가
     private val _selectedZzimFilter = MutableLiveData<Int?>()
