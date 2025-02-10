@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hontail.data.model.response.Cocktail
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.remote.RetrofitUtil
 import kotlinx.coroutines.launch
 
@@ -21,9 +22,8 @@ class CocktailPictureResultFragmentViewModel(private val handle: SavedStateHandl
         }
 
     // Vision API로 분석한 결과 칵테일 리스트
-    // Response 타입 지정 시 변경 필요 (재료 리스트, 칵테일 리스트)
-    private val _ingredientAnalyzeCoctailList = MutableLiveData<List<Cocktail>>()
-    val ingredientAnalyzeCoctailList: LiveData<List<Cocktail>>
+    private val _ingredientAnalyzeCoctailList = MutableLiveData<List<CocktailListResponse>>()
+    val ingredientAnalyzeCoctailList: LiveData<List<CocktailListResponse>>
         get() = _ingredientAnalyzeCoctailList
 
     fun getIngredientAnalyze(){
