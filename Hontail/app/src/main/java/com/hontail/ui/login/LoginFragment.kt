@@ -113,6 +113,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             textViewLoginHeadline3.setOnClickListener {
                 moveToMainActivity()
             }
+
+            textViewLoginNonMember.setOnClickListener {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

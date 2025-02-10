@@ -62,7 +62,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewLoginHeadline3"
+            android:id="@+id/textViewLoginNonMember"
             style="@style/Font_Bold_20_Basic_White"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
