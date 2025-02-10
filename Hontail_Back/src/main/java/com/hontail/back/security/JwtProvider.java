@@ -21,7 +21,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    private static final String SECRET_KEY = "e2d567a51381b64a5068899caad46d3b9692eb32535aa7e2db999381888328b03cc555270e7fb21b680f00178a368c0c4444f8b73501591ec5901af62755cb90";
+    private static final String SECRET_KEY = "${JWT_SECRET}";
     private static final long ACCESS_TOKEN_EXPIRATION = 60 * 60 * 1000; // 1시간
     private static final long REFRESH_TOKEN_EXPIRATION = 14 * 24 * 60 * 60 * 1000; // 14일
 
