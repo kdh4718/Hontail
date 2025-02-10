@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.data.model.response.CocktailListResponse
-import com.hontail.databinding.FragmentBatenderBinding
 import com.hontail.databinding.FragmentCocktailListBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.cocktail.viewmodel.CocktailListFragmentViewModel
+import com.hontail.ui.cocktail.adapter.CocktailListAdapter
 import com.hontail.ui.picture.FilterBottomSheetFragment
 import com.hontail.util.CommonUtils
 

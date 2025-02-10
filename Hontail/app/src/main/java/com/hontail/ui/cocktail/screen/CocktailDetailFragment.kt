@@ -1,9 +1,8 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
@@ -11,8 +10,8 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCocktailDetailBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.cocktail.adapter.CocktailDetailAdapter
 import com.hontail.ui.ingredient.Ingredient
-import okhttp3.internal.addHeaderLenient
 
 class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     FragmentCocktailDetailBinding::bind,
@@ -57,15 +56,17 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
             }
 
             val items = mutableListOf<CocktailDetailItem>().apply {
-                add(CocktailDetailItem.CocktailInfo(
-                    null,
-                    "쉐리 코블러",
-                    "Sherry cobDbler",
-                    15,
-                    383,
-                    3,
-                    "아몬틸라도 쉐리와 팔로 코르타도가 어우러진 고전적이고 상쾌한 맛의 칵테일입니다."
-                ))
+                add(
+                    CocktailDetailItem.CocktailInfo(
+                        null,
+                        "쉐리 코블러",
+                        "Sherry cobDbler",
+                        15,
+                        383,
+                        3,
+                        "아몬틸라도 쉐리와 팔로 코르타도가 어우러진 고전적이고 상쾌한 맛의 칵테일입니다."
+                    )
+                )
                 add(CocktailDetailItem.IngredientList(ingredients))
                 add(CocktailDetailItem.RecipeList(recipes))
             }

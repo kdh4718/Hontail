@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

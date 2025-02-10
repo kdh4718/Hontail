@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,6 +11,7 @@ import com.hontail.databinding.ListItemCocktailListCocktailItemBinding
 import com.hontail.databinding.ListItemCocktailListFilterBinding
 import com.hontail.databinding.ListItemCocktailListSearchBarBinding
 import com.hontail.databinding.ListItemCocktailListTabLayoutBinding
+import com.hontail.ui.cocktail.screen.CocktailListItem
 import com.hontail.util.CocktailItemAdapter
 
 class CocktailListAdapter(private val context: Context, private val items: List<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
