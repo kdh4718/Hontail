@@ -15,4 +15,8 @@ public interface CocktailService {
             int page, int size, boolean isCustom);
     List<CocktailSummaryDto> getTopLikedCocktails();
 
+    List<CocktailSummaryDto> getLikedCocktails(Integer userId);
+
+    Page<CocktailSummaryDto> searchCocktails(String keyword, int page, int size);
+
 }
