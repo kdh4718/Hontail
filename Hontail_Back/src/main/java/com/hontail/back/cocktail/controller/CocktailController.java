@@ -38,9 +38,10 @@ public class CocktailController {
             @RequestParam(required = false) String baseSpirit,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "false") boolean isCustom
+            @RequestParam(defaultValue = "false") boolean isCustom,
+            @RequestParam(required = false) Integer userId
     ) {
-        return cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size, isCustom);
+        return cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size, isCustom, userId);
     }
 
     @GetMapping("/top-liked")
@@ -49,9 +50,9 @@ public class CocktailController {
             @ApiResponse(responseCode = "200", description = "조회 성공"),
             @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음")
     })
-    public ResponseEntity<List<CocktailSummaryDto>> getTopLikedCocktails() {
-        List<CocktailSummaryDto> topCocktails = cocktailService.getTopLikedCocktails();
-        return ResponseEntity.ok(topCocktails);
+    public ResponseEntity<List<CocktailSummaryDto>> getTopLikedCocktails(
+            @RequestParam(required = false) Integer userId) {
+        return ResponseEntity.ok(cocktailService.getTopLikedCocktails(userId));
     }
 
     @GetMapping("/liked")
@@ -78,8 +79,9 @@ public class CocktailController {
     public ResponseEntity<Page<CocktailSummaryDto>> searchCocktails(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        return ResponseEntity.ok(cocktailService.searchCocktails(keyword, page, size));
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) Integer userId) {
+        return ResponseEntity.ok(cocktailService.searchCocktails(keyword, page, size, userId));
     }
 
 }
