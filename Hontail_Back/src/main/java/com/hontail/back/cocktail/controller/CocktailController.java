@@ -1,9 +1,9 @@
 package com.hontail.back.cocktail.controller;
 
 import com.hontail.back.cocktail.dto.CocktailSummaryDto;
+import com.hontail.back.cocktail.dto.TopLikedCocktailDto;
 import com.hontail.back.cocktail.service.CocktailService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.hontail.back.global.exception.ErrorResponse;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -20,19 +21,21 @@ import java.util.List;
 @RequestMapping("/api/cocktail")
 @Tag(name = "Cocktail", description = "칵테일 API")
 @CrossOrigin("*")
+@RequiredArgsConstructor
 public class CocktailController {
 
-    @Autowired
-    CocktailService cocktailService;
+    private final CocktailService cocktailService;
 
     @GetMapping("/filtering")
     @Operation(summary = "칵테일 필터링 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청 파라미터"),
-            @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음")
+            @ApiResponse(responseCode = "400", description = "잘못된 요청 파라미터",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public Page<CocktailSummaryDto> getCocktailsByFilter(
+    public ResponseEntity<Page<CocktailSummaryDto>> getCocktailsByFilter(
             @RequestParam(required = false, defaultValue = "id") String orderBy,
             @RequestParam(required = false, defaultValue = "asc", value = "direction") String direction,
             @RequestParam(required = false) String baseSpirit,
@@ -41,18 +44,18 @@ public class CocktailController {
             @RequestParam(defaultValue = "false") boolean isCustom,
             @RequestParam(required = false) Integer userId
     ) {
-        return cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size, isCustom, userId);
+        return ResponseEntity.ok(cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size, isCustom, userId));
     }
 
     @GetMapping("/top-liked")
     @Operation(summary = "좋아요 상위 10개 칵테일 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "조회 성공"),
-            @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음")
+            @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<List<CocktailSummaryDto>> getTopLikedCocktails(
-            @RequestParam(required = false) Integer userId) {
-        return ResponseEntity.ok(cocktailService.getTopLikedCocktails(userId));
+    public ResponseEntity<List<TopLikedCocktailDto>> getTopLikedCocktails() {
+        return ResponseEntity.ok(cocktailService.getTopLikedCocktails());
     }
 
     @GetMapping("/liked")
