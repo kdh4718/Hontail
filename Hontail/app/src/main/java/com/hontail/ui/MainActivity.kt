@@ -5,10 +5,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.activityViewModels
 import com.hontail.R
 import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
@@ -39,6 +41,8 @@ import com.hontail.util.PermissionChecker
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
+    private val activityViewModel: MainActivityViewModel by viewModels()
+
     /** permission check **/
     private val checker = PermissionChecker(this)
     private val runtimePermissions = arrayOf(Manifest.permission.CAMERA)
@@ -50,7 +54,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
 
         checkPermissions()
+        initData()
         changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
+    }
+
+    fun initData(){
+        val userId = intent.getIntExtra("user_id", 0)
+
+        activityViewModel.setUserId(userId)
     }
 
     fun checkPermissions() {

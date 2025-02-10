@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
 
-    val SERVER_URL = "http://192.168.100.146:8080/"
+//    val SERVER_URL = "http://i12d207.p.ssafy.io:9090/"
 
-//    val SERVER_URL = "http://192.168.0.7:8080/"
+    val SERVER_URL = "http://192.168.100.72:8080/"
 
     override fun onCreate() {
         super.onCreate()

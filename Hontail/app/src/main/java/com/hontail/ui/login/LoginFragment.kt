@@ -1,6 +1,7 @@
 package com.hontail.ui.login
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentLoginBinding
 import com.hontail.ui.LoginActivity
+import com.hontail.ui.MainActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
@@ -76,6 +78,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
     fun initLogin() {
         NaverIdLoginSDK.initialize(requireContext(), "KY6PkSapyHMt232etHJz", "${NAVER_CLIENT_SECRET}", "hontail")
+
+        viewModel.userId.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initLogin: $it") // 여기까지 정상 출력됨
+
+            val intent = Intent(requireContext(), MainActivity::class.java).apply {
+                putExtra("user_id", it?.toInt())
+            }
+
+            Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}") // 여기서 10이 찍혀야 정상
+            startActivity(intent)
+        }
+
     }
 
     fun initEvent() {
@@ -145,6 +159,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
         })
     }
+
 
     private fun startAutoSlide() {
         handler.postDelayed(autoScrollRunnable, 3000) // 3초마다 자동 슬라이드
