@@ -14,7 +14,7 @@ import com.hontail.databinding.ListItemCocktailListTabLayoutBinding
 import com.hontail.ui.cocktail.screen.CocktailListItem
 import com.hontail.util.CocktailItemAdapter
 
-class CocktailListAdapter(private val context: Context, private val items: List<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CocktailListAdapter(private val context: Context, private var items: MutableList<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var cocktailListListener: ItemOnClickListener
 
@@ -43,29 +43,23 @@ class CocktailListAdapter(private val context: Context, private val items: List<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
         return when(viewType) {
-
             VIEW_TYPE_SEARCH_BAR -> {
                 val binding = ListItemCocktailListSearchBarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListSearchBarViewHolder(binding)
             }
-
             VIEW_TYPE_TAB_LAYOUT -> {
                 val binding = ListItemCocktailListTabLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListTabLayoutViewHolder(binding)
             }
-
             VIEW_TYPE_FILTER -> {
                 val binding = ListItemCocktailListFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListFilterViewHolder(binding)
             }
-
             VIEW_TYPE_COCKTAIL_ITEMS -> {
                 val binding = ListItemCocktailListCocktailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListCocktailItemsViewHolder(binding)
             }
-
             else -> throw IllegalArgumentException("Unknown ViewType: $viewType")
         }
     }
@@ -75,7 +69,6 @@ class CocktailListAdapter(private val context: Context, private val items: List<
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         when(val item = items[position]) {
             is CocktailListItem.SearchBar -> (holder as CocktailListSearchBarViewHolder).bind()
             is CocktailListItem.TabLayout -> (holder as CocktailListTabLayoutViewHolder).bind()
@@ -86,11 +79,8 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Search Bar
     inner class CocktailListSearchBarViewHolder(private val binding: ListItemCocktailListSearchBarBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind() {
-
             binding.apply {
-
                 // Cocktail 검색 화면으로 가기.
                 constraintLayoutListItemCocktailListSearch.setOnClickListener {
                     cocktailListListener.onClickSearch()
@@ -106,11 +96,8 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Tab Layout
     inner class CocktailListTabLayoutViewHolder(private val binding: ListItemCocktailListTabLayoutBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind() {
-
             binding.apply {
-
                 tabLayoutCocktailList.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabSelected(tab: TabLayout.Tab?) {
                         cocktailListListener.onClickTab(tab?.position ?: 0)
@@ -130,11 +117,8 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Filter
     inner class CocktailListFilterViewHolder(private val binding: ListItemCocktailListFilterBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind(filters: List<String>) {
-
             binding.apply {
-
                 val cocktailListFilterAdapter = CocktailListFilterAdapter(filters)
 
                 recyclerViewListItemCocktailListFilter.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -151,11 +135,8 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Cocktail Items
     inner class CocktailListCocktailItemsViewHolder(private val binding: ListItemCocktailListCocktailItemBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind(cocktails: List<CocktailListResponse>) {
-
             binding.apply {
-
                 val cocktailListCocktailAdapter = CocktailItemAdapter(context, cocktails)
 
                 recyclerViewListItemCocktailListCocktailItem.layoutManager = GridLayoutManager(context, 2)
@@ -170,4 +151,11 @@ class CocktailListAdapter(private val context: Context, private val items: List<
             }
         }
     }
+
+    fun updateItems(newItems: List<CocktailListItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged() // 전체 갱신
+    }
+
 }

@@ -24,6 +24,12 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CocktailListFragmentViewModel by viewModels()
+    private val filters = mutableListOf<String>().apply {
+        add("찜")
+        add("시간")
+        add("도수")
+        add("베이스주")
+    }
 
     private lateinit var cocktailListAdapter: CocktailListAdapter
 
@@ -35,55 +41,31 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.baseSpirit = activityViewModel.baseSpirit.value!!
+        viewModel.setUserId(activityViewModel.userId.value!!)
+        viewModel.getCocktailFiltering()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(false)  // 하단바 다시 보이게 설정
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         mainActivity.hideBottomNav(false)  // 하단바 다시 보이게 설정
         initAdapter()
+        initData()
         initEvent()
     }
 
     // 어댑터 연결
     private fun initAdapter() {
-
         binding.apply {
-
-            val filters = mutableListOf<String>().apply {
-                add("찜")
-                add("시간")
-                add("도수")
-                add("베이스주")
-            }
-
-            val cocktails = mutableListOf<CocktailListResponse>().apply {
-                add(
-                    CocktailListResponse(
-                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
-                        "2025-01-27 00:13:32", 5, false
-                    )
-                )
-                add(
-                    CocktailListResponse(
-                        2,
-                        "에스프레소 마티니",
-                        "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg",
-                        0,
-                        0,
-                        "리큐어",
-                        "2025-01-27 00:13:32",
-                        3,
-                        true
-                    )
-                )
-            }
-
             val items = mutableListOf<CocktailListItem>().apply {
                 add(CocktailListItem.SearchBar)
                 add(CocktailListItem.TabLayout)
                 add(CocktailListItem.Filter(filters))
-                add(CocktailListItem.CocktailItems(cocktails))
+                add(CocktailListItem.CocktailItems(emptyList()))
             }
 
             cocktailListAdapter = CocktailListAdapter(mainActivity, items)
@@ -93,10 +75,24 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         }
     }
 
+    fun initData() {
+        viewModel.cocktailList.observe(viewLifecycleOwner) { cocktailList ->
+            cocktailList?.let {
+                val updatedItems = mutableListOf<CocktailListItem>().apply {
+                    add(CocktailListItem.SearchBar)
+                    add(CocktailListItem.TabLayout)
+                    add(CocktailListItem.Filter(filters))
+                    add(CocktailListItem.CocktailItems(it))  // 여기서 데이터를 넣음
+                }
+
+                cocktailListAdapter.updateItems(updatedItems)  // 어댑터 데이터 변경
+            }
+        }
+    }
+
     // 이벤트 처리
     fun initEvent() {
         binding.apply {
-
             cocktailListAdapter.cocktailListListener = object : CocktailListAdapter.ItemOnClickListener {
 
                 // 랜덤 다이얼로그 띄우기.
@@ -118,12 +114,16 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                 // 탭 눌렀을 때
                 override fun onClickTab(position: Int) {
                     when (position) {
-
                         // 디폴트 칵테일
-                        0 -> {}
-
+                        0 -> {
+                            viewModel.isCustom = false
+                            viewModel.getCocktailFiltering()
+                        }
                         // 커스텀 칵테일
-                        1 -> {}
+                        1 -> {
+                            viewModel.isCustom = true
+                            viewModel.getCocktailFiltering()
+                        }
 
                         else -> {}
                     }
@@ -139,10 +139,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     }
 }
 
-
-
 sealed class CocktailListItem {
-
     object SearchBar : CocktailListItem()
     object TabLayout : CocktailListItem()
     data class Filter(val filters: List<String>) : CocktailListItem()

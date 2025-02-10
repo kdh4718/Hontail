@@ -1,5 +1,6 @@
 package com.hontail.ui.cocktail.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -10,6 +11,10 @@ import com.hontail.data.remote.RetrofitUtil
 import kotlinx.coroutines.launch
 
 class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : ViewModel() {
+    private val _userId = MutableLiveData<Int>()
+    val userId: LiveData<Int>
+        get() = _userId
+
     var orderBy: String
         get() = handle.get<String>("orderBy") ?: "id"
         set(value) {
@@ -49,6 +54,10 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
     private val _cocktailList = MutableLiveData<List<CocktailListResponse>>()
     val cocktailList: LiveData<List<CocktailListResponse>>
         get() = _cocktailList
+
+    fun setUserId(userId: Int) {
+        _userId.postValue(userId)
+    }
 
     fun getCocktailFiltering(){
         viewModelScope.launch {
