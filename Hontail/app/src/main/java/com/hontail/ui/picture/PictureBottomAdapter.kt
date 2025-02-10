@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemPictureBottomBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.cocktail.CocktailListFilterAdapter
-import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CocktailItemAdapter
 
 class PictureBottomAdapter(
@@ -54,13 +54,22 @@ class PictureBottomAdapter(
             }
 
             // 칵테일 리스트 리사이클러뷰 설정
-            val cocktails = mutableListOf<Cocktail>().apply {
-                repeat(10) {
-                    add(Cocktail("깔루아 밀크", "리큐어", 2, 1231, 5))
-                }
+            val cocktails = mutableListOf<CocktailListResponse>().apply {
+                add(
+                    CocktailListResponse(
+                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
+                        "2025-01-27 00:13:32", 5, false
+                    )
+                )
+                add(
+                    CocktailListResponse(
+                        2, "에스프레소 마티니", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 0, 0, "리큐어",
+                        "2025-01-27 00:13:32", 3, true
+                    )
+                )
             }
 
-            val cocktailAdapter = CocktailItemAdapter(cocktails)
+            val cocktailAdapter = CocktailItemAdapter(context, cocktails)
 
             binding.recyclerViewPictureResultCocktailList.apply {
                 layoutManager = GridLayoutManager(context, 2)

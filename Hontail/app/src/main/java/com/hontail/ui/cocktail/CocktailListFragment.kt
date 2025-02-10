@@ -12,11 +12,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.FragmentBatenderBinding
 import com.hontail.databinding.FragmentCocktailListBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.mypage.Cocktail
 import com.hontail.ui.picture.FilterBottomSheetFragment
 import com.hontail.util.CommonUtils
 
@@ -59,11 +59,26 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                 add("베이스주")
             }
 
-            val cocktails = mutableListOf<Cocktail>().apply {
-                add(Cocktail("깔루아 밀크", "리큐어", 2, 1231, 5))
-                add(Cocktail("에스프레소 마티니", "리큐어", 3, 1231, 22))
-                add(Cocktail("깔루아 콜라", "리큐어", 2, 1231, 16))
-                add(Cocktail("B-52", "리큐어", 5, 1231, 26))
+            val cocktails = mutableListOf<CocktailListResponse>().apply {
+                add(
+                    CocktailListResponse(
+                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
+                        "2025-01-27 00:13:32", 5, false
+                    )
+                )
+                add(
+                    CocktailListResponse(
+                        2,
+                        "에스프레소 마티니",
+                        "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg",
+                        0,
+                        0,
+                        "리큐어",
+                        "2025-01-27 00:13:32",
+                        3,
+                        true
+                    )
+                )
             }
 
             val items = mutableListOf<CocktailListItem>().apply {
@@ -81,7 +96,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     }
 
     // 이벤트 처리
-    fun initEvent(){
+    fun initEvent() {
         binding.apply {
 
             cocktailListAdapter.cocktailListListener = object : CocktailListAdapter.ItemOnClickListener {
@@ -104,15 +119,15 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
 
                 // 탭 눌렀을 때
                 override fun onClickTab(position: Int) {
-                    when(position) {
+                    when (position) {
 
                         // 디폴트 칵테일
-                        0 -> { }
+                        0 -> {}
 
                         // 커스텀 칵테일
-                        1 -> { }
+                        1 -> {}
 
-                        else -> { }
+                        else -> {}
                     }
                 }
 
@@ -128,8 +143,8 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
 
 sealed class CocktailListItem {
 
-    object SearchBar: CocktailListItem()
-    object TabLayout: CocktailListItem()
-    data class Filter(val filters: List<String>): CocktailListItem()
-    data class CocktailItems(val cocktails: List<Cocktail>): CocktailListItem()
+    object SearchBar : CocktailListItem()
+    object TabLayout : CocktailListItem()
+    data class Filter(val filters: List<String>) : CocktailListItem()
+    data class CocktailItems(val cocktails: List<CocktailListResponse>) : CocktailListItem()
 }

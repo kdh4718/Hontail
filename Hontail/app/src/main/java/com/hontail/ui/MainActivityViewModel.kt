@@ -15,7 +15,7 @@ class MainActivityViewModel : ViewModel() {
     }
 
     // 선택된 칵테일 베이스주 타입
-    private val _baseSpirit = MutableLiveData<String>()
+    private val _baseSpirit = MutableLiveData<String>("")
     val baseSpirit: LiveData<String>
         get() = _baseSpirit
 

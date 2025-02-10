@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemMypageCocktailBinding
 import com.hontail.databinding.ListItemMypageEmptyBinding
@@ -95,11 +96,11 @@ class MyPageAdapter(private val context: Context, private val items: List<MyPage
     // 나만의 칵테일 ViewHolder
     inner class MyPageCocktailViewHolder(private val binding: ListItemMypageCocktailBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(cocktailList: List<Cocktail>) {
+        fun bind(cocktailList: List<CocktailListResponse>) {
 
             binding.apply {
 
-                val myPageCocktailAdapter = CocktailItemAdapter(cocktailList)
+                val myPageCocktailAdapter = CocktailItemAdapter(context, cocktailList)
 
                 recyclerViewListItemMyPageCocktail.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemMyPageCocktail.adapter = myPageCocktailAdapter
