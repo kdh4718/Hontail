@@ -1,4 +1,3 @@
-//CocktailListFragment.kt
 package com.hontail.ui.cocktail
 
 import android.content.Context
@@ -36,6 +35,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainActivity.hideBottomNav(false)  // 하단바 다시 보이게 설정
         initAdapter()
         initEvent()
     }
@@ -118,6 +118,8 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         }
     }
 }
+
+
 
 sealed class CocktailListItem {
 

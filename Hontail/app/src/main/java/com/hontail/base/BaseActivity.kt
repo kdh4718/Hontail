@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
 // 액티비티의 기본을 작성, 뷰 바인딩 활용
 abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflater) -> B) :
     AppCompatActivity() {
-    protected lateinit var binding: B
+    lateinit var binding: B
         private set
 
     // 뷰 바인딩 객체를 받아서 inflate해서 화면을 만들어줌.

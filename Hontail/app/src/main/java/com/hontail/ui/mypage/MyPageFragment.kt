@@ -34,6 +34,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainActivity.hideBottomNav(false)  // 하단바 다시 보이게 설정
         initToolbar()
         initAdapter()
         initEvent()

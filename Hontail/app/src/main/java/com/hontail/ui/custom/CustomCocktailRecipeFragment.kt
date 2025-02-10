@@ -53,9 +53,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {
-
         binding.apply {
-
             val items = mutableListOf<CustomCocktailRecipeItem>().apply {
                 add(CustomCocktailRecipeItem.CustomCocktailRecipeImage)
                 add(CustomCocktailRecipeItem.CustomCocktailAlcoholLevel(25))
@@ -66,7 +64,13 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 add(CustomCocktailRecipeItem.CustomCocktailRecipeRegister)
             }
 
-            customCocktailRecipeAdapter = CustomCocktailRecipeAdapter(items)
+            customCocktailRecipeAdapter = CustomCocktailRecipeAdapter(
+                items = items,
+                onRegisterClick = {
+                    // COCKTAIL_DETAIL_FRAGMENT로 이동
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+                }
+            )
 
             recyclerViewCustomCocktailRecipe.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktailRecipe.adapter = customCocktailRecipeAdapter

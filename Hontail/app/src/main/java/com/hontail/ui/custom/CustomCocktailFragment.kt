@@ -15,6 +15,10 @@ import com.hontail.databinding.FragmentCustomCocktailBinding
 import com.hontail.databinding.FragmentLoginBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.cocktail.CocktailListFragment
+import com.hontail.ui.home.HomeFragment
+import com.hontail.ui.mypage.MyPageFragment
+import com.hontail.ui.zzim.ZzimFragment
 import com.hontail.util.CommonUtils
 
 class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
@@ -42,13 +46,22 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
 
     // 툴바 설정
     private fun initToolbar() {
-
         binding.apply {
-
             toolbarCustomCocktail.apply {
-
                 setNavigationIcon(R.drawable.go_back)
                 setNavigationOnClickListener {
+                    // 백스택에서 이전 fragment 확인
+                    val count = parentFragmentManager.backStackEntryCount
+                    if (count > 1) {
+                        val previousEntry = parentFragmentManager.getBackStackEntryAt(count - 2)
+                        // 이전 화면에 따라 bottom navigation 아이템 체크
+                        when (previousEntry.name) {
+                            "HomeFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_home
+                            "CocktailListFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_search
+                            "ZzimFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_heart
+                            "MyPageFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_mypage
+                        }
+                    }
                     parentFragmentManager.popBackStack("CustomCocktailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
