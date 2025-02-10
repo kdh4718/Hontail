@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 @Setter
@@ -20,5 +20,7 @@ public class CocktailSummaryDto {
     private String baseSpirit;
     private LocalDateTime createdAt;
     private Long ingredientCount;
+    @JsonProperty("isLiked")
+    private boolean isLiked;
 }
 

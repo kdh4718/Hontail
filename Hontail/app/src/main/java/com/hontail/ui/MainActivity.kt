@@ -5,10 +5,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.activityViewModels
 import com.hontail.R
 import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
@@ -39,6 +41,8 @@ import com.hontail.util.PermissionChecker
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
+    private val activityViewModel: MainActivityViewModel by viewModels()
+
     /** permission check **/
     private val checker = PermissionChecker(this)
     private val runtimePermissions = arrayOf(Manifest.permission.CAMERA)
@@ -49,6 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         window.statusBarColor = Color.TRANSPARENT
 
         checkPermissions()
+        initData()        
         initBottomNavigation()
         initBackStackListener()
         changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
@@ -99,6 +104,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun setSelectedBottomNavigation(itemId: Int) {
         binding.bottomNavigation.selectedItemId = itemId
+    }
+
+    fun initData(){
+        val userId = intent.getIntExtra("user_id", 0)
+
+        activityViewModel.setUserId(userId)
     }
 
     fun checkPermissions() {

@@ -10,5 +10,6 @@ import lombok.*;
 public class RecipeRequestDto {
     private String recipeGuide;
     private Integer sequence;
+    private String recipeAction;
 
 }

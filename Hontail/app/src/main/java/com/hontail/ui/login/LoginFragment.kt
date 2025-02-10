@@ -74,6 +74,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
     fun initLogin() {
         NaverIdLoginSDK.initialize(requireContext(), "KY6PkSapyHMt232etHJz", "${NAVER_CLIENT_SECRET}", "hontail")
+
+        viewModel.userId.observe(viewLifecycleOwner) {
+            Log.d(TAG, "initLogin: $it") // 여기까지 정상 출력됨
+
+            val intent = Intent(requireContext(), MainActivity::class.java).apply {
+                putExtra("user_id", it?.toInt())
+            }
+
+            Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}") // 여기서 10이 찍혀야 정상
+            startActivity(intent)
+        }
+
     }
 
     fun initEvent() {
@@ -145,6 +157,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
         })
     }
+
 
     private fun startAutoSlide() {
         handler.postDelayed(autoScrollRunnable, 3000)
