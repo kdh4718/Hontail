@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "User", description = "사용자 정보 및 인증 관련 API")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -36,7 +36,7 @@ public class UserController {
                     content = @Content
             )
     })
-    @GetMapping("/me")
+    @GetMapping("/me") // 현재 로그인한 사용자 정보 > 프로필 페이지?
     public ResponseEntity<UserResponse> getCurrentUser(
             @Parameter(hidden = true)
             @AuthenticationPrincipal CustomOAuth2User oAuth2User) {
