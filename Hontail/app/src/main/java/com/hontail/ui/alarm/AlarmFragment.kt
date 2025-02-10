@@ -24,11 +24,23 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>(
         mainActivity = context as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
         setupAlarmList()
+        setupBackButton()
+    }
+
+    private fun setupBackButton() {
+        binding.imageViewAlarmArrow.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+            mainActivity.hideBottomNav(false)  // 뒤로가기 시 네비게이션 바 다시 표시
+        }
     }
 
     private fun setupRecyclerView() {

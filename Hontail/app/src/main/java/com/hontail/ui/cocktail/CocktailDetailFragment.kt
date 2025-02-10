@@ -31,15 +31,14 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainActivity.hideBottomNav(true)  // 하단바 안보이게 설정
         initAdapter()
         initEvent()
     }
 
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {
-
         binding.apply {
-
             val ingredients = mutableListOf<Ingredient>().apply {
                 add(Ingredient("슈퍼파인 슈가", "1 T"))
                 add(Ingredient("레몬", "1/2 개"))
@@ -78,12 +77,14 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
         }
     }
 
-    fun initEvent(){
-
+    fun initEvent() {
         binding.apply {
+            // 뒤로가기 버튼 클릭 리스너 추가
+            cocktailDetailAdapter.setBackButtonClickListener {
+                mainActivity.onBackPressed()
+            }
 
             cocktailDetailAdapter.cocktailDetailListener = object : CocktailDetailAdapter.ItemOnClickListener {
-
                 // 레시피 쿠킹모드 바텀 시트
                 override fun onClickRecipeBottomSheet() {
                     val bottomSheet = CocktailCookBottomSheetFragment()
@@ -101,7 +102,6 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
 }
 
 sealed class CocktailDetailItem {
-
     data class CocktailInfo(
         val imageUrl: String?,
         val cocktailName: String,

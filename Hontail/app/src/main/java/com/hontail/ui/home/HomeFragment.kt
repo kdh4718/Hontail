@@ -29,7 +29,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 ) {
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-
     private lateinit var homeAdapter: HomeAdapter
 
     override fun onAttach(context: Context) {
@@ -37,9 +36,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         mainActivity = context as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+
+        // 알람 아이콘 클릭 시 AlarmFragment로 이동
+        binding.imageViewHomeBell.setOnClickListener {
+            mainActivity.changeFragmentWithCallback(
+                CommonUtils.MainFragmentName.ALARM_FRAGMENT
+            ) {
+                // 프래그먼트 전환이 완료된 후 네비게이션 바 숨김
+                mainActivity.hideBottomNav(true)
+            }
+        }
+        // 바텐더 버튼 클릭 시 BartenderFragment로 이동
+        binding.fabHomeBartender.setOnClickListener {
+            mainActivity.changeFragment(
+                CommonUtils.MainFragmentName.BARTENDER_FRAGMENT
+            )
+        }
     }
 
     fun initAdapter() {
@@ -54,8 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 HomeCategoryItem("와인", "과일향의 여운", R.drawable.category_wine),
                 HomeCategoryItem("브랜디", "부드러운 목넘김", R.drawable.category_brandy),
                 HomeCategoryItem("기타", "K-술, 무알콜 등", R.drawable.category_etc),
-
-                )
+            )
 
             val topTenItems = listOf(
                 HomeTopTenItem(1, "네그로니\n스발리아토", R.drawable.topten_sample),
@@ -73,7 +92,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             recyclerViewHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerViewHome.adapter = homeAdapter
         }
-
     }
 }
 
@@ -94,4 +112,3 @@ data class HomeCategoryItem(
     val explanation: String,
     val imageRes: Int
 )
-

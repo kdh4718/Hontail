@@ -1,4 +1,3 @@
-//CocktailListAdapter.kt
 package com.hontail.ui.cocktail
 import android.content.Context
 import android.view.LayoutInflater

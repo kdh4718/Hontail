@@ -1,4 +1,3 @@
-//CocktailPictureResultFragment.kt
 package com.hontail.ui.picture
 
 import android.content.Context
@@ -42,6 +41,13 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        setupBackButton()
+    }
+
+    private fun setupBackButton() {
+        binding.imageViewPictureResultGoBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     private fun initRecyclerView() {
