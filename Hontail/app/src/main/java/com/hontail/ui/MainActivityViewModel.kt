@@ -40,10 +40,6 @@ class MainActivityViewModel : ViewModel() {
         _ingredientList.postValue(ingredientList)
     }
 
-    fun setCocktailId(cocktailId: Int) {
-        _cocktailId.postValue(cocktailId)
-    }
-
     // 선택된 칵테일 베이스주 타입
     private val _baseSpirit = MutableLiveData<String>("")
     val baseSpirit: LiveData<String>
