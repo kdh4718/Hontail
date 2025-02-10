@@ -46,15 +46,6 @@ class PictureBottomAdapter(
         fun bind(item: CocktailPictureResultFragment.PictureResultType.Bottom) {
             binding.textViewPictureResultCocktailList.text = item.cocktailCount
 
-            // 필터 리사이클러뷰 설정
-            val filters = listOf("찜", "시간", "도수", "베이스주")
-            val filterAdapter = CocktailListFilterAdapter(filters)
-
-            binding.recyclerViewPictureResultFilter.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = filterAdapter
-            }
-
             // 칵테일 리스트 리사이클러뷰 설정
             val cocktails = mutableListOf<CocktailListResponse>().apply {
                 add(
@@ -81,17 +72,6 @@ class PictureBottomAdapter(
                     addItemDecoration(GridSpacingItemDecoration(2, 20))
                 }
             }
-
-            // 필터 클릭 이벤트 설정
-            filterAdapter.cocktailListFilterListener = object : CocktailListFilterAdapter.ItemOnClickListener {
-                override fun onClickFilter(position: Int) {
-                    val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
-                    bottomSheetFragment.show(
-                        (context as MainActivity).supportFragmentManager,
-                        bottomSheetFragment.tag
-                    )
-                }
-            }
         }
     }
 
@@ -110,4 +90,9 @@ class PictureBottomAdapter(
     }
 
     override fun getItemCount(): Int = 1
+
+    fun updateData(newData: CocktailPictureResultFragment.PictureResultType.Bottom){
+        data = newData
+        notifyDataSetChanged()
+    }
 }

@@ -23,7 +23,7 @@ class PictureTopAdapter(
 
         fun bind(item: CocktailPictureResultFragment.PictureResultType.Top) {
             binding.textViewPictureResultSuggestion.text =
-                CommonUtils.changeTextColor(context, item.suggestion, "hyunn", R.color.basic_sky)
+                CommonUtils.changeTextColor(context, item.suggestion[0], item.suggestion[1], R.color.basic_sky)
 
             val layoutManager = FlexboxLayoutManager(context).apply {
                 flexWrap = FlexWrap.WRAP
