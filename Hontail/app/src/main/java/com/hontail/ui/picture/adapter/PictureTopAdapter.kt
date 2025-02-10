@@ -1,4 +1,4 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import com.google.android.flexbox.JustifyContent
 import com.hontail.R
 import com.hontail.databinding.ListItemPictureTopBinding
 import com.hontail.ui.MainActivity
+import com.hontail.ui.picture.screen.CocktailPictureResultFragment
 import com.hontail.util.CommonUtils
 
 class PictureTopAdapter(

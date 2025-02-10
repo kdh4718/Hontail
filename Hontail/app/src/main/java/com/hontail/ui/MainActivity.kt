@@ -4,13 +4,7 @@ import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.activityViewModels
 import com.hontail.R
 import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
@@ -31,9 +25,9 @@ import com.hontail.ui.ingredient.IngredientListFragment
 import com.hontail.ui.mypage.MyPageFragment
 import com.hontail.ui.mypage.MyPageModifyFragment
 import com.hontail.ui.mypage.MyPageNicknameModifyFragment
-import com.hontail.ui.picture.CocktailPictureResultFragment
-import com.hontail.ui.picture.CocktailTakePictureFragment
-import com.hontail.ui.picture.FilterBottomSheetFragment
+import com.hontail.ui.picture.screen.CocktailPictureResultFragment
+import com.hontail.ui.picture.screen.CocktailTakePictureFragment
+import com.hontail.ui.picture.screen.FilterBottomSheetFragment
 import com.hontail.ui.profile.ProfileFragment
 import com.hontail.ui.zzim.ZzimFragment
 import com.hontail.util.CommonUtils

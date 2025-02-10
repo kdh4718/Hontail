@@ -1,10 +1,8 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.screen
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hontail.R
 import com.hontail.base.BaseBottomSheetFragment
 import com.hontail.databinding.FragmentFilterBottomSheetBinding
