@@ -8,6 +8,8 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.hontail.R
 import com.hontail.databinding.ListItemCustomCocktailSearchBarBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchHeaderBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
@@ -15,13 +17,13 @@ import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
 private const val TAG = "CustomCocktailSearchAda"
 class CustomCocktailSearchAdapter(private var items: MutableList<CustomCocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var customCocktailSearchCancelListener: ItemOnClickListener
-    lateinit var customCocktailSearchIngredientListener: ItemOnClickListener
+    lateinit var customCocktailSearchListener: ItemOnClickListener
 
     var onSearchQueryChanged: ((String) -> Unit)? = null
 
     interface ItemOnClickListener {
-        fun onClick(position: Int?)
+        fun onClickIngredient(ingredientId: Int)
+        fun onClickCancel()
     }
 
     companion object {
@@ -92,7 +94,7 @@ class CustomCocktailSearchAdapter(private var items: MutableList<CustomCocktailS
 
                 // 취소 이벤트
                 textViewListItemCustomCocktailSearchBarCancel.setOnClickListener {
-                    customCocktailSearchCancelListener.onClick(null)
+                    customCocktailSearchListener.onClickCancel()
                 }
 
                 // 현재 검색어 설정
@@ -141,10 +143,15 @@ class CustomCocktailSearchAdapter(private var items: MutableList<CustomCocktailS
 
             binding.apply {
 
+                Glide.with(root.context)
+                    .load(item.ingredientImage)
+//                    .placeholder(R.drawable.logo_image)
+                    .into(imageViewListItemCustomCocktailSearchResultIngredient)
+
                 textViewListItemCustomCocktailSearchResultIngredientName.text = item.ingredientName
 
                 root.setOnClickListener {
-                    customCocktailSearchIngredientListener.onClick(0)
+                    customCocktailSearchListener.onClickIngredient(item.ingredientId)
                 }
             }
         }

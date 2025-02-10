@@ -49,6 +49,11 @@ class IngredientRepository private constructor(context: Context) {
         return ingredientDAO.getIngredientsByNameKor(query)
     }
 
+    // Room에 저장된 재료 데이터 Id로 가져오기.
+    fun getIngredientsById(ingredientId: Int): LiveData<IngredientsTable> {
+        return ingredientDAO.getIngredientsById(ingredientId)
+    }
+
     // Singleton 패턴 적용
     companion object {
         private var INSTANCE: IngredientRepository? = null

@@ -13,4 +13,12 @@ class MainActivityViewModel : ViewModel() {
     fun setCocktailId(cocktailId: Int){
         _cocktailId.postValue(cocktailId)
     }
+
+    // 선택된 ingredientId
+    private val _ingredientId = MutableLiveData<Int>()
+    val ingredientId: LiveData<Int> get() = _ingredientId
+
+    fun setIngredientId(ingredientId: Int) {
+        _ingredientId.postValue(ingredientId)
+    }
 }

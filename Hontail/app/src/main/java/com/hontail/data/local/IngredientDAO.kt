@@ -18,4 +18,7 @@ interface IngredientDAO {
 
     @Query("SELECT * FROM ingredients WHERE ingredient_name_kor LIKE '%' || :query || '%'")
     fun getIngredientsByNameKor(query: String): LiveData<List<IngredientsTable>>
+
+    @Query("SELECT * FROM ingredients WHERE ingredientId = :ingredientId")
+    fun getIngredientsById(ingredientId: Int): LiveData<IngredientsTable>
 }

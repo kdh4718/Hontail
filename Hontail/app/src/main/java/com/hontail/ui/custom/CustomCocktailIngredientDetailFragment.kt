@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailIngredientDetailBinding
@@ -16,17 +18,25 @@ class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktai
     R.layout.fragment_custom_cocktail_ingredient_detail
 ) {
     private lateinit var mainActivity: MainActivity
+
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: CustomCocktailIngredientDetailViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.ingredientId = activityViewModel.ingredientId.value!!
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mainActivity.hideBottomNav(true)
+        observeIngredientDetail()
         initToolbar()
         initEvent()
     }
@@ -46,6 +56,23 @@ class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktai
         }
     }
 
+    // ViewModelObserver 등록.
+    private fun observeIngredientDetail() {
+
+        binding.apply {
+
+            viewModel.ingredientDetailInfo.observe(viewLifecycleOwner) { ingredient ->
+
+                textViewCustomCocktailIngredientDetailName.text = ingredient.ingredientNameKor
+
+                Glide.with(mainActivity)
+                    .load(ingredient.ingredientImage)
+                    .placeholder(R.drawable.logo_image)
+                    .into(imageViewCustomCocktailIngredientDetail)
+            }
+        }
+    }
+
     // 이벤트 설정
     private fun initEvent() {
 
@@ -54,7 +81,16 @@ class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktai
             // 바텀 시트 띄우기.
             imageViewCustomCocktailIngredientDetailUnit.setOnClickListener {
 
-                val bottomSheetFragment = CustomCocktailBottomSheetFragment()
+                val currentSelectedUnit = textViewCustomCocktailIngredientDetailUnit.text.toString()
+
+                val bottomSheetFragment = CustomCocktailBottomSheetFragment.newInstance(currentSelectedUnit)
+
+                bottomSheetFragment.onUnitSelectedListener = object : OnUnitSelectedListener {
+                    override fun onUnitSelected(unitItem: UnitItem) {
+                        textViewCustomCocktailIngredientDetailUnit.text = unitItem.unitName
+                    }
+                }
+
                 bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
 

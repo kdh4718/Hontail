@@ -59,7 +59,13 @@ class CustomCocktailSearchFragment: BaseFragment<FragmentCustomCocktailSearchBin
                 if(ingredients.isNotEmpty()) {
                     newItems.add(CustomCocktailSearchItem.Header)
                     ingredients.forEach { ingredient ->
-                        newItems.add(CustomCocktailSearchItem.IngredientResult(ingredient.ingredientNameKor))
+                        newItems.add(
+                            CustomCocktailSearchItem.IngredientResult(
+                                ingredient.ingredientId,
+                                ingredient.ingredientNameKor,
+                                ingredient.ingredientImage
+                            )
+                        )
                     }
                 }
                 else {
@@ -105,17 +111,17 @@ class CustomCocktailSearchFragment: BaseFragment<FragmentCustomCocktailSearchBin
 
         binding.apply {
 
-            // 취소
-            customCocktailSearchAdapter.customCocktailSearchCancelListener = object : CustomCocktailSearchAdapter.ItemOnClickListener {
-                override fun onClick(position: Int?) {
-                    parentFragmentManager.popBackStack("CustomCocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                }
-            }
+            customCocktailSearchAdapter.customCocktailSearchListener = object : CustomCocktailSearchAdapter.ItemOnClickListener {
 
-            // 재료 선택
-            customCocktailSearchAdapter.customCocktailSearchIngredientListener = object : CustomCocktailSearchAdapter.ItemOnClickListener {
-                override fun onClick(position: Int?) {
+                // 재료 선택
+                override fun onClickIngredient(ingredientId: Int) {
+                    activityViewModel.setIngredientId(ingredientId)
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_INGREDIENT_DETAIL_FRAGMENT)
+                }
+
+                // 취소
+                override fun onClickCancel() {
+                    parentFragmentManager.popBackStack("CustomCocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
 
@@ -132,5 +138,5 @@ sealed class CustomCocktailSearchItem {
 
     data class SearchBar(val query: String?): CustomCocktailSearchItem()
     object Header: CustomCocktailSearchItem()
-    data class IngredientResult(val ingredientName: String): CustomCocktailSearchItem()
+    data class IngredientResult(val ingredientId: Int, val ingredientName: String, val ingredientImage: String): CustomCocktailSearchItem()
 }
