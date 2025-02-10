@@ -21,7 +21,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    private static final String SECRET_KEY = "e2d567a51381b64a5068899caad46d3b9692eb32535aa7e2db999381888328b03cc555270e7fb21b680f00178a368c0c4444f8b73501591ec5901af62755cb90";
+    private static final String SECRET_KEY = "{JWT_SECRET}";
     private static final long ACCESS_TOKEN_EXPIRATION = 60 * 60 * 1000; // 1시간
     private static final long REFRESH_TOKEN_EXPIRATION = 14 * 24 * 60 * 60 * 1000; // 14일
 
@@ -33,24 +33,26 @@ public class JwtProvider {
     @Transactional
     public String createToken(String email) {
         try {
-            // 사용자 ID 가져오기
-            int userId = userRepository.findByUserEmail(email)
-                    .map(user -> user.getId())
+            // 사용자 ID 및 닉네임 가져오기
+            var user = userRepository.findByUserEmail(email)
                     .orElseThrow(() -> {
                         log.error("User not found with email: {}", email);
                         return new RuntimeException("User not found with email: " + email);
                     });
 
-            // 기존 토큰 완전 삭제
+            int userId = user.getId();
+            String userNickname = user.getUserNickname(); // 닉네임 추가
+
+            // 기존 토큰 삭제
             accessTokenRepository.deleteAllByUserId(userId);
             refreshTokenRepository.deleteByUserId(userId);
 
-            // Access Token 생성 (userId 포함)
-            String accessToken = createAccessToken(email, userId);
+            // Access Token 생성 (userId 및 userNickname 포함)
+            String accessToken = createAccessToken(email, userId, userNickname);
             log.info("Created access token: {}", accessToken);
 
-            // Refresh Token 생성 (userId 포함)
-            String refreshToken = createRefreshToken(email, userId);
+            // Refresh Token 생성
+            String refreshToken = createRefreshToken(email, userId, userNickname);
             log.info("Created refresh token: {}", refreshToken);
 
             // Access Token 저장
@@ -79,13 +81,14 @@ public class JwtProvider {
         }
     }
 
-    public String createAccessToken(String email, int userId) {
+    public String createAccessToken(String email, int userId, String userNickname) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION);
 
         return Jwts.builder()
                 .setSubject(email)
                 .claim("userId", userId)       // 사용자 ID 추가
+                .claim("userNickname", userNickname) // 사용자 닉네임 추가
                 .claim("type", "access")
                 .setIssuedAt(now)
                 .setExpiration(expiration)
@@ -93,13 +96,14 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String createRefreshToken(String email, int userId) {
+    public String createRefreshToken(String email, int userId, String userNickname) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + REFRESH_TOKEN_EXPIRATION);
 
         return Jwts.builder()
                 .setSubject(email)
                 .claim("userId", userId)       // 사용자 ID 추가
+                .claim("userNickname", userNickname) // 사용자 닉네임 추가
                 .claim("type", "refresh")
                 .setIssuedAt(now)
                 .setExpiration(expiration)
