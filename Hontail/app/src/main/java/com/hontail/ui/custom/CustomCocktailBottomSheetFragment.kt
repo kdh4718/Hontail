@@ -15,7 +15,6 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
 ) {
 
     private lateinit var mainActivity: MainActivity
-
     private lateinit var customCocktailBottomSheetAdapter: CustomCocktailBottomSheetAdapter
 
     private var initialSelectedUnit: String = "ml"
@@ -60,7 +59,6 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initAdapter()
         initEvent()
     }
@@ -69,11 +67,11 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
 
     // 리사이클러뷰 연결
     private fun initAdapter() {
-
         binding.apply {
-
-            customCocktailBottomSheetAdapter = CustomCocktailBottomSheetAdapter(unitList)
-
+            customCocktailBottomSheetAdapter = CustomCocktailBottomSheetAdapter(unitList) { selectedUnit ->
+                unitSelectListener?.onUnitSelected(selectedUnit)
+                dismiss()
+            }
             recyclerViewCustomCocktailBottomSheet.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktailBottomSheet.adapter = customCocktailBottomSheetAdapter
         }

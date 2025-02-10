@@ -19,8 +19,10 @@ class CustomCocktailBottomSheetAdapter(private val items: List<UnitItem>): Recyc
         return CustomCocktailBottomSheetUnitViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return items.size
+    override fun getItemCount(): Int = unitList.size
+
+    override fun onBindViewHolder(holder: CustomCocktailBottomSheetUnitViewHolder, position: Int) {
+        holder.bind(unitList[position])
     }
 
     override fun onBindViewHolder(holder: CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder, position: Int) {
@@ -32,11 +34,24 @@ class CustomCocktailBottomSheetAdapter(private val items: List<UnitItem>): Recyc
         fun bind(item: UnitItem, position: Int) {
 
             binding.apply {
-
                 textViewListItemCustomCocktailBottomSheetUnitName.text = item.unitName
 
-                if(item.unitSelected) {
-                    imageViewListItemCustomCocktailBottomSheetUnitCheck.visibility = View.VISIBLE
+                // 체크 표시 visibility 설정
+                imageViewListItemCustomCocktailBottomSheetUnitCheck.visibility =
+                    if (item.unitSelected) View.VISIBLE else View.GONE
+
+                root.setOnClickListener {
+                    // 모든 아이템 선택 해제
+                    unitList.forEach { it.unitSelected = false }
+
+                    // 현재 아이템만 선택
+                    item.unitSelected = true
+
+                    // 전체 리스트 갱신
+                    notifyDataSetChanged()
+
+                    // 선택된 unit 전달
+                    onUnitSelected(item.unitName)
                 }
                 else {
                     imageViewListItemCustomCocktailBottomSheetUnitCheck.visibility = View.INVISIBLE

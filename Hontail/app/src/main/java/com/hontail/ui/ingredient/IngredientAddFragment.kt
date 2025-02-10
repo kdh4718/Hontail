@@ -1,6 +1,8 @@
 package com.hontail.ui.ingredient
 
 import android.content.Context
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -18,5 +20,16 @@ class IngredientAddFragment : BaseFragment<FragmentIngredientAddBinding>(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupBackButton()
+    }
+
+    private fun setupBackButton() {
+        binding.imageViewIngredientArrow.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 }

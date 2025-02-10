@@ -20,9 +20,4 @@ public class UserResponse {
     @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
     private String profileImage;
 
-    @Schema(description = "소셜 로그인 제공자", example = "GOOGLE")
-    private String providerType;
-
-    @Schema(description = "사용자 권한", example = "USER")
-    private String role;
 }

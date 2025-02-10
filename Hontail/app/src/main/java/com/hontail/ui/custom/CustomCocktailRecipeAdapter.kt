@@ -11,7 +11,10 @@ import com.hontail.databinding.ListItemCustomCocktailRecipeRegisterBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepHeaderBinding
 
-class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CustomCocktailRecipeAdapter(
+    private val items: List<CustomCocktailRecipeItem>,
+    private val onRegisterClick: () -> Unit  // 콜백 추가
+    ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_IMAGE = 0
@@ -159,12 +162,12 @@ class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeIt
     }
 
     // 레시피 등록
-    inner class CustomCocktailRecipeRegisterViewHolder(private val binding: ListItemCustomCocktailRecipeRegisterBinding): RecyclerView.ViewHolder(binding.root) {
-
+    inner class CustomCocktailRecipeRegisterViewHolder(
+        private val binding: ListItemCustomCocktailRecipeRegisterBinding
+    ): RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-
-            binding.apply {
-
+            binding.imageViewListItemCustomCocktailRecipeAddStep.setOnClickListener {
+                onRegisterClick()  // 클릭 시 콜백 호출
             }
         }
     }

@@ -27,7 +27,8 @@ public class CocktailServiceImpl implements CocktailService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<CocktailSummaryDto> getCocktailsByFilter(String orderBy, String direction, String baseSpirit, int page, int size, boolean isCustom) {
+    public Page<CocktailSummaryDto> getCocktailsByFilter(String orderBy, String direction, String baseSpirit,
+                                                         int page, int size, boolean isCustom, Integer userId) {
         try {
             Sort.Direction sortDirection = "desc".equalsIgnoreCase(direction) ? Sort.Direction.DESC : Sort.Direction.ASC;
             Sort sort = Sort.by(sortDirection, orderBy);
@@ -48,6 +49,10 @@ public class CocktailServiceImpl implements CocktailService {
             return cocktails.map(cocktail -> {
                 Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
                 Long likesCnt = likeRepository.countByCocktail(cocktail);
+                boolean isLiked = false;
+                if (userId != null) {
+                    isLiked = likeRepository.findByCocktailIdAndUserId(cocktail.getId(), userId).isPresent();
+                }
                 return new CocktailSummaryDto(
                         cocktail.getId(),
                         cocktail.getCocktailName(),
@@ -56,7 +61,8 @@ public class CocktailServiceImpl implements CocktailService {
                         cocktail.getAlcoholContent(),
                         cocktail.getBaseSpirit(),
                         cocktail.getCreatedAt(),
-                        ingredientCnt
+                        ingredientCnt,
+                        isLiked
                 );
             });
         } catch (IllegalArgumentException e) {
@@ -65,12 +71,16 @@ public class CocktailServiceImpl implements CocktailService {
     }
 
     @Override
-    public List<CocktailSummaryDto> getTopLikedCocktails() {
+    public List<CocktailSummaryDto> getTopLikedCocktails(Integer userId) {
         List<CocktailSummaryDto> topCocktails = cocktailRepository.findTopLiked(PageRequest.of(0, 10))
                 .stream()
                 .map(cocktail -> {
                     Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
                     Long likesCnt = likeRepository.countByCocktail(cocktail);
+                    boolean isLiked = false;
+                    if (userId != null) {
+                        isLiked = likeRepository.findByCocktailIdAndUserId(cocktail.getId(), userId).isPresent();
+                    }
                     return new CocktailSummaryDto(
                             cocktail.getId(),
                             cocktail.getCocktailName(),
@@ -79,7 +89,8 @@ public class CocktailServiceImpl implements CocktailService {
                             cocktail.getAlcoholContent(),
                             cocktail.getBaseSpirit(),
                             cocktail.getCreatedAt(),
-                            ingredientCnt
+                            ingredientCnt,
+                            isLiked
                     );
                 })
                 .toList();
@@ -116,9 +127,44 @@ public class CocktailServiceImpl implements CocktailService {
                             cocktail.getAlcoholContent(),
                             cocktail.getBaseSpirit(),
                             cocktail.getCreatedAt(),
-                            ingredientCnt
+                            ingredientCnt,
+                            true  // 사용자가 좋아요한 리스트 조회라서 true
                     );
                 })
                 .toList();
+    }
+
+    @Override
+    public Page<CocktailSummaryDto> searchCocktails(String keyword, int page, int size, Integer userId) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new CustomException(ErrorCode.SEARCH_KEYWORD_EMPTY);
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Cocktail> cocktails = cocktailRepository.searchByNameContaining(keyword.trim(), pageable);
+
+        if (cocktails.isEmpty()) {
+            throw new CustomException(ErrorCode.COCKTAIL_NOT_FOUND);
+        }
+
+        return cocktails.map(cocktail -> {
+            Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
+            Long likesCnt = likeRepository.countByCocktail(cocktail);
+            boolean isLiked = false;
+            if (userId != null) {
+                isLiked = likeRepository.findByCocktailIdAndUserId(cocktail.getId(), userId).isPresent();
+            }
+            return new CocktailSummaryDto(
+                    cocktail.getId(),
+                    cocktail.getCocktailName(),
+                    cocktail.getImageUrl(),
+                    likesCnt,
+                    cocktail.getAlcoholContent(),
+                    cocktail.getBaseSpirit(),
+                    cocktail.getCreatedAt(),
+                    ingredientCnt,
+                    isLiked
+            );
+        });
     }
 }
