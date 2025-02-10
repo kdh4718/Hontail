@@ -10,8 +10,9 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailIngredientDetailBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.util.CommonUtils
 
-class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktailIngredientDetailBinding>(
+class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCocktailIngredientDetailBinding>(
     FragmentCustomCocktailIngredientDetailBinding::bind,
     R.layout.fragment_custom_cocktail_ingredient_detail
 ) {
@@ -26,18 +27,13 @@ class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktai
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainActivity.hideBottomNav(true)
         initToolbar()
         initEvent()
     }
 
-    // 툴바 설정
     private fun initToolbar() {
-
         binding.apply {
-
             toolbarCustomCocktailIngredientDetail.apply {
-
                 setNavigationIcon(R.drawable.go_back)
                 setNavigationOnClickListener {
                     parentFragmentManager.popBackStack("CustomCocktailIngredientDetailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
@@ -46,24 +42,25 @@ class CustomCocktailIngredientDetailFragment: BaseFragment<FragmentCustomCocktai
         }
     }
 
-    // 이벤트 설정
     private fun initEvent() {
-
         binding.apply {
-
-            // 바텀 시트 띄우기.
+            // 단위 선택 - 화살표 아이콘 클릭 시
             imageViewCustomCocktailIngredientDetailUnit.setOnClickListener {
-
-                val bottomSheetFragment = CustomCocktailBottomSheetFragment()
+                // 현재 선택된 단위를 전달
+                val currentUnit = textViewCustomCocktailIngredientDetailUnit.text.toString()
+                val bottomSheetFragment = CustomCocktailBottomSheetFragment.newInstance(currentUnit).apply {
+                    unitSelectListener = object : CustomCocktailBottomSheetFragment.UnitSelectListener {
+                        override fun onUnitSelected(unit: String) {
+                            textViewCustomCocktailIngredientDetailUnit.text = unit
+                        }
+                    }
+                }
                 bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
 
-            // 재료 추가하기
+            // 재료 추가 버튼
             buttonCustomCocktailIngredientDetail.setOnClickListener {
-                parentFragmentManager.apply {
-                    popBackStack("CustomCocktailIngredientDetailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                    popBackStack("CustomCocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                }
+                parentFragmentManager.popBackStack("CustomCocktailIngredientDetailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
             }
         }
     }

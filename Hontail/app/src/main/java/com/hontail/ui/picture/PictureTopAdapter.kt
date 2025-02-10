@@ -1,13 +1,12 @@
-//PictureTopAdapter.kt
 package com.hontail.ui.picture
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-//import com.google.android.flexbox.FlexWrap
-//import com.google.android.flexbox.FlexboxLayoutManager
-//import com.google.android.flexbox.JustifyContent
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.hontail.R
 import com.hontail.databinding.ListItemPictureTopBinding
 import com.hontail.ui.MainActivity

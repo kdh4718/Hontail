@@ -15,17 +15,35 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
 ) {
 
     private lateinit var mainActivity: MainActivity
-
     private lateinit var customCocktailBottomSheetAdapter: CustomCocktailBottomSheetAdapter
 
-    private val unitList = mutableListOf(
-        UnitItem("ml", true),
-        UnitItem("shot", false),
-        UnitItem("dash",false),
-        UnitItem("oz", false),
-        UnitItem("slice", false),
-        UnitItem("leaves", false),
-    )
+    // currentUnit 매개변수 추가
+    companion object {
+        fun newInstance(currentUnit: String): CustomCocktailBottomSheetFragment {
+            return CustomCocktailBottomSheetFragment().apply {
+                this.currentSelectedUnit = currentUnit
+            }
+        }
+    }
+
+    private var currentSelectedUnit: String = "ml"  // 기본값
+
+    private val unitList: MutableList<UnitItem> by lazy {
+        mutableListOf(
+            UnitItem("ml", currentSelectedUnit == "ml"),
+            UnitItem("shot", currentSelectedUnit == "shot"),
+            UnitItem("dash", currentSelectedUnit == "dash"),
+            UnitItem("oz", currentSelectedUnit == "oz"),
+            UnitItem("slice", currentSelectedUnit == "slice"),
+            UnitItem("leaves", currentSelectedUnit == "leaves"),
+        )
+    }
+
+    interface UnitSelectListener {
+        fun onUnitSelected(unit: String)
+    }
+
+    var unitSelectListener: UnitSelectListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,22 +52,19 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initAdapter()
     }
 
-    // 리사이클러뷰 연결
     private fun initAdapter() {
-
         binding.apply {
-
-            customCocktailBottomSheetAdapter = CustomCocktailBottomSheetAdapter(unitList)
-
+            customCocktailBottomSheetAdapter = CustomCocktailBottomSheetAdapter(unitList) { selectedUnit ->
+                unitSelectListener?.onUnitSelected(selectedUnit)
+                dismiss()
+            }
             recyclerViewCustomCocktailBottomSheet.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktailBottomSheet.adapter = customCocktailBottomSheetAdapter
         }
     }
-
 }
 
 data class UnitItem(val unitName: String, var unitSelected: Boolean)

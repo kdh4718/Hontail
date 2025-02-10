@@ -13,6 +13,11 @@ import com.hontail.ui.ingredient.Ingredient
 class CocktailDetailAdapter(private val context: Context, private val items: List<CocktailDetailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var cocktailDetailListener: ItemOnClickListener
+    private var backButtonClickListener: (() -> Unit)? = null
+
+    fun setBackButtonClickListener(listener: () -> Unit) {
+        backButtonClickListener = listener
+    }
 
     interface ItemOnClickListener {
         fun onClickRecipeBottomSheet()
@@ -34,9 +39,7 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
         return when(viewType) {
-
             VIEW_TYPE_COCKTAIL_DETAIL_INFOS -> {
                 val binding = ListItemCocktailDetailInfosBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailDetailInfosViewHolder(binding)
@@ -61,7 +64,6 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         when(val item = items[position]) {
             is CocktailDetailItem.CocktailInfo -> (holder as CocktailDetailInfosViewHolder).bind(item)
             is CocktailDetailItem.IngredientList -> (holder as CocktailDetailIngredientsViewHolder).bind(item.ingredients)
@@ -71,18 +73,20 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
 
     // Cocktail Detail Infos
     inner class CocktailDetailInfosViewHolder(private val binding: ListItemCocktailDetailInfosBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind(item: CocktailDetailItem.CocktailInfo) {
-
             binding.apply {
-
                 textViewCocktailDetailNameKor.text = item.cocktailName
                 textViewCocktailDetailNameEng.text = item.cocktailNameEn
                 textViewCocktailDetailAlcoholLevel.text = "${item.cocktailAlcoholLevel}%"
                 textViewCocktailDetailZzimCount.text = item.cocktailZzims.toString()
                 textViewCocktailDetailCommentCount.text = item.cocktailComments.toString()
 
-                // 댓글 바텀시트 띄우기.
+                // 뒤로가기 버튼 클릭 리스너
+                imageViewCocktailDetailGoBack.setOnClickListener {
+                    backButtonClickListener?.invoke()
+                }
+
+                // 댓글 바텀시트 띄우기
                 imageViewCocktailDetailComment.setOnClickListener {
                     cocktailDetailListener.onClickCommentBottomSheet()
                 }
@@ -92,13 +96,9 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
 
     // Cocktail Detail Ingredients
     inner class CocktailDetailIngredientsViewHolder(private val binding: ListItemCocktailDetailIngredientsBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind(ingredients: List<Ingredient>) {
-
             binding.apply {
-
                 val cocktailDetailIngredientAdapter = CocktailDetailIngredientAdapter(ingredients)
-
                 recyclerViewCocktailDetailIngredientIngredient.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recyclerViewCocktailDetailIngredientIngredient.adapter = cocktailDetailIngredientAdapter
             }
@@ -107,13 +107,9 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
 
     // Cocktail Detail Recipes
     inner class CocktailDetailRecipesViewHolder(private val binding: ListItemCocktailDetailRecipesBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind(recipes: List<Recipe>) {
-
             binding.apply {
-
                 val cocktailDetailRecipeAdapter = CocktailDetailRecipeAdapter(recipes)
-
                 recyclerViewCocktailDetailRecipe.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recyclerViewCocktailDetailRecipe.adapter = cocktailDetailRecipeAdapter
 
