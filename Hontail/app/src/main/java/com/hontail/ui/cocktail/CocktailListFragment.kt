@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -25,12 +26,18 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
 ) {
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: CocktailListFragmentViewModel by viewModels()
 
     private lateinit var cocktailListAdapter: CocktailListAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.baseSpirit = activityViewModel.baseSpirit.value!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
