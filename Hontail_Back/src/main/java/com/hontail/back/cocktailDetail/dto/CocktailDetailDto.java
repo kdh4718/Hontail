@@ -14,6 +14,7 @@ public class CocktailDetailDto {
     private String cocktailName;
     private String cocktailDescription;
     private String imageUrl;
+    private String makerNickname;
     private List<CocktailIngredientDetailDto> cocktailIngredients;
     private List<RecipeDetailDto> recipes;
     private List<LikeDto> likes;
@@ -21,13 +22,14 @@ public class CocktailDetailDto {
 
     @Builder
     public CocktailDetailDto(Integer cocktailId, String cocktailName, String cocktailDescription,
-                             String imageUrl, List<CocktailIngredientDetailDto> cocktailIngredients,
+                             String imageUrl, String makerNickname, List<CocktailIngredientDetailDto> cocktailIngredients,
                              List<RecipeDetailDto> recipes, List<LikeDto> likes,
                              List<CommentDto> comments) {
         this.cocktailId = cocktailId;
         this.cocktailName = cocktailName;
         this.cocktailDescription = cocktailDescription;
         this.imageUrl = imageUrl;
+        this.makerNickname = makerNickname;
         this.cocktailIngredients = cocktailIngredients;
         this.recipes = recipes;
         this.likes = likes;
@@ -40,6 +42,7 @@ public class CocktailDetailDto {
                 .cocktailName(cocktail.getCocktailName())
                 .cocktailDescription(cocktail.getCocktailDescription())
                 .imageUrl(cocktail.getImageUrl())
+                .makerNickname(cocktail.getMakerNickname())
                 .cocktailIngredients(cocktail.getCocktailIngredients().stream()
                         .map(CocktailIngredientDetailDto::from)
                         .toList())
