@@ -1,4 +1,4 @@
-package com.hontail.ui.picture.screen
+package com.hontail.ui.picture
 
 import android.content.Context
 import android.os.Bundle
@@ -12,8 +12,6 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCocktailPictureResultBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.picture.adapter.PictureBottomAdapter
-import com.hontail.ui.picture.adapter.PictureTopAdapter
 import com.hontail.ui.picture.viewmodel.CocktailPictureResultFragmentViewModel
 
 class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResultBinding>(

@@ -1,4 +1,4 @@
-package com.hontail.ui.picture.screen
+package com.hontail.ui.picture
 
 import android.os.Bundle
 import android.view.View

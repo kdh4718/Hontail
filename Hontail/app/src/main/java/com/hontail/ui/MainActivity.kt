@@ -24,9 +24,9 @@ import com.hontail.ui.ingredient.IngredientListFragment
 import com.hontail.ui.mypage.MyPageFragment
 import com.hontail.ui.mypage.MyPageModifyFragment
 import com.hontail.ui.mypage.MyPageNicknameModifyFragment
-import com.hontail.ui.picture.screen.CocktailPictureResultFragment
-import com.hontail.ui.picture.screen.CocktailTakePictureFragment
-import com.hontail.ui.picture.screen.FilterBottomSheetFragment
+import com.hontail.ui.picture.CocktailPictureResultFragment
+import com.hontail.ui.picture.CocktailTakePictureFragment
+import com.hontail.ui.picture.FilterBottomSheetFragment
 import com.hontail.ui.profile.ProfileFragment
 import com.hontail.ui.zzim.ZzimFragment
 import com.hontail.util.CommonUtils

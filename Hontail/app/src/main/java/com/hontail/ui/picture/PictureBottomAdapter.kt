@@ -1,4 +1,4 @@
-package com.hontail.ui.picture.adapter
+package com.hontail.ui.picture
 
 import android.content.Context
 import android.graphics.Rect
@@ -12,8 +12,6 @@ import com.hontail.databinding.ListItemPictureBottomBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.cocktail.CocktailListFilterAdapter
 import com.hontail.ui.mypage.Cocktail
-import com.hontail.ui.picture.screen.CocktailPictureResultFragment
-import com.hontail.ui.picture.screen.FilterBottomSheetFragment
 import com.hontail.util.CocktailItemAdapter
 
 class PictureBottomAdapter(
