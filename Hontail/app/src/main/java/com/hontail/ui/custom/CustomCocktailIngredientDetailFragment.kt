@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailIngredientDetailBinding
@@ -17,16 +19,25 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
     R.layout.fragment_custom_cocktail_ingredient_detail
 ) {
     private lateinit var mainActivity: MainActivity
+
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: CustomCocktailIngredientDetailViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.ingredientId = activityViewModel.ingredientId.value!!
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainActivity.hideBottomNav(true)
+        observeIngredientDetail()
         initToolbar()
         initEvent()
     }
@@ -42,19 +53,39 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
         }
     }
 
+    // ViewModelObserver 등록.
+    private fun observeIngredientDetail() {
+
+        binding.apply {
+
+            viewModel.ingredientDetailInfo.observe(viewLifecycleOwner) { ingredient ->
+
+                textViewCustomCocktailIngredientDetailName.text = ingredient.ingredientNameKor
+
+                Glide.with(mainActivity)
+                    .load(ingredient.ingredientImage)
+                    .placeholder(R.drawable.logo_image)
+                    .into(imageViewCustomCocktailIngredientDetail)
+            }
+        }
+    }
+
+    // 이벤트 설정
     private fun initEvent() {
         binding.apply {
             // 단위 선택 - 화살표 아이콘 클릭 시
             imageViewCustomCocktailIngredientDetailUnit.setOnClickListener {
-                // 현재 선택된 단위를 전달
-                val currentUnit = textViewCustomCocktailIngredientDetailUnit.text.toString()
-                val bottomSheetFragment = CustomCocktailBottomSheetFragment.newInstance(currentUnit).apply {
-                    unitSelectListener = object : CustomCocktailBottomSheetFragment.UnitSelectListener {
-                        override fun onUnitSelected(unit: String) {
-                            textViewCustomCocktailIngredientDetailUnit.text = unit
-                        }
+
+                val currentSelectedUnit = textViewCustomCocktailIngredientDetailUnit.text.toString()
+
+                val bottomSheetFragment = CustomCocktailBottomSheetFragment.newInstance(currentSelectedUnit)
+
+                bottomSheetFragment.onUnitSelectedListener = object : OnUnitSelectedListener {
+                    override fun onUnitSelected(unitItem: UnitItem) {
+                        textViewCustomCocktailIngredientDetailUnit.text = unitItem.unitName
                     }
                 }
+
                 bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
             }
 

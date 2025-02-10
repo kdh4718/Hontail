@@ -17,44 +17,55 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
     private lateinit var mainActivity: MainActivity
     private lateinit var customCocktailBottomSheetAdapter: CustomCocktailBottomSheetAdapter
 
-    // currentUnit 매개변수 추가
+    private var initialSelectedUnit: String = "ml"
+
+    private val unitList = mutableListOf(
+        UnitItem("ml", true),
+        UnitItem("shot", false),
+        UnitItem("dash",false),
+        UnitItem("oz", false),
+        UnitItem("slice", false),
+        UnitItem("leaves", false),
+    )
+
     companion object {
-        fun newInstance(currentUnit: String): CustomCocktailBottomSheetFragment {
-            return CustomCocktailBottomSheetFragment().apply {
-                this.currentSelectedUnit = currentUnit
-            }
+        private const val ARG_SELECTED_UNIT = "selected_unit"
+
+        // 현재 선택된 단위를 인자로 받아 BottomSheetFragment 인스턴스를 생성하는 함수
+        fun newInstance(selectedUnit: String): CustomCocktailBottomSheetFragment {
+            val fragment = CustomCocktailBottomSheetFragment()
+            val args = Bundle()
+            args.putString(ARG_SELECTED_UNIT, selectedUnit)
+            fragment.arguments = args
+            return fragment
         }
     }
 
-    private var currentSelectedUnit: String = "ml"  // 기본값
-
-    private val unitList: MutableList<UnitItem> by lazy {
-        mutableListOf(
-            UnitItem("ml", currentSelectedUnit == "ml"),
-            UnitItem("shot", currentSelectedUnit == "shot"),
-            UnitItem("dash", currentSelectedUnit == "dash"),
-            UnitItem("oz", currentSelectedUnit == "oz"),
-            UnitItem("slice", currentSelectedUnit == "slice"),
-            UnitItem("leaves", currentSelectedUnit == "leaves"),
-        )
-    }
-
-    interface UnitSelectListener {
-        fun onUnitSelected(unit: String)
-    }
-
-    var unitSelectListener: UnitSelectListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.getString(ARG_SELECTED_UNIT)?.let {
+            initialSelectedUnit = it
+        }
+        // unitList에서 initialSelectedUnit과 일치하는 항목만 true로 설정
+        unitList.forEach { it.unitSelected = (it.unitName == initialSelectedUnit) }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        initEvent()
     }
 
+    var onUnitSelectedListener: OnUnitSelectedListener? = null
+
+    // 리사이클러뷰 연결
     private fun initAdapter() {
         binding.apply {
             customCocktailBottomSheetAdapter = CustomCocktailBottomSheetAdapter(unitList) { selectedUnit ->
@@ -65,6 +76,35 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
             recyclerViewCustomCocktailBottomSheet.adapter = customCocktailBottomSheetAdapter
         }
     }
+
+    // 이벤트
+    private fun initEvent() {
+
+        binding.apply {
+
+            customCocktailBottomSheetAdapter.customCocktailBottomSheetListener = object : CustomCocktailBottomSheetAdapter.ItemOnClickListener {
+                override fun onClick(position: Int) {
+
+                    unitList.forEach {
+                        it.unitSelected = false
+                    }
+
+                    unitList[position].unitSelected = true
+
+                    customCocktailBottomSheetAdapter.notifyDataSetChanged()
+
+                    onUnitSelectedListener?.onUnitSelected(unitList[position])
+
+                    dismiss()
+                }
+            }
+        }
+    }
+
 }
 
 data class UnitItem(val unitName: String, var unitSelected: Boolean)
+
+interface OnUnitSelectedListener {
+    fun onUnitSelected(unitItem: UnitItem)
+}

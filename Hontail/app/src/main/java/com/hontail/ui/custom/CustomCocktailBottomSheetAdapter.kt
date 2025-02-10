@@ -6,17 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCustomCocktailBottomSheetUnitBinding
 
-class CustomCocktailBottomSheetAdapter(
-    private val unitList: MutableList<UnitItem>,
-    private val onUnitSelected: (String) -> Unit
-) : RecyclerView.Adapter<CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder>() {
+class CustomCocktailBottomSheetAdapter(private val items: List<UnitItem>): RecyclerView.Adapter<CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomCocktailBottomSheetUnitViewHolder {
-        val binding = ListItemCustomCocktailBottomSheetUnitBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+    lateinit var customCocktailBottomSheetListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClick(position: Int)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder {
+        val binding = ListItemCustomCocktailBottomSheetUnitBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CustomCocktailBottomSheetUnitViewHolder(binding)
     }
 
@@ -26,11 +25,14 @@ class CustomCocktailBottomSheetAdapter(
         holder.bind(unitList[position])
     }
 
-    inner class CustomCocktailBottomSheetUnitViewHolder(
-        private val binding: ListItemCustomCocktailBottomSheetUnitBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    override fun onBindViewHolder(holder: CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder, position: Int) {
+        holder.bind(items[position], position)
+    }
 
-        fun bind(item: UnitItem) {
+    inner class CustomCocktailBottomSheetUnitViewHolder(private val binding: ListItemCustomCocktailBottomSheetUnitBinding): RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: UnitItem, position: Int) {
+
             binding.apply {
                 textViewListItemCustomCocktailBottomSheetUnitName.text = item.unitName
 
@@ -50,6 +52,13 @@ class CustomCocktailBottomSheetAdapter(
 
                     // 선택된 unit 전달
                     onUnitSelected(item.unitName)
+                }
+                else {
+                    imageViewListItemCustomCocktailBottomSheetUnitCheck.visibility = View.INVISIBLE
+                }
+
+                root.setOnClickListener {
+                    customCocktailBottomSheetListener.onClick(position)
                 }
             }
         }

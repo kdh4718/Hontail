@@ -27,6 +27,13 @@ class MainActivityViewModel : ViewModel() {
         _cocktailId.postValue(cocktailId)
     }
 
+    // 선택된 ingredientId
+    private val _ingredientId = MutableLiveData<Int>()
+    val ingredientId: LiveData<Int> get() = _ingredientId
+
+    fun setIngredientId(ingredientId: Int) {
+        _ingredientId.postValue(ingredientId)
+
     // 필터 관련 코드 추가
     private val _selectedZzimFilter = MutableLiveData<Int?>()
     val selectedZzimFilter: LiveData<Int?> = _selectedZzimFilter
@@ -51,8 +58,6 @@ class MainActivityViewModel : ViewModel() {
 
     private val _baseButtonSelected = MutableLiveData<Boolean>()
     val baseButtonSelected: LiveData<Boolean> = _baseButtonSelected
-
-
 
     fun setZzimFilter(radioButtonId: Int) {
         _selectedZzimFilter.value = radioButtonId

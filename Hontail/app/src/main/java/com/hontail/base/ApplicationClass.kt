@@ -6,7 +6,9 @@ import android.Manifest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hontail.R
+import com.hontail.data.local.IngredientRepository
 import com.hontail.data.local.SharedPreferencesUtil
+import com.hontail.data.model.dto.IngredientsTable
 import com.kakao.sdk.common.KakaoSdk
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -43,6 +45,10 @@ class ApplicationClass : Application() {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient) // OkHttpClient 설정 적용
             .build()
+
+        // 앱 처음 생성되는 순간 룸 디비 생성.
+        IngredientRepository.initialize(this)
+        IngredientRepository.getInstance().refreshIngredients()
     }
 
     companion object{
