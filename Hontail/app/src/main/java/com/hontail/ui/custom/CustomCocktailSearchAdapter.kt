@@ -1,16 +1,24 @@
 package com.hontail.ui.custom
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCustomCocktailSearchBarBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchHeaderBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
 
-class CustomCocktailSearchAdapter(private val items: List<CustomCocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+private const val TAG = "CustomCocktailSearchAda"
+class CustomCocktailSearchAdapter(private var items: MutableList<CustomCocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var customCocktailSearchCancelListener: ItemOnClickListener
     lateinit var customCocktailSearchIngredientListener: ItemOnClickListener
+
+    var onSearchQueryChanged: ((String) -> Unit)? = null
 
     interface ItemOnClickListener {
         fun onClick(position: Int?)
@@ -23,10 +31,11 @@ class CustomCocktailSearchAdapter(private val items: List<CustomCocktailSearchIt
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(items[position]) {
+        return when (items[position]) {
             is CustomCocktailSearchItem.SearchBar -> VIEW_TYPE_SEARCH_BAR
             is CustomCocktailSearchItem.Header -> VIEW_TYPE_HEADER
             is CustomCocktailSearchItem.IngredientResult -> VIEW_TYPE_INGREDIENT_RESULT
+            else -> VIEW_TYPE_SEARCH_BAR
         }
     }
 
@@ -67,6 +76,13 @@ class CustomCocktailSearchAdapter(private val items: List<CustomCocktailSearchIt
         }
     }
 
+    // 어댑터의 아이템 리스트 갱신
+    fun updateItems(newItems: List<CustomCocktailSearchItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
     // search bar
     inner class CustomCocktailSearchBarViewHolder(private val binding: ListItemCustomCocktailSearchBarBinding): RecyclerView.ViewHolder(binding.root) {
 
@@ -74,9 +90,35 @@ class CustomCocktailSearchAdapter(private val items: List<CustomCocktailSearchIt
 
             binding.apply {
 
+                // 취소 이벤트
                 textViewListItemCustomCocktailSearchBarCancel.setOnClickListener {
                     customCocktailSearchCancelListener.onClick(null)
                 }
+
+                // 현재 검색어 설정
+                editTextCustomCocktailSearchBar.setText(item.query ?: "")
+
+                // 엔터를 눌렀을 때 액션 처리.
+                editTextCustomCocktailSearchBar.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+
+                    if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
+
+                        // 사용자가 입력한 검색어 가져오기.
+                        val query = editTextCustomCocktailSearchBar.text.toString()
+
+                        Log.d(TAG, "bind: OnEditorActionListener : $query")
+
+                        // 검색어 전달 콜백 호출.
+                        onSearchQueryChanged?.invoke(query)
+
+                        // 키보드 닫기.
+                        val closeKeyboard = root.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        closeKeyboard.hideSoftInputFromWindow(editTextCustomCocktailSearchBar.windowToken, 0)
+
+                        return@OnEditorActionListener true
+                    }
+                    false
+                })
             }
         }
     }

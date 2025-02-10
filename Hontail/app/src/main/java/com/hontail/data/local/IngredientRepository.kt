@@ -2,6 +2,7 @@ package com.hontail.data.local
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.hontail.base.ApplicationClass
 import com.hontail.data.model.dto.IngredientsTable
@@ -41,6 +42,11 @@ class IngredientRepository private constructor(context: Context) {
     // Room에 저장된 재료 데이터를 가져오기
     suspend fun getIngredients(): List<IngredientsTable> {
         return ingredientDAO.getAllIngredients()
+    }
+
+    // Room에 저장된 재료 데이터 검색어로 가져오기.
+    fun getIngredientsByNameKor(query: String): LiveData<List<IngredientsTable>> {
+        return ingredientDAO.getIngredientsByNameKor(query)
     }
 
     // Singleton 패턴 적용

@@ -32,13 +32,9 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
 
     private lateinit var customCocktailAdapter: CustomCocktailAdapter
 
-    private lateinit var ingredientRepository: IngredientRepository
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
-
-        ingredientRepository = IngredientRepository.getInstance()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +44,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         initToolbar()
         initAdapter()
         initEvent()
-        testRoom()
+//        testRoom()
     }
 
     // 툴바 설정
@@ -82,7 +78,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
                 }
             }
 
-            customCocktailAdapter = CustomCocktailAdapter(items)
+            customCocktailAdapter = CustomCocktailAdapter(items2)
 
             recyclerViewCustomCocktail.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktail.adapter = customCocktailAdapter
@@ -119,19 +115,19 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
     }
 
     // Room DB 테스트 코드
-    private fun testRoom() {
-
-        CoroutineScope(Dispatchers.Main).launch {
-
-            val ingredientList = ingredientRepository.getIngredients()
-
-            Log.d(TAG, "testRoom: ${ingredientList.size}")
-            
-            for(ingredient in ingredientList) {
-                Log.d(TAG, "ingredientName: ${ingredient.ingredientNameKor}")
-            }
-        }
-    }
+//    private fun testRoom() {
+//
+//        CoroutineScope(Dispatchers.Main).launch {
+//
+//            val ingredientList = ingredientRepository.getIngredients()
+//
+//            Log.d(TAG, "testRoom: ${ingredientList.size}")
+//
+//            for(ingredient in ingredientList) {
+//                Log.d(TAG, "ingredientName: ${ingredient.ingredientNameKor}")
+//            }
+//        }
+//    }
 
 }
 
