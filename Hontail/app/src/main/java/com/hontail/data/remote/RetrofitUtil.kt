@@ -27,5 +27,8 @@ class RetrofitUtil {
 
         // 이미지 분석 서비스
         val pictureService = ApplicationClass.retrofit.create(PictureService::class.java)
+
+        // 재료 서비스
+        val ingredientService = ApplicationClass.retrofit.create(IngredientService::class.java)
     }
 }

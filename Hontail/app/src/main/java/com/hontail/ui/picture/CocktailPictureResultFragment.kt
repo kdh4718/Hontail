@@ -37,6 +37,13 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         super.onViewCreated(view, savedInstanceState)
         initData()
         initRecyclerView()
+        setupBackButton()
+    }
+
+    private fun setupBackButton() {
+        binding.imageViewPictureResultGoBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     fun initData(){

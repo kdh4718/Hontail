@@ -2,6 +2,7 @@ package com.hontail.ui.custom
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,21 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.local.IngredientRepository
 import com.hontail.databinding.FragmentCustomCocktailBinding
 import com.hontail.databinding.FragmentLoginBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.cocktail.CocktailListFragment
+import com.hontail.ui.home.HomeFragment
+import com.hontail.ui.mypage.MyPageFragment
+import com.hontail.ui.zzim.ZzimFragment
 import com.hontail.util.CommonUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
+private const val TAG = "CustomCocktailFragment"
 class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
     FragmentCustomCocktailBinding::bind,
     R.layout.fragment_custom_cocktail
@@ -38,17 +48,27 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         initToolbar()
         initAdapter()
         initEvent()
+//        testRoom()
     }
 
     // 툴바 설정
     private fun initToolbar() {
-
         binding.apply {
-
             toolbarCustomCocktail.apply {
-
                 setNavigationIcon(R.drawable.go_back)
                 setNavigationOnClickListener {
+                    // 백스택에서 이전 fragment 확인
+                    val count = parentFragmentManager.backStackEntryCount
+                    if (count > 1) {
+                        val previousEntry = parentFragmentManager.getBackStackEntryAt(count - 2)
+                        // 이전 화면에 따라 bottom navigation 아이템 체크
+                        when (previousEntry.name) {
+                            "HomeFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_home
+                            "CocktailListFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_search
+                            "ZzimFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_heart
+                            "MyPageFragment" -> mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_mypage
+                        }
+                    }
                     parentFragmentManager.popBackStack("CustomCocktailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
@@ -71,7 +91,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
                 }
             }
 
-            customCocktailAdapter = CustomCocktailAdapter(items)
+            customCocktailAdapter = CustomCocktailAdapter(items2)
 
             recyclerViewCustomCocktail.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktail.adapter = customCocktailAdapter
@@ -106,6 +126,21 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
             }
         }
     }
+
+    // Room DB 테스트 코드
+//    private fun testRoom() {
+//
+//        CoroutineScope(Dispatchers.Main).launch {
+//
+//            val ingredientList = ingredientRepository.getIngredients()
+//
+//            Log.d(TAG, "testRoom: ${ingredientList.size}")
+//
+//            for(ingredient in ingredientList) {
+//                Log.d(TAG, "ingredientName: ${ingredient.ingredientNameKor}")
+//            }
+//        }
+//    }
 
 }
 

@@ -9,7 +9,7 @@ data class CocktailListResponse(
     val likes: Int,
     val alcoholContent: Int,
     val baseSpirit: String,
-    val createdAt: Timestamp,
+    val createdAt: String,
     val ingredientCount: Int,
     val isLiked: Boolean
 )

@@ -1,5 +1,6 @@
 package com.hontail.data.remote
 
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.model.response.CocktailTopLikedResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -19,5 +20,5 @@ interface CocktailService {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("isCustom") isCustom: Boolean
-    )
+    ): List<CocktailListResponse>
 }

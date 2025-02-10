@@ -1,4 +1,3 @@
-//CocktailListAdapter.kt
 package com.hontail.ui.cocktail
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,11 +6,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemCocktailListCocktailItemBinding
 import com.hontail.databinding.ListItemCocktailListFilterBinding
 import com.hontail.databinding.ListItemCocktailListSearchBarBinding
 import com.hontail.databinding.ListItemCocktailListTabLayoutBinding
-import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CocktailItemAdapter
 
 class CocktailListAdapter(private val context: Context, private val items: List<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -152,11 +151,11 @@ class CocktailListAdapter(private val context: Context, private val items: List<
     // Cocktail Items
     inner class CocktailListCocktailItemsViewHolder(private val binding: ListItemCocktailListCocktailItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(cocktails: List<Cocktail>) {
+        fun bind(cocktails: List<CocktailListResponse>) {
 
             binding.apply {
 
-                val cocktailListCocktailAdapter = CocktailItemAdapter(cocktails)
+                val cocktailListCocktailAdapter = CocktailItemAdapter(context, cocktails)
 
                 recyclerViewListItemCocktailListCocktailItem.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemCocktailListCocktailItem.adapter = cocktailListCocktailAdapter
