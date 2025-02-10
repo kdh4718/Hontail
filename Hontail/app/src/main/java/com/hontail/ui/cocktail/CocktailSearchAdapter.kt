@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemCocktailSearchRecentBinding
 import com.hontail.databinding.ListItemCocktailSearchResultBinding
 import com.hontail.databinding.ListItemCocktailSearchSearchBarBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
 import com.hontail.ui.MainActivity
-import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CocktailItemAdapter
 
 class CocktailSearchAdapter(private val context: Context, private val items: List<CocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -121,11 +121,11 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
     // 칵테일 검색 결과
     inner class CocktailResultViewHolder(private val binding: ListItemCocktailSearchResultBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(cocktailList: List<Cocktail>) {
+        fun bind(cocktailList: List<CocktailListResponse>) {
 
             binding.apply {
 
-                val cocktailSearchResultAdapter = CocktailItemAdapter(cocktailList)
+                val cocktailSearchResultAdapter = CocktailItemAdapter(context, cocktailList)
 
                 recyclerViewListItemCocktailSearchResult.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemCocktailSearchResult.adapter = cocktailSearchResultAdapter

@@ -2,14 +2,15 @@ package com.hontail.back.cocktail.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CocktailSummaryDto {
+public class TopLikedCocktailDto {
     private Integer id;
     private String cocktailName;
     private String imageUrl;
@@ -18,6 +19,5 @@ public class CocktailSummaryDto {
     private String baseSpirit;
     private LocalDateTime createdAt;
     private Long ingredientCount;
-    @JsonProperty("isLiked")
-    private boolean liked;
+    private Integer rank;
 }

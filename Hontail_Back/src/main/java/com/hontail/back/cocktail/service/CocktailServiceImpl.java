@@ -1,6 +1,7 @@
 package com.hontail.back.cocktail.service;
 
 import com.hontail.back.cocktail.dto.CocktailSummaryDto;
+import com.hontail.back.cocktail.dto.TopLikedCocktailDto;
 import com.hontail.back.db.entity.Cocktail;
 import com.hontail.back.db.repository.CocktailIngredientRepository;
 import com.hontail.back.db.repository.CocktailRepository;
@@ -71,17 +72,13 @@ public class CocktailServiceImpl implements CocktailService {
     }
 
     @Override
-    public List<CocktailSummaryDto> getTopLikedCocktails(Integer userId) {
-        List<CocktailSummaryDto> topCocktails = cocktailRepository.findTopLiked(PageRequest.of(0, 10))
+    public List<TopLikedCocktailDto> getTopLikedCocktails() {
+        List<TopLikedCocktailDto> topCocktails = cocktailRepository.findTopLiked(PageRequest.of(0, 10))
                 .stream()
                 .map(cocktail -> {
                     Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
                     Long likesCnt = likeRepository.countByCocktail(cocktail);
-                    boolean isLiked = false;
-                    if (userId != null) {
-                        isLiked = likeRepository.findByCocktailIdAndUserId(cocktail.getId(), userId).isPresent();
-                    }
-                    return new CocktailSummaryDto(
+                    return new TopLikedCocktailDto(
                             cocktail.getId(),
                             cocktail.getCocktailName(),
                             cocktail.getImageUrl(),
@@ -90,13 +87,18 @@ public class CocktailServiceImpl implements CocktailService {
                             cocktail.getBaseSpirit(),
                             cocktail.getCreatedAt(),
                             ingredientCnt,
-                            isLiked
+                            null    // rank는 밑 로직에서
                     );
                 })
                 .toList();
 
         if (topCocktails.isEmpty()) {
             throw new CustomException(ErrorCode.COCKTAIL_NOT_FOUND);
+        }
+
+        // 순위 설정 (1부터 시작)
+        for (int i = 0; i < topCocktails.size(); i++) {
+            topCocktails.get(i).setRank(i + 1);
         }
 
         return topCocktails;

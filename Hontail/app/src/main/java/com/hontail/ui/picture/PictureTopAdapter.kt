@@ -1,4 +1,3 @@
-//PictureTopAdapter.kt
 package com.hontail.ui.picture
 
 import android.content.Context

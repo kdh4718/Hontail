@@ -22,6 +22,11 @@ class ZzimFragment : Fragment(R.layout.fragment_zzim) {
         mainActivity = context as MainActivity
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentZzimBinding.bind(view)

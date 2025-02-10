@@ -8,10 +8,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.FragmentCocktailSearchBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.mypage.Cocktail
 import com.hontail.util.CommonUtils
 
 class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
@@ -46,11 +46,19 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 add(RecentItem("몽키 숄더"))
             }
 
-            val cocktailList = mutableListOf<Cocktail>().apply {
-                add(Cocktail("깔루아 밀크", "리큐어", 2, 1231, 5))
-                add(Cocktail("에스프레소 마티니", "리큐어", 3, 1231, 22))
-                add(Cocktail("깔루아 콜라", "리큐어", 2, 1231, 16))
-                add(Cocktail("B-52", "리큐어", 5, 1231, 26))
+            val cocktailList = mutableListOf<CocktailListResponse>().apply {
+                add(
+                    CocktailListResponse(
+                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
+                        "2025-01-27 00:13:32", 5, false
+                    )
+                )
+                add(
+                    CocktailListResponse(
+                        2, "에스프레소 마티니", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 0, 0, "리큐어",
+                        "2025-01-27 00:13:32", 3, true
+                    )
+                )
             }
 
             val items = mutableListOf<CocktailSearchItem>().apply {
@@ -95,7 +103,7 @@ sealed class CocktailSearchItem {
 
     data class SearchBar(val query: String?): CocktailSearchItem()
     data class Recent(val recentList: List<RecentItem>): CocktailSearchItem()
-    data class Result(val resultList: List<Cocktail>): CocktailSearchItem()
+    data class Result(val resultList: List<CocktailListResponse>): CocktailSearchItem()
 }
 
 data class RecentItem(val cocktailName: String)

@@ -62,6 +62,11 @@ class CocktailRecipeFragment : Fragment() {
 
     private fun initEvent() {
         binding.apply {
+            // ✅ 뒤로가기 버튼 클릭 이벤트 추가
+            includeDrawerCocktailRecipeInclude.imageViewCocktailRecipeGoBack.setOnClickListener {
+                mainActivity.onBackPressed()
+            }
+
             // ✅ Drawer 열고 닫는 이벤트 정상 작동하도록 설정
             includeDrawerCocktailRecipeInclude.imageButtonCocktailRecipeSideBar.setOnClickListener {
                 drawerLayoutDrawerCocktailRecipeDrawer.openDrawer(GravityCompat.END)

@@ -1,10 +1,10 @@
-//CocktailPictureResultFragment.kt
 package com.hontail.ui.picture
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
@@ -12,26 +12,15 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCocktailPictureResultBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.picture.viewmodel.CocktailPictureResultFragmentViewModel
 
 class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResultBinding>(
     FragmentCocktailPictureResultBinding::bind,
     R.layout.fragment_cocktail_picture_result
 ) {
-    sealed class PictureResultType {
-        data class Top(
-            val suggestion: String,
-            val ingredients: List<String>
-        ) : PictureResultType()
-
-        data class Bottom(
-            val cocktailCount: String,
-            val filters: List<String>,
-            val cocktails: List<String>
-        ) : PictureResultType()
-    }
-
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: CocktailPictureResultFragmentViewModel by viewModels()
     private val bottomSheet = FilterBottomSheetFragment()
 
     override fun onAttach(context: Context) {
@@ -39,9 +28,26 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         mainActivity = context as MainActivity
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.ingredientList = activityViewModel.ingredientList.value!!
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initData()
         initRecyclerView()
+        setupBackButton()
+    }
+
+    private fun setupBackButton() {
+        binding.imageViewPictureResultGoBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
+
+    fun initData(){
+        viewModel.getIngredientAnalyze()
     }
 
     private fun initRecyclerView() {
@@ -69,5 +75,18 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
                 PictureBottomAdapter(requireContext(), pictureBottomData)
             )
         }
+    }
+
+    sealed class PictureResultType {
+        data class Top(
+            val suggestion: String,
+            val ingredients: List<String>
+        ) : PictureResultType()
+
+        data class Bottom(
+            val cocktailCount: String,
+            val filters: List<String>,
+            val cocktails: List<String>
+        ) : PictureResultType()
     }
 }

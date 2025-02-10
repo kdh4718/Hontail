@@ -1,8 +1,6 @@
 package com.hontail.ui.picture
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -125,7 +123,8 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
 
         byteArray?.let {
             val detectedText = visionService.detectTextAndLabelsFromImage(bitmap)
-            Log.d(TAG, "imageAdjustment: ${detectedText}")
+            Log.d(TAG, "Vision API: ${detectedText}")
+            activityViewModel.setIngredientList(detectedText)
 
             mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_PICTURE_RESULT_FRAGMENT)
         }
