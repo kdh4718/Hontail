@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface CocktailRepository extends JpaRepository<Cocktail, Integer> {
+public interface CocktailRepository extends JpaRepository<Cocktail, Integer>, CocktailCustomRepository {
     Page<Cocktail> findByBaseSpirit(String baseSpirit, Pageable pageable);
 
     // 기본/커스텀 전체 조회

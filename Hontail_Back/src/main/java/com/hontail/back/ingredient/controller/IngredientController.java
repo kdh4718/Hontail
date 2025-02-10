@@ -24,13 +24,4 @@ public class IngredientController {
         return ingredientService.getAllIngredients();
     }
 
-    @GetMapping("/analyze")
-    @Operation(description = "촬영 재료 분석")
-    public List<CocktailSummaryDto> getRecommendedCocktails(
-            @RequestParam Integer userId,
-            @RequestParam List<String> ingredients
-    ) {
-        return ingredientService.getRecommendedCocktails(userId, ingredients);
-    }
-
 }

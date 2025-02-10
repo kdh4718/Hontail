@@ -9,6 +9,4 @@ import java.util.List;
 
 public interface IngredientService {
     public List<IngredientDto> getAllIngredients();
-
-    public List<CocktailSummaryDto> getRecommendedCocktails(Integer userId, List<String> ingredients);
 }

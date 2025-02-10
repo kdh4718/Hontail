@@ -33,9 +33,4 @@ public class IngredientServiceImpl implements IngredientService {
                         .build())
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public List<CocktailSummaryDto> getRecommendedCocktails(Integer userId, List<String> ingredients) {
-        return ingredientRepository.findRecommendedCocktails(userId, ingredients);
-    }
 }
