@@ -12,10 +12,14 @@ import com.hontail.databinding.ListItemCustomCocktailRecipeStepBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepHeaderBinding
 import com.hontail.ui.custom.screen.CustomCocktailRecipeItem
 
-class CustomCocktailRecipeAdapter(
-    private val items: List<CustomCocktailRecipeItem>,
-    private val onRegisterClick: () -> Unit  // 콜백 추가
-    ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    lateinit var customCocktailRecipeListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickRegister()
+        fun onClickAddStep()
+    }
 
     companion object {
         const val VIEW_TYPE_IMAGE = 0
@@ -90,7 +94,7 @@ class CustomCocktailRecipeAdapter(
 
         when(holder) {
             is CustomCocktailRecipeImageViewHolder -> holder.bind(items[position] as CustomCocktailRecipeItem.CustomCocktailRecipeImage)
-            is CustomCocktailRecipeAlcoholLevelViewHolder -> holder.bind()
+            is CustomCocktailRecipeAlcoholLevelViewHolder -> holder.bind(items[position] as CustomCocktailRecipeItem.CustomCocktailAlcoholLevel)
             is CustomCocktailRecipeDescriptionViewHolder -> holder.bind()
             is CustomCocktailRecipeStepHeaderViewHolder -> holder.bind()
             is CustomCocktailRecipeStepViewHolder -> holder.bind()
@@ -113,8 +117,11 @@ class CustomCocktailRecipeAdapter(
     // 도수
     inner class CustomCocktailRecipeAlcoholLevelViewHolder(private val binding: ListItemCustomCocktailRecipeAlcoholLevelBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind() {
+        fun bind(item: CustomCocktailRecipeItem.CustomCocktailAlcoholLevel) {
 
+            binding.apply {
+                textViewListItemCustomCocktailRecipeAlcoholLevelAlcoholLevel.text = "${item.alcoholLevel} %"
+            }
         }
     }
 
@@ -124,7 +131,6 @@ class CustomCocktailRecipeAdapter(
         fun bind() {
 
             binding.apply {
-
             }
         }
     }
@@ -158,17 +164,23 @@ class CustomCocktailRecipeAdapter(
 
             binding.apply {
 
+                imageViewListItemCustomCocktailRecipeAddStep.setOnClickListener {
+                    customCocktailRecipeListener.onClickAddStep()
+                }
             }
         }
     }
 
     // 레시피 등록
-    inner class CustomCocktailRecipeRegisterViewHolder(
-        private val binding: ListItemCustomCocktailRecipeRegisterBinding
-    ): RecyclerView.ViewHolder(binding.root) {
+    inner class CustomCocktailRecipeRegisterViewHolder(private val binding: ListItemCustomCocktailRecipeRegisterBinding): RecyclerView.ViewHolder(binding.root) {
+
         fun bind() {
-            binding.imageViewListItemCustomCocktailRecipeAddStep.setOnClickListener {
-                onRegisterClick()  // 클릭 시 콜백 호출
+
+            binding.apply {
+
+                imageViewListItemCustomCocktailRecipeAddStep.setOnClickListener {
+                    customCocktailRecipeListener.onClickRegister()
+                }
             }
         }
     }

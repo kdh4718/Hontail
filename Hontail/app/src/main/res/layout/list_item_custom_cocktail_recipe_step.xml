@@ -78,14 +78,24 @@
 
     <TextView
         android:id="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="제조 설명"
         style="@style/Font_SemiBold_18_Basic_White"
         android:layout_marginTop="24dp"
         app:layout_constraintTop_toBottomOf="@+id/radioGroupListItemCustomCocktailRecipeStep"
-        app:layout_constraintStart_toStartOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
-        app:layout_constraintEnd_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"/>
+        app:layout_constraintStart_toStartOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle" />
+
+    <TextView
+        android:id="@+id/textViewListItemCustomCocktailRecipeStepSequence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/Font_SemiBold_16_Basic_Sky"
+        android:layout_marginStart="12dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"
+        app:layout_constraintStart_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"/>
 
     <EditText
         android:id="@+id/editTextListItemCustomCocktailRecipeStepDescription"
