@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
 class VisionService(private val context: Context) {
 
     // 이미지에서 텍스트 및 라벨을 감지하는 함수
-    fun detectTextAndLabelsFromImage(bitmap: Bitmap): Pair<String, List<String>> {
+    fun detectTextAndLabelsFromImage(bitmap: Bitmap): List<String> {
         // Vision API 클라이언트 생성
         val visionClient = getVisionClient()
 
@@ -41,12 +41,15 @@ class VisionService(private val context: Context) {
         val response = visionClient.batchAnnotateImages(listOf(request)).responsesList.first()
 
         // 텍스트 감지 결과 추출
-        val detectedText = response.textAnnotationsList.firstOrNull()?.description ?: "No text detected"
+        val detectedText = response.textAnnotationsList.firstOrNull()?.description
+            ?.split("\n")
+            ?.filter { it.isNotBlank() }
+            ?: emptyList()
 
         // 라벨 감지 결과 추출 (최대 5개 라벨)
-        val detectedLabels = response.labelAnnotationsList.map { it.description }.take(5)
+        val detectedLabels = response.labelAnnotationsList.map { it.description }.take(10)
 
-        return Pair(detectedText, detectedLabels)
+        return detectedText + detectedLabels
     }
 
     // Vision API 클라이언트를 생성하는 함수

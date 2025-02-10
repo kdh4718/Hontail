@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.FragmentMyPageBinding
 import com.hontail.ui.LoginActivity
 import com.hontail.ui.MainActivity
@@ -51,7 +52,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
                 setOnMenuItemClickListener {
 
-                    when(it.itemId) {
+                    when (it.itemId) {
 
                         // 로그아웃
                         R.id.menu_mypage_logout -> {
@@ -81,11 +82,26 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
         binding.apply {
 
-            val cocktailList = mutableListOf<Cocktail>().apply {
-                add(Cocktail("깔루아 밀크", "리큐어", 2, 1231, 5))
-                add(Cocktail("에스프레소 마티니", "리큐어", 3, 1231, 22))
-                add(Cocktail("깔루아 콜라", "리큐어", 2, 1231, 16))
-                add(Cocktail("B-52", "리큐어", 5, 1231, 26))
+            val cocktailList = mutableListOf<CocktailListResponse>().apply {
+                add(
+                    CocktailListResponse(
+                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
+                        "2025-01-27 00:13:32", 5, false
+                    )
+                )
+                add(
+                    CocktailListResponse(
+                        2,
+                        "에스프레소 마티니",
+                        "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg",
+                        0,
+                        0,
+                        "리큐어",
+                        "2025-01-27 00:13:32",
+                        3,
+                        true
+                    )
+                )
             }
 
             val items = mutableListOf<MyPageItem>().apply {
@@ -95,7 +111,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
             val items2 = mutableListOf<MyPageItem>().apply {
                 add(MyPageItem.Profile("hyuun", 5))
-                if(isCocktailListEmpty()) {
+                if (isCocktailListEmpty()) {
                     add(MyPageItem.Empty)
                 }
             }
@@ -136,9 +152,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
 sealed class MyPageItem {
 
-    data class Profile(val userName: String, val recipeCnt: Int): MyPageItem()
-    data class MyCocktail(val cocktailList: List<Cocktail>): MyPageItem()
-    object Empty: MyPageItem()
+    data class Profile(val userName: String, val recipeCnt: Int) : MyPageItem()
+    data class MyCocktail(val cocktailList: List<CocktailListResponse>) : MyPageItem()
+    object Empty : MyPageItem()
 }
-
-data class Cocktail(val cocktailName: String, val cocktailBaseSpirit: String, val cocktailIngredientCnt: Int, val cocktailZzimCnt: Int, val cocktailAlcholContent: Int)

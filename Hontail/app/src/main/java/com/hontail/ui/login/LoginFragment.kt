@@ -85,7 +85,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}") // 여기서 10이 찍혀야 정상
             startActivity(intent)
         }
-
     }
 
     fun initEvent() {
@@ -110,7 +109,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
 
             // ✅ 비회원으로 시작하기 버튼 클릭 시 MainActivity로 이동
-            textViewLoginHeadline3.setOnClickListener {
+            textViewLoginNonMember.setOnClickListener {
                 moveToMainActivity()
             }
         }
@@ -157,8 +156,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
         })
     }
-
-
+    
     private fun startAutoSlide() {
         handler.postDelayed(autoScrollRunnable, 3000)
     }

@@ -4,6 +4,7 @@ import com.hontail.base.ApplicationClass
 
 class RetrofitUtil {
     companion object{
+        // 소셜 로그인 서비스
         val loginService = ApplicationClass.retrofit.create(LoginService::class.java)
 
         // 댓글 서비스
@@ -23,6 +24,9 @@ class RetrofitUtil {
 
         // 칵테일 서비스
         val cocktailService = ApplicationClass.retrofit.create(CocktailService::class.java)
+
+        // 이미지 분석 서비스
+        val pictureService = ApplicationClass.retrofit.create(PictureService::class.java)
 
         // 재료 서비스
         val ingredientService = ApplicationClass.retrofit.create(IngredientService::class.java)

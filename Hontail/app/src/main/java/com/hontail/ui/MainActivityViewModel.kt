@@ -4,6 +4,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hontail.data.model.response.Cocktail
+import com.hontail.data.remote.RetrofitUtil
+import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivityViewModel_SSAFY"
 
@@ -13,26 +17,44 @@ class MainActivityViewModel : ViewModel() {
     val userId: LiveData<Int>
         get() = _userId
 
-    fun setUserId(userI: Int){
+    fun setUserId(userI: Int) {
         _userId.postValue(userI)
         Log.d(TAG, "setUserId: ${_userId.value} - ${userI}")
     }
-    
+
     // 선택된 cocktailId
     private val _cocktailId = MutableLiveData<Int>()
     val cocktailId: LiveData<Int>
         get() = _cocktailId
 
+    // Vision API로 분석한 텍스트 저장
+    private val _ingredientList = MutableLiveData<List<String>>()
+    val ingredientList: LiveData<List<String>>
+        get() = _ingredientList
+
     fun setCocktailId(cocktailId: Int){
         _cocktailId.postValue(cocktailId)
     }
 
+    fun setIngredientList(ingredientList: List<String>){
+        _ingredientList.postValue(ingredientList)
+    }
+
+    // 선택된 칵테일 베이스주 타입
+    private val _baseSpirit = MutableLiveData<String>("")
+    val baseSpirit: LiveData<String>
+        get() = _baseSpirit
+
+    fun setBaseSpirit(baseSpirit: String){
+        _baseSpirit.postValue(baseSpirit)
+    }
     // 선택된 ingredientId
     private val _ingredientId = MutableLiveData<Int>()
     val ingredientId: LiveData<Int> get() = _ingredientId
 
     fun setIngredientId(ingredientId: Int) {
         _ingredientId.postValue(ingredientId)
+    }
 
     // 필터 관련 코드 추가
     private val _selectedZzimFilter = MutableLiveData<Int?>()

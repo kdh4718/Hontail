@@ -68,10 +68,9 @@ class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomC
     // 리사이클러뷰 연결
     private fun initAdapter() {
         binding.apply {
-            customCocktailBottomSheetAdapter = CustomCocktailBottomSheetAdapter(unitList) { selectedUnit ->
-                unitSelectListener?.onUnitSelected(selectedUnit)
-                dismiss()
-            }
+
+            customCocktailBottomSheetAdapter = CustomCocktailBottomSheetAdapter(unitList)
+
             recyclerViewCustomCocktailBottomSheet.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktailBottomSheet.adapter = customCocktailBottomSheetAdapter
         }
