@@ -15,11 +15,16 @@ private const val TAG = "CocktailPictureResultFr_SSAFY"
 
 class CocktailPictureResultFragmentViewModel(private val handle: SavedStateHandle): ViewModel() {
     // Vision API로 분석한 텍스트 저장
-    var ingredientList = handle.get<List<String>>("ingredientList") ?: emptyList()
+    var detectedTextList = handle.get<List<String>>("detectedTextList") ?: emptyList()
         set(value){
-            handle.set("ingredientList", value)
+            handle.set("detectedTextList", value)
             field = value
         }
+
+    // 분석 결과 재료 리스트
+    private val _ingredientList = MutableLiveData<List<String>>()
+    val ingredientList: LiveData<List<String>>
+        get() = _ingredientList
 
     // Vision API로 분석한 결과 칵테일 리스트
     private val _ingredientAnalyzeCoctailList = MutableLiveData<List<CocktailListResponse>>()
@@ -27,16 +32,20 @@ class CocktailPictureResultFragmentViewModel(private val handle: SavedStateHandl
         get() = _ingredientAnalyzeCoctailList
 
     fun getIngredientAnalyze(){
-        getIngredientAnalyze(ingredientList)
+        getIngredientAnalyze(detectedTextList)
     }
 
     fun getIngredientAnalyze(analyzeList: List<String>){
+
         Log.d(TAG, "getIngredientAnalyze: ${analyzeList}")
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.pictureService.ingredientAnalyze(analyzeList)
             }.onSuccess {
-                _ingredientAnalyzeCoctailList.value = it.body()
+                it.body()?.let {
+                    _ingredientAnalyzeCoctailList.value = it.first
+                    _ingredientList.value = it.second
+                }
             }.onFailure {
                 _ingredientAnalyzeCoctailList.value = emptyList()
             }

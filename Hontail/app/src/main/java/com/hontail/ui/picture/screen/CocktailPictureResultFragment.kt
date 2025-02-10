@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.FragmentCocktailPictureResultBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
@@ -32,13 +33,14 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.ingredientList = activityViewModel.ingredientList.value!!
+        viewModel.detectedTextList = activityViewModel.ingredientList.value!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initData()
+
         initRecyclerView()
+        initData()
         setupBackButton()
     }
 
@@ -53,28 +55,31 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     }
 
     private fun initRecyclerView() {
-        val dataList = listOf(
-            "Salt", "Mint", "Sugar", "Lime", "Ice",
-            "Rum", "Soda", "Basil", "Peach", "Cherry",
-            "Lemon", "Orange"
-        )
+        binding.recyclerViewPictureResult.layoutManager = LinearLayoutManager(requireContext())
 
-        val pictureTopData = PictureResultType.Top(
-            suggestion = "hyunn님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?",
-            ingredients = dataList
-        )
+        // 어댑터를 미리 생성 (초기 빈 데이터)
+        val pictureTopAdapter = PictureTopAdapter(requireContext(), PictureResultType.Top("", emptyList()))
+        val pictureBottomAdapter = PictureBottomAdapter(requireContext(), PictureResultType.Bottom("", emptyList(), emptyList()))
 
-        val pictureBottomData = PictureResultType.Bottom(
-            cocktailCount = "칵테일 24개",
-            filters = listOf(),  // 필터 데이터
-            cocktails = listOf() // 칵테일 데이터
-        )
+        // 어댑터를 ConcatAdapter로 묶기
+        val concatAdapter = ConcatAdapter(pictureTopAdapter, pictureBottomAdapter)
+        binding.recyclerViewPictureResult.adapter = concatAdapter
 
-        binding.recyclerViewPictureResult.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = ConcatAdapter(
-                PictureTopAdapter(requireContext(), pictureTopData),
-                PictureBottomAdapter(requireContext(), pictureBottomData)
+        // ViewModel의 데이터 변경 감지 및 UI 업데이트
+        viewModel.ingredientList.observe(viewLifecycleOwner) { ingredientList ->
+            val pictureTopData = PictureResultType.Top(
+                suggestion = getString(R.string.user_cocktail_recommendations, "홍길동"),
+                ingredients = ingredientList
+            )
+
+            pictureTopAdapter.updateData(pictureTopData)
+        }
+
+        viewModel.ingredientAnalyzeCoctailList.observe(viewLifecycleOwner){
+            val pictureBottomAdapter = PictureResultType.Bottom(
+                cocktailCount = it.size.toString(),
+                filters = listOf(),
+                cocktails = it
             )
         }
     }
@@ -88,7 +93,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         data class Bottom(
             val cocktailCount: String,
             val filters: List<String>,
-            val cocktails: List<String>
+            val cocktails: List<CocktailListResponse>
         ) : PictureResultType()
     }
 }

@@ -62,4 +62,9 @@ class PictureTopAdapter(
     }
 
     override fun getItemCount(): Int = 1
+
+    fun updateData(newData: CocktailPictureResultFragment.PictureResultType.Top) {
+        data = newData
+        notifyDataSetChanged()
+    }
 }

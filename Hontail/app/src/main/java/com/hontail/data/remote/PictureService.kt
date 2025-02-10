@@ -9,5 +9,5 @@ import retrofit2.http.POST
 interface PictureService {
     // 이미지 분석 칵테일 조회
     @POST("/api/ingredient-analyze")
-    suspend fun ingredientAnalyze(@Body analyzeTextList: List<String>): Response<List<CocktailListResponse>>
+    suspend fun ingredientAnalyze(@Body analyzeTextList: List<String>): Response<Pair<List<CocktailListResponse>, List<String>>>
 }
