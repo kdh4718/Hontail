@@ -1,30 +1,19 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.screen
 
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
-import com.hontail.data.local.IngredientRepository
 import com.hontail.databinding.FragmentCustomCocktailBinding
-import com.hontail.databinding.FragmentLoginBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.cocktail.CocktailListFragment
-import com.hontail.ui.home.HomeFragment
-import com.hontail.ui.mypage.MyPageFragment
-import com.hontail.ui.zzim.ZzimFragment
+import com.hontail.ui.custom.adapter.CustomCocktailAdapter
 import com.hontail.util.CommonUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 private const val TAG = "CustomCocktailFragment"
 class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
@@ -32,6 +21,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
     R.layout.fragment_custom_cocktail
 ) {
     private lateinit var mainActivity: MainActivity
+
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var customCocktailAdapter: CustomCocktailAdapter
@@ -45,10 +35,11 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         mainActivity.hideBottomNav(true)
+
+        observeCustomCocktail()
         initToolbar()
         initAdapter()
         initEvent()
-//        testRoom()
     }
 
     // 툴바 설정
@@ -75,32 +66,38 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         }
     }
 
+    // ViewModel Observe 등록
+    private fun observeCustomCocktail() {
+
+        binding.apply {
+
+            activityViewModel.customCocktailIngredients.observe(viewLifecycleOwner) { ingredientList ->
+
+                // 비어 있지 않다면.
+                if(ingredientList.isNotEmpty()) {
+                    customCocktailAdapter.updateItems(ingredientList)
+                }
+                else {
+                    customCocktailAdapter.updateItems(mutableListOf(CustomCocktailItem.EmptyItem))
+                }
+            }
+            
+            activityViewModel.overallAlcoholContent.observe(viewLifecycleOwner) { overAllAlcohol ->
+                Log.d(TAG, "observeCustomCocktail:  ${String.format("%.1f", overAllAlcohol)}")
+            }
+        }
+    }
+
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {
 
         binding.apply {
 
-            val items = mutableListOf<CustomCocktailItem>().apply {
-                add(CustomCocktailItem.IngredientItem("오렌지", "1/2 개"))
-                add(CustomCocktailItem.IngredientItem("에스프레소", "20 ml"))
-            }
-
-            val items2 = mutableListOf<CustomCocktailItem>().apply {
-                if(isIngredientListEmpty()) {
-                    add(CustomCocktailItem.EmptyItem)
-                }
-            }
-
-            customCocktailAdapter = CustomCocktailAdapter(items2)
+            customCocktailAdapter = CustomCocktailAdapter(mutableListOf())
 
             recyclerViewCustomCocktail.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktail.adapter = customCocktailAdapter
         }
-    }
-
-    // 재료가 있는지 확인
-    private fun isIngredientListEmpty(): Boolean {
-        return true
     }
 
     // 이벤트
@@ -109,9 +106,9 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         binding.apply {
 
             // 재료 삭제
-            customCocktailAdapter.customCocktailIngredientDeleteListener = object : CustomCocktailAdapter.ItemOnClickListener {
-                override fun onClick() {
-                    TODO("Not yet implemented")
+            customCocktailAdapter.customCocktailIngredientListener = object : CustomCocktailAdapter.ItemOnClickListener {
+                override fun onClickDelete(position: Int) {
+                    activityViewModel.deleteCustomCocktailIngredientAt(position)
                 }
             }
 
@@ -127,25 +124,10 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         }
     }
 
-    // Room DB 테스트 코드
-//    private fun testRoom() {
-//
-//        CoroutineScope(Dispatchers.Main).launch {
-//
-//            val ingredientList = ingredientRepository.getIngredients()
-//
-//            Log.d(TAG, "testRoom: ${ingredientList.size}")
-//
-//            for(ingredient in ingredientList) {
-//                Log.d(TAG, "ingredientName: ${ingredient.ingredientNameKor}")
-//            }
-//        }
-//    }
-
 }
 
 sealed class CustomCocktailItem {
 
-    data class IngredientItem(val ingredientName: String, val ingredientQuantity: String): CustomCocktailItem()
+    data class IngredientItem(val ingredientName: String, val ingredientQuantity: String, val ingredientImage: String, val alcoholContent: Double): CustomCocktailItem()
     object EmptyItem: CustomCocktailItem()
 }

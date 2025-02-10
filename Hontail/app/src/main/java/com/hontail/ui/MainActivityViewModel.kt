@@ -2,11 +2,13 @@ package com.hontail.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hontail.data.model.response.Cocktail
 import com.hontail.data.remote.RetrofitUtil
+import com.hontail.ui.custom.screen.CustomCocktailItem
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivityViewModel_SSAFY"
@@ -54,6 +56,105 @@ class MainActivityViewModel : ViewModel() {
 
     fun setIngredientId(ingredientId: Int) {
         _ingredientId.postValue(ingredientId)
+    }
+
+    // 커스텀 칵테일에 추가할 재료 목록
+    private val _customCocktailIngredients = MutableLiveData<MutableList<CustomCocktailItem>>(
+        mutableListOf()
+    )
+    val customCocktailIngredients: LiveData<MutableList<CustomCocktailItem>>
+        get() = _customCocktailIngredients
+
+    // 재료 추가
+    fun addCustomCocktailIngredient(item: CustomCocktailItem) {
+        val list = _customCocktailIngredients.value ?: mutableListOf()
+        list.add(item)
+        _customCocktailIngredients.value = list  // observer에 갱신 알림
+    }
+
+    // 재료 삭제
+    fun deleteCustomCocktailIngredientAt(position: Int) {
+        val list = _customCocktailIngredients.value ?: mutableListOf()
+        if (position in list.indices) {
+            list.removeAt(position)
+            _customCocktailIngredients.value = list  // LiveData 업데이트로 Observer에 알림
+        }
+    }
+
+    // -------------------------------------------
+    // 도수(알코올 농도) 계산 (가중 평균 방식)
+    // 전체 도수 = (Σ (각 재료의 alcoholContent × 환산된 수량(ml))) / (Σ 환산된 수량(ml))
+    // -------------------------------------------
+    private val _overallAlcoholContent = MediatorLiveData<Double>()
+    val overallAlcoholContent: LiveData<Double> get() = _overallAlcoholContent
+
+    init {
+        // _customCocktailIngredients가 변경될 때마다 전체 도수를 다시 계산
+        _overallAlcoholContent.addSource(_customCocktailIngredients) { ingredientList ->
+            _overallAlcoholContent.value = computeOverallAlcoholContent(ingredientList)
+        }
+    }
+
+    private fun computeOverallAlcoholContent(ingredientList: List<CustomCocktailItem>): Double {
+        // IngredientItem만 필터링
+        val filteredList = ingredientList.filterIsInstance<CustomCocktailItem.IngredientItem>()
+        var totalAlcoholVolume = 0.0
+        var totalQuantityInMl = 0.0
+        filteredList.forEach { ingredient ->
+            // ingredient.ingredientQuantity는 "0.5 slices", "2.5 ml", "1 shot", "20 ml" 등으로 들어옵니다.
+            val quantityInMl = parseIngredientQuantity(ingredient.ingredientQuantity) ?: 0.0
+            totalAlcoholVolume += ingredient.alcoholContent * quantityInMl
+            Log.d(TAG, "computeOverallAlcoholContent: ${ingredient.ingredientName} ${ingredient.alcoholContent}")
+            totalQuantityInMl += quantityInMl
+        }
+        return if (totalQuantityInMl == 0.0) 0.0 else totalAlcoholVolume / totalQuantityInMl
+    }
+
+    /**
+     * ingredientQuantity가 "0.5 slices", "2.5 ml", "1 shot", "20 ml" 등의 형식일 때,
+     * 수량과 단위를 파싱하여 ml 단위의 양으로 환산합니다.
+     */
+    private fun parseIngredientQuantity(input: String): Double? {
+        val tokens = input.trim().split(" ")
+        if (tokens.isEmpty()) return null
+
+        // 첫 번째 토큰: 수량 (분수 또는 소수점)
+        val quantityValue = parseFraction(tokens[0]) ?: return null
+
+        // 두 번째 토큰: 단위 (있다면), 없으면 기본 단위 "ml"로 간주
+        val unit = if (tokens.size > 1) tokens[1].trim().lowercase() else "ml"
+
+        // 단위별 환산 계수 (필요에 따라 실제 값으로 조정)
+        val conversionFactor = when (unit) {
+            "ml" -> 1.0
+            "shot" -> 30.0        // 예: 1 shot = 30 ml
+            "dash" -> 1.0         // 예: 1 dash = 1 ml
+            "oz" -> 29.57         // 예: 1 oz = 29.57 ml
+            "slice", "slices" -> 15.0  // 예: 1 slice = 15 ml (가정)
+            "leaf", "leaves" -> 5.0    // 예: 1 leaf = 5 ml (가정)
+            else -> 1.0
+        }
+        return quantityValue * conversionFactor
+    }
+
+    // parseFraction: "1/2" 또는 "2.5"와 같은 문자열을 Double로 변환
+    private fun parseFraction(input: String): Double? {
+        return if (input.contains("/")) {
+            val parts = input.split("/")
+            if (parts.size == 2) {
+                val numerator = parts[0].trim().toDoubleOrNull()
+                val denominator = parts[1].trim().toDoubleOrNull()
+                if (numerator != null && denominator != null && denominator != 0.0) {
+                    numerator / denominator
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        } else {
+            input.trim().toDoubleOrNull()
+        }
     }
 
     // 필터 관련 코드 추가

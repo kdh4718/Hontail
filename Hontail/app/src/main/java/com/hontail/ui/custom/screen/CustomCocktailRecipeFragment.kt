@@ -1,4 +1,4 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.screen
 
 import android.content.Context
 import android.os.Bundle
@@ -11,8 +11,8 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailRecipeBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.custom.adapter.CustomCocktailRecipeAdapter
 import com.hontail.util.CommonUtils
-import okhttp3.internal.addHeaderLenient
 
 class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBinding>(
     FragmentCustomCocktailRecipeBinding::bind,
@@ -59,7 +59,13 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 add(CustomCocktailRecipeItem.CustomCocktailAlcoholLevel(25))
                 add(CustomCocktailRecipeItem.CustomCocktailDescription("맛있는 칵테일입니다."))
                 add(CustomCocktailRecipeItem.CustomCocktailRecipeStepHeader)
-                add(CustomCocktailRecipeItem.CustomCocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.STIR, "열심히 저어주세요."))
+                add(
+                    CustomCocktailRecipeItem.CustomCocktailRecipeStep(
+                        1,
+                        CommonUtils.CustomCocktailRecipeAnimationType.STIR,
+                        "열심히 저어주세요."
+                    )
+                )
                 add(CustomCocktailRecipeItem.CustomCocktailRecipeAddStep)
                 add(CustomCocktailRecipeItem.CustomCocktailRecipeRegister)
             }

@@ -1,4 +1,4 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +10,7 @@ import com.hontail.databinding.ListItemCustomCocktailRecipeImageBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeRegisterBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepHeaderBinding
+import com.hontail.ui.custom.screen.CustomCocktailRecipeItem
 
 class CustomCocktailRecipeAdapter(
     private val items: List<CustomCocktailRecipeItem>,
