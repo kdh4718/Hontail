@@ -220,4 +220,6 @@ $RECYCLE.BIN/
 
 .env
 
+cache_dir/
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,python,visualstudiocode
