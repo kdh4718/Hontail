@@ -27,6 +27,14 @@ class MainActivityViewModel : ViewModel() {
         _cocktailId.postValue(cocktailId)
     }
 
+    // 선택된 칵테일 베이스주 타입
+    private val _baseSpirit = MutableLiveData<String>("")
+    val baseSpirit: LiveData<String>
+        get() = _baseSpirit
+
+    fun setBaseSpirit(baseSpirit: String){
+        _baseSpirit.postValue(baseSpirit)
+    }
     // 선택된 ingredientId
     private val _ingredientId = MutableLiveData<Int>()
     val ingredientId: LiveData<Int> get() = _ingredientId

@@ -1,12 +1,15 @@
 package com.hontail.util
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.R
+import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemCocktailBinding
-import com.hontail.ui.mypage.Cocktail
 
-class CocktailItemAdapter(private val items: List<Cocktail>): RecyclerView.Adapter<CocktailItemAdapter.CocktailItemViewHolder>() {
+class CocktailItemAdapter(private val context: Context, private val items: List<CocktailListResponse>): RecyclerView.Adapter<CocktailItemAdapter.CocktailItemViewHolder>() {
 
     lateinit var cocktailItemListener: ItemOnClickListener
 
@@ -29,14 +32,28 @@ class CocktailItemAdapter(private val items: List<Cocktail>): RecyclerView.Adapt
 
     inner class CocktailItemViewHolder(private val binding: ListItemCocktailBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Cocktail) {
+        fun bind(item: CocktailListResponse) {
 
             binding.apply {
                 textViewListItemCocktailName.text = item.cocktailName
-                textViewListItemCocktailBaseSpirit.text = item.cocktailBaseSpirit
-                textViewListItemCocktailIngredientCount.text = "재료 ${item.cocktailIngredientCnt}개"
-                textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.cocktailZzimCnt)
-                textViewListItemCocktailAlcoholContent.text = "${item.cocktailAlcholContent}%"
+                textViewListItemCocktailBaseSpirit.text = item.baseSpirit
+                textViewListItemCocktailIngredientCount.text = "재료 ${item.ingredientCount}개"
+                textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.likes)
+                textViewListItemCocktailAlcoholContent.text = "${item.alcoholContent}%"
+
+                if (item.isLiked){
+                    imageViewListItemCocktailZzim.setImageDrawable(
+                        ContextCompat.getDrawable(context, R.drawable.ic_bottom_navi_zzim_selected)
+                    )
+                    imageViewListItemCocktailZzim.setColorFilter(
+                        ContextCompat.getColor(context, R.color.basic_pink),
+                        android.graphics.PorterDuff.Mode.SRC_IN
+                    )
+                }else{
+                    imageViewListItemCocktailZzim.setImageDrawable(
+                        ContextCompat.getDrawable(context, R.drawable.ic_bottom_navi_zzim_unselected)
+                    )
+                }
 
                 root.setOnClickListener {
                     cocktailItemListener.onClickCocktailItem()
