@@ -13,6 +13,7 @@ import com.kakao.sdk.common.KakaoSdk
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
@@ -42,7 +43,8 @@ class ApplicationClass : Application() {
 
         retrofit = Retrofit.Builder()
             .baseUrl(SERVER_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(ScalarsConverterFactory.create()) // 단순 문자열 응답 처리
+            .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 응답 처리
             .client(okHttpClient) // OkHttpClient 설정 적용
             .build()
 

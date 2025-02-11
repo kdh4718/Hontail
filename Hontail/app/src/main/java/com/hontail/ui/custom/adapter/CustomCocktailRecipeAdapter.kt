@@ -1,10 +1,13 @@
 package com.hontail.ui.custom.adapter
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.R
 import com.hontail.databinding.ListItemCustomCocktailRecipeAddStepBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeAlcoholLevelBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeDescriptionBinding
@@ -13,15 +16,19 @@ import com.hontail.databinding.ListItemCustomCocktailRecipeRegisterBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepBinding
 import com.hontail.ui.custom.screen.CocktailRecipeStep
 import com.hontail.ui.custom.screen.CustomCocktailRecipeItem
+import okhttp3.internal.notify
 
-class CustomCocktailRecipeAdapter(private val context: Context, private val items: List<CustomCocktailRecipeItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CustomCocktailRecipeAdapter(private val context: Context, private val items: MutableList<CustomCocktailRecipeItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var customCocktailRecipeListener: ItemOnClickListener
+
+    var selectedImageUri: Uri? = null
 
     interface ItemOnClickListener {
         fun onClickRegister()
         fun onClickAddStep()
-        fun onClickDeleteStep()
+        fun onClickDeleteStep(position: Int)
+        fun onClickAddImage()
     }
 
     companion object {
@@ -98,12 +105,36 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
         }
     }
 
+    fun updateItems(newItems: List<CustomCocktailRecipeItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
     // 완성된 칵테일 사진
     inner class CustomCocktailRecipeImageViewHolder(private val binding: ListItemCustomCocktailRecipeImageBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CustomCocktailRecipeItem.CustomCocktailRecipeImage) {
 
             binding.apply {
+
+                if(selectedImageUri != null) {
+                    constraintLayoutListItemCustomCocktailRecipeImageGuide.visibility = View.GONE
+                    imageViewListItemCustomCocktailRecipeImage.visibility = View.VISIBLE
+                    imageViewListItemCustomCocktailRecipeImage.setImageURI(item.imageUri)
+                }
+                else {
+                    imageViewListItemCustomCocktailRecipeImage.setImageResource(R.color.basic_gray)
+                    constraintLayoutListItemCustomCocktailRecipeImageGuide.visibility = View.VISIBLE
+                }
+
+                constraintLayoutListItemCustomCocktailRecipeImageGuide.setOnClickListener {
+                    customCocktailRecipeListener.onClickAddImage()
+                }
+
+                imageViewListItemCustomCocktailRecipeImage.setOnClickListener {
+                    customCocktailRecipeListener.onClickAddImage()
+                }
 
             }
         }
@@ -147,7 +178,7 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
 
                     // 레시피 단계 삭제
                     override fun onClickDelete(position: Int) {
-                        customCocktailRecipeListener.onClickDeleteStep()
+                        customCocktailRecipeListener.onClickDeleteStep(position)
                     }
                 }
             }
