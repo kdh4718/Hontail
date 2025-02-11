@@ -119,6 +119,7 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
 
             // 다음으로 넘어가기
             buttonCustomCocktailNext.setOnClickListener {
+                activityViewModel.setRecipeMode(CommonUtils.CustomCocktailRecipeMode.REGISTER)
                 mainActivity.changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_RECIPE_FRAGMENT)
             }
         }
