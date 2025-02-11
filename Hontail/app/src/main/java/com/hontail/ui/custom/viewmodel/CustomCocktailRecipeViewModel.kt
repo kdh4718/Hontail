@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hontail.data.model.request.Ingredient
+import com.hontail.data.model.request.Recipe
 import com.hontail.data.remote.RetrofitUtil
-import com.hontail.ui.custom.screen.CocktailRecipeStep
 import com.hontail.ui.custom.screen.CustomCocktailItem
 import com.hontail.util.CommonUtils
 
@@ -32,13 +32,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     private val _description = MutableLiveData<String>()
     val description: LiveData<String> get() = _description
 
-    // 5. 레시피 단계 리스트 (최초 단계는 1단계)
-    private val _recipeSteps = MutableLiveData<MutableList<CocktailRecipeStep>>().apply {
-        value = mutableListOf(
-            CocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "")
-        )
-    }
-    val recipeSteps: LiveData<MutableList<CocktailRecipeStep>> get() = _recipeSteps
+
 
     // ※ 이미지 업로드 후 최종 이미지 URL을 저장할 LiveData (uploadImageToServer의 응답 URL에서 확장자까지의 부분)
     private val _uploadedImageUrl = MutableLiveData<String>()
@@ -75,9 +69,6 @@ class CustomCocktailRecipeViewModel: ViewModel() {
             _recipeName.value = ""
             _alcoholLevel.value = 25
             _description.value = ""
-            _recipeSteps.value = mutableListOf(
-                CocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "")
-            )
         }
         else {
             Log.d(TAG, "initializeRecipeData: 수정모드입니다.")
@@ -95,10 +86,6 @@ class CustomCocktailRecipeViewModel: ViewModel() {
         _recipeName.value = "완성된 칵테일 이름 수정할 것."
         _alcoholLevel.value = 30
         _description.value = "수정된 칵테일 설명"
-        _recipeSteps.value = mutableListOf(
-            CocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "수정된 단계1"),
-            CocktailRecipeStep(2, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "수정된 단계2")
-        )
     }
 
     // === 각 항목별 업데이트 메서드 ===
@@ -121,40 +108,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
 
     // === 레시피 단계 리스트 관련 메서드 ===
 
-    /**
-     * 새로운 레시피 단계를 추가.
-     * 최대 15단계까지 추가.
-     */
-    fun addNewRecipeStep() {
-        _recipeSteps.value?.let { currentSteps ->
-            if (currentSteps.size >= 15) {
-                Log.d(TAG, "addNewRecipeStep: 최대 15단계까지만 추가할 수 있습니다.")
-                return
-            }
-            val newStepNumber = currentSteps.size + 1
-            currentSteps.add(
-                CocktailRecipeStep(newStepNumber, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "")
-            )
-            _recipeSteps.value = currentSteps
-        }
-    }
 
-    /**
-     * 특정 위치의 레시피 단계를 삭제.
-     * 삭제 후에는 단계 번호를 재정렬.
-     */
-    fun deleteRecipeStep(position: Int) {
-        _recipeSteps.value?.let { steps ->
-            if (position in steps.indices) {
-                steps.removeAt(position)
-                // 단계 번호 재정렬
-                steps.forEachIndexed { index, step ->
-                    step.stepNumber = index + 1
-                }
-                _recipeSteps.value = steps
-            }
-        }
-    }
 
     // s3 URL 받아오기.
     suspend fun uploadImageToServer(fileName: String): String {

@@ -1,13 +1,20 @@
 package com.hontail.ui.custom.adapter
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.R
+import com.hontail.data.model.request.Recipe
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepItemBinding
-import com.hontail.ui.custom.screen.CocktailRecipeStep
 
-class CustomCocktailRecipeStepAdapter(private var items: MutableList<CocktailRecipeStep>): RecyclerView.Adapter<CustomCocktailRecipeStepAdapter.CustomCocktailRecipeStepViewHolder>() {
+private const val TAG = "CustomCocktailRecipeSte"
+class CustomCocktailRecipeStepAdapter(var items: MutableList<Recipe>) :
+    RecyclerView.Adapter<CustomCocktailRecipeStepAdapter.CustomCocktailRecipeStepViewHolder>() {
 
     lateinit var customCocktailRecipeStepListener: ItemOnClickListener
 
@@ -16,7 +23,9 @@ class CustomCocktailRecipeStepAdapter(private var items: MutableList<CocktailRec
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomCocktailRecipeStepViewHolder {
-        val binding = ListItemCustomCocktailRecipeStepItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListItemCustomCocktailRecipeStepItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
         return CustomCocktailRecipeStepViewHolder(binding)
     }
 
@@ -28,21 +37,29 @@ class CustomCocktailRecipeStepAdapter(private var items: MutableList<CocktailRec
         holder.bind(items[position], position)
     }
 
-    inner class CustomCocktailRecipeStepViewHolder(private val binding: ListItemCustomCocktailRecipeStepItemBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class CustomCocktailRecipeStepViewHolder(private val binding: ListItemCustomCocktailRecipeStepItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: CocktailRecipeStep, position: Int) {
-
+        fun bind(item: Recipe, position: Int) {
             binding.apply {
-
-                if(item.stepNumber == 1) {
+                if (position == 0) {
                     imageViewListItemCustomCocktailRecipeStepDelete.visibility = View.GONE
-                }
-                else {
+                } else {
                     imageViewListItemCustomCocktailRecipeStepDelete.visibility = View.VISIBLE
                 }
 
-                textViewListItemCustomCocktailRecipeStepSequence.text = item.stepNumber.toString()
+                textViewListItemCustomCocktailRecipeStepSequence.text = (position + 1).toString()
 
+                textViewListItemCustomCocktailRecipeStepDescription.text = item.recipeGuide
+
+                when(item.recipeAction) {
+                    null -> radioButtonListItemCustomCocktailRecipeStepDefault.isChecked = true
+                    "stir" -> radioButtonListItemCustomCocktailRecipeStepStir.isChecked = true
+                    "pour" -> radioButtonListItemCustomCocktailRecipeStepPour.isChecked = true
+                    "shake" -> radioButtonListItemCustomCocktailRecipeStepShake.isChecked = true
+                }
+
+                // ✅ 삭제 버튼 클릭 이벤트
                 imageViewListItemCustomCocktailRecipeStepDelete.setOnClickListener {
                     customCocktailRecipeStepListener.onClickDelete(position)
                 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hontail.data.model.request.Recipe
 import com.hontail.data.model.response.Cocktail
 import com.hontail.data.remote.RetrofitUtil
 import com.hontail.ui.custom.screen.CustomCocktailItem
@@ -79,6 +80,53 @@ class MainActivityViewModel : ViewModel() {
         if (position in list.indices) {
             list.removeAt(position)
             _customCocktailIngredients.value = list  // LiveData 업데이트로 Observer에 알림
+        }
+    }
+
+    // 레시피 단계 리스트
+    private val _recipeSteps = MutableLiveData<MutableList<Recipe>>(mutableListOf())
+    val recipeSteps: LiveData<MutableList<Recipe>> get() = _recipeSteps
+
+    /**
+     * 새로운 레시피 단계를 추가.
+     * 최대 15단계까지 추가.
+     */
+    fun addNewRecipeStep(action: String?, guide: String) {
+        _recipeSteps.value?.let { steps ->
+            val newStepNumber = steps.size + 1
+            val updatedSteps = steps.toMutableList()
+            updatedSteps.add(Recipe(action, guide, newStepNumber))
+            _recipeSteps.postValue(updatedSteps) // ✅ UI 갱신을 위해 postValue 사용
+            Log.d("DEBUG", "🆕 레시피 단계 추가됨 (ViewModel): $updatedSteps") // ✅ 값 확인
+        }
+    }
+
+
+    /**
+     * 특정 위치의 레시피 단계를 삭제.
+     * 삭제 후에는 단계 번호를 재정렬.
+     */
+    fun deleteRecipeStep(position: Int) {
+        _recipeSteps.value?.let { steps ->
+            if (position in steps.indices) {
+                steps.removeAt(position)
+                // 단계 번호 재정렬
+                steps.forEachIndexed { index, step ->
+                    step.sequence = index + 1
+                }
+                _recipeSteps.value = steps
+            }
+        }
+    }
+
+    // 특정 단계 레시피 업데이트
+    fun updateRecipeStep(position: Int, newAction: String, newGuide: String) {
+        _recipeSteps.value?.let { steps ->
+            if(position in steps.indices) {
+                val updatedList = steps.toMutableList()
+                updatedList[position] = Recipe(newAction, newGuide, updatedList[position].sequence)
+                _recipeSteps.postValue(updatedList)
+            }
         }
     }
 

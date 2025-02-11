@@ -47,7 +47,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CustomCocktailRecipeViewModel by viewModels()
 
-//    private lateinit var customCocktailRecipeAdapter: CustomCocktailRecipeAdapter
+    private lateinit var customCocktailRecipeStepAdapter: CustomCocktailRecipeStepAdapter
 
     private lateinit var recipeMode: CommonUtils.CustomCocktailRecipeMode
 
@@ -70,6 +70,11 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
         initToolbar()
         initAdapter()
         initEvent()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        customCocktailRecipeStepAdapter.notifyDataSetChanged()
     }
 
     // 툴바 설정
@@ -147,6 +152,13 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             activityViewModel.customCocktailIngredients.observe(viewLifecycleOwner) { ingredientList ->
                 viewModel.setRecipeIngredients(ingredientList)
             }
+
+            // 단계별 레시피들
+            activityViewModel.recipeSteps.observe(viewLifecycleOwner) { newSteps ->
+                customCocktailRecipeStepAdapter.items = newSteps.toMutableList()
+                Log.d(TAG, "observeCustomCocktailRecipe: $newSteps")
+                customCocktailRecipeStepAdapter.notifyDataSetChanged() // ✅ 전체 갱신 (혹은 notifyItemInserted 사용 가능)
+            }
         }
     }
 
@@ -155,10 +167,11 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
         binding.apply {
 
-            val customCocktailRecipeStepAdapter = CustomCocktailRecipeStepAdapter(recipeStepList)
+            customCocktailRecipeStepAdapter = CustomCocktailRecipeStepAdapter(mutableListOf())
 
             recyclerViewListItemCustomCocktailRecipeStep.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             recyclerViewListItemCustomCocktailRecipeStep.adapter = customCocktailRecipeStepAdapter
+            recyclerViewListItemCustomCocktailRecipeStep.isNestedScrollingEnabled = false
         }
     }
 
@@ -175,6 +188,21 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             // 이미지 수정
             imageViewListItemCustomCocktailRecipeImage.setOnClickListener {
                 getImageLauncher.launch("image/*")
+            }
+
+            // 단계별 레시피 추가
+            imageViewListItemCustomCocktailRecipeAddStep.setOnClickListener {
+                val bottomSheet = CustomCocktailRecipeStepBottomSheetFragment()
+                bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+            }
+
+            customCocktailRecipeStepAdapter.customCocktailRecipeStepListener = object : CustomCocktailRecipeStepAdapter.ItemOnClickListener {
+
+                // 레시피 단계 삭제
+                override fun onClickDelete(position: Int) {
+                    activityViewModel.deleteRecipeStep(position)
+                }
+
             }
             
             // 등록
@@ -218,7 +246,13 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 // 만든 사람
                 val makerNickname = "admin" // 여기 나중에 수정해야 함.
 
-
+                // 레시피 스텝
+                val recipeSteps = activityViewModel.recipeSteps.value
+                if (recipeSteps != null) {
+                    for(recipe in recipeSteps) {
+                        Log.d(TAG, "initEvent: recipe : $recipe")
+                    }
+                }
             }
         }
     }
@@ -340,5 +374,3 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
     }
 
 }
-
-data class CocktailRecipeStep(var stepNumber: Int, val selectedAnimation: CommonUtils.CustomCocktailRecipeAnimationType, var description: String)
