@@ -1,10 +1,10 @@
 package com.hontail.data.model.response
 
 data class Pageable(
-    val offset: Int,
     val pageNumber: Int,
     val pageSize: Int,
-    val paged: Boolean,
     val sort: SortX,
+    val offset: Int,
+    val paged: Boolean,
     val unpaged: Boolean
 )

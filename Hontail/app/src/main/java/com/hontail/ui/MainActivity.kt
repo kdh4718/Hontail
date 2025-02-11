@@ -4,22 +4,16 @@ import android.Manifest
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.activityViewModels
 import com.hontail.R
 import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
 import com.hontail.ui.alarm.AlarmFragment
 import com.hontail.ui.bartender.BatenderFragment
-import com.hontail.ui.cocktail.CocktailDetailFragment
-import com.hontail.ui.cocktail.CocktailListFragment
-import com.hontail.ui.cocktail.CocktailRecipeFragment
-import com.hontail.ui.cocktail.CocktailSearchFragment
+import com.hontail.ui.cocktail.screen.CocktailDetailFragment
+import com.hontail.ui.cocktail.screen.CocktailListFragment
+import com.hontail.ui.cocktail.screen.CocktailRecipeFragment
+import com.hontail.ui.cocktail.screen.CocktailSearchFragment
 import com.hontail.ui.custom.CustomCocktailBottomSheetFragment
 import com.hontail.ui.custom.CustomCocktailFragment
 import com.hontail.ui.custom.CustomCocktailIngredientDetailFragment
@@ -108,8 +102,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun initData(){
         val userId = intent.getIntExtra("user_id", 0)
-
-        activityViewModel.setUserId(userId)
+        activityViewModel.userId = userId
     }
 
     fun checkPermissions() {
