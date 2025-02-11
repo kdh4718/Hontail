@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -110,6 +111,18 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     constraintLayoutListItemCustomCocktailRecipeImageGuide.visibility = View.VISIBLE
                 }
             }
+            
+            // 칵테일 이름 EditText와 ViewModel 연결
+            editTextListItemCustomCocktailRecipeName.addTextChangedListener { text ->
+                viewModel.updateRecipeName(text.toString())
+            }
+            
+            // LiveData로 EditText 값 유지
+            viewModel.recipeName.observe(viewLifecycleOwner) { name ->
+                if(editTextListItemCustomCocktailRecipeName.text.toString() != name) {
+                    editTextListItemCustomCocktailRecipeName.setText(name)
+                }
+            }
         }
     }
 
@@ -126,6 +139,13 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             // 이미지 수정
             imageViewListItemCustomCocktailRecipeImage.setOnClickListener {
                 getImageLauncher.launch("image/*")
+            }
+            
+            // 등록
+            buttonCustomCocktailRecipeRegister.setOnClickListener { 
+                
+                val name = viewModel.recipeName.value
+                Log.d(TAG, "initEvent: $name")
             }
         }
     }
