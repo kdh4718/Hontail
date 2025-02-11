@@ -1,18 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?><!--list_item_cocktail.xml-->
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="32dp">
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="16dp">
 
     <ImageView
         android:id="@+id/imageViewListItemCocktailCocktail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/ingredient_background"
-        android:src="@drawable/ic_sample"
         android:scaleType="centerCrop"
+        android:src="@drawable/ic_sample"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +26,8 @@
         android:id="@+id/imageViewListItemCocktailZzim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:src="@drawable/ic_bottom_navi_zzim_unselected"
         app:layout_constraintEnd_toEndOf="@+id/imageViewListItemCocktailCocktail"
         app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailCocktail" />
@@ -57,7 +60,7 @@
         style="@style/Font_SemiBold_20_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="깔루아 밀크"
         app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
         app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailBaseSpirit" />
@@ -66,7 +69,7 @@
         android:id="@+id/imageViewListItemCocktailTotalZzim"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:src="@drawable/ic_bottom_navi_zzim_selected"
         app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
         app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailName"

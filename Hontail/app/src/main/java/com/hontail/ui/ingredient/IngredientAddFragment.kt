@@ -25,11 +25,19 @@ class IngredientAddFragment : BaseFragment<FragmentIngredientAddBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupBackButton()
+        setupCategoryButton()
     }
 
     private fun setupBackButton() {
         binding.imageViewIngredientArrow.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
+
+    private fun setupCategoryButton() {
+        binding.textViewIngredientSort.setOnClickListener {
+            val bottomSheetFragment = IngredientListBottomSheetFragment.newInstance()
+            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
         }
     }
 }

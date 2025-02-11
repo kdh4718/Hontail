@@ -135,14 +135,15 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                 }
             }
 
-            // 재료 요청
+            // 재료 요청 버튼 클릭 시 INGREDIENT_ADD_FRAGMENT로 이동
             myPageAdapter.myPageIngredientListener = object : MyPageAdapter.ItemOnClickListener {
                 override fun onClick() {
-                    TODO("Not yet implemented")
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
                 }
             }
         }
     }
+
 
     // 레시피가 존재하는지 확인
     private fun isCocktailListEmpty(): Boolean {
