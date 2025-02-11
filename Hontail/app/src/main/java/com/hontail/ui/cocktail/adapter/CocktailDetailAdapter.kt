@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.response.CocktailIngredient
+import com.hontail.data.model.response.Recipe
 import com.hontail.databinding.ListItemCocktailDetailInfosBinding
 import com.hontail.databinding.ListItemCocktailDetailIngredientsBinding
 import com.hontail.databinding.ListItemCocktailDetailRecipesBinding
 import com.hontail.ui.cocktail.screen.CocktailDetailItem
-import com.hontail.ui.cocktail.screen.Recipe
-import com.hontail.ui.ingredient.Ingredient
+import com.hontail.ui.cocktail.screen.CocktailListItem
 
-class CocktailDetailAdapter(private val context: Context, private val items: List<CocktailDetailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CocktailDetailAdapter(private val context: Context, private var items: MutableList<CocktailDetailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var cocktailDetailListener: ItemOnClickListener
     private var backButtonClickListener: (() -> Unit)? = null
@@ -98,7 +99,7 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
 
     // Cocktail Detail Ingredients
     inner class CocktailDetailIngredientsViewHolder(private val binding: ListItemCocktailDetailIngredientsBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(ingredients: List<Ingredient>) {
+        fun bind(ingredients: List<CocktailIngredient>) {
             binding.apply {
                 val cocktailDetailIngredientAdapter = CocktailDetailIngredientAdapter(ingredients)
                 recyclerViewCocktailDetailIngredientIngredient.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -120,5 +121,11 @@ class CocktailDetailAdapter(private val context: Context, private val items: Lis
                 }
             }
         }
+    }
+
+    fun updateItems(newItems: List<CocktailDetailItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged() // 전체 갱신
     }
 }

@@ -3,10 +3,10 @@ package com.hontail.ui.cocktail.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.response.CocktailIngredient
 import com.hontail.databinding.ListItemCocktailDetailIngredientItemBinding
-import com.hontail.ui.ingredient.Ingredient
 
-class CocktailDetailIngredientAdapter(private val items: List<Ingredient>): RecyclerView.Adapter<CocktailDetailIngredientAdapter.CocktailDetailIngredientViewHolder>() {
+class CocktailDetailIngredientAdapter(private val items: List<CocktailIngredient>): RecyclerView.Adapter<CocktailDetailIngredientAdapter.CocktailDetailIngredientViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailDetailIngredientViewHolder {
         val binding = ListItemCocktailDetailIngredientItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,7 +23,7 @@ class CocktailDetailIngredientAdapter(private val items: List<Ingredient>): Recy
 
     inner class CocktailDetailIngredientViewHolder(private val binding: ListItemCocktailDetailIngredientItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: Ingredient) {
+        fun bind(item: CocktailIngredient) {
 
             binding.apply {
 
