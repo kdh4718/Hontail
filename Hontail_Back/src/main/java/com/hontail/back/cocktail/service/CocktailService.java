@@ -21,6 +21,7 @@ public interface CocktailService {
 
     Page<CocktailSummaryDto> searchCocktails(String keyword, int page, int size, Integer userId);
 
+//    Page<CocktailSummaryDto> getMyCocktails(Integer userId, int page, int size); // 내가 만든 칵테일 조회
 
-
+    List<CocktailSummaryDto> getMyCocktails(Integer userId);
 }

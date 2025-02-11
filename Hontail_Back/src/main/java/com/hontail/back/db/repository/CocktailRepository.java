@@ -35,4 +35,7 @@ public interface CocktailRepository extends JpaRepository<Cocktail, Integer>, Co
     Page<Cocktail> searchByNameContaining(@Param("keyword") String keyword, Pageable pageable);
 
     List<Cocktail> findAllByIdIn(List<Integer> cocktailIds);
+
+
+    List<Cocktail> findByUserIdOrderByCreatedAtDesc(@Param("userId") Integer userId);
 }
