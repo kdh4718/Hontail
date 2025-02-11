@@ -1,7 +1,5 @@
 package com.hontail.data.model.response
 
-import java.sql.Timestamp
-
 data class CocktailListResponse(
     val id: Int,
     val cocktailName: String,

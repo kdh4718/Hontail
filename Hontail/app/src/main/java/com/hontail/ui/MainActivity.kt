@@ -102,8 +102,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun initData(){
         val userId = intent.getIntExtra("user_id", 0)
-
-        activityViewModel.setUserId(userId)
+        activityViewModel.userId = userId
     }
 
     fun checkPermissions() {

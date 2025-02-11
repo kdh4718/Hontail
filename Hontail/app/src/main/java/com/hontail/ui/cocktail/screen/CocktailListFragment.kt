@@ -41,7 +41,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.baseSpirit = activityViewModel.baseSpirit.value!!
-        viewModel.setUserId(activityViewModel.userId.value!!)
+        viewModel.setUserId(activityViewModel.userId)
         viewModel.getCocktailFiltering()
     }
 

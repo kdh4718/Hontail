@@ -33,7 +33,7 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.cocktailId = activityViewModel.cocktailId.value!!
-        viewModel.setUserId(activityViewModel.userId.value!!)
+        viewModel.setUserId(activityViewModel.userId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
