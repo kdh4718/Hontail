@@ -1,7 +1,9 @@
 package com.hontail.ui.custom.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCustomCocktailRecipeAddStepBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeAlcoholLevelBinding
@@ -9,26 +11,26 @@ import com.hontail.databinding.ListItemCustomCocktailRecipeDescriptionBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeImageBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeRegisterBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepBinding
-import com.hontail.databinding.ListItemCustomCocktailRecipeStepHeaderBinding
+import com.hontail.ui.custom.screen.CocktailRecipeStep
 import com.hontail.ui.custom.screen.CustomCocktailRecipeItem
 
-class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CustomCocktailRecipeAdapter(private val context: Context, private val items: List<CustomCocktailRecipeItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var customCocktailRecipeListener: ItemOnClickListener
 
     interface ItemOnClickListener {
         fun onClickRegister()
         fun onClickAddStep()
+        fun onClickDeleteStep()
     }
 
     companion object {
         const val VIEW_TYPE_IMAGE = 0
         const val VIEW_TYPE_ALCOHOL_LEVEL = 1
         const val VIEW_TYPE_DESCRIPTION = 2
-        const val VIEW_TYPE_RECIPE_STEP_HEADER = 3
-        const val VIEW_TYPE_RECIPE_STEP = 4
-        const val VIEW_TYPE_RECIPE_ADD_STEP = 5
-        const val VIEW_TYPE_RECIPE_REGISTER = 6
+        const val VIEW_TYPE_RECIPE_STEP = 3
+        const val VIEW_TYPE_RECIPE_ADD_STEP = 4
+        const val VIEW_TYPE_RECIPE_REGISTER = 5
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -36,7 +38,6 @@ class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeIt
             is CustomCocktailRecipeItem.CustomCocktailRecipeImage -> VIEW_TYPE_IMAGE
             is CustomCocktailRecipeItem.CustomCocktailAlcoholLevel -> VIEW_TYPE_ALCOHOL_LEVEL
             is CustomCocktailRecipeItem.CustomCocktailDescription -> VIEW_TYPE_DESCRIPTION
-            is CustomCocktailRecipeItem.CustomCocktailRecipeStepHeader -> VIEW_TYPE_RECIPE_STEP_HEADER
             is CustomCocktailRecipeItem.CustomCocktailRecipeStep -> VIEW_TYPE_RECIPE_STEP
             is CustomCocktailRecipeItem.CustomCocktailRecipeAddStep -> VIEW_TYPE_RECIPE_ADD_STEP
             is CustomCocktailRecipeItem.CustomCocktailRecipeRegister -> VIEW_TYPE_RECIPE_REGISTER
@@ -60,11 +61,6 @@ class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeIt
             VIEW_TYPE_DESCRIPTION -> {
                 val binding = ListItemCustomCocktailRecipeDescriptionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CustomCocktailRecipeDescriptionViewHolder(binding)
-            }
-
-            VIEW_TYPE_RECIPE_STEP_HEADER -> {
-                val binding = ListItemCustomCocktailRecipeStepHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-                CustomCocktailRecipeStepHeaderViewHolder(binding)
             }
 
             VIEW_TYPE_RECIPE_STEP -> {
@@ -92,14 +88,13 @@ class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeIt
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        when(holder) {
-            is CustomCocktailRecipeImageViewHolder -> holder.bind(items[position] as CustomCocktailRecipeItem.CustomCocktailRecipeImage)
-            is CustomCocktailRecipeAlcoholLevelViewHolder -> holder.bind(items[position] as CustomCocktailRecipeItem.CustomCocktailAlcoholLevel)
-            is CustomCocktailRecipeDescriptionViewHolder -> holder.bind()
-            is CustomCocktailRecipeStepHeaderViewHolder -> holder.bind()
-            is CustomCocktailRecipeStepViewHolder -> holder.bind()
-            is CustomCocktailRecipeAddStepViewHolder -> holder.bind()
-            is CustomCocktailRecipeRegisterViewHolder -> holder.bind()
+        when (val item = items[position]) {
+            is CustomCocktailRecipeItem.CustomCocktailRecipeImage -> (holder as CustomCocktailRecipeImageViewHolder).bind(item)
+            is CustomCocktailRecipeItem.CustomCocktailAlcoholLevel -> (holder as CustomCocktailRecipeAlcoholLevelViewHolder).bind(item)
+            is CustomCocktailRecipeItem.CustomCocktailDescription -> (holder as CustomCocktailRecipeDescriptionViewHolder).bind(item)
+            is CustomCocktailRecipeItem.CustomCocktailRecipeStep -> (holder as CustomCocktailRecipeStepViewHolder).bind(item.recipeStepList)
+            is CustomCocktailRecipeItem.CustomCocktailRecipeAddStep -> (holder as CustomCocktailRecipeAddStepViewHolder).bind()
+            is CustomCocktailRecipeItem.CustomCocktailRecipeRegister -> (holder as CustomCocktailRecipeRegisterViewHolder).bind()
         }
     }
 
@@ -128,20 +123,9 @@ class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeIt
     // 칵테일 설명
     inner class CustomCocktailRecipeDescriptionViewHolder(private val binding: ListItemCustomCocktailRecipeDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind() {
+        fun bind(customCocktailDescription: CustomCocktailRecipeItem.CustomCocktailDescription) {
 
             binding.apply {
-            }
-        }
-    }
-
-    // 제조 방법 Header
-    inner class CustomCocktailRecipeStepHeaderViewHolder(private val binding: ListItemCustomCocktailRecipeStepHeaderBinding): RecyclerView.ViewHolder(binding.root) {
-
-        fun bind() {
-
-            binding.apply {
-
             }
         }
     }
@@ -149,10 +133,23 @@ class CustomCocktailRecipeAdapter(private val items: List<CustomCocktailRecipeIt
     // 제조 방법 레시피 단계
     inner class CustomCocktailRecipeStepViewHolder(private val binding: ListItemCustomCocktailRecipeStepBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind() {
+        fun bind(recipeStepList: MutableList<CocktailRecipeStep>) {
 
             binding.apply {
 
+                val customCocktailRecipeStepAdapter = CustomCocktailRecipeStepAdapter(recipeStepList)
+
+                recyclerViewListItemCustomCocktailRecipeStep.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                recyclerViewListItemCustomCocktailRecipeStep.adapter = customCocktailRecipeStepAdapter
+                recyclerViewListItemCustomCocktailRecipeStep.isNestedScrollingEnabled = false
+
+                customCocktailRecipeStepAdapter.customCocktailRecipeStepListener = object : CustomCocktailRecipeStepAdapter.ItemOnClickListener {
+
+                    // 레시피 단계 삭제
+                    override fun onClickDelete(position: Int) {
+                        customCocktailRecipeListener.onClickDeleteStep()
+                    }
+                }
             }
         }
     }

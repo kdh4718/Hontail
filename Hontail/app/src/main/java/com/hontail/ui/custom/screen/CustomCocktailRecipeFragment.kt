@@ -73,33 +73,20 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
     private fun initAdapter() {
         binding.apply {
 
-//            val items = mutableListOf<CustomCocktailRecipeItem>().apply {
-//                add(CustomCocktailRecipeItem.CustomCocktailRecipeImage)
-//                add(CustomCocktailRecipeItem.CustomCocktailAlcoholLevel(25))
-//                add(CustomCocktailRecipeItem.CustomCocktailDescription("맛있는 칵테일입니다."))
-//                add(CustomCocktailRecipeItem.CustomCocktailRecipeStepHeader)
-//                add(
-//                    CustomCocktailRecipeItem.CustomCocktailRecipeStep(
-//                        1,
-//                        CommonUtils.CustomCocktailRecipeAnimationType.STIR,
-//                        "열심히 저어주세요."
-//                    )
-//                )
-//                add(CustomCocktailRecipeItem.CustomCocktailRecipeAddStep)
-//                add(CustomCocktailRecipeItem.CustomCocktailRecipeRegister)
-//            }
-
             recipeItems = mutableListOf(
                 CustomCocktailRecipeItem.CustomCocktailRecipeImage,
                 CustomCocktailRecipeItem.CustomCocktailAlcoholLevel(25),  // 인덱스 1 – 나중에 업데이트할 예정
                 CustomCocktailRecipeItem.CustomCocktailDescription("맛있는 칵테일입니다."),
-                CustomCocktailRecipeItem.CustomCocktailRecipeStepHeader,
-                CustomCocktailRecipeItem.CustomCocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.STIR, "열심히 저어주세요."),
+                CustomCocktailRecipeItem.CustomCocktailRecipeStep(
+                    mutableListOf(
+                        CocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "")
+                    )
+                ),
                 CustomCocktailRecipeItem.CustomCocktailRecipeAddStep,
                 CustomCocktailRecipeItem.CustomCocktailRecipeRegister
             )
 
-            customCocktailRecipeAdapter = CustomCocktailRecipeAdapter(recipeItems)
+            customCocktailRecipeAdapter = CustomCocktailRecipeAdapter(mainActivity, recipeItems)
 
             recyclerViewCustomCocktailRecipe.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCustomCocktailRecipe.adapter = customCocktailRecipeAdapter
@@ -122,36 +109,42 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 override fun onClickAddStep() {
                     addNewRecipeStep()
                 }
+
+                // 레시피 단계 삭제.
+                override fun onClickDeleteStep() {
+
+                }
             }
         }
     }
 
     // 새로운 레시피 단계 항목 추가.
     private fun addNewRecipeStep() {
+        val recipeStepIndex = recipeItems.indexOfFirst { it is CustomCocktailRecipeItem.CustomCocktailRecipeStep }
 
-        // CustomCocktailRecipeStep 항목만 세어 현재 단계 수 계산
-        val currentStepCount = recipeItems.count { it is CustomCocktailRecipeItem.CustomCocktailRecipeStep }
+        if (recipeStepIndex == -1) {
+            // 만약 리스트에 레시피 스텝이 없으면, 새로 추가
+            val newStepList = mutableListOf(CocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, ""))
+            recipeItems.add(3, CustomCocktailRecipeItem.CustomCocktailRecipeStep(newStepList))
+            customCocktailRecipeAdapter.notifyItemInserted(3)
+        } else {
+            // 기존의 레시피 스텝을 찾아서 업데이트
+            val recipeStepItem = recipeItems[recipeStepIndex] as CustomCocktailRecipeItem.CustomCocktailRecipeStep
 
-        if (currentStepCount >= 15) {
-            // 최대 단계가 15단계이면 추가하지 않고 사용자에게 알림
-            Toast.makeText(mainActivity, "최대 15단계 까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show()
-            return
-        }
+            if (recipeStepItem.recipeStepList.size >= 15) {
+                Toast.makeText(mainActivity, "최대 15단계까지만 추가할 수 있습니다.", Toast.LENGTH_SHORT).show()
+                return
+            }
 
-        // 새 단계 번호는 기존 단계 수 + 1
-        val newStepNumber = currentStepCount + 1
+            // 새로운 스텝 추가
+            val newStepNumber = recipeStepItem.recipeStepList.size + 1
+            recipeStepItem.recipeStepList.add(CocktailRecipeStep(newStepNumber, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, ""))
 
-        // 새 레시피 단계 항목 생성 (기본 애니메이션은 STIR, 설명은 빈 문자열)
-        val newStep = CustomCocktailRecipeItem.CustomCocktailRecipeStep(newStepNumber, CommonUtils.CustomCocktailRecipeAnimationType.STIR, "")
-
-        // "레시피 추가" 항목 바로 위에 새 항목을 삽입
-        val addStepIndex = recipeItems.indexOfFirst { it is CustomCocktailRecipeItem.CustomCocktailRecipeAddStep }
-
-        if (addStepIndex != -1) {
-            recipeItems.add(addStepIndex, newStep)
-            customCocktailRecipeAdapter.notifyItemInserted(addStepIndex)
+            // 리스트에 존재하는 요소를 직접 변경했으므로 notifyItemChanged() 호출
+            customCocktailRecipeAdapter.notifyItemChanged(recipeStepIndex)
         }
     }
+
 
 }
 
@@ -159,8 +152,9 @@ sealed class CustomCocktailRecipeItem {
     object CustomCocktailRecipeImage: CustomCocktailRecipeItem()
     data class CustomCocktailAlcoholLevel(val alcoholLevel: Int): CustomCocktailRecipeItem()
     data class CustomCocktailDescription(val description: String): CustomCocktailRecipeItem()
-    object CustomCocktailRecipeStepHeader: CustomCocktailRecipeItem()
-    data class CustomCocktailRecipeStep(val stepNumber: Int, val selectedAnimation: CommonUtils.CustomCocktailRecipeAnimationType, var description: String): CustomCocktailRecipeItem()
+    data class CustomCocktailRecipeStep(var recipeStepList: MutableList<CocktailRecipeStep>): CustomCocktailRecipeItem()
     object CustomCocktailRecipeAddStep: CustomCocktailRecipeItem()
     object CustomCocktailRecipeRegister: CustomCocktailRecipeItem()
 }
+
+data class CocktailRecipeStep(val stepNumber: Int, val selectedAnimation: CommonUtils.CustomCocktailRecipeAnimationType, var description: String)

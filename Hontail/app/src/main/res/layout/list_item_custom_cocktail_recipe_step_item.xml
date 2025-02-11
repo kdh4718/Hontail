@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="애니메이션"
+        style="@style/Font_SemiBold_18_Basic_White"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/imageViewListItemCustomCocktailRecipeStepDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_trashcan"
+        app:tint="@color/basic_pink"
+        app:layout_constraintTop_toTopOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupListItemCustomCocktailRecipeStep"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintStart_toStartOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle">
+
+        <RadioButton
+            android:id="@+id/radioButtonListItemCustomCocktailRecipeStepStir"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="휘젓기"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioButtonListItemCustomCocktailRecipeStepPour"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="붓기"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioButtonListItemCustomCocktailRecipeStepShake"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="흔들기"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioButtonListItemCustomCocktailRecipeStepDefault"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="기타"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="제조 설명"
+        style="@style/Font_SemiBold_18_Basic_White"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupListItemCustomCocktailRecipeStep"
+        app:layout_constraintStart_toStartOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle" />
+
+    <TextView
+        android:id="@+id/textViewListItemCustomCocktailRecipeStepSequence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/Font_SemiBold_16_Basic_Sky"
+        android:layout_marginStart="12dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"
+        app:layout_constraintStart_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"/>
+
+    <EditText
+        android:id="@+id/editTextListItemCustomCocktailRecipeStepDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="단계별 레시피를 자세하게 적어주세요."
+        android:textColorHint="@color/basic_gray"
+        style="@style/Font_Medium_16_Basic_White"
+        android:background="@drawable/edit_text_custom_cocktail_recipe_background"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        android:minLines="3"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemCustomCocktailRecipeStepDescriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dividerListItemCustomCocktailRecipeStep"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="32dp"
+        app:dividerColor="@color/basic_gray"
+        app:layout_constraintTop_toBottomOf="@+id/editTextListItemCustomCocktailRecipeStepDescription"
+        app:layout_constraintStart_toStartOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textViewListItemCustomCocktailRecipeStepAnimationTitle"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
