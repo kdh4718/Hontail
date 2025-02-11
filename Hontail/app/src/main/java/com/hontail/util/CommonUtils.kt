@@ -138,4 +138,9 @@ object CommonUtils {
         SHAKE,
         DEFAULT
     }
+
+    enum class CustomCocktailRecipeMode {
+        REGISTER,
+        MODIFY
+    }
 }

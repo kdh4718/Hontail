@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.hontail.data.model.response.Cocktail
 import com.hontail.data.remote.RetrofitUtil
 import com.hontail.ui.custom.screen.CustomCocktailItem
+import com.hontail.util.CommonUtils
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivityViewModel_SSAFY"
@@ -155,6 +156,14 @@ class MainActivityViewModel : ViewModel() {
         } else {
             input.trim().toDoubleOrNull()
         }
+    }
+
+    // 레시피 등록 및 수정 모드
+    private val _recipeMode = MutableLiveData<CommonUtils.CustomCocktailRecipeMode>()
+    val recipeMode: LiveData<CommonUtils.CustomCocktailRecipeMode> get() = _recipeMode
+
+    fun setRecipeMode(mode: CommonUtils.CustomCocktailRecipeMode) {
+        _recipeMode.value = mode
     }
 
     // 필터 관련 코드 추가
