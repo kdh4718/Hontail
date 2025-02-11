@@ -22,6 +22,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailRecipeBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.custom.adapter.CustomCocktailRecipeStepAdapter
 //import com.hontail.ui.custom.adapter.CustomCocktailRecipeAdapter
 import com.hontail.ui.custom.viewmodel.CustomCocktailRecipeViewModel
 import com.hontail.util.CommonUtils
@@ -67,6 +68,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
         observeCustomCocktailRecipe()
         initToolbar()
+        initAdapter()
         initEvent()
     }
 
@@ -111,8 +113,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     constraintLayoutListItemCustomCocktailRecipeImageGuide.visibility = View.VISIBLE
                 }
             }
-            
-            
+
             // 칵테일 이름 EditText와 ViewModel 연결
             editTextListItemCustomCocktailRecipeName.addTextChangedListener { text ->
                 viewModel.updateRecipeName(text.toString())
@@ -136,6 +137,28 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     editTextListItemCustomCocktailRecipeDescription.setText(description)
                 }
             }
+
+            // 도수
+            activityViewModel.overallAlcoholContent.observe(viewLifecycleOwner) { alcoholContent ->
+                textViewListItemCustomCocktailRecipeAlcoholLevelAlcoholLevel.text = "${alcoholContent.toInt()}%"
+            }
+
+            // 재료 리스트 새롭게 변환.
+            activityViewModel.customCocktailIngredients.observe(viewLifecycleOwner) { ingredientList ->
+                viewModel.setRecipeIngredients(ingredientList)
+            }
+        }
+    }
+
+    // 리사이클러뷰 어댑터 연결
+    private fun initAdapter() {
+
+        binding.apply {
+
+            val customCocktailRecipeStepAdapter = CustomCocktailRecipeStepAdapter(recipeStepList)
+
+            recyclerViewListItemCustomCocktailRecipeStep.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            recyclerViewListItemCustomCocktailRecipeStep.adapter = customCocktailRecipeStepAdapter
         }
     }
 
@@ -156,18 +179,46 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             
             // 등록
             buttonCustomCocktailRecipeRegister.setOnClickListener { 
-                
+
+                // 이미지 url
                 val imageUrl = viewModel.uploadedImageUrl.value
                 Log.d(TAG, "initEvent: imageUrl: $imageUrl")
-                
+
+                // 칵테일 이름
                 val name = viewModel.recipeName.value
                 Log.d(TAG, "initEvent: name: $name")
-                
+
+                // 칵테일 도수
                 val alcoholContent = activityViewModel.overallAlcoholContent.value
                 Log.d(TAG, "initEvent: alcoholContent: $alcoholContent")
 
+                // 칵테일 설명
                 val description = viewModel.description.value
                 Log.d(TAG, "initEvent: description: $description")
+
+                // 칵테일 재료 리스트
+                val ingredientList = viewModel.recipeIngredients.value
+                if (ingredientList != null) {
+                    for (ingredient in ingredientList) {
+                        Log.d(TAG, "initEvent: ingredient: $ingredient")
+                    }
+                }
+
+                // ingredientList에서 IngredientItem만 필터링
+                val baseSpirit = activityViewModel.customCocktailIngredients.value
+                    ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // ✅ IngredientItem만 필터링
+                    ?.filter { it.ingredientCategoryKor == "베이스 주류" } // ✅ 베이스 주류만 필터링
+                    ?.sortedBy { it.ingredientId } // ✅ ingredientId 기준 오름차순 정렬
+                    ?.firstOrNull() // ✅ 가장 첫 번째 값 선택
+                Log.d(TAG, "initEvent: baseSpirit: $baseSpirit")
+
+                // 커스텀인지
+                val isCustom = 1
+
+                // 만든 사람
+                val makerNickname = "admin" // 여기 나중에 수정해야 함.
+
+
             }
         }
     }

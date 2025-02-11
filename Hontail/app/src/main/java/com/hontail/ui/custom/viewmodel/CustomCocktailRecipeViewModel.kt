@@ -5,8 +5,10 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.hontail.data.model.request.Ingredient
 import com.hontail.data.remote.RetrofitUtil
 import com.hontail.ui.custom.screen.CocktailRecipeStep
+import com.hontail.ui.custom.screen.CustomCocktailItem
 import com.hontail.util.CommonUtils
 
 private const val TAG = "CustomCocktailRecipeVie"
@@ -41,6 +43,24 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     // ※ 이미지 업로드 후 최종 이미지 URL을 저장할 LiveData (uploadImageToServer의 응답 URL에서 확장자까지의 부분)
     private val _uploadedImageUrl = MutableLiveData<String>()
     val uploadedImageUrl: LiveData<String> get() = _uploadedImageUrl
+
+    // ✅ 새롭게 관리할 ingredient 리스트 (ingredientId, ingredientQuantity만 포함)
+    private val _recipeIngredients = MutableLiveData<List<Ingredient>>()
+    val recipeIngredients: LiveData<List<Ingredient>> get() = _recipeIngredients
+
+    /**
+     * ✅ ActivityViewModel에서 받아온 ingredientList를 가공하여 저장
+     */
+    fun setRecipeIngredients(ingredientList: List<CustomCocktailItem>) {
+        _recipeIngredients.value = ingredientList
+            .filterIsInstance<CustomCocktailItem.IngredientItem>() // ✅ IngredientItem만 필터링
+            .map { ingredient ->
+                Ingredient(
+                    ingredientId = ingredient.ingredientId,
+                    ingredientQuantity = ingredient.ingredientQuantity
+                )
+            } // ✅ 필요한 데이터만 추출
+    }
 
     /**
      * 레시피 데이터를 초기화.

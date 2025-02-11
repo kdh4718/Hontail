@@ -97,10 +97,12 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
                     val ingredientQuantity = "${editTextCustomCocktailIngredientDetailContent.text} ${textViewCustomCocktailIngredientDetailUnit.text}"
 
                     val newItem = CustomCocktailItem.IngredientItem(
+                        ingredient.ingredientId,
                         ingredient.ingredientNameKor,
                         ingredientQuantity,
                         ingredient.ingredientImage,
-                        ingredient.ingredientAlcoholContent.toDouble()
+                        ingredient.ingredientAlcoholContent.toDouble(),
+                        ingredient.ingredientCategoryKor
                     )
                     // 공유 ViewModel(MainActivityViewModel)에 재료 추가
                     activityViewModel.addCustomCocktailIngredient(newItem)

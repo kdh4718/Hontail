@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepItemBinding
 import com.hontail.ui.custom.screen.CocktailRecipeStep
-import com.hontail.ui.custom.screen.CustomCocktailRecipeItem
 
 class CustomCocktailRecipeStepAdapter(private var items: MutableList<CocktailRecipeStep>): RecyclerView.Adapter<CustomCocktailRecipeStepAdapter.CustomCocktailRecipeStepViewHolder>() {
 
