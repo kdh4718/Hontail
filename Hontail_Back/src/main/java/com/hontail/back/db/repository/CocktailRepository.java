@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public interface CocktailRepository extends JpaRepository<Cocktail, Integer> {
+public interface CocktailRepository extends JpaRepository<Cocktail, Integer>, CocktailCustomRepository {
     Page<Cocktail> findByBaseSpirit(String baseSpirit, Pageable pageable);
 
     // 기본/커스텀 전체 조회
@@ -33,4 +33,6 @@ public interface CocktailRepository extends JpaRepository<Cocktail, Integer> {
     // 칵테일 이름으로 검색 (대소문자 구분 없이 + 일정 부분만 같은 결과도 포함)
     @Query("SELECT c FROM Cocktail c WHERE LOWER(c.cocktailName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Cocktail> searchByNameContaining(@Param("keyword") String keyword, Pageable pageable);
+
+    List<Cocktail> findAllByIdIn(List<Integer> cocktailIds);
 }

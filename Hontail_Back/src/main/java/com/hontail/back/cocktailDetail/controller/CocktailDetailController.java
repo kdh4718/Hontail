@@ -29,7 +29,9 @@ public class CocktailDetailController {
             @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<CocktailDetailDto> getCocktailDetail(@PathVariable Integer cocktailId) {
-        return ResponseEntity.ok(cocktailDetailService.getCocktailDetail(cocktailId));
+    public ResponseEntity<CocktailDetailDto> getCocktailDetail(
+            @PathVariable Integer cocktailId,
+            @RequestParam(required = false) Integer userId) {
+        return ResponseEntity.ok(cocktailDetailService.getCocktailDetail(cocktailId, userId));
     }
 }

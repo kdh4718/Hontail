@@ -1,4 +1,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--filter_text_color_selector.xml-->
     <item android:state_selected="true" android:color="@color/basic_sky" />
     <item android:color="@color/basic_gray" />
 </selector>

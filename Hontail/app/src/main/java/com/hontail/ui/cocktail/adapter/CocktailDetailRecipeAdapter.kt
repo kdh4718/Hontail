@@ -1,8 +1,9 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.response.Recipe
 import com.hontail.databinding.ListItemCocktailDetailRecipeItemBinding
 
 class CocktailDetailRecipeAdapter(private val items: List<Recipe>): RecyclerView.Adapter<CocktailDetailRecipeAdapter.CocktailDetailRecipeViewHolder>() {
@@ -26,8 +27,8 @@ class CocktailDetailRecipeAdapter(private val items: List<Recipe>): RecyclerView
 
             binding.apply {
 
-                textViewCocktailDetailRecipeNumber.text = item.recipeNumber.toString()
-                textViewCocktailDetailRecipeContent.text = item.recipeContent
+                textViewCocktailDetailRecipeNumber.text = item.sequence.toString()
+                textViewCocktailDetailRecipeContent.text = item.recipeGuide
             }
         }
     }
