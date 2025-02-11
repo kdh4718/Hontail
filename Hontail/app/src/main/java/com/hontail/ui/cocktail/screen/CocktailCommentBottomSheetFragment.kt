@@ -1,19 +1,13 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.screen
 
 
-import android.app.Dialog
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
-import android.widget.FrameLayout
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.hontail.R
 import com.hontail.base.BaseBottomSheetFragment
 import com.hontail.databinding.FragmentCocktailCommentBottomSheetBinding
+import com.hontail.ui.cocktail.adapter.CocktailCommentAdapter
 
 class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCocktailCommentBottomSheetBinding>(
     FragmentCocktailCommentBottomSheetBinding::bind,

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_background"
     android:padding="24dp"
-    tools:context=".ui.cocktail.CocktailCookBottomSheetFragment">
+    tools:context=".ui.cocktail.screen.CocktailCookBottomSheetFragment">
 
     <ImageView
         android:id="@+id/imageViewCookClose"

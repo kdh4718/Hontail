@@ -1,5 +1,6 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -9,7 +10,13 @@ import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.remote.RetrofitUtil
 import kotlinx.coroutines.launch
 
+private const val TAG = "CocktailListFragmentVie_SSAFY"
+
 class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : ViewModel() {
+    private val _userId = MutableLiveData<Int>()
+    val userId: LiveData<Int>
+        get() = _userId
+
     var orderBy: String
         get() = handle.get<String>("orderBy") ?: "id"
         set(value) {
@@ -50,14 +57,20 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
     val cocktailList: LiveData<List<CocktailListResponse>>
         get() = _cocktailList
 
+    fun setUserId(userId: Int) {
+        _userId.postValue(userId)
+    }
+
     fun getCocktailFiltering(){
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
             }.onSuccess {
-                _cocktailList.value = it
+                _cocktailList.value = it.content
+                Log.d(TAG, "getCocktailFiltering: ${it.content}")
             }.onFailure {
                 _cocktailList.value = emptyList()
+                Log.d(TAG, "getCocktailFiltering: ${it.message}")
             }
         }
     }

@@ -1,11 +1,8 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.hontail.R
 import com.hontail.base.BaseBottomSheetFragment
 import com.hontail.databinding.FragmentCocktailCookBottomSheetBinding

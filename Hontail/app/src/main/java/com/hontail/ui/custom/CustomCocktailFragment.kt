@@ -2,29 +2,16 @@ package com.hontail.ui.custom
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
-import com.hontail.data.local.IngredientRepository
 import com.hontail.databinding.FragmentCustomCocktailBinding
-import com.hontail.databinding.FragmentLoginBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.cocktail.CocktailListFragment
-import com.hontail.ui.home.HomeFragment
-import com.hontail.ui.mypage.MyPageFragment
-import com.hontail.ui.zzim.ZzimFragment
 import com.hontail.util.CommonUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 private const val TAG = "CustomCocktailFragment"
 class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(

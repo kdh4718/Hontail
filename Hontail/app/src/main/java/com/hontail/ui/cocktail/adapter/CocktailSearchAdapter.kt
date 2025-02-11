@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.data.model.response.CocktailListResponse
-import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemCocktailSearchRecentBinding
 import com.hontail.databinding.ListItemCocktailSearchResultBinding
 import com.hontail.databinding.ListItemCocktailSearchSearchBarBinding
-import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
-import com.hontail.ui.MainActivity
+import com.hontail.ui.cocktail.screen.CocktailSearchItem
+import com.hontail.ui.cocktail.screen.RecentItem
 import com.hontail.util.CocktailItemAdapter
 
 class CocktailSearchAdapter(private val context: Context, private val items: List<CocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -131,9 +130,8 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
                 recyclerViewListItemCocktailSearchResult.adapter = cocktailSearchResultAdapter
 
                 cocktailSearchResultAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
-
                     // 칵테일 아이템으로 상세화면 가기.
-                    override fun onClickCocktailItem() {
+                    override fun onClickCocktailItem(cocktailId: Int) {
                         cocktailSearchListener.onClickCocktailItem()
                     }
                 }
