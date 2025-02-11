@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.model.request.CustomCocktailRecipeRequest
 import com.hontail.databinding.FragmentCustomCocktailRecipeBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
@@ -208,50 +209,77 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             // 등록
             buttonCustomCocktailRecipeRegister.setOnClickListener { 
 
-                // 이미지 url
-                val imageUrl = viewModel.uploadedImageUrl.value
-                Log.d(TAG, "initEvent: imageUrl: $imageUrl")
+                if(editTextListItemCustomCocktailRecipeName.text.isNotBlank() || editTextListItemCustomCocktailRecipeDescription.text.isNotBlank()) {
 
-                // 칵테일 이름
-                val name = viewModel.recipeName.value
-                Log.d(TAG, "initEvent: name: $name")
 
-                // 칵테일 도수
-                val alcoholContent = activityViewModel.overallAlcoholContent.value
-                Log.d(TAG, "initEvent: alcoholContent: $alcoholContent")
+                    // 이미지 url
+                    val imageUrl = viewModel.uploadedImageUrl.value
+                    Log.d(TAG, "initEvent: imageUrl: $imageUrl")
 
-                // 칵테일 설명
-                val description = viewModel.description.value
-                Log.d(TAG, "initEvent: description: $description")
+                    // 칵테일 이름
+                    val name = viewModel.recipeName.value
+                    Log.d(TAG, "initEvent: name: $name")
 
-                // 칵테일 재료 리스트
-                val ingredientList = viewModel.recipeIngredients.value
-                if (ingredientList != null) {
-                    for (ingredient in ingredientList) {
-                        Log.d(TAG, "initEvent: ingredient: $ingredient")
+                    // 칵테일 도수
+                    val alcoholContent = activityViewModel.overallAlcoholContent.value
+                    Log.d(TAG, "initEvent: alcoholContent: $alcoholContent")
+
+                    // 칵테일 설명
+                    val description = viewModel.description.value
+                    Log.d(TAG, "initEvent: description: $description")
+
+                    // 칵테일 재료 리스트
+                    val ingredientList = viewModel.recipeIngredients.value
+                    if (ingredientList != null) {
+                        for (ingredient in ingredientList) {
+                            Log.d(TAG, "initEvent: ingredient: $ingredient")
+                        }
                     }
-                }
 
-                // ingredientList에서 IngredientItem만 필터링
-                val baseSpirit = activityViewModel.customCocktailIngredients.value
-                    ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // ✅ IngredientItem만 필터링
-                    ?.filter { it.ingredientCategoryKor == "베이스 주류" } // ✅ 베이스 주류만 필터링
-                    ?.sortedBy { it.ingredientId } // ✅ ingredientId 기준 오름차순 정렬
-                    ?.firstOrNull() // ✅ 가장 첫 번째 값 선택
-                Log.d(TAG, "initEvent: baseSpirit: $baseSpirit")
+                    // ingredientList에서 IngredientItem만 필터링
+                    val baseSpirit = activityViewModel.customCocktailIngredients.value
+                        ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // ✅ IngredientItem만 필터링
+                        ?.filter { it.ingredientCategoryKor == "베이스 주류" } // ✅ 베이스 주류만 필터링
+                        ?.sortedBy { it.ingredientId } // ✅ ingredientId 기준 오름차순 정렬
+                        ?.firstOrNull() // ✅ 가장 첫 번째 값 선택
+                    Log.d(TAG, "initEvent: baseSpirit: $baseSpirit")
 
-                // 커스텀인지
-                val isCustom = 1
+                    // 커스텀인지
+                    val isCustom = 1
 
-                // 만든 사람
-                val makerNickname = "admin" // 여기 나중에 수정해야 함.
+                    // 만든 사람
+                    val makerNickname = "admin" // 여기 나중에 수정해야 함.
 
-                // 레시피 스텝
-                val recipeSteps = activityViewModel.recipeSteps.value
-                if (recipeSteps != null) {
-                    for(recipe in recipeSteps) {
-                        Log.d(TAG, "initEvent: recipe : $recipe")
+                    // 레시피 스텝
+                    val recipeSteps = activityViewModel.recipeSteps.value
+                    if (recipeSteps != null) {
+                        for (recipe in recipeSteps) {
+                            Log.d(TAG, "initEvent: recipe : $recipe")
+                        }
                     }
+
+                    val request = recipeSteps?.let { it1 ->
+                        CustomCocktailRecipeRequest(
+                            alcoholContent = alcoholContent!!.toInt(),
+                            baseSpirit = baseSpirit.toString(),
+                            cocktailName = name!!,
+                            description = description!!,
+                            imageUrl = imageUrl!!,
+                            ingredients = ingredientList!!,
+                            isCustom = isCustom,
+                            makerNickname = makerNickname,
+                            recipes = it1
+                        )
+                    }
+
+                    viewModel.insertCustomCocktail(request!!,
+                        onSuccess = { successMessage ->
+                            Toast.makeText(requireContext(), "칵테일 등록 완료! $successMessage", Toast.LENGTH_LONG).show()
+                        },
+                        onError = { errorMessage ->
+                            Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
+                        }
+                    )
                 }
             }
         }

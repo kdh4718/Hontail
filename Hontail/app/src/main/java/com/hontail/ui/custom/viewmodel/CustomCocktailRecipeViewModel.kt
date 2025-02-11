@@ -5,16 +5,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.hontail.data.model.request.CustomCocktailRecipeRequest
 import com.hontail.data.model.request.Ingredient
 import com.hontail.data.model.request.Recipe
 import com.hontail.data.remote.RetrofitUtil
 import com.hontail.ui.custom.screen.CustomCocktailItem
 import com.hontail.util.CommonUtils
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 private const val TAG = "CustomCocktailRecipeVie"
 class CustomCocktailRecipeViewModel: ViewModel() {
 
     private val s3Service = RetrofitUtil.s3Service
+    private val customCocktailService = RetrofitUtil.customCocktailService
 
     // 1. 레시피 이미지 (CustomCocktailRecipeItem.CustomCocktailRecipeImage는 파라미터가 없는 object로 가정)
     private val _recipeImage = MutableLiveData<Uri>()
@@ -139,5 +144,25 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     // S3 업로드 성공 시, 최종 URL을 저장하는 함수 (Fragment의 onSuccess 콜백 등에서 호출)
     fun setUploadedImageUrl(fullUrl: String) {
         _uploadedImageUrl.postValue(extractImageUrl(fullUrl))
+    }
+
+    // 우리 서버에 커스텀 칵테일 등록
+    fun insertCustomCocktail(request: CustomCocktailRecipeRequest, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitUtil.customCocktailService.insertCustomCocktail(1, request)
+                if (response.isSuccessful) {
+                    response.body()?.let { cocktailId ->
+                        onSuccess("서버에 제대로 올라갔습니다.")
+                    } ?: onError("서버에서 올바른 응답을 받지 못했습니다.")
+                } else {
+                    onError("API 요청 실패: ${response.code()}")
+                }
+            } catch (e: HttpException) {
+                onError("네트워크 오류: ${e.message}")
+            } catch (e: Exception) {
+                onError("알 수 없는 오류 발생: ${e.message}")
+            }
+        }
     }
 }

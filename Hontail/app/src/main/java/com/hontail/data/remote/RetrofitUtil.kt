@@ -30,5 +30,8 @@ class RetrofitUtil {
 
         // 재료 서비스
         val ingredientService = ApplicationClass.retrofit.create(IngredientService::class.java)
+
+        // 커스텀 칵테일 서비스
+        val customCocktailService = ApplicationClass.retrofit.create(CustomCocktailService::class.java)
     }
 }
