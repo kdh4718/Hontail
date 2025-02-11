@@ -2,9 +2,12 @@ package com.hontail.ui.custom.adapter
 
 import android.content.Context
 import android.net.Uri
+import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
@@ -19,6 +22,7 @@ import com.hontail.ui.custom.screen.CocktailRecipeStep
 import com.hontail.ui.custom.screen.CustomCocktailRecipeItem
 import okhttp3.internal.notify
 
+private const val TAG = "CustomCocktailRecipeAda"
 class CustomCocktailRecipeAdapter(private val context: Context, private val items: MutableList<CustomCocktailRecipeItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var customCocktailRecipeListener: ItemOnClickListener
@@ -30,6 +34,8 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
         fun onClickAddStep()
         fun onClickDeleteStep(position: Int)
         fun onClickAddImage()
+        fun onRecipeNameChanged(newName: String)
+        fun onRecipeDescriptionChanged(newDescription: String)
     }
 
     companion object {
@@ -115,9 +121,23 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
     }
 
     fun updateItems(newItems: List<CustomCocktailRecipeItem>) {
+        val diffCallback = object : DiffUtil.Callback() {
+            override fun getOldListSize() = items.size
+            override fun getNewListSize() = newItems.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return items[oldItemPosition] == newItems[newItemPosition]
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return items[oldItemPosition] == newItems[newItemPosition]
+            }
+        }
+
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         items.clear()
         items.addAll(newItems)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this) // 변경된 부분만 업데이트하여 EditText 초기화 방지
     }
 
     // 완성된 칵테일 사진
@@ -150,10 +170,34 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
     }
 
     // 이름
-    inner class CustomCocktailRecipeNameViewHolder(private val biding: ListItemCustomCocktailRecipeNameBinding): RecyclerView.ViewHolder(biding.root) {
+    inner class CustomCocktailRecipeNameViewHolder(private val binding: ListItemCustomCocktailRecipeNameBinding): RecyclerView.ViewHolder(binding.root) {
+
+        private var isEditing = false
 
         fun bind(item: CustomCocktailRecipeItem.CustomCocktailRecipeName) {
 
+            binding.apply {
+
+                editTextListItemCustomCocktailRecipeName.setText(item.name)
+
+                val textWatcher = object : android.text.TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        val newName = s.toString()
+                        Log.d("TextWatcher", "이름 변경 후: $newName")
+                        customCocktailRecipeListener.onRecipeNameChanged(newName)
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+
+                    }
+                }
+
+                // 새로운 TextWatcher 등록
+                editTextListItemCustomCocktailRecipeName.addTextChangedListener(textWatcher)
+
+            }
         }
     }
 
@@ -171,9 +215,29 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
     // 칵테일 설명
     inner class CustomCocktailRecipeDescriptionViewHolder(private val binding: ListItemCustomCocktailRecipeDescriptionBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(customCocktailDescription: CustomCocktailRecipeItem.CustomCocktailDescription) {
+        private var isEditing = false
+
+        fun bind(item: CustomCocktailRecipeItem.CustomCocktailDescription) {
 
             binding.apply {
+
+                editTextListItemCustomCocktailRecipeDescription.setText(item.description)
+
+                val textWatcher = object : android.text.TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        val newDescription = s.toString()
+                        Log.d("TextWatcher", "설명 변경 후: $newDescription")
+                        customCocktailRecipeListener.onRecipeDescriptionChanged(newDescription)
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+
+                    }
+                }
+
+                editTextListItemCustomCocktailRecipeDescription.addTextChangedListener(textWatcher)
             }
         }
     }

@@ -96,6 +96,10 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 viewModel.initializeRecipeData(mode)
             }
 
+            viewModel.recipeName.observe(viewLifecycleOwner) {
+                updateAdapter()
+            }
+
             // 이미지
             viewModel.recipeImage.observe(viewLifecycleOwner) {
                 updateAdapter()
@@ -142,18 +146,23 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 // 등록
                 override fun onClickRegister() {
 
+                    Log.d(TAG, "onClickRegister: 등록버튼 눌림")
+                    
                     // 도수
-                    val alcoholContent = activityViewModel.overallAlcoholContent
+                    val alcoholContent = activityViewModel.overallAlcoholContent.value
 
                     // 베이스주
 
                     // 칵테일 이름
+                    val name = viewModel.recipeName.value
+                    Log.d(TAG, "onClickRegister: name : $name")
 
                     // 칵테일 설명
-                    val description = viewModel.description
+                    val description = viewModel.description.value
+                    Log.d(TAG, "onClickRegister: description : $description")
 
                     // 이미지 URL
-                    val imageUrl = viewModel.uploadedImageUrl
+                    val imageUrl = viewModel.uploadedImageUrl.value
 
                     // 재료들
 
@@ -177,8 +186,19 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     viewModel.deleteRecipeStep(position)
                 }
 
+                // 이미지 추가.
                 override fun onClickAddImage() {
                     getImageLauncher.launch("image/*")
+                }
+
+                // 칵테일 이름 변경.
+                override fun onRecipeNameChanged(newName: String) {
+                    viewModel.updateRecipeName(newName)
+                }
+
+                // 칵테일 설명 변경.
+                override fun onRecipeDescriptionChanged(newDescription: String) {
+                    viewModel.updateDescription(newDescription)
                 }
             }
         }
@@ -192,7 +212,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
     private fun assembleRecipeItems(): MutableList<CustomCocktailRecipeItem> {
         val items = mutableListOf<CustomCocktailRecipeItem>()
-        viewModel.recipeImage.value?.let { 
+        viewModel.recipeImage.value?.let {
             items.add(it)
         }
         viewModel.recipeName.value?.let {

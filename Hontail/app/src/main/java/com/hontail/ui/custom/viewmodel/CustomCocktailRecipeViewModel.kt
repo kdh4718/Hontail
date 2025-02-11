@@ -57,9 +57,9 @@ class CustomCocktailRecipeViewModel: ViewModel() {
         if (mode == CommonUtils.CustomCocktailRecipeMode.REGISTER) {
             Log.d(TAG, "initializeRecipeData: 등록모드입니다.")
             _recipeImage.value = CustomCocktailRecipeItem.CustomCocktailRecipeImage()
-            _recipeName.value = "칵테일 완성 이름."
+            _recipeName.value = ""
             _alcoholLevel.value = 25
-            _description.value = "맛있는 칵테일입니다."
+            _description.value = ""
             _recipeSteps.value = mutableListOf(
                 CocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "")
             )
@@ -92,12 +92,16 @@ class CustomCocktailRecipeViewModel: ViewModel() {
         _recipeImage.value = CustomCocktailRecipeItem.CustomCocktailRecipeImage(uri)
     }
 
+    fun updateRecipeName(name: String) {
+        _recipeName.value = name
+    }
+
     fun updateAlcoholLevel(level: Int) {
         _alcoholLevel.value = level
     }
 
-    fun updateDescription(desc: String) {
-        _description.value = desc
+    fun updateDescription(description: String) {
+        _description.value = description
     }
 
     // === 레시피 단계 리스트 관련 메서드 ===
