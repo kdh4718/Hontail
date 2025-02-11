@@ -162,6 +162,9 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 
                 val name = viewModel.recipeName.value
                 Log.d(TAG, "initEvent: name: $name")
+                
+                val alcoholContent = activityViewModel.overallAlcoholContent.value
+                Log.d(TAG, "initEvent: alcoholContent: $alcoholContent")
 
                 val description = viewModel.description.value
                 Log.d(TAG, "initEvent: description: $description")
