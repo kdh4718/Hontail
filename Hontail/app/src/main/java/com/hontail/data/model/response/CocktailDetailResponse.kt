@@ -13,4 +13,19 @@ data class CocktailDetailResponse(
     val cocktailIngredients: List<CocktailIngredient>,
     val recipes: List<Recipe>,
     val isLiked: Boolean
-)
+){
+    constructor() : this(
+        cocktailId = 0,
+        cocktailName = "",
+        cocktailDescription = "",
+        imageUrl = "",
+        userId = 0,
+        makerNickname = "",
+        alcoholContent = 0,
+        likeCnt = 0,
+        commentCnt = 0,
+        cocktailIngredients = emptyList(),
+        recipes = emptyList(),
+        isLiked = false
+    )
+}

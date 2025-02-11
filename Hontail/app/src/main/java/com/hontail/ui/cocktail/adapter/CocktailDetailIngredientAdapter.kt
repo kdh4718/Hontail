@@ -27,8 +27,8 @@ class CocktailDetailIngredientAdapter(private val items: List<CocktailIngredient
 
             binding.apply {
 
-                textViewCocktailDetailIngredientName.text = item.name
-                textViewCocktailDetailIngredientAmount.text = item.amount
+                textViewCocktailDetailIngredientName.text = item.ingredient.ingredientNameKor
+                textViewCocktailDetailIngredientAmount.text = item.ingredientQuantity
             }
         }
     }

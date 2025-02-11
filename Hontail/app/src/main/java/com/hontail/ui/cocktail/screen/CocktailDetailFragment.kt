@@ -33,8 +33,10 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.cocktailId = activityViewModel.cocktailId.value!!
-        viewModel.setUserId(activityViewModel.userId)
+        viewModel.cocktailId = activityViewModel.cocktailId.value ?: 0
+        viewModel.userId = activityViewModel.userId
+
+        viewModel.getCocktailDetailInfo()
     }
 
     override fun onResume() {

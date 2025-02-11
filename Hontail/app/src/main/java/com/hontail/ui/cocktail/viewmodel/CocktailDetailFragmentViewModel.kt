@@ -19,27 +19,19 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
             field = value
         }
 
-    private val _userId = MutableLiveData<Int>()
-    val userId: LiveData<Int>
-        get() = _userId
+    var userId = handle.get<Int>("userId") ?: 0
+        set(value) {
+            handle.set("userId", value)
+            field = value
+        }
 
     // Cocktail 정보도 LiveData로 관리
     private val _cocktailInfo = MutableLiveData<CocktailDetailResponse>()
     val cocktailInfo: LiveData<CocktailDetailResponse>
         get() = _cocktailInfo
 
-    fun setUserId(userId: Int) {
-        _userId.postValue(userId)
-    }
-
-    init {
-        userId.observeForever{
-            getCocktailDetailInfo()
-        }
-    }
-
     fun getCocktailDetailInfo(){
-        getCocktailDetailInfo(cocktailId, _userId.value!!)
+        getCocktailDetailInfo(cocktailId, userId)
     }
 
     fun getCocktailDetailInfo(cocktailId: Int, userId: Int){
@@ -48,8 +40,10 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
                 RetrofitUtil.cocktailDetailService.getCocktailDetail(cocktailId, userId)
             }.onSuccess {
                 _cocktailInfo.value = it.body()
+                Log.d(TAG, "getCocktailDetailInfo: ${_cocktailInfo.value}")
             }.onFailure {
                 Log.d(TAG, "getCocktailDetailInfo: ${it.message}")
+                _cocktailInfo.value = CocktailDetailResponse()
             }
         }
     }

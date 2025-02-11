@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface CocktailDetailService {
 
     // 칵테일 상세 정보 조회
-    @GET("api/recipe/{cocktailId}")
+    @GET("/api/cocktail/detail/{cocktailId}")
     suspend fun getCocktailDetail(
         @Path("cocktailId") cocktailId: Int,
         @Query("userId") userId: Int

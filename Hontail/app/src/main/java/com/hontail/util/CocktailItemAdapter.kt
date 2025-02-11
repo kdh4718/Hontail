@@ -1,13 +1,19 @@
 package com.hontail.util
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.hontail.R
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemCocktailBinding
+
+private const val TAG = "CocktailItemAdapter_SSAFY"
 
 class CocktailItemAdapter(private val context: Context, private val items: List<CocktailListResponse>): RecyclerView.Adapter<CocktailItemAdapter.CocktailItemViewHolder>() {
 
@@ -40,6 +46,14 @@ class CocktailItemAdapter(private val context: Context, private val items: List<
                 textViewListItemCocktailIngredientCount.text = "재료 ${item.ingredientCount}개"
                 textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.likes)
                 textViewListItemCocktailAlcoholContent.text = "${item.alcoholContent}%"
+
+                Log.d(TAG, "bind: ${item.imageUrl}")
+
+                Glide.with(context)
+                    .load(item.imageUrl)
+                    .placeholder(R.drawable.ic_bottom_navi_zzim_selected)
+                    .error(R.drawable.ic_bottom_navi_zzim_unselected)
+                    .into(imageViewListItemCocktailCocktail)
 
                 if (item.isLiked){
                     imageViewListItemCocktailZzim.setImageDrawable(

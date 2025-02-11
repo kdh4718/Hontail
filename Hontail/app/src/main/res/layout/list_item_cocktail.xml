@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--list_item_cocktail.xml-->
+<?xml version="1.0" encoding="utf-8"?><!--list_item_cocktail.xml-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,34 +30,34 @@
 
     <TextView
         android:id="@+id/textViewListItemCocktailBaseSpirit"
+        style="@style/Font_Medium_12_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="리큐어"
-        style="@style/Font_Medium_12_Basic_White"
-        android:background="@drawable/textview_list_item_cocktail_label_background"
         android:layout_marginTop="8dp"
+        android:background="@drawable/textview_list_item_cocktail_label_background"
+        android:text="리큐어"
         app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
         app:layout_constraintTop_toBottomOf="@+id/imageViewListItemCocktailCocktail" />
 
     <TextView
         android:id="@+id/textViewListItemCocktailIngredientCount"
+        style="@style/Font_Medium_12_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="재료 2개"
-        style="@style/Font_Medium_12_Basic_White"
         android:layout_marginStart="8dp"
         android:background="@drawable/textview_list_item_cocktail_label_background"
+        android:text="재료 2개"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCocktailBaseSpirit"
         app:layout_constraintStart_toEndOf="@+id/textViewListItemCocktailBaseSpirit"
-        app:layout_constraintTop_toTopOf="@+id/textViewListItemCocktailBaseSpirit"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCocktailBaseSpirit"/>
+        app:layout_constraintTop_toTopOf="@+id/textViewListItemCocktailBaseSpirit" />
 
     <TextView
         android:id="@+id/textViewListItemCocktailName"
+        style="@style/Font_SemiBold_20_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="깔루아 밀크"
-        style="@style/Font_SemiBold_20_Basic_White"
         app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
         app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailBaseSpirit" />
 
@@ -74,23 +73,23 @@
 
     <TextView
         android:id="@+id/textViewListItemCocktailTotalZzim"
+        style="@style/Font_Medium_12_Basic_White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="1,231"
-        style="@style/Font_Medium_12_Basic_White"
-        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"
-        app:layout_constraintStart_toEndOf="@+id/imageViewListItemCocktailTotalZzim"/>
+        app:layout_constraintStart_toEndOf="@+id/imageViewListItemCocktailTotalZzim"
+        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim" />
 
     <TextView
         android:id="@+id/textViewListItemCocktailAlcoholContent"
+        style="@style/Font_SemiBold_16_Basic_Sky"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="5%"
-        style="@style/Font_SemiBold_16_Basic_Sky"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"
         app:layout_constraintEnd_toEndOf="@+id/imageViewListItemCocktailCocktail"
-        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"/>
+        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
