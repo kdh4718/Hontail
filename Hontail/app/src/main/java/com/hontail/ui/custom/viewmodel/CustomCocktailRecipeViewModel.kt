@@ -5,12 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.hontail.data.remote.RetrofitUtil
 import com.hontail.ui.custom.screen.CocktailRecipeStep
-import com.hontail.ui.custom.screen.CustomCocktailRecipeItem
 import com.hontail.util.CommonUtils
-import kotlinx.coroutines.launch
 
 private const val TAG = "CustomCocktailRecipeVie"
 class CustomCocktailRecipeViewModel: ViewModel() {
@@ -18,10 +15,8 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     private val s3Service = RetrofitUtil.s3Service
 
     // 1. 레시피 이미지 (CustomCocktailRecipeItem.CustomCocktailRecipeImage는 파라미터가 없는 object로 가정)
-    private val _recipeImage = MutableLiveData<CustomCocktailRecipeItem.CustomCocktailRecipeImage>().apply {
-        value = CustomCocktailRecipeItem.CustomCocktailRecipeImage()
-    }
-    val recipeImage: LiveData<CustomCocktailRecipeItem.CustomCocktailRecipeImage> get() = _recipeImage
+    private val _recipeImage = MutableLiveData<Uri>()
+    val recipeImage: LiveData<Uri> get() = _recipeImage
 
     // 2. 칵테일 이름
     private val _recipeName = MutableLiveData<String>()
@@ -56,7 +51,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     fun initializeRecipeData(mode: CommonUtils.CustomCocktailRecipeMode) {
         if (mode == CommonUtils.CustomCocktailRecipeMode.REGISTER) {
             Log.d(TAG, "initializeRecipeData: 등록모드입니다.")
-            _recipeImage.value = CustomCocktailRecipeItem.CustomCocktailRecipeImage()
+            _recipeImage.value = Uri.EMPTY
             _recipeName.value = ""
             _alcoholLevel.value = 25
             _description.value = ""
@@ -76,7 +71,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     private fun loadExistingRecipeData() {
         // TODO: 실제 데이터를 불러오는 로직을 구현
         // 예시로 더미 데이터를 설정합니다.
-        _recipeImage.value = CustomCocktailRecipeItem.CustomCocktailRecipeImage()
+        _recipeImage.value = Uri.EMPTY
         _recipeName.value = "완성된 칵테일 이름 수정할 것."
         _alcoholLevel.value = 30
         _description.value = "수정된 칵테일 설명"
@@ -89,7 +84,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     // === 각 항목별 업데이트 메서드 ===
 
     fun updateRecipeImage(uri: Uri) {
-        _recipeImage.value = CustomCocktailRecipeItem.CustomCocktailRecipeImage(uri)
+        _recipeImage.value = uri
     }
 
     fun updateRecipeName(name: String) {

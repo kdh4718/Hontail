@@ -21,7 +21,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailRecipeBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.custom.adapter.CustomCocktailRecipeAdapter
+//import com.hontail.ui.custom.adapter.CustomCocktailRecipeAdapter
 import com.hontail.ui.custom.viewmodel.CustomCocktailRecipeViewModel
 import com.hontail.util.CommonUtils
 import kotlinx.coroutines.launch
@@ -45,7 +45,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CustomCocktailRecipeViewModel by viewModels()
 
-    private lateinit var customCocktailRecipeAdapter: CustomCocktailRecipeAdapter
+//    private lateinit var customCocktailRecipeAdapter: CustomCocktailRecipeAdapter
 
     private lateinit var recipeMode: CommonUtils.CustomCocktailRecipeMode
 
@@ -64,9 +64,8 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initToolbar()
-        initAdapter()
         observeCustomCocktailRecipe()
+        initToolbar()
         initEvent()
     }
 
@@ -79,7 +78,10 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
                 setNavigationIcon(R.drawable.go_back)
                 setNavigationOnClickListener {
-                    parentFragmentManager.popBackStack("CustomCocktailRecipeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    parentFragmentManager.popBackStack(
+                        "CustomCocktailRecipeFragment",
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE
+                    )
                 }
             }
         }
@@ -90,146 +92,42 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
         binding.apply {
 
-            // `recipeMode`를 감지하여 `recipeItems` 초기화
+            // 레시피 모드 등록 / 수정
             activityViewModel.recipeMode.observe(viewLifecycleOwner) { mode ->
                 recipeMode = mode
                 viewModel.initializeRecipeData(mode)
             }
 
-            viewModel.recipeName.observe(viewLifecycleOwner) {
-                updateAdapter()
-            }
+            // 칵테일 이미지
+            viewModel.recipeImage.observe(viewLifecycleOwner) { imageUri ->
 
-            // 이미지
-            viewModel.recipeImage.observe(viewLifecycleOwner) {
-                updateAdapter()
+                if(imageUri != Uri.EMPTY) {
+                    constraintLayoutListItemCustomCocktailRecipeImageGuide.visibility = View.GONE
+                    imageViewListItemCustomCocktailRecipeImage.setImageURI(imageUri)
+                }
+                else {
+                    imageViewListItemCustomCocktailRecipeImage.setImageResource(R.color.basic_gray)
+                    constraintLayoutListItemCustomCocktailRecipeImageGuide.visibility = View.VISIBLE
+                }
             }
-
-            // 도수
-            activityViewModel.overallAlcoholContent.observe(viewLifecycleOwner) { overAllAlcohol ->
-                viewModel.updateAlcoholLevel(overAllAlcohol.toInt())
-            }
-
-            // 설명
-            viewModel.description.observe(viewLifecycleOwner) {
-                updateAdapter()
-            }
-
-            // 단계별 리스트
-            viewModel.recipeSteps.observe(viewLifecycleOwner) {
-                updateAdapter()
-            }
-
         }
     }
 
-    // 리사이클러뷰 어댑터 연결
-    private fun initAdapter() {
-
-        binding.apply {
-
-            customCocktailRecipeAdapter = CustomCocktailRecipeAdapter(mainActivity, mutableListOf())
-
-            recyclerViewCustomCocktailRecipe.itemAnimator = null
-            recyclerViewCustomCocktailRecipe.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
-            recyclerViewCustomCocktailRecipe.adapter = customCocktailRecipeAdapter
-        }
-    }
-
-    // Event
+    // 이벤트
     private fun initEvent() {
 
         binding.apply {
 
-            customCocktailRecipeAdapter.customCocktailRecipeListener = object : CustomCocktailRecipeAdapter.ItemOnClickListener {
+            // 이미지 추가.
+            constraintLayoutListItemCustomCocktailRecipeImageGuide.setOnClickListener {
+                getImageLauncher.launch("image/*")
+            }
 
-                // 등록
-                override fun onClickRegister() {
-
-                    Log.d(TAG, "onClickRegister: 등록버튼 눌림")
-                    
-                    // 도수
-                    val alcoholContent = activityViewModel.overallAlcoholContent.value
-
-                    // 베이스주
-
-                    // 칵테일 이름
-                    val name = viewModel.recipeName.value
-                    Log.d(TAG, "onClickRegister: name : $name")
-
-                    // 칵테일 설명
-                    val description = viewModel.description.value
-                    Log.d(TAG, "onClickRegister: description : $description")
-
-                    // 이미지 URL
-                    val imageUrl = viewModel.uploadedImageUrl.value
-
-                    // 재료들
-
-                    // 커스텀인지
-                    val isCustom = 1
-
-                    // 만든이 이름
-
-                    // 단계별 레시피
-
-                }
-
-                // 레시피 단계 추가
-                override fun onClickAddStep() {
-
-                    viewModel.addNewRecipeStep()
-                }
-
-                // 레시피 단계 삭제.
-                override fun onClickDeleteStep(position: Int) {
-                    viewModel.deleteRecipeStep(position)
-                }
-
-                // 이미지 추가.
-                override fun onClickAddImage() {
-                    getImageLauncher.launch("image/*")
-                }
-
-                // 칵테일 이름 변경.
-                override fun onRecipeNameChanged(newName: String) {
-                    viewModel.updateRecipeName(newName)
-                }
-
-                // 칵테일 설명 변경.
-                override fun onRecipeDescriptionChanged(newDescription: String) {
-                    viewModel.updateDescription(newDescription)
-                }
+            // 이미지 수정
+            imageViewListItemCustomCocktailRecipeImage.setOnClickListener {
+                getImageLauncher.launch("image/*")
             }
         }
-    }
-
-    // 어댑터의 데이터를 갱신.
-    private fun updateAdapter() {
-        val combinedItems = assembleRecipeItems()
-        customCocktailRecipeAdapter.updateItems(combinedItems)
-    }
-
-    private fun assembleRecipeItems(): MutableList<CustomCocktailRecipeItem> {
-        val items = mutableListOf<CustomCocktailRecipeItem>()
-        viewModel.recipeImage.value?.let {
-            items.add(it)
-        }
-        viewModel.recipeName.value?.let {
-            items.add(CustomCocktailRecipeItem.CustomCocktailRecipeName(it))
-        }
-        viewModel.alcoholLevel.value?.let {
-            items.add(CustomCocktailRecipeItem.CustomCocktailAlcoholLevel(it))
-        }
-        viewModel.description.value?.let {
-            items.add(CustomCocktailRecipeItem.CustomCocktailDescription(it))
-        }
-        viewModel.recipeSteps.value?.let {
-            items.add(CustomCocktailRecipeItem.CustomCocktailRecipeStep(it))
-        }
-        items.add(CustomCocktailRecipeItem.CustomCocktailRecipeAddStep)
-        items.add(CustomCocktailRecipeItem.CustomCocktailRecipeRegister)
-        return items
     }
 
     // 이미지 런처 등록
@@ -240,9 +138,6 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             if(uri != null) {
 
                 viewModel.updateRecipeImage(uri)
-                customCocktailRecipeAdapter.selectedImageUri = uri
-
-                updateAdapter()
 
                 val imageFileName = getImageFileName(uri)
 
@@ -350,16 +245,6 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
         })
     }
 
-}
-
-sealed class CustomCocktailRecipeItem {
-    data class CustomCocktailRecipeImage(val imageUri: Uri? = null): CustomCocktailRecipeItem()
-    data class CustomCocktailRecipeName(val name: String): CustomCocktailRecipeItem()
-    data class CustomCocktailAlcoholLevel(val alcoholLevel: Int): CustomCocktailRecipeItem()
-    data class CustomCocktailDescription(val description: String): CustomCocktailRecipeItem()
-    data class CustomCocktailRecipeStep(var recipeStepList: MutableList<CocktailRecipeStep>): CustomCocktailRecipeItem()
-    object CustomCocktailRecipeAddStep: CustomCocktailRecipeItem()
-    object CustomCocktailRecipeRegister: CustomCocktailRecipeItem()
 }
 
 data class CocktailRecipeStep(var stepNumber: Int, val selectedAnimation: CommonUtils.CustomCocktailRecipeAnimationType, var description: String)
