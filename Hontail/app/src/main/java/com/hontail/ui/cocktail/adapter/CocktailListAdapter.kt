@@ -144,7 +144,7 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
 
                 // 칵테일 아이템 눌렀을 때 상세 화면으로
                 cocktailListCocktailAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
-                    override fun onClickCocktailItem() {
+                    override fun onClickCocktailItem(cocktailId: Int) {
                         cocktailListListener.onClickCocktailItem()
                     }
                 }

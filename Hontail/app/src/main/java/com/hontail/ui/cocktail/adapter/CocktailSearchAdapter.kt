@@ -130,9 +130,8 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
                 recyclerViewListItemCocktailSearchResult.adapter = cocktailSearchResultAdapter
 
                 cocktailSearchResultAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
-
                     // 칵테일 아이템으로 상세화면 가기.
-                    override fun onClickCocktailItem() {
+                    override fun onClickCocktailItem(cocktailId: Int) {
                         cocktailSearchListener.onClickCocktailItem()
                     }
                 }

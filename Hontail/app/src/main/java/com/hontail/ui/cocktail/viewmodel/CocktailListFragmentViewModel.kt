@@ -10,6 +10,8 @@ import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.remote.RetrofitUtil
 import kotlinx.coroutines.launch
 
+private const val TAG = "CocktailListFragmentVie_SSAFY"
+
 class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : ViewModel() {
     private val _userId = MutableLiveData<Int>()
     val userId: LiveData<Int>
@@ -64,9 +66,11 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             runCatching {
                 RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
             }.onSuccess {
-                _cocktailList.value = it
+                _cocktailList.value = it.content
+                Log.d(TAG, "getCocktailFiltering: ${it.content}")
             }.onFailure {
                 _cocktailList.value = emptyList()
+                Log.d(TAG, "getCocktailFiltering: ${it.message}")
             }
         }
     }

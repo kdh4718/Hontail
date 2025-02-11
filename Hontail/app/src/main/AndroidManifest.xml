@@ -41,5 +41,4 @@
             android:screenOrientation="unspecified">
         </activity>
     </application>
-
 </manifest>

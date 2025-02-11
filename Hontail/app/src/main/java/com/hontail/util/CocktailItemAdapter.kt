@@ -14,7 +14,7 @@ class CocktailItemAdapter(private val context: Context, private val items: List<
     lateinit var cocktailItemListener: ItemOnClickListener
 
     interface ItemOnClickListener {
-        fun onClickCocktailItem()
+        fun onClickCocktailItem(cocktailId: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailItemViewHolder {
@@ -56,7 +56,7 @@ class CocktailItemAdapter(private val context: Context, private val items: List<
                 }
 
                 root.setOnClickListener {
-                    cocktailItemListener.onClickCocktailItem()
+                    cocktailItemListener.onClickCocktailItem(items[layoutPosition].id)
                 }
             }
         }

@@ -20,9 +20,9 @@ class CocktailPagingSource(
             val response = RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
 
             LoadResult.Page(
-                data = response,
+                data = response.content,
                 prevKey = if (page == 0) null else page - 1,  // 이전 페이지 없음이면 null
-                nextKey = if (response.isEmpty()) null else page + 1 // 다음 페이지 없으면 null
+                nextKey = if (response.content.isEmpty()) null else page + 1 // 다음 페이지 없으면 null
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
