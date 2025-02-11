@@ -46,7 +46,7 @@
             android:buttonTintMode="@null"
             android:padding="10dp"
             android:text="휘젓기"
-            style="@style/Font_Medium_16_Basic_Gray"
+            style="@style/Font_Medium_16_Basic_Gray_Check_Box"
             android:textColor="@drawable/custom_radio_button_text" />
 
         <RadioButton
@@ -59,7 +59,7 @@
             android:buttonTintMode="@null"
             android:padding="10dp"
             android:text="붓기"
-            style="@style/Font_Medium_16_Basic_Gray"
+            style="@style/Font_Medium_16_Basic_Gray_Check_Box"
             android:textColor="@drawable/custom_radio_button_text" />
 
         <RadioButton
@@ -72,7 +72,7 @@
             android:buttonTintMode="@null"
             android:padding="10dp"
             android:text="흔들기"
-            style="@style/Font_Medium_16_Basic_Gray"
+            style="@style/Font_Medium_16_Basic_Gray_Check_Box"
             android:textColor="@drawable/custom_radio_button_text" />
     </RadioGroup>
 
