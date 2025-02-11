@@ -25,29 +25,24 @@ public class LikeController {
     @Operation(summary = "칵테일 좋아요 추가")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "좋아요 추가 성공"),
-            @ApiResponse(responseCode = "400", description = "이미 좋아요가 존재함",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "404", description = "칵테일 또는 사용자를 찾을 수 없음",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "400", description = "이미 좋아요가 존재함"),
+            @ApiResponse(responseCode = "404", description = "칵테일 또는 사용자를 찾을 수 없음")
     })
-    public ResponseEntity<Void> addLike(
+    public ResponseEntity<Integer> addLike(
             @PathVariable Integer cocktailId,
             @RequestParam Integer userId) {
-        likeService.addLike(cocktailId, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(likeService.addLike(cocktailId, userId));
     }
 
     @DeleteMapping("/{cocktailId}/likes")
     @Operation(summary = "칵테일 좋아요 취소")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "좋아요 취소 성공"),
-            @ApiResponse(responseCode = "404", description = "좋아요 또는 칵테일을 찾을 수 없음",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "404", description = "좋아요 또는 칵테일을 찾을 수 없음")
     })
-    public ResponseEntity<Void> deleteLike(
+    public ResponseEntity<Integer> deleteLike(
             @PathVariable Integer cocktailId,
             @RequestParam Integer userId) {
-        likeService.deleteLike(cocktailId, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(likeService.deleteLike(cocktailId, userId));
     }
 }
