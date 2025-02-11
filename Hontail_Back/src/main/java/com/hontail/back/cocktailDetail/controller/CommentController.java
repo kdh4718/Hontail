@@ -12,6 +12,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.hontail.back.security.util.SecurityUtil;
+import com.hontail.back.global.exception.CustomException;
+import com.hontail.back.global.exception.ErrorCode;
 
 import java.util.List;
 
@@ -44,8 +47,11 @@ public class CommentController {
     })
     public ResponseEntity<CommentDto> addComment(
             @PathVariable Integer cocktailId,
-            @RequestParam Integer userId,
             @RequestBody String content) {
+        Integer userId = SecurityUtil.getCurrentUserId();
+        if (userId == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
+        }
         return ResponseEntity.status(201).body(commentService.addComment(cocktailId, userId, content));
     }
 
@@ -61,8 +67,11 @@ public class CommentController {
     public ResponseEntity<Void> updateComment(
             @PathVariable Integer cocktailId,
             @PathVariable Integer commentId,
-            @RequestParam Integer userId,
             @RequestBody String content) {
+        Integer userId = SecurityUtil.getCurrentUserId();
+        if (userId == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
+        }
         commentService.updateComment(cocktailId, commentId, userId, content);
         return ResponseEntity.ok().build();
     }
@@ -78,8 +87,11 @@ public class CommentController {
     })
     public ResponseEntity<Void> deleteComment(
             @PathVariable Integer cocktailId,
-            @PathVariable Integer commentId,
-            @RequestParam Integer userId) {
+            @PathVariable Integer commentId) {
+        Integer userId = SecurityUtil.getCurrentUserId();
+        if (userId == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
+        }
         commentService.deleteComment(cocktailId, commentId, userId);
         return ResponseEntity.ok().build();
     }
