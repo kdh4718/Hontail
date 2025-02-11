@@ -1,6 +1,6 @@
 package com.hontail.back.cocktailDetail.service;
 
 public interface LikeService {
-    void addLike(Integer cocktailId, Integer userId);
-    void deleteLike(Integer cocktailId, Integer userId);
+    Integer addLike(Integer cocktailId, Integer userId);
+    Integer deleteLike(Integer cocktailId, Integer userId);
 }
