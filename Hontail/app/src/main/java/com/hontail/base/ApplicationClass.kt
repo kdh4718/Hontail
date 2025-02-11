@@ -24,8 +24,6 @@ class ApplicationClass : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        KakaoSdk.init(this, R.string.kakao_app_key.toString())
-
         sharedPreferencesUtil = SharedPreferencesUtil(applicationContext)
         // 앱이 처음 생성되는 순간, retrofit 인스턴스를 생성
 
@@ -45,6 +43,11 @@ class ApplicationClass : Application() {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient) // OkHttpClient 설정 적용
             .build()
+
+        // KaKao SDK 초기화
+//        val kakaoAppKey = getString(R.string.kakao_app_key)
+//        KakaoSdk.init(this, kakaoAppKey)
+
 
         // 앱 처음 생성되는 순간 룸 디비 생성.
         IngredientRepository.initialize(this)
