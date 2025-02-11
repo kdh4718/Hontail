@@ -1,12 +1,8 @@
 package com.hontail.back.db.repository;
 
-import com.hontail.back.cocktail.dto.CocktailSummaryDto;
-import com.hontail.back.cocktail.dto.CocktailSummaryResponseDto;
 import com.hontail.back.db.entity.Cocktail;
-import jakarta.validation.constraints.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,4 +33,6 @@ public interface CocktailRepository extends JpaRepository<Cocktail, Integer>, Co
     // 칵테일 이름으로 검색 (대소문자 구분 없이 + 일정 부분만 같은 결과도 포함)
     @Query("SELECT c FROM Cocktail c WHERE LOWER(c.cocktailName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Cocktail> searchByNameContaining(@Param("keyword") String keyword, Pageable pageable);
+
+    List<Cocktail> findAllByIdIn(List<Integer> cocktailIds);
 }

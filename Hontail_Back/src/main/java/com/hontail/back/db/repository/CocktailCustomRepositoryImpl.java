@@ -50,15 +50,13 @@ public class CocktailCustomRepositoryImpl implements CocktailCustomRepository {
             Number totalIngredientsNum = tuple.get(1, Number.class);
             Long totalIngredients = totalIngredientsNum != null ? totalIngredientsNum.longValue() : 0L;
 
-            // matchingIngredients도 `Number`로 가져와서 Long으로 변환
             Number matchingIngredientsNum = tuple.get(2, Number.class);
             Long matchingIngredients = matchingIngredientsNum != null ? matchingIngredientsNum.longValue() : 0L;
 
             Long missingIngredients = totalIngredients - matchingIngredients; // 부족한 재료 개수 계산
 
-
             return new CocktailIngredientCountDto(cocktailId, totalIngredients, matchingIngredients, missingIngredients);
-        }).collect(Collectors.toList());
+        }).filter(dto -> dto.getMatchingIngredients() > 0).collect(Collectors.toList());
 
     }
 }
