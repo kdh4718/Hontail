@@ -21,7 +21,7 @@ public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
+    @Autowired // 의존성 주입
     private JwtOAuth2LoginService oAuth2UserService;
 
     @GetMapping("/login")
