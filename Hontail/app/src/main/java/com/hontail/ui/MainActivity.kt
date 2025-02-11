@@ -103,6 +103,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     fun initData(){
         val userId = intent.getIntExtra("user_id", 0)
         activityViewModel.userId = userId
+
+        val userNickname = intent.getStringExtra("user_nickname")
+        activityViewModel.userNickname = userNickname ?: ""
     }
 
     fun checkPermissions() {
