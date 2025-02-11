@@ -192,7 +192,12 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
     private fun assembleRecipeItems(): MutableList<CustomCocktailRecipeItem> {
         val items = mutableListOf<CustomCocktailRecipeItem>()
-        viewModel.recipeImage.value?.let { items.add(it) }
+        viewModel.recipeImage.value?.let { 
+            items.add(it)
+        }
+        viewModel.recipeName.value?.let {
+            items.add(CustomCocktailRecipeItem.CustomCocktailRecipeName(it))
+        }
         viewModel.alcoholLevel.value?.let {
             items.add(CustomCocktailRecipeItem.CustomCocktailAlcoholLevel(it))
         }
@@ -329,6 +334,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
 sealed class CustomCocktailRecipeItem {
     data class CustomCocktailRecipeImage(val imageUri: Uri? = null): CustomCocktailRecipeItem()
+    data class CustomCocktailRecipeName(val name: String): CustomCocktailRecipeItem()
     data class CustomCocktailAlcoholLevel(val alcoholLevel: Int): CustomCocktailRecipeItem()
     data class CustomCocktailDescription(val description: String): CustomCocktailRecipeItem()
     data class CustomCocktailRecipeStep(var recipeStepList: MutableList<CocktailRecipeStep>): CustomCocktailRecipeItem()

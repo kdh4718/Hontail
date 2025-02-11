@@ -12,6 +12,7 @@ import com.hontail.databinding.ListItemCustomCocktailRecipeAddStepBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeAlcoholLevelBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeDescriptionBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeImageBinding
+import com.hontail.databinding.ListItemCustomCocktailRecipeNameBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeRegisterBinding
 import com.hontail.databinding.ListItemCustomCocktailRecipeStepBinding
 import com.hontail.ui.custom.screen.CocktailRecipeStep
@@ -33,16 +34,18 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
 
     companion object {
         const val VIEW_TYPE_IMAGE = 0
-        const val VIEW_TYPE_ALCOHOL_LEVEL = 1
-        const val VIEW_TYPE_DESCRIPTION = 2
-        const val VIEW_TYPE_RECIPE_STEP = 3
-        const val VIEW_TYPE_RECIPE_ADD_STEP = 4
-        const val VIEW_TYPE_RECIPE_REGISTER = 5
+        const val VIEW_TYPE_NAME = 1
+        const val VIEW_TYPE_ALCOHOL_LEVEL = 2
+        const val VIEW_TYPE_DESCRIPTION = 3
+        const val VIEW_TYPE_RECIPE_STEP = 4
+        const val VIEW_TYPE_RECIPE_ADD_STEP = 5
+        const val VIEW_TYPE_RECIPE_REGISTER = 6
     }
 
     override fun getItemViewType(position: Int): Int {
         return when(items[position]) {
             is CustomCocktailRecipeItem.CustomCocktailRecipeImage -> VIEW_TYPE_IMAGE
+            is CustomCocktailRecipeItem.CustomCocktailRecipeName -> VIEW_TYPE_NAME
             is CustomCocktailRecipeItem.CustomCocktailAlcoholLevel -> VIEW_TYPE_ALCOHOL_LEVEL
             is CustomCocktailRecipeItem.CustomCocktailDescription -> VIEW_TYPE_DESCRIPTION
             is CustomCocktailRecipeItem.CustomCocktailRecipeStep -> VIEW_TYPE_RECIPE_STEP
@@ -58,6 +61,11 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
             VIEW_TYPE_IMAGE -> {
                 val binding = ListItemCustomCocktailRecipeImageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CustomCocktailRecipeImageViewHolder(binding)
+            }
+
+            VIEW_TYPE_NAME -> {
+                val binding = ListItemCustomCocktailRecipeNameBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                CustomCocktailRecipeNameViewHolder(binding)
             }
 
             VIEW_TYPE_ALCOHOL_LEVEL -> {
@@ -97,6 +105,7 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
 
         when (val item = items[position]) {
             is CustomCocktailRecipeItem.CustomCocktailRecipeImage -> (holder as CustomCocktailRecipeImageViewHolder).bind(item)
+            is CustomCocktailRecipeItem.CustomCocktailRecipeName -> (holder as CustomCocktailRecipeNameViewHolder).bind(item)
             is CustomCocktailRecipeItem.CustomCocktailAlcoholLevel -> (holder as CustomCocktailRecipeAlcoholLevelViewHolder).bind(item)
             is CustomCocktailRecipeItem.CustomCocktailDescription -> (holder as CustomCocktailRecipeDescriptionViewHolder).bind(item)
             is CustomCocktailRecipeItem.CustomCocktailRecipeStep -> (holder as CustomCocktailRecipeStepViewHolder).bind(item.recipeStepList)
@@ -137,6 +146,14 @@ class CustomCocktailRecipeAdapter(private val context: Context, private val item
                 }
 
             }
+        }
+    }
+
+    // 이름
+    inner class CustomCocktailRecipeNameViewHolder(private val biding: ListItemCustomCocktailRecipeNameBinding): RecyclerView.ViewHolder(biding.root) {
+
+        fun bind(item: CustomCocktailRecipeItem.CustomCocktailRecipeName) {
+
         }
     }
 

@@ -23,15 +23,19 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     }
     val recipeImage: LiveData<CustomCocktailRecipeItem.CustomCocktailRecipeImage> get() = _recipeImage
 
-    // 2. 도수 (예시로 기본 도수 25%)
+    // 2. 칵테일 이름
+    private val _recipeName = MutableLiveData<String>()
+    val recipeName: LiveData<String> get() = _recipeName
+
+    // 3. 도수 (예시로 기본 도수 25%)
     private val _alcoholLevel = MutableLiveData<Int>()
     val alcoholLevel: LiveData<Int> get() = _alcoholLevel
 
-    // 3. 칵테일 설명
+    // 4. 칵테일 설명
     private val _description = MutableLiveData<String>()
     val description: LiveData<String> get() = _description
 
-    // 4. 레시피 단계 리스트 (최초 단계는 1단계)
+    // 5. 레시피 단계 리스트 (최초 단계는 1단계)
     private val _recipeSteps = MutableLiveData<MutableList<CocktailRecipeStep>>().apply {
         value = mutableListOf(
             CocktailRecipeStep(1, CommonUtils.CustomCocktailRecipeAnimationType.DEFAULT, "")
@@ -53,6 +57,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
         if (mode == CommonUtils.CustomCocktailRecipeMode.REGISTER) {
             Log.d(TAG, "initializeRecipeData: 등록모드입니다.")
             _recipeImage.value = CustomCocktailRecipeItem.CustomCocktailRecipeImage()
+            _recipeName.value = "칵테일 완성 이름."
             _alcoholLevel.value = 25
             _description.value = "맛있는 칵테일입니다."
             _recipeSteps.value = mutableListOf(
@@ -72,6 +77,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
         // TODO: 실제 데이터를 불러오는 로직을 구현
         // 예시로 더미 데이터를 설정합니다.
         _recipeImage.value = CustomCocktailRecipeItem.CustomCocktailRecipeImage()
+        _recipeName.value = "완성된 칵테일 이름 수정할 것."
         _alcoholLevel.value = 30
         _description.value = "수정된 칵테일 설명"
         _recipeSteps.value = mutableListOf(
