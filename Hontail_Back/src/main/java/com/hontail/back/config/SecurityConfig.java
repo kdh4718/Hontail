@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -51,9 +52,8 @@ public class SecurityConfig {
                                 ).permitAll()
                                 // 인증 필요 경로
                                 .requestMatchers(
-                                        "/api/users/me",
-                                        "/api/users/update",
-                                        "/api/users/profile"
+                                        "/api/user/me",
+                                        "/api/user/update"
                                 ).authenticated()
                                 // 기타 요청은 선택적 접근
                                 .anyRequest().permitAll()
