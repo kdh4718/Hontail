@@ -1,5 +1,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-<!--filter_BottomSheetFragment.kt-->
+<!--filter_background_selector.xml-->
     <!-- 선택된 상태일 때 -->
     <item android:state_selected="true" android:drawable="@drawable/filter_selected_background" />
 
