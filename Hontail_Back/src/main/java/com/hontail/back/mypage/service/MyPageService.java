@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.hontail.back.global.exception.ErrorCode;
+import com.hontail.back.global.exception.CustomException;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +49,13 @@ public class MyPageService {
 
         log.info("닉네임 변경 성공 - Email: {}, New Nickname: {}", email, updatedUser.getUserNickname());
         return UserResponse.fromEntity(updatedUser);
+    }
+
+    // userId로 사용자 정보 조회하는 메서드(이메일로 조회하는 것만 있어서 추가함..)
+    public UserResponse getCurrentUserById(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        return UserResponse.fromEntity(user);
     }
 }

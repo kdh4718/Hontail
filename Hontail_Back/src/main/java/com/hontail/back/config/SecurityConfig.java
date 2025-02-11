@@ -13,6 +13,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import com.hontail.back.security.JwtProvider;
+import com.hontail.back.security.JwtAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Arrays;
 
@@ -22,6 +25,7 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final JwtProvider jwtProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -52,12 +56,14 @@ public class SecurityConfig {
                                 ).permitAll()
                                 // 인증 필요 경로
                                 .requestMatchers(
-                                        "/api/user/me",
-                                        "/api/user/update"
+                                        "/api/cocktail/**",
+                                        "/api/user/**"
                                 ).authenticated()
                                 // 기타 요청은 선택적 접근
                                 .anyRequest().permitAll()
                 )
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider),
+                        UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 ->
                         oauth2
                                 .loginPage("/api/login/")
