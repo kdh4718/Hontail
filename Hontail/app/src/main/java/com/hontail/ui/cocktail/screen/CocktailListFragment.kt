@@ -82,7 +82,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     add(CocktailListItem.SearchBar)
                     add(CocktailListItem.TabLayout)
                     add(CocktailListItem.Filter(filters))
-                    add(CocktailListItem.CocktailItems(it))  // 여기서 데이터를 넣음
+                    add(CocktailListItem.CocktailItems(it))
                 }
 
                 cocktailListAdapter.updateItems(updatedItems)  // 어댑터 데이터 변경
@@ -102,7 +102,8 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                 }
 
                 // 칵테일 상세 화면으로 가기.
-                override fun onClickCocktailItem() {
+                override fun onClickCocktailItem(cocktailId: Int) {
+                    activityViewModel.setCocktailId(cocktailId)
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
                 }
 

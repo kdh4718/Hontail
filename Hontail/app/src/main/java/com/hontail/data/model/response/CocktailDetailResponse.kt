@@ -1,12 +1,15 @@
 package com.hontail.data.model.response
 
 data class CocktailDetailResponse(
-    val cocktailDescription: Any,
     val cocktailId: Int,
     val cocktailName: String,
-    val comments: List<Comment>,
+    val cocktailDescription: String,
     val imageUrl: String,
-    val ingredients: List<Ingredient>,
-    val likes: List<Like>,
-    val recipes: List<Recipe>
+    val makerNickname: String,
+    val cocktailIngredients: List<Ingredient>,
+    val recipes: List<Recipe>,
+    val likes: Int,
+    val comments: List<Comment>,
+    val userId: Int,
+    val isLiked: Boolean
 )

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -11,6 +12,7 @@ import com.hontail.databinding.FragmentCocktailDetailBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.adapter.CocktailDetailAdapter
+import com.hontail.ui.cocktail.viewmodel.CocktailDetailFragmentViewModel
 import com.hontail.ui.ingredient.Ingredient
 
 class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
@@ -19,12 +21,19 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
 ) {
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: CocktailDetailFragmentViewModel by viewModels()
 
     private lateinit var cocktailDetailAdapter: CocktailDetailAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.cocktailId = activityViewModel.cocktailId.value!!
+        viewModel.setUserId(activityViewModel.userId.value!!)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
