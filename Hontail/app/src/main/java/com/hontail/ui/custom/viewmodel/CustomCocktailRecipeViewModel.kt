@@ -164,6 +164,6 @@ class CustomCocktailRecipeViewModel: ViewModel() {
 
     // S3 업로드 성공 시, 최종 URL을 저장하는 함수 (Fragment의 onSuccess 콜백 등에서 호출)
     fun setUploadedImageUrl(fullUrl: String) {
-        _uploadedImageUrl.value = extractImageUrl(fullUrl)
+        _uploadedImageUrl.postValue(extractImageUrl(fullUrl))
     }
 }

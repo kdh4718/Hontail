@@ -112,6 +112,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 }
             }
             
+            
             // 칵테일 이름 EditText와 ViewModel 연결
             editTextListItemCustomCocktailRecipeName.addTextChangedListener { text ->
                 viewModel.updateRecipeName(text.toString())
@@ -121,6 +122,18 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             viewModel.recipeName.observe(viewLifecycleOwner) { name ->
                 if(editTextListItemCustomCocktailRecipeName.text.toString() != name) {
                     editTextListItemCustomCocktailRecipeName.setText(name)
+                }
+            }
+
+            // 칵테일 설명 EditText와 ViewModel 연결
+            editTextListItemCustomCocktailRecipeDescription.addTextChangedListener { text ->
+                viewModel.updateDescription(text.toString())
+            }
+
+            // LiveData로 EditText 값 유지
+            viewModel.description.observe(viewLifecycleOwner) { description ->
+                if(editTextListItemCustomCocktailRecipeDescription.text.toString() != description) {
+                    editTextListItemCustomCocktailRecipeDescription.setText(description)
                 }
             }
         }
@@ -144,8 +157,14 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             // 등록
             buttonCustomCocktailRecipeRegister.setOnClickListener { 
                 
+                val imageUrl = viewModel.uploadedImageUrl.value
+                Log.d(TAG, "initEvent: imageUrl: $imageUrl")
+                
                 val name = viewModel.recipeName.value
-                Log.d(TAG, "initEvent: $name")
+                Log.d(TAG, "initEvent: name: $name")
+
+                val description = viewModel.description.value
+                Log.d(TAG, "initEvent: description: $description")
             }
         }
     }
@@ -170,6 +189,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                         uploadImageToS3(presignedUrl, uri, requireContext(),
                             onSuccess = {
                                 Log.d(TAG, "registerImageLauncher: 이미지 업로드 성공")
+                                viewModel.setUploadedImageUrl(presignedUrl)
                             },
                             onFailure = { error ->
                                 Log.d(TAG, "registerImageLauncher: 이미지 업로드 실패")
