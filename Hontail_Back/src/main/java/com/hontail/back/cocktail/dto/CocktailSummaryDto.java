@@ -13,7 +13,7 @@ public class CocktailSummaryDto {
     private Integer id;
     private String cocktailName;
     private String imageUrl;
-    private Long likes;
+    private Integer likeCnt;
     private Integer alcoholContent;
     private String baseSpirit;
     private LocalDateTime createdAt;
