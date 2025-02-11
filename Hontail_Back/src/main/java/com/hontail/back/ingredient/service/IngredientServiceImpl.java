@@ -1,8 +1,10 @@
 package com.hontail.back.ingredient.service;
 
+import com.hontail.back.cocktail.dto.CocktailSummaryDto;
 import com.hontail.back.db.entity.Ingredient;
 import com.hontail.back.db.repository.IngredientRepository;
 import com.hontail.back.ingredient.dto.IngredientDto;
+import com.hontail.back.ingredient.dto.IngredientSearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
