@@ -1,5 +1,6 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.adapter
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,15 +12,18 @@ import com.hontail.databinding.ListItemCocktailListCocktailItemBinding
 import com.hontail.databinding.ListItemCocktailListFilterBinding
 import com.hontail.databinding.ListItemCocktailListSearchBarBinding
 import com.hontail.databinding.ListItemCocktailListTabLayoutBinding
+import com.hontail.ui.cocktail.screen.CocktailListItem
 import com.hontail.util.CocktailItemAdapter
 
-class CocktailListAdapter(private val context: Context, private val items: List<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+private const val TAG = "CocktailListAdapter_SSAFY"
+
+class CocktailListAdapter(private val context: Context, private var items: MutableList<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var cocktailListListener: ItemOnClickListener
 
     interface ItemOnClickListener {
         fun onClickRandom()
-        fun onClickCocktailItem()
+        fun onClickCocktailItem(cocktailId: Int)
         fun onClickSearch()
         fun onClickTab(position: Int)
         fun onClickFilter(position: Int)
@@ -42,29 +46,23 @@ class CocktailListAdapter(private val context: Context, private val items: List<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
         return when(viewType) {
-
             VIEW_TYPE_SEARCH_BAR -> {
                 val binding = ListItemCocktailListSearchBarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListSearchBarViewHolder(binding)
             }
-
             VIEW_TYPE_TAB_LAYOUT -> {
                 val binding = ListItemCocktailListTabLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListTabLayoutViewHolder(binding)
             }
-
             VIEW_TYPE_FILTER -> {
                 val binding = ListItemCocktailListFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListFilterViewHolder(binding)
             }
-
             VIEW_TYPE_COCKTAIL_ITEMS -> {
                 val binding = ListItemCocktailListCocktailItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 CocktailListCocktailItemsViewHolder(binding)
             }
-
             else -> throw IllegalArgumentException("Unknown ViewType: $viewType")
         }
     }
@@ -74,7 +72,6 @@ class CocktailListAdapter(private val context: Context, private val items: List<
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         when(val item = items[position]) {
             is CocktailListItem.SearchBar -> (holder as CocktailListSearchBarViewHolder).bind()
             is CocktailListItem.TabLayout -> (holder as CocktailListTabLayoutViewHolder).bind()
@@ -85,11 +82,8 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Search Bar
     inner class CocktailListSearchBarViewHolder(private val binding: ListItemCocktailListSearchBarBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind() {
-
             binding.apply {
-
                 // Cocktail 검색 화면으로 가기.
                 constraintLayoutListItemCocktailListSearch.setOnClickListener {
                     cocktailListListener.onClickSearch()
@@ -105,11 +99,8 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Tab Layout
     inner class CocktailListTabLayoutViewHolder(private val binding: ListItemCocktailListTabLayoutBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind() {
-
             binding.apply {
-
                 tabLayoutCocktailList.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabSelected(tab: TabLayout.Tab?) {
                         cocktailListListener.onClickTab(tab?.position ?: 0)
@@ -129,11 +120,8 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Filter
     inner class CocktailListFilterViewHolder(private val binding: ListItemCocktailListFilterBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind(filters: List<String>) {
-
             binding.apply {
-
                 val cocktailListFilterAdapter = CocktailListFilterAdapter(filters)
 
                 recyclerViewListItemCocktailListFilter.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -150,23 +138,29 @@ class CocktailListAdapter(private val context: Context, private val items: List<
 
     // Cocktail Items
     inner class CocktailListCocktailItemsViewHolder(private val binding: ListItemCocktailListCocktailItemBinding): RecyclerView.ViewHolder(binding.root) {
-
         fun bind(cocktails: List<CocktailListResponse>) {
-
             binding.apply {
-
                 val cocktailListCocktailAdapter = CocktailItemAdapter(context, cocktails)
+
+//                Log.d(TAG, "Ingredients: ${cocktails}")
 
                 recyclerViewListItemCocktailListCocktailItem.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemCocktailListCocktailItem.adapter = cocktailListCocktailAdapter
 
                 // 칵테일 아이템 눌렀을 때 상세 화면으로
                 cocktailListCocktailAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
-                    override fun onClickCocktailItem() {
-                        cocktailListListener.onClickCocktailItem()
+                    override fun onClickCocktailItem(cocktailId: Int) {
+                        cocktailListListener.onClickCocktailItem(cocktailId)
                     }
                 }
             }
         }
     }
+
+    fun updateItems(newItems: List<CocktailListItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged() // 전체 갱신
+    }
+
 }

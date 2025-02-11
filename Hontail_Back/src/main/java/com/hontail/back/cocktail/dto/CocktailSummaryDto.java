@@ -3,11 +3,9 @@ package com.hontail.back.cocktail.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +19,5 @@ public class CocktailSummaryDto {
     private LocalDateTime createdAt;
     private Long ingredientCount;
     @JsonProperty("isLiked")
-    private boolean isLiked;
+    private boolean liked;
 }
-

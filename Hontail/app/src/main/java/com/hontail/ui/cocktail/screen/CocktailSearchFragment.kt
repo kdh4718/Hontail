@@ -1,4 +1,4 @@
-package com.hontail.ui.cocktail
+package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.FragmentCocktailSearchBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.cocktail.adapter.CocktailSearchAdapter
 import com.hontail.util.CommonUtils
 
 class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
