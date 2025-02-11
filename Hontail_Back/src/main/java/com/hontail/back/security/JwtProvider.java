@@ -31,9 +31,8 @@ public class JwtProvider {
     private final UserRepository userRepository;
 
     @Transactional
-    public String createToken(String email) {
+    public String createToken(String email, String nickname) {
         try {
-            // 사용자 ID 및 닉네임 가져오기
             var user = userRepository.findByUserEmail(email)
                     .orElseThrow(() -> {
                         log.error("User not found with email: {}", email);
@@ -41,19 +40,20 @@ public class JwtProvider {
                     });
 
             int userId = user.getId();
-            String userNickname = user.getUserNickname(); // 닉네임 추가
+            // 소셜 로그인에서 받아온 닉네임 사용
+            String userNickname = nickname;
 
             // 기존 토큰 삭제
             accessTokenRepository.deleteAllByUserId(userId);
             refreshTokenRepository.deleteByUserId(userId);
 
-            // Access Token 생성 (userId 및 userNickname 포함)
+            // Access Token 생성
             String accessToken = createAccessToken(email, userId, userNickname);
-            log.info("Created access token: {}", accessToken);
+            log.debug("Access token created for user: {}", email);
 
             // Refresh Token 생성
             String refreshToken = createRefreshToken(email, userId, userNickname);
-            log.info("Created refresh token: {}", refreshToken);
+            log.debug("Refresh token created for user: {}", email);
 
             // Access Token 저장
             AccessToken accessTokenEntity = AccessToken.builder()
@@ -62,7 +62,6 @@ public class JwtProvider {
                     .expiryDate(LocalDateTime.now().plusSeconds(ACCESS_TOKEN_EXPIRATION / 1000))
                     .build();
             accessTokenRepository.save(accessTokenEntity);
-            log.info("Saved access token for user: {}", email);
 
             // Refresh Token 저장
             RefreshToken refreshTokenEntity = RefreshToken.builder()
@@ -71,7 +70,6 @@ public class JwtProvider {
                     .expiryDate(LocalDateTime.now().plusSeconds(REFRESH_TOKEN_EXPIRATION / 1000))
                     .build();
             refreshTokenRepository.save(refreshTokenEntity);
-            log.info("Saved refresh token for user: {}", email);
 
             return accessToken;
 
@@ -81,14 +79,14 @@ public class JwtProvider {
         }
     }
 
-    public String createAccessToken(String email, int userId, String userNickname) {
+    private String createAccessToken(String email, int userId, String userNickname) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION);
 
         return Jwts.builder()
-                .setSubject(email)
-                .claim("userId", userId)       // 사용자 ID 추가
-                .claim("userNickname", userNickname) // 사용자 닉네임 추가
+                .claim("user_email", email)
+                .claim("user_id", userId)         // userId -> user_id로 변경
+                .claim("user_nickname", userNickname)  // nickname -> user_nickname으로 변경
                 .claim("type", "access")
                 .setIssuedAt(now)
                 .setExpiration(expiration)
@@ -96,14 +94,14 @@ public class JwtProvider {
                 .compact();
     }
 
-    public String createRefreshToken(String email, int userId, String userNickname) {
+    private String createRefreshToken(String email, int userId, String userNickname) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + REFRESH_TOKEN_EXPIRATION);
 
         return Jwts.builder()
-                .setSubject(email)
-                .claim("userId", userId)       // 사용자 ID 추가
-                .claim("userNickname", userNickname) // 사용자 닉네임 추가
+                .claim("user_email", email)
+                .claim("user_id", userId)         // userId -> user_id로 변경
+                .claim("user_nickname", userNickname)  // nickname -> user_nickname으로 변경
                 .claim("type", "refresh")
                 .setIssuedAt(now)
                 .setExpiration(expiration)
