@@ -1,5 +1,6 @@
 package com.hontail.ui.cocktail.adapter
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +14,8 @@ import com.hontail.databinding.ListItemCocktailListSearchBarBinding
 import com.hontail.databinding.ListItemCocktailListTabLayoutBinding
 import com.hontail.ui.cocktail.screen.CocktailListItem
 import com.hontail.util.CocktailItemAdapter
+
+private const val TAG = "CocktailListAdapter_SSAFY"
 
 class CocktailListAdapter(private val context: Context, private var items: MutableList<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -138,6 +141,8 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
         fun bind(cocktails: List<CocktailListResponse>) {
             binding.apply {
                 val cocktailListCocktailAdapter = CocktailItemAdapter(context, cocktails)
+
+//                Log.d(TAG, "Ingredients: ${cocktails}")
 
                 recyclerViewListItemCocktailListCocktailItem.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemCocktailListCocktailItem.adapter = cocktailListCocktailAdapter
