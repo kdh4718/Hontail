@@ -10,7 +10,7 @@ import com.hontail.data.model.dto.RecentCocktailIdTable
 interface RecentCocktailDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCocktailId(cocktailId: Int)
+    suspend fun insertCocktailId(cocktail: RecentCocktailIdTable)
 
     @Query("SELECT * FROM recent_cocktailId_table ORDER BY id DESC")
     suspend fun getAllCocktails(): List<RecentCocktailIdTable>

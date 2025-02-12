@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hontail.data.local.RecentCocktailIdDatabase
 import com.hontail.data.local.RecentCocktailIdRepository
 import com.hontail.data.model.response.CocktailDetailResponse
 import com.hontail.data.remote.RetrofitUtil
@@ -31,11 +32,22 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
     val cocktailInfo: LiveData<CocktailDetailResponse>
         get() = _cocktailInfo
 
-    fun getCocktailDetailInfo(){
+    // Repository 객체를 ViewModel 내에서 직접 생성
+    private val recentCocktailIdRepository = RecentCocktailIdRepository.getInstance()
+
+    fun getCocktailDetailInfo() {
+        saveCocktailId(cocktailId)
         getCocktailDetailInfo(cocktailId, userId)
     }
 
-    fun getCocktailDetailInfo(cocktailId: Int, userId: Int){
+    private fun saveCocktailId(cocktailId: Int) {
+        // Room에 cocktailId 저장
+        viewModelScope.launch {
+            recentCocktailIdRepository.insertCocktail(cocktailId)
+        }
+    }
+
+    fun getCocktailDetailInfo(cocktailId: Int, userId: Int) {
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.cocktailDetailService.getCocktailDetail(cocktailId, userId)
