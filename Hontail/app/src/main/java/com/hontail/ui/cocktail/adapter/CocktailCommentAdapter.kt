@@ -16,8 +16,8 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
     lateinit var cocktailCommentListener: ItemOnClickListener
 
     interface ItemOnClickListener {
-        fun onClickDelete(commentId: Int, position: Int)
-        fun onClickModify(commentId: Int, position: Int)
+        fun onClickDelete(commentId: Int)
+        fun onClickModify(commentId: Int, content: String)
     }
 
     private val swipedItems = mutableSetOf<Int>() // 스와이프된 아이템 저장

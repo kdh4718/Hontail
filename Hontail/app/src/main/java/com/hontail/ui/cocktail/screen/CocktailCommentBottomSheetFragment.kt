@@ -28,6 +28,9 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
 
     private lateinit var cocktailCommentAdapter: CocktailCommentAdapter
 
+    // 수정 중인 댓글 id
+    private var editingCommentId: Int? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -90,10 +93,37 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
                 val content = editTextCocktailCommentBottomSheetMessage.text.toString()
 
                 if(content.isNotBlank()) {
-                    viewModel.insertComment(content)
+
+                    // 새 댓글 등록
+                    if(editingCommentId == null) {
+                        viewModel.insertComment(content)
+                    }
+                    // 기존 댓글 수정
+                    else {
+                        viewModel.updateComment(editingCommentId!!, content)
+                        editingCommentId == null
+                    }
+
                     editTextCocktailCommentBottomSheetMessage.text.clear()
                 }
             }
+
+            cocktailCommentAdapter.cocktailCommentListener = object : CocktailCommentAdapter.ItemOnClickListener {
+
+                // 댓글 수정모드
+                override fun onClickModify(commentId: Int, content: String) {
+
+                    editingCommentId = commentId
+                    editTextCocktailCommentBottomSheetMessage.setText(content)
+                    editTextCocktailCommentBottomSheetMessage.setSelection(content.length)
+                }
+
+                // 댓글 삭제
+                override fun onClickDelete(commentId: Int) {
+                    viewModel.deleteComment(commentId)
+                }
+            }
+
         }
     }
 }
