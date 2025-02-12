@@ -25,12 +25,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CocktailListFragmentViewModel by viewModels()
-    private val filters = mutableListOf<String>().apply {
-        add("찜")
-        add("시간")
-        add("도수")
-        add("베이스주")
-    }
+    private val filters = mutableListOf("찜", "시간", "도수", "베이스주")
 
     private lateinit var cocktailListAdapter: CocktailListAdapter
 
@@ -43,11 +38,42 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         super.onCreate(savedInstanceState)
         viewModel.setUserId(activityViewModel.userId)
         initFilter()
+        applySelectedFilters()
         viewModel.getCocktailFiltering()
     }
 
-    fun initFilter(){
+    private fun initFilter() {
         viewModel.baseSpirit = activityViewModel.selectedBaseFilter.value ?: ""
+    }
+
+    private fun applySelectedFilters() {
+        val selectedFilters =
+            viewModel.filterSelectedList.value ?: listOf(false, false, false, false)
+
+        when {
+            selectedFilters[0] -> { // 찜
+                viewModel.orderBy = "likeCnt"
+                viewModel.direction =
+                    if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
+            }
+
+            selectedFilters[1] -> { // 시간
+                viewModel.orderBy = "createdAt"
+                viewModel.direction =
+                    if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
+            }
+
+            selectedFilters[2] -> { // 도수
+                viewModel.orderBy = "alcoholContent"
+                viewModel.direction =
+                    if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
+            }
+
+            selectedFilters[3] -> { // 베이스주
+                viewModel.orderBy = "id"
+                viewModel.direction = "ASC"
+            }
+        }
     }
 
     override fun onResume() {
@@ -73,13 +99,18 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
             }
 
             cocktailListAdapter = CocktailListAdapter(mainActivity, items)
-
-            recyclerViewCocktailList.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+            recyclerViewCocktailList.layoutManager =
+                LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailList.adapter = cocktailListAdapter
         }
     }
 
-    fun initData() {
+    private fun initData() {
+        activityViewModel.selectedBaseFilter.observe(viewLifecycleOwner) {
+            viewModel.baseSpirit = it
+            viewModel.getCocktailFiltering()
+        }
+
         viewModel.cocktailList.observe(viewLifecycleOwner) { cocktailList ->
             cocktailList?.let {
                 val updatedItems = mutableListOf<CocktailListItem>().apply {
@@ -88,65 +119,58 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     add(CocktailListItem.Filter(filters))
                     add(CocktailListItem.CocktailItems(it))
                 }
-
-                cocktailListAdapter.updateItems(updatedItems)  // 어댑터 데이터 변경
+                cocktailListAdapter.updateItems(updatedItems)
             }
         }
     }
 
-    fun initEvent() {
+    private fun initEvent() {
         binding.apply {
-            cocktailListAdapter.cocktailListListener = object : CocktailListAdapter.ItemOnClickListener {
+            cocktailListAdapter.cocktailListListener =
+                object : CocktailListAdapter.ItemOnClickListener {
+                    override fun onClickRandom() {
+                        val dialog = CocktailRandomDialogFragment()
+                        dialog.show(parentFragmentManager, "CocktailRandomDialog")
+                    }
 
-                // 랜덤 다이얼로그 띄우기.
-                override fun onClickRandom() {
-                    val dialog = CocktailRandomDialogFragment()
-                    dialog.show(parentFragmentManager, "CocktailRandomDialog")
-                }
+                    override fun onClickCocktailItem(cocktailId: Int) {
+                        activityViewModel.setCocktailId(cocktailId)
+                        mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+                    }
 
-                // 칵테일 상세 화면으로 가기.
-                override fun onClickCocktailItem(cocktailId: Int) {
-                    activityViewModel.setCocktailId(cocktailId)
-                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
-                }
+                    override fun onClickSearch() {
+                        mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_SEARCH_FRAGMENT)
+                    }
 
-                // 칵테일 검색 화면 가기.
-                override fun onClickSearch() {
-                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_SEARCH_FRAGMENT)
-                }
+                    override fun onClickTab(position: Int) {
+                        when (position) {
+                            0 -> {
+                                viewModel.isCustom = false
+                                resetFilters()
+                            }
 
-                // 탭 눌렀을 때
-                override fun onClickTab(position: Int) {
-                    when (position) {
-                        // 디폴트 칵테일
-                        0 -> {
-                            viewModel.isCustom = false
-                            viewModel.page = 0
-                            viewModel.direction = "ASC"
-                            viewModel.orderBy = "id"
-                            viewModel.getCocktailFiltering()
+                            1 -> {
+                                viewModel.isCustom = true
+                                resetFilters()
+                            }
                         }
-                        // 커스텀 칵테일
-                        1 -> {
-                            viewModel.isCustom = true
-                            viewModel.page = 0
-                            viewModel.direction = "ASC"
-                            viewModel.orderBy = "id"
-                            viewModel.getCocktailFiltering()
-                        }
-                        else -> {}
+                    }
+
+                    override fun onClickFilter(position: Int) {
+                        val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
+                        bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
                     }
                 }
-
-                // 필터 눌렀을 때
-                override fun onClickFilter(position: Int) {
-                    val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
-                    bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
-                }
-            }
         }
     }
 
+    private fun resetFilters() {
+        viewModel.page = 0
+        viewModel.direction = "ASC"
+        viewModel.orderBy = "id"
+        viewModel.baseSpirit = ""
+        viewModel.getCocktailFiltering()
+    }
 }
 
 sealed class CocktailListItem {

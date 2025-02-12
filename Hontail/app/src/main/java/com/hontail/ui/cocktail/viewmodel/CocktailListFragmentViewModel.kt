@@ -80,7 +80,9 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
         _userId.postValue(userId)
     }
 
+
     fun getCocktailFiltering(){
+        Log.d(TAG, "getCocktailFiltering: orderBy - ${orderBy}, direction - ${direction}, baseSpirit - ${baseSpirit}, isCustom - ${isCustom}, page - ${page}")
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)

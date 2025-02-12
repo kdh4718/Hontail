@@ -40,11 +40,11 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     val ingredientList: LiveData<List<String>>
         get() = _ingredientList
 
-    fun setCocktailId(cocktailId: Int){
+    fun setCocktailId(cocktailId: Int) {
         _cocktailId.postValue(cocktailId)
     }
 
-    fun setIngredientList(ingredientList: List<String>){
+    fun setIngredientList(ingredientList: List<String>) {
         _ingredientList.postValue(ingredientList)
     }
 
@@ -118,7 +118,7 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     // 특정 단계 레시피 업데이트
     fun updateRecipeStep(position: Int, newAction: String, newGuide: String) {
         _recipeSteps.value?.let { steps ->
-            if(position in steps.indices) {
+            if (position in steps.indices) {
                 val updatedList = steps.toMutableList()
                 updatedList[position] = Recipe(newAction, newGuide, updatedList[position].sequence)
                 _recipeSteps.postValue(updatedList)
@@ -149,7 +149,10 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
             // ingredient.ingredientQuantity는 "0.5 slices", "2.5 ml", "1 shot", "20 ml" 등으로 들어옵니다.
             val quantityInMl = parseIngredientQuantity(ingredient.ingredientQuantity) ?: 0.0
             totalAlcoholVolume += ingredient.alcoholContent * quantityInMl
-            Log.d(TAG, "computeOverallAlcoholContent: ${ingredient.ingredientName} ${ingredient.alcoholContent}")
+            Log.d(
+                TAG,
+                "computeOverallAlcoholContent: ${ingredient.ingredientName} ${ingredient.alcoholContent}"
+            )
             totalQuantityInMl += quantityInMl
         }
         return if (totalQuantityInMl == 0.0) 0.0 else totalAlcoholVolume / totalQuantityInMl
@@ -237,18 +240,41 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
 
     fun setZzimFilter(radioButtonId: Int) {
         _selectedZzimFilter.value = radioButtonId
+        clearOtherFilters("zzim")
     }
 
     fun setTimeFilter(radioButtonId: Int) {
         _selectedTimeFilter.value = radioButtonId
+        clearOtherFilters("time")
     }
 
     fun setAlcoholFilter(radioButtonId: Int) {
         _selectedAlcoholFilter.value = radioButtonId
+        clearOtherFilters("alcohol")
     }
 
     fun setBaseFilter(baseSpirit: String) {
         _selectedBaseFilter.value = baseSpirit
+        clearOtherFilters("base")
+    }
+
+    private fun clearOtherFilters(selected: String) {
+        if (selected != "zzim") {
+            _selectedZzimFilter.value = null
+            updateZzimButtonState(false)
+        }
+        if (selected != "time") {
+            _selectedTimeFilter.value = null
+            updateTimeButtonState(false)
+        }
+        if (selected != "alcohol") {
+            _selectedAlcoholFilter.value = null
+            updateAlcoholButtonState(false)
+        }
+        if (selected != "base") {
+            _selectedBaseFilter.value = ""
+            updateBaseButtonState(false)
+        }
     }
 
     fun updateZzimButtonState(selected: Boolean) {

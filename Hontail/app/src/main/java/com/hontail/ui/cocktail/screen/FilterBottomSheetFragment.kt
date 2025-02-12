@@ -19,39 +19,31 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-        initRadio()
+        initRadioButtons()
         setupObservers()
     }
 
     private fun setupObservers() {
-        // 저장된 필터 상태 복원
         activityViewModel.selectedZzimFilter.observe(viewLifecycleOwner) { radioButtonId ->
-            radioButtonId?.let {
-                binding.radioGroupFilterZzim.check(it)
-            }
+            radioButtonId?.let { binding.radioGroupFilterZzim.check(it) }
         }
 
         activityViewModel.selectedTimeFilter.observe(viewLifecycleOwner) { radioButtonId ->
-            radioButtonId?.let {
-                binding.radioGroupFilterTime.check(it)
-            }
+            radioButtonId?.let { binding.radioGroupFilterTime.check(it) }
         }
 
         activityViewModel.selectedAlcoholFilter.observe(viewLifecycleOwner) { radioButtonId ->
-            radioButtonId?.let {
-                binding.radioGroupFilterAlcoholContent.check(it)
-            }
+            radioButtonId?.let { binding.radioGroupFilterAlcoholContent.check(it) }
         }
 
-        activityViewModel.selectedBaseFilter.observe(viewLifecycleOwner) { radioButtonId ->
-            radioButtonId?.let {
-                // 기존에 선택된 베이스 필터 복원
-                radioButtons.find { it.text.toString() == radioButtonId }?.isChecked = true
+        activityViewModel.selectedBaseFilter.observe(viewLifecycleOwner) { baseSpirit ->
+            baseSpirit.takeIf { it.isNotEmpty() }?.let {
+                radioButtons[it]?.isChecked = true
             }
         }
     }
 
-    fun initView(){
+    private fun initView() {
         val filterPosition = arguments?.getInt("filter", 0) ?: 0
 
         binding.apply {
@@ -60,7 +52,7 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
             constraintLayoutFilterBottomSheetAlcoholContent.visibility = View.GONE
             constraintLayoutFilterBottomSheetBase.visibility = View.GONE
 
-            when(filterPosition) {
+            when (filterPosition) {
                 0 -> constraintLayoutFilterBottomSheetZzim.visibility = View.VISIBLE
                 1 -> constraintLayoutFilterBottomSheetTime.visibility = View.VISIBLE
                 2 -> constraintLayoutFilterBottomSheetAlcoholContent.visibility = View.VISIBLE
@@ -70,96 +62,70 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
     }
 
     private val radioButtons by lazy {
-        listOf(
-            binding.radioButtonFilterBaseJin,
-            binding.radioButtonFilterBaseRum,
-            binding.radioButtonFilterBaseVodka,
-            binding.radioButtonFilterBaseWhiskey,
-            binding.radioButtonFilterBaseTequila,
-            binding.radioButtonFilterBaseLiqueur,
-            binding.radioButtonFilterBaseWine,
-            binding.radioButtonFilterBaseBrandy,
-            binding.radioButtonFilterBaseEtc
+        mapOf(
+            "진" to binding.radioButtonFilterBaseJin,
+            "럼" to binding.radioButtonFilterBaseRum,
+            "보드카" to binding.radioButtonFilterBaseVodka,
+            "위스키" to binding.radioButtonFilterBaseWhiskey,
+            "데킬라" to binding.radioButtonFilterBaseTequila,
+            "리큐어" to binding.radioButtonFilterBaseLiqueur,
+            "와인" to binding.radioButtonFilterBaseWine,
+            "브랜디" to binding.radioButtonFilterBaseBrandy,
+            "기타" to binding.radioButtonFilterBaseEtc
         )
     }
 
-    fun initRadio() {
-        // 각 버튼 클릭 리스너 설정
-        radioButtons.forEach { radioButton ->
-            radioButton.setOnClickListener {
-                // 클릭된 버튼을 제외한 나머지 버튼 선택 해제
-                radioButtons.forEach { otherButton ->
-                    if (otherButton != radioButton) {
-                        otherButton.isChecked = false
-                    }
-                }
-            }
-            binding.apply {
-                textViewFilterSearch.setOnClickListener {
-                    // 찜 필터
-                    radioGroupFilterZzim.checkedRadioButtonId.let {
-                        if (it != -1) {
-                            activityViewModel.setZzimFilter(it)
-                            activityViewModel.updateZzimButtonState(true)
-                        }
-                    }
-
-                    // 시간 필터
-                    radioGroupFilterTime.checkedRadioButtonId.let {
-                        if (it != -1) {
-                            activityViewModel.setTimeFilter(it)
-                            activityViewModel.updateTimeButtonState(true)
-                        }
-                    }
-
-                    // 도수 필터
-                    radioGroupFilterAlcoholContent.checkedRadioButtonId.let {
-                        if (it != -1) {
-                            activityViewModel.setAlcoholFilter(it)
-                            activityViewModel.updateAlcoholButtonState(true)
-                        }
-                    }
-
-                    // 베이스주 필터
-                    radioButtons.find { it.isChecked }?.let {
-                        activityViewModel.setBaseFilter(it.text.toString())
-                        activityViewModel.updateBaseButtonState(true)
-                    }
-
-                    dismiss()
-                }
+    private fun initRadioButtons() {
+        binding.apply {
+            radioGroupFilterZzim.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId != -1) activityViewModel.setZzimFilter(checkedId)
             }
 
+            radioGroupFilterTime.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId != -1) activityViewModel.setTimeFilter(checkedId)
+            }
+
+            radioGroupFilterAlcoholContent.setOnCheckedChangeListener { _, checkedId ->
+                if (checkedId != -1) activityViewModel.setAlcoholFilter(checkedId)
+            }
         }
 
+        radioButtons.forEach { (key, radioButton) ->
+            radioButton.setOnClickListener {
+                activityViewModel.setBaseFilter(key)
+                radioButtons.values.forEach { it.isChecked = false }
+                radioButton.isChecked = true
+            }
+        }
+
+        binding.textViewFilterSearch.setOnClickListener {
+            applySelectedFilters()
+            dismiss()
+        }
+    }
+
+    private fun applySelectedFilters() {
         binding.apply {
-            textViewFilterSearch.setOnClickListener {
-                // 현재 선택된 필터들 저장
-                radioGroupFilterZzim.checkedRadioButtonId.let {
-                    if (it != -1) activityViewModel.setZzimFilter(it)
-                }
-                radioGroupFilterTime.checkedRadioButtonId.let {
-                    if (it != -1) activityViewModel.setTimeFilter(it)
-                }
-                radioGroupFilterAlcoholContent.checkedRadioButtonId.let {
-                    if (it != -1) activityViewModel.setAlcoholFilter(it)
-                }
-                // Base 필터의 경우 선택된 RadioButton ID 저장
-                radioButtons.find { it.isChecked }?.let {
-                    activityViewModel.setBaseFilter(it.text.toString())
-                }
-                dismiss()
+            radioGroupFilterZzim.checkedRadioButtonId.let {
+                if (it != -1) activityViewModel.setZzimFilter(it)
+            }
+            radioGroupFilterTime.checkedRadioButtonId.let {
+                if (it != -1) activityViewModel.setTimeFilter(it)
+            }
+            radioGroupFilterAlcoholContent.checkedRadioButtonId.let {
+                if (it != -1) activityViewModel.setAlcoholFilter(it)
+            }
+            radioButtons.entries.find { it.value.isChecked }?.key?.let {
+                activityViewModel.setBaseFilter(it)
             }
         }
     }
 
     companion object {
         fun newInstance(filter: Int): FilterBottomSheetFragment {
-            val fragment = FilterBottomSheetFragment()
-            val args = Bundle()
-            args.putInt("filter", filter)
-            fragment.arguments = args
-            return fragment
+            return FilterBottomSheetFragment().apply {
+                arguments = Bundle().apply { putInt("filter", filter) }
+            }
         }
     }
 }
