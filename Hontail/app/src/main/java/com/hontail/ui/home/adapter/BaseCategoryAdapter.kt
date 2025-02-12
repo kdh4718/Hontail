@@ -1,11 +1,11 @@
-package com.hontail.ui.home
+package com.hontail.ui.home.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemHomeCategoryCategoryBinding
-import com.hontail.util.CocktailItemAdapter
+import com.hontail.ui.home.screen.HomeCategoryItem
 
 class BaseCategoryAdapter(val context: Context, var categoryList: List<HomeCategoryItem>) :
     RecyclerView.Adapter<BaseCategoryAdapter.BaseCategoryHolder>() {

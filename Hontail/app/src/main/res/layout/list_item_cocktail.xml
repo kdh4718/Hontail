@@ -25,7 +25,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/ic_sample"
             android:tintMode="src_over"
-            app:tint="#20000000" />
+            app:tint="#10000000" />
     </androidx.cardview.widget.CardView>
     
     <ImageView

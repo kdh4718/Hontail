@@ -19,7 +19,7 @@ import com.hontail.ui.cocktail.screen.CocktailDetailFragment
 import com.hontail.ui.cocktail.screen.CocktailListFragment
 import com.hontail.ui.cocktail.screen.CocktailRecipeFragment
 import com.hontail.ui.cocktail.screen.CocktailSearchFragment
-import com.hontail.ui.home.HomeFragment
+import com.hontail.ui.home.screen.HomeFragment
 import com.hontail.ui.ingredient.IngredientAddFragment
 import com.hontail.ui.ingredient.IngredientListFragment
 import com.hontail.ui.mypage.MyPageFragment

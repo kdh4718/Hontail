@@ -1,4 +1,4 @@
-package com.hontail.ui.home
+package com.hontail.ui.home.adapter
 
 import android.content.Context
 import android.util.DisplayMetrics
@@ -7,15 +7,35 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.hontail.R
+import com.hontail.data.model.response.CocktailTopLikedResponseItem
 import com.hontail.databinding.ListItemHomeToptenToptenBinding
 
-class TopTenAdapter(val context: Context, var topTenList: List<HomeTopTenItem>) : RecyclerView.Adapter<TopTenAdapter.TopTenHolder>() {
+class TopTenAdapter(val context: Context, var topTenList: List<CocktailTopLikedResponseItem>) : RecyclerView.Adapter<TopTenAdapter.TopTenHolder>() {
+
+    lateinit var topTenListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickTopTen(cocktailId: Int)
+    }
 
     inner class TopTenHolder(private val binding: ListItemHomeToptenToptenBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : HomeTopTenItem){
-            binding.textViewHomeTopTenNumber.text = item.rank.toString()
-            binding.textViewHomeTopTenName.text = item.name
-            binding.imageViewHomeTopTen.setImageResource(item.imageRes)
+        fun bind(item : CocktailTopLikedResponseItem){
+            binding.apply {
+                textViewHomeTopTenNumber.text = item.rank.toString()
+                textViewHomeTopTenName.text = item.cocktailName
+
+                Glide.with(context)
+                    .load(item.imageUrl)
+                    .placeholder(R.drawable.ic_bottom_navi_zzim_selected)
+                    .error(R.drawable.ic_bottom_navi_zzim_unselected)
+                    .into(imageViewHomeTopTen)
+
+                root.setOnClickListener{
+                    topTenListener.onClickTopTen(item.id)
+                }
+            }
         }
     }
 
