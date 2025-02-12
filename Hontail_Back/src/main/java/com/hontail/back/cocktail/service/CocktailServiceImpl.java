@@ -344,35 +344,32 @@ public class CocktailServiceImpl implements CocktailService {
     }
 
     @Override
-    public List<CocktailSummaryDto> getMyCocktails(Integer userId) {
-        // 사용자 존재 여부 확인
+    public Page<CocktailSummaryDto> getMyCocktails(Integer userId, int page, int size) {
         if (!userRepository.existsById(userId)) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
 
-        // 수정된 부분: findByUserIdOrderByCreatedAtDesc 메서드 사용
-        List<Cocktail> cocktails = cocktailRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Cocktail> cocktails = cocktailRepository.findByUserId(userId, pageable);
 
         if (cocktails.isEmpty()) {
             throw new CustomException(ErrorCode.COCKTAIL_NOT_FOUND);
         }
 
-        return cocktails.stream()
-                .map(cocktail -> {
-                    Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
-                    Long likesCnt = likeRepository.countByCocktail(cocktail);
-                    return new CocktailSummaryDto(
-                            cocktail.getId(),
-                            cocktail.getCocktailName(),
-                            cocktail.getImageUrl(),
-                            likesCnt.intValue(),
-                            cocktail.getAlcoholContent(),
-                            cocktail.getBaseSpirit(),
-                            cocktail.getCreatedAt(),
-                            ingredientCnt,
-                            false  // 자신의 칵테일이므로 좋아요 여부는 의미 없음
-                    );
-                })
-                .toList();
+        return cocktails.map(cocktail -> {
+            Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
+            Long likesCnt = likeRepository.countByCocktail(cocktail);
+            return new CocktailSummaryDto(
+                    cocktail.getId(),
+                    cocktail.getCocktailName(),
+                    cocktail.getImageUrl(),
+                    likesCnt.intValue(),
+                    cocktail.getAlcoholContent(),
+                    cocktail.getBaseSpirit(),
+                    cocktail.getCreatedAt(),
+                    ingredientCnt,
+                    false  // 자신의 칵테일이므로 좋아요 여부는 의미 없음
+            );
+        });
     }
 }

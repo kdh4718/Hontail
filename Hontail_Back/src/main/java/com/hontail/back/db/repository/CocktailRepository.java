@@ -34,8 +34,8 @@ public interface CocktailRepository extends JpaRepository<Cocktail, Integer>, Co
     @Query("SELECT c FROM Cocktail c WHERE LOWER(c.cocktailName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Cocktail> searchByNameContaining(@Param("keyword") String keyword, Pageable pageable);
 
-    List<Cocktail> findAllByIdIn(List<Integer> cocktailIds);
+    List<Cocktail> findAllByIdIn(List<Integer> cocktailIds); // id로 칵테일 조회하는 메서드
 
+    Page<Cocktail> findByUserId(Integer userId, Pageable pageable); // 특정유저(나?)가 만든 칵테일 조회하는 메서드
 
-    List<Cocktail> findByUserIdOrderByCreatedAtDesc(@Param("userId") Integer userId);
 }

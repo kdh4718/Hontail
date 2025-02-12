@@ -85,8 +85,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Tag(name = "MyPage", description = "마이페이지 API")
 @RestController
 @RequestMapping("/api/mypage")
@@ -130,10 +128,12 @@ public class MyPageController {
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
             @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음")
     })
-    public ResponseEntity<List<CocktailSummaryDto>> getMyCocktails(
-            @Parameter(hidden = true) @AuthenticationPrincipal CustomOAuth2User oAuth2User
+    public ResponseEntity<Page<CocktailSummaryDto>> getMyCocktails(
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomOAuth2User oAuth2User,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
     ) {
-        List<CocktailSummaryDto> cocktails = cocktailService.getMyCocktails(oAuth2User.getUserId());
+        Page<CocktailSummaryDto> cocktails = cocktailService.getMyCocktails(oAuth2User.getUserId(), page, size);
         return ResponseEntity.ok(cocktails);
     }
 }
