@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -44,22 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
-
-        // 알람 아이콘 클릭 시 AlarmFragment로 이동
-        binding.imageViewHomeBell.setOnClickListener {
-            mainActivity.changeFragmentWithCallback(
-                CommonUtils.MainFragmentName.ALARM_FRAGMENT
-            ) {
-                // 프래그먼트 전환이 완료된 후 네비게이션 바 숨김
-                mainActivity.hideBottomNav(true)
-            }
-        }
-        // 바텐더 버튼 클릭 시 BartenderFragment로 이동
-        binding.fabHomeBartender.setOnClickListener {
-            mainActivity.changeFragment(
-                CommonUtils.MainFragmentName.BARTENDER_FRAGMENT
-            )
-        }
+        initEvent()
     }
 
     fun initAdapter() {
@@ -91,6 +77,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             homeAdapter = HomeAdapter(requireContext(), items)
             recyclerViewHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerViewHome.adapter = homeAdapter
+        }
+    }
+
+    fun initEvent(){
+        binding.apply {
+            imageViewHomeBell.setOnClickListener {
+                mainActivity.changeFragmentWithCallback(
+                    CommonUtils.MainFragmentName.ALARM_FRAGMENT
+                ) {
+                    // 프래그먼트 전환이 완료된 후 네비게이션 바 숨김
+                    mainActivity.hideBottomNav(true)
+                }
+            }
+
+            fabHomeBartender.setOnClickListener {
+                mainActivity.changeFragment(
+                    CommonUtils.MainFragmentName.BARTENDER_FRAGMENT
+                )
+            }
+
+            homeAdapter.homeListener = object : HomeAdapter.ItemOnClickListener{
+                override fun onClickCategory(name: String) {
+                    activityViewModel.setBaseSpirit(name)
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                }
+
+            }
         }
     }
 }

@@ -12,10 +12,17 @@ import com.hontail.databinding.ListItemHomeCategoryBinding
 import com.hontail.databinding.ListItemHomePictureDescriptionBinding
 import com.hontail.databinding.ListItemHomeToptenBinding
 import com.hontail.ui.MainActivity
+import com.hontail.util.CocktailItemAdapter
 import com.hontail.util.CommonUtils
 
 class HomeAdapter(private val context: Context, private val items: List<HomeItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val mainActivity = context as MainActivity
+
+    lateinit var homeListener: ItemOnClickListener
+
+    interface ItemOnClickListener{
+        fun onClickCategory(name: String)
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
@@ -80,6 +87,13 @@ class HomeAdapter(private val context: Context, private val items: List<HomeItem
             val adapter = BaseCategoryAdapter(binding.root.context, categoryList)
             binding.recyclerViewHomeCategory.layoutManager = GridLayoutManager(binding.root.context, 3)
             binding.recyclerViewHomeCategory.adapter = adapter
+
+            adapter.cocktailBaseCategoryListener = object : BaseCategoryAdapter.ItemOnClickListener{
+                override fun onClickCategory(name: String) {
+                    homeListener.onClickCategory(name)
+                }
+
+            }
         }
     }
 
