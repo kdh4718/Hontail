@@ -1,4 +1,4 @@
-package com.hontail.data.local
+package com.hontail.data.local.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

@@ -1,17 +1,19 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.hontail.databinding.ListItemCustomCocktailEmptyBinding
 import com.hontail.databinding.ListItemCustomCocktailExistBinding
+import com.hontail.ui.custom.screen.CustomCocktailItem
 
-class CustomCocktailAdapter(private val items: List<CustomCocktailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CustomCocktailAdapter(private var items: MutableList<CustomCocktailItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var customCocktailIngredientDeleteListener: ItemOnClickListener
+    lateinit var customCocktailIngredientListener: ItemOnClickListener
 
     interface ItemOnClickListener {
-        fun onClick()
+        fun onClickDelete(position: Int)
     }
 
     companion object {
@@ -54,22 +56,32 @@ class CustomCocktailAdapter(private val items: List<CustomCocktailItem>): Recycl
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when(holder) {
-            is CustomCocktailExistViewHolder -> holder.bind(items[position] as CustomCocktailItem.IngredientItem)
+            is CustomCocktailExistViewHolder -> holder.bind(items[position] as CustomCocktailItem.IngredientItem, position)
             is CustomCocktailEmptyViewHolder -> holder.bind()
         }
+    }
+
+    fun updateItems(newItems: MutableList<CustomCocktailItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
 
     // 재료가 채워졌을 때
     inner class CustomCocktailExistViewHolder(private val binding: ListItemCustomCocktailExistBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: CustomCocktailItem.IngredientItem) {
+        fun bind(item: CustomCocktailItem.IngredientItem, position: Int) {
 
             binding.apply {
                 textViewListItemCustomCocktailExistIngredientName.text = item.ingredientName
                 textViewListItemCustomCocktailExistIngredientQuantity.text = item.ingredientQuantity
 
+                Glide.with(root.context)
+                    .load(item.ingredientImage)
+                    .into(imageViewListItemCustomCocktailExistIngredient)
+
                 imageViewListItemCustomCocktailExistDelete.setOnClickListener {
-                    customCocktailIngredientDeleteListener.onClick()
+                    customCocktailIngredientListener.onClickDelete(position)
                 }
             }
         }

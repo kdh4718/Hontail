@@ -1,4 +1,4 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.screen
 
 import android.content.Context
 import android.os.Bundle
@@ -14,6 +14,8 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailSearchBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.custom.adapter.CustomCocktailSearchAdapter
+import com.hontail.ui.custom.viewmodel.CustomCocktailSearchViewModel
 import com.hontail.util.CommonUtils
 
 private const val TAG = "CustomCocktailSearchFra"
@@ -25,7 +27,7 @@ class CustomCocktailSearchFragment: BaseFragment<FragmentCustomCocktailSearchBin
     private lateinit var mainActivity: MainActivity
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
-    private val viewModel: CustomCocktailViewModel by viewModels()
+    private val viewModel: CustomCocktailSearchViewModel by viewModels()
 
     private lateinit var customCocktailSearchAdapter: CustomCocktailSearchAdapter
 
