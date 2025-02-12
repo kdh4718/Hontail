@@ -20,6 +20,9 @@ import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.adapter.CocktailRecipeViewPagerAdapter
 import com.hontail.ui.cocktail.adapter.CocktailRecipeDrawerAdapter
 import com.hontail.ui.cocktail.viewmodel.CocktailDetailFragmentViewModel
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 
 class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
     DrawerCocktailRecipeBinding::bind,
@@ -73,6 +76,10 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
     private fun initObserver() {
         viewModel.cocktailInfo.observe(viewLifecycleOwner) { cocktailDetail ->
             cocktailDetail?.let { detail ->
+
+                // 칵테일 이름 설정 추가
+                contentBinding.textViewCocktailRecipeTitle.text = "${detail.cocktailName} 레시피"
+
                 // ViewPager 설정
                 contentBinding.viewPagerCocktailRecipeViewPager.adapter =
                     CocktailRecipeViewPagerAdapter(mainActivity, detail.recipes)
@@ -116,9 +123,26 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
         // 프로그레스 바 업데이트
         contentBinding.indicatorCocktailRecipeIndicator.progress = currentStep
 
+        // SpannableString을 사용하여 텍스트 일부분의 색상 변경
+        val fullText = "총 ${totalSteps}단계 중 ${currentStep}단계 제조중"
+        val spannableString = SpannableString(fullText)
+
+        // "중" 이후에 나오는 currentStep의 위치를 찾기
+        val middleText = "중 "
+        val middleIndex = fullText.indexOf(middleText)
+        val startIndex = fullText.indexOf(currentStep.toString(), middleIndex)
+        val endIndex = startIndex + currentStep.toString().length + 2 // "단계" 포함
+
+        // 해당 부분에 색상 적용
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_sky)),
+            startIndex,
+            endIndex,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
         // 드로어의 진행 상태 텍스트 업데이트
-        binding.textViewDrawerCocktailRecipeStep.text =
-            "총 ${totalSteps}단계 중 ${currentStep}단계 제조중"
+        binding.textViewDrawerCocktailRecipeStep.text = spannableString
     }
 
     private fun initEvent() {
