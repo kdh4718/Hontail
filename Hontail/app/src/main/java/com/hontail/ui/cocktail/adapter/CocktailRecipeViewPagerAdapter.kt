@@ -8,12 +8,12 @@ import com.hontail.ui.cocktail.screen.RecipeStepFragment
 
 class CocktailRecipeViewPagerAdapter(
     fragmentActivity: FragmentActivity,
-    private val recipe: Recipe
+    private val recipes: List<Recipe>  // 단일 레시피 대신 전체 리스트를 받음
 ) : FragmentStateAdapter(fragmentActivity) {
 
-    override fun getItemCount(): Int = 1  // 첫번째 레시피만 표시
+    override fun getItemCount(): Int = recipes.size  // 전체 레시피 수만큼 페이지 생성
 
     override fun createFragment(position: Int): Fragment {
-        return RecipeStepFragment.newInstance(recipe)
+        return RecipeStepFragment.newInstance(recipes[position])
     }
 }
