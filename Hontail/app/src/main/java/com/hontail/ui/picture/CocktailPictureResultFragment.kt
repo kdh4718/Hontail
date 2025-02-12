@@ -12,6 +12,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCocktailPictureResultBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.cocktail.screen.FilterBottomSheetFragment
 import com.hontail.ui.picture.viewmodel.CocktailPictureResultFragmentViewModel
 
 class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResultBinding>(

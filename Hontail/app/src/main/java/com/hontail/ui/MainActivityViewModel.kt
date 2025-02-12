@@ -48,14 +48,6 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         _ingredientList.postValue(ingredientList)
     }
 
-    // 선택된 칵테일 베이스주 타입
-    private val _baseSpirit = MutableLiveData<String>("")
-    val baseSpirit: LiveData<String>
-        get() = _baseSpirit
-
-    fun setBaseSpirit(baseSpirit: String){
-        _baseSpirit.postValue(baseSpirit)
-    }
     // 선택된 ingredientId
     private val _ingredientId = MutableLiveData<Int>()
     val ingredientId: LiveData<Int> get() = _ingredientId
@@ -228,8 +220,8 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     private val _selectedAlcoholFilter = MutableLiveData<Int?>()
     val selectedAlcoholFilter: LiveData<Int?> = _selectedAlcoholFilter
 
-    private val _selectedBaseFilter = MutableLiveData<Int?>()
-    val selectedBaseFilter: LiveData<Int?> = _selectedBaseFilter
+    private val _selectedBaseFilter = MutableLiveData<String>()
+    val selectedBaseFilter: LiveData<String> = _selectedBaseFilter
 
     private val _zzimButtonSelected = MutableLiveData<Boolean>()
     val zzimButtonSelected: LiveData<Boolean> = _zzimButtonSelected
@@ -255,8 +247,8 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         _selectedAlcoholFilter.value = radioButtonId
     }
 
-    fun setBaseFilter(radioButtonId: Int) {
-        _selectedBaseFilter.value = radioButtonId
+    fun setBaseFilter(baseSpirit: String) {
+        _selectedBaseFilter.value = baseSpirit
     }
 
     fun updateZzimButtonState(selected: Boolean) {

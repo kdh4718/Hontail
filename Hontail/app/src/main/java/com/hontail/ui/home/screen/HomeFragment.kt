@@ -108,7 +108,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
             homeAdapter.homeListener = object : HomeAdapter.ItemOnClickListener {
                 override fun onClickCategory(name: String) {
-                    activityViewModel.setBaseSpirit(name)
+                    activityViewModel.setBaseFilter(name)
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
                 }
 

@@ -1,20 +1,19 @@
-package com.hontail.ui.picture
+package com.hontail.ui.cocktail.screen
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hontail.R
 import com.hontail.base.BaseBottomSheetFragment
 import com.hontail.databinding.FragmentFilterBottomSheetBinding
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.cocktail.viewmodel.CocktailListFragmentViewModel
 
 class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSheetBinding>(
     FragmentFilterBottomSheetBinding::bind,
     R.layout.fragment_filter_bottom_sheet
 ){
-    private val viewModel: MainActivityViewModel by activityViewModels()
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -26,28 +25,28 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
 
     private fun setupObservers() {
         // 저장된 필터 상태 복원
-        viewModel.selectedZzimFilter.observe(viewLifecycleOwner) { radioButtonId ->
+        activityViewModel.selectedZzimFilter.observe(viewLifecycleOwner) { radioButtonId ->
             radioButtonId?.let {
                 binding.radioGroupFilterZzim.check(it)
             }
         }
 
-        viewModel.selectedTimeFilter.observe(viewLifecycleOwner) { radioButtonId ->
+        activityViewModel.selectedTimeFilter.observe(viewLifecycleOwner) { radioButtonId ->
             radioButtonId?.let {
                 binding.radioGroupFilterTime.check(it)
             }
         }
 
-        viewModel.selectedAlcoholFilter.observe(viewLifecycleOwner) { radioButtonId ->
+        activityViewModel.selectedAlcoholFilter.observe(viewLifecycleOwner) { radioButtonId ->
             radioButtonId?.let {
                 binding.radioGroupFilterAlcoholContent.check(it)
             }
         }
 
-        viewModel.selectedBaseFilter.observe(viewLifecycleOwner) { radioButtonId ->
+        activityViewModel.selectedBaseFilter.observe(viewLifecycleOwner) { radioButtonId ->
             radioButtonId?.let {
                 // 기존에 선택된 베이스 필터 복원
-                radioButtons.find { it.id == radioButtonId }?.isChecked = true
+                radioButtons.find { it.text.toString() == radioButtonId }?.isChecked = true
             }
         }
     }
@@ -100,31 +99,31 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
                     // 찜 필터
                     radioGroupFilterZzim.checkedRadioButtonId.let {
                         if (it != -1) {
-                            viewModel.setZzimFilter(it)
-                            viewModel.updateZzimButtonState(true)
+                            activityViewModel.setZzimFilter(it)
+                            activityViewModel.updateZzimButtonState(true)
                         }
                     }
 
                     // 시간 필터
                     radioGroupFilterTime.checkedRadioButtonId.let {
                         if (it != -1) {
-                            viewModel.setTimeFilter(it)
-                            viewModel.updateTimeButtonState(true)
+                            activityViewModel.setTimeFilter(it)
+                            activityViewModel.updateTimeButtonState(true)
                         }
                     }
 
                     // 도수 필터
                     radioGroupFilterAlcoholContent.checkedRadioButtonId.let {
                         if (it != -1) {
-                            viewModel.setAlcoholFilter(it)
-                            viewModel.updateAlcoholButtonState(true)
+                            activityViewModel.setAlcoholFilter(it)
+                            activityViewModel.updateAlcoholButtonState(true)
                         }
                     }
 
                     // 베이스주 필터
                     radioButtons.find { it.isChecked }?.let {
-                        viewModel.setBaseFilter(it.id)
-                        viewModel.updateBaseButtonState(true)
+                        activityViewModel.setBaseFilter(it.text.toString())
+                        activityViewModel.updateBaseButtonState(true)
                     }
 
                     dismiss()
@@ -137,17 +136,17 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
             textViewFilterSearch.setOnClickListener {
                 // 현재 선택된 필터들 저장
                 radioGroupFilterZzim.checkedRadioButtonId.let {
-                    if (it != -1) viewModel.setZzimFilter(it)
+                    if (it != -1) activityViewModel.setZzimFilter(it)
                 }
                 radioGroupFilterTime.checkedRadioButtonId.let {
-                    if (it != -1) viewModel.setTimeFilter(it)
+                    if (it != -1) activityViewModel.setTimeFilter(it)
                 }
                 radioGroupFilterAlcoholContent.checkedRadioButtonId.let {
-                    if (it != -1) viewModel.setAlcoholFilter(it)
+                    if (it != -1) activityViewModel.setAlcoholFilter(it)
                 }
                 // Base 필터의 경우 선택된 RadioButton ID 저장
                 radioButtons.find { it.isChecked }?.let {
-                    viewModel.setBaseFilter(it.id)
+                    activityViewModel.setBaseFilter(it.text.toString())
                 }
                 dismiss()
             }

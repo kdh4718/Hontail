@@ -2,16 +2,10 @@ package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.data.model.response.CocktailListResponse
@@ -20,11 +14,7 @@ import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.viewmodel.CocktailListFragmentViewModel
 import com.hontail.ui.cocktail.adapter.CocktailListAdapter
-import com.hontail.ui.picture.FilterBottomSheetFragment
 import com.hontail.util.CommonUtils
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collectLatest
 
 private const val TAG = "CocktailListFragment_SSAFY"
 
@@ -51,9 +41,13 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.baseSpirit = activityViewModel.baseSpirit.value!!
         viewModel.setUserId(activityViewModel.userId)
+        initFilter()
         viewModel.getCocktailFiltering()
+    }
+
+    fun initFilter(){
+        viewModel.baseSpirit = activityViewModel.selectedBaseFilter.value ?: ""
     }
 
     override fun onResume() {
@@ -127,11 +121,17 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                         // 디폴트 칵테일
                         0 -> {
                             viewModel.isCustom = false
+                            viewModel.page = 0
+                            viewModel.direction = "ASC"
+                            viewModel.orderBy = "id"
                             viewModel.getCocktailFiltering()
                         }
                         // 커스텀 칵테일
                         1 -> {
                             viewModel.isCustom = true
+                            viewModel.page = 0
+                            viewModel.direction = "ASC"
+                            viewModel.orderBy = "id"
                             viewModel.getCocktailFiltering()
                         }
                         else -> {}

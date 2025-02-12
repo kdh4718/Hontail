@@ -59,6 +59,9 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             handle.set("isCustom", value)
         }
 
+    private val _filterSelectedList = MutableLiveData<List<Boolean>>(listOf(false, false, false, false))
+    val filterSelectedList: LiveData<List<Boolean>> get() = _filterSelectedList
+
     // Paging 데이터를 담을 LiveData 추가
     val pagedCocktailList: Flow<PagingData<CocktailListResponse>> =
         Pager(PagingConfig(
