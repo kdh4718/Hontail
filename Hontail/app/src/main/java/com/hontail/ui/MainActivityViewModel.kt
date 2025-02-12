@@ -7,12 +7,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hontail.data.model.request.BartenderRequest
 import com.hontail.data.model.request.Recipe
+import com.hontail.data.model.response.BartenderResponse
 import com.hontail.data.model.response.Cocktail
 import com.hontail.data.remote.RetrofitUtil
+import com.hontail.ui.bartender.screen.ChatMessage
 import com.hontail.ui.custom.screen.CustomCocktailItem
 import com.hontail.util.CommonUtils
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 private const val TAG = "MainActivityViewModel_SSAFY"
 
@@ -274,4 +278,78 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     fun updateBaseButtonState(selected: Boolean) {
         _baseButtonSelected.value = selected
     }
+
+    private val bartenderService = RetrofitUtil.bartenderService
+
+    // 메시지 리스트
+    private val _messages = MutableLiveData<List<ChatMessage>>(emptyList())
+    val messages: LiveData<List<ChatMessage>> get() = _messages
+
+    // 메시지 추가
+    fun addMessage(message: ChatMessage) {
+        val currentList = _messages.value?.toMutableList() ?: mutableListOf()
+        currentList.add(message)
+        _messages.postValue(currentList)
+    }
+
+    private fun getCurrentTime(): String {
+        val sdf = java.text.SimpleDateFormat("aa hh:mm", java.util.Locale.getDefault())
+        return sdf.format(java.util.Date())
+    }
+
+    fun receiveBartenderGreeting() {
+        viewModelScope.launch {
+            try {
+                val response = bartenderService.receiveFromBartender()
+                if (response.isSuccessful && response.body() != null) {
+                    val bartenderResponse = response.body()!!
+
+                    val newMessage = ChatMessage(
+                        message = bartenderResponse.message,
+                        isUser = false,
+                        timestamp = getCurrentTime(),
+                        cocktail = if (bartenderResponse.cocktailRecommendation) bartenderResponse.cocktail else null
+                    )
+                    addMessage(newMessage) // ✅ 바텐더 첫 인삿말 추가
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun sendMessageToBartender(text: String) {
+        val userMessage = ChatMessage(
+            message = text,
+            isUser = true,
+            timestamp = getCurrentTime()
+        )
+        addMessage(userMessage) // ✅ 사용자가 입력한 메시지를 먼저 추가
+
+        viewModelScope.launch {
+            try {
+                val response = bartenderService.sendToBartender(BartenderRequest(text))
+                if (response.isSuccessful && response.body() != null) {
+                    val bartenderResponse = response.body()!!
+
+                    val bartenderMessage = ChatMessage(
+                        message = bartenderResponse.message,
+                        isUser = false,
+                        timestamp = getCurrentTime(),
+                        cocktail = if (bartenderResponse.cocktailRecommendation) bartenderResponse.cocktail else null
+                    )
+                    addMessage(bartenderMessage) // ✅ 바텐더 응답 추가
+                }
+                else {
+                    Log.d(TAG, "sendMessageToBartender: 서버 오류 : ${response.code()} - ${response.message()}")
+                    Log.d(TAG, "sendMessageToBartender: 서버 응답 바디 : ${response.errorBody()?.string()}")
+                    addMessage(ChatMessage("⚠️ 서버 오류 발생 (${response.code()})", false, getCurrentTime()))
+                }
+            } catch (e: Exception) {
+                Log.e("BartenderAPI", "네트워크 오류 발생", e)
+                addMessage(ChatMessage("⚠️ 네트워크 오류 발생", false, getCurrentTime()))
+            }
+        }
+    }
+
 }
