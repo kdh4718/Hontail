@@ -1,4 +1,4 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -9,7 +9,7 @@ import com.hontail.data.local.IngredientRepository
 import com.hontail.data.model.dto.IngredientsTable
 
 private const val TAG = "CustomCocktailViewModel"
-class CustomCocktailViewModel: ViewModel() {
+class CustomCocktailSearchViewModel: ViewModel() {
 
     private val ingredientRepository = IngredientRepository.getInstance()
 

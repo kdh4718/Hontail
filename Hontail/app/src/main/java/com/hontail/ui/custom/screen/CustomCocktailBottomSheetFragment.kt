@@ -1,4 +1,4 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.screen
 
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +8,7 @@ import com.hontail.R
 import com.hontail.base.BaseBottomSheetFragment
 import com.hontail.databinding.FragmentCustomCocktailBottomSheetBinding
 import com.hontail.ui.MainActivity
+import com.hontail.ui.custom.adapter.CustomCocktailBottomSheetAdapter
 
 class CustomCocktailBottomSheetFragment: BaseBottomSheetFragment<FragmentCustomCocktailBottomSheetBinding>(
     FragmentCustomCocktailBottomSheetBinding::bind,
