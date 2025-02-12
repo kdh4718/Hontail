@@ -134,7 +134,6 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                             viewModel.isCustom = true
                             viewModel.getCocktailFiltering()
                         }
-
                         else -> {}
                     }
                 }

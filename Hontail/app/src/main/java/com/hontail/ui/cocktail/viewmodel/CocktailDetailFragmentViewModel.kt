@@ -35,6 +35,30 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
     // Repository 객체를 ViewModel 내에서 직접 생성
     private val recentCocktailIdRepository = RecentCocktailIdRepository.getInstance()
 
+    fun addLikes(cocktailId: Int){
+        viewModelScope.launch {
+            runCatching {
+                RetrofitUtil.cocktailDetailService.addCocktailLikes(cocktailId)
+            }.onSuccess {
+                _cocktailInfo.value!!.likeCnt = it.body() ?: _cocktailInfo.value!!.likeCnt
+            }.onFailure {
+                Log.d(TAG, "addLikes: ${it.message}")
+            }
+        }
+    }
+
+    fun deleteLikes(cocktailId: Int){
+        viewModelScope.launch {
+            runCatching {
+                RetrofitUtil.cocktailDetailService.deleteCocktailLikes(cocktailId)
+            }.onSuccess {
+                _cocktailInfo.value!!.likeCnt = it.body() ?: _cocktailInfo.value!!.likeCnt
+            }.onFailure {
+                Log.d(TAG, "deleteLikes: ${it.message}")
+            }
+        }
+    }
+
     fun getCocktailDetailInfo() {
         Log.d(TAG, "getCocktailDetailInfo - cocktailId: ${cocktailId}")
 
@@ -61,7 +85,6 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
             }
         }
     }
-
 
     fun getCocktailDetailInfo(cocktailId: Int, userId: Int) {
         viewModelScope.launch {

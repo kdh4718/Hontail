@@ -100,6 +100,14 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
                     val bottomSheet = CocktailCommentBottomSheetFragment()
                     bottomSheet.show(parentFragmentManager, bottomSheet.tag)
                 }
+
+                override fun onClickZzimButton(cocktailId: Int, isLiked: Boolean) {
+                    if (isLiked){
+                        viewModel.addLikes(cocktailId)
+                    }else{
+                        viewModel.deleteLikes(cocktailId)
+                    }
+                }
             }
         }
     }
