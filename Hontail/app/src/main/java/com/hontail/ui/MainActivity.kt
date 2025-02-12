@@ -9,7 +9,7 @@ import com.hontail.R
 import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
 import com.hontail.ui.alarm.AlarmFragment
-import com.hontail.ui.bartender.BatenderFragment
+import com.hontail.ui.bartender.screen.BatenderFragment
 import com.hontail.ui.custom.screen.CustomCocktailBottomSheetFragment
 import com.hontail.ui.custom.screen.CustomCocktailFragment
 import com.hontail.ui.custom.screen.CustomCocktailIngredientDetailFragment
