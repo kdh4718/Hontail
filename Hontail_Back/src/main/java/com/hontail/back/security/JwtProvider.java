@@ -43,28 +43,31 @@ public class JwtProvider {
     private final UserRepository userRepository;
 
     @Transactional
-    public String createToken(String email, String nickname) {
+    public String createToken(String email, String nickname, String imageUrl) {
         try {
             var user = userRepository.findByUserEmail(email)
-                    .orElseThrow(() -> {
-                        log.error("User not found with email: {}", email);
-                        return new CustomException(ErrorCode.USER_NOT_FOUND);
+                    // 등록된 유저가 없다면 새로 저장
+                    .orElseGet(() -> {
+                        User newUser = new User();
+                        newUser.setUserEmail(email);
+                        newUser.setUserNickname(nickname);
+                        newUser.setUserImageUrl(imageUrl);
+                        return userRepository.save(newUser);
                     });
 
             int userId = user.getId();
             // 소셜 로그인에서 받아온 닉네임 사용
-            String userNickname = nickname;
 
             // 기존 토큰 삭제
             accessTokenRepository.deleteAllByUserId(userId);
             refreshTokenRepository.deleteByUserId(userId);
 
             // Access Token 생성
-            String accessToken = createAccessToken(email, userId, userNickname);
+            String accessToken = createAccessToken(email, userId, nickname);
             log.debug("Access token created for user: {}", email);
 
             // Refresh Token 생성
-            String refreshToken = createRefreshToken(email, userId, userNickname);
+            String refreshToken = createRefreshToken(email, userId, nickname);
             log.debug("Refresh token created for user: {}", email);
 
             // Access Token 저장
