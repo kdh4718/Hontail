@@ -22,9 +22,7 @@ public class RefreshToken {
     @Column(name = "user_id", nullable = false)
     private int userId;
 
-    // @Lob를 추가하여 긴 문자열(JWT 토큰)을 저장할 수 있도록 처리
-    @Lob
-    @Column(nullable = false)
+    @Column(columnDefinition = "VARCHAR(2048)", nullable = false)
     private String token;
 
     @Column(name = "expiry_date", nullable = false)
