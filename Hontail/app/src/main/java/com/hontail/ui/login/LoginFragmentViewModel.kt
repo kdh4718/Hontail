@@ -95,7 +95,7 @@ class LoginFragmentViewModel : ViewModel() {
 
             // JSON 파싱
             val json = JSONObject(decodedString)
-            _userId.value = json.optString("userId", "Unknown")
+            _userId.value = json.optString("user_id", "Unknown")
             _userEmail.value = json.optString("email", "Unknown")
 
             Log.d(TAG, "Extracted UserId: ${_userId.value}, Email: ${_userEmail.value}")

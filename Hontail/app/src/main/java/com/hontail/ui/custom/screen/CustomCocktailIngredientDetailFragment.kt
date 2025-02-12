@@ -102,7 +102,8 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
                         ingredientQuantity,
                         ingredient.ingredientImage,
                         ingredient.ingredientAlcoholContent.toDouble(),
-                        ingredient.ingredientCategoryKor
+                        ingredient.ingredientCategoryKor,
+                        ingredient.ingredientType
                     )
                     // 공유 ViewModel(MainActivityViewModel)에 재료 추가
                     activityViewModel.addCustomCocktailIngredient(newItem)

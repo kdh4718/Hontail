@@ -129,6 +129,6 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
 
 sealed class CustomCocktailItem {
 
-    data class IngredientItem(val ingredientId: Int, val ingredientName: String, val ingredientQuantity: String, val ingredientImage: String, val alcoholContent: Double, val ingredientCategoryKor: String): CustomCocktailItem()
+    data class IngredientItem(val ingredientId: Int, val ingredientName: String, val ingredientQuantity: String, val ingredientImage: String, val alcoholContent: Double, val ingredientCategoryKor: String, val ingredientType: String?): CustomCocktailItem()
     object EmptyItem: CustomCocktailItem()
 }

@@ -10,9 +10,9 @@ import retrofit2.http.Query
 
 interface CustomCocktailService {
 
-    @POST("api/custom/-cocktail")
+    @POST("api/custom-cocktail")
     suspend fun insertCustomCocktail(
         @Query("userId") userId: Int,
         @Body customCocktailRecipeRequest: CustomCocktailRecipeRequest
-    ): Response<CommentUpdateResponse>
+    ): Int
 }

@@ -238,10 +238,11 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
                     // ingredientList에서 IngredientItem만 필터링
                     val baseSpirit = activityViewModel.customCocktailIngredients.value
-                        ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // ✅ IngredientItem만 필터링
-                        ?.filter { it.ingredientCategoryKor == "베이스 주류" } // ✅ 베이스 주류만 필터링
-                        ?.sortedBy { it.ingredientId } // ✅ ingredientId 기준 오름차순 정렬
-                        ?.firstOrNull() // ✅ 가장 첫 번째 값 선택
+                        ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // IngredientItem만 필터링
+                        ?.filter { it.ingredientCategoryKor == "베이스 주류" } // 베이스 주류만 필터링
+                        ?.sortedBy { it.ingredientId } // ingredientId 기준 오름차순 정렬
+                        ?.firstOrNull() // 가장 첫 번째 값 선택
+                        ?.ingredientType ?: "기본 베이스"
                     Log.d(TAG, "initEvent: baseSpirit: $baseSpirit")
 
                     // 커스텀인지
@@ -258,6 +259,8 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                         }
                     }
 
+                    val userId = activityViewModel.userId.value
+
                     val request = recipeSteps?.let { it1 ->
                         CustomCocktailRecipeRequest(
                             alcoholContent = alcoholContent!!.toInt(),
@@ -272,12 +275,13 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                         )
                     }
 
-                    viewModel.insertCustomCocktail(request!!,
-                        onSuccess = { successMessage ->
-                            Toast.makeText(requireContext(), "칵테일 등록 완료! $successMessage", Toast.LENGTH_LONG).show()
+                    viewModel.insertCustomCocktail(userId!!, request!!,
+                        onSuccess = { cocktailId ->
+                            Toast.makeText(requireContext(), "칵테일 등록 완료! $cocktailId", Toast.LENGTH_LONG).show()
                         },
                         onError = { errorMessage ->
                             Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
+                            Log.d(TAG, "initEvent: $errorMessage")
                         }
                     )
                 }

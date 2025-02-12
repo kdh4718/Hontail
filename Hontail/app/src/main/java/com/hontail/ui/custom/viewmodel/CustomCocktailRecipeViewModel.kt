@@ -147,22 +147,17 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     }
 
     // 우리 서버에 커스텀 칵테일 등록
-    fun insertCustomCocktail(request: CustomCocktailRecipeRequest, onSuccess: (String) -> Unit, onError: (String) -> Unit) {
+    fun insertCustomCocktail(userId: Int, request: CustomCocktailRecipeRequest, onSuccess: (Int) -> Unit, onError: (String) -> Unit) {
         viewModelScope.launch {
             try {
-                val response = RetrofitUtil.customCocktailService.insertCustomCocktail(1, request)
-                if (response.isSuccessful) {
-                    response.body()?.let { cocktailId ->
-                        onSuccess("서버에 제대로 올라갔습니다.")
-                    } ?: onError("서버에서 올바른 응답을 받지 못했습니다.")
-                } else {
-                    onError("API 요청 실패: ${response.code()}")
-                }
-            } catch (e: HttpException) {
-                onError("네트워크 오류: ${e.message}")
+                val response = customCocktailService.insertCustomCocktail(userId, request) // ✅ Int 반환
+                Log.d(TAG, "insertCustomCocktail: 등록된 칵테일 ID: $response")
+                onSuccess(response) // ✅ Int를 직접 반환
             } catch (e: Exception) {
-                onError("알 수 없는 오류 발생: ${e.message}")
+                Log.e(TAG, "insertCustomCocktail 오류: ${e.message}")
+                onError(e.message ?: "알 수 없는 오류")
             }
         }
     }
+
 }
