@@ -47,7 +47,7 @@ class CocktailItemAdapter(private val context: Context, private val items: List<
                 textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.likes)
                 textViewListItemCocktailAlcoholContent.text = "${item.alcoholContent}%"
 
-                Log.d(TAG, "listImageURL: ${item.imageUrl}")
+//                Log.d(TAG, "listImageURL: ${item.imageUrl}")
 
                 Glide.with(context)
                     .load(item.imageUrl)
