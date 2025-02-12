@@ -1,4 +1,4 @@
-package com.hontail.ui.bartender
+package com.hontail.ui.bartender.adapter
 
 import android.content.Context
 import android.util.TypedValue
@@ -6,34 +6,58 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.hontail.R
+import com.bumptech.glide.Glide
 import com.hontail.databinding.ListItemChatLeftBinding
+import com.hontail.databinding.ListItemChatLeftCocktailBinding
 import com.hontail.databinding.ListItemChatRightBinding
+import com.hontail.ui.bartender.screen.ChatMessage
 
-class BartenderAdapter(private val messages: List<ChatMessage>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BartenderAdapter(private val context: Context, private var messages: List<ChatMessage>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    lateinit var bartenderListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickCocktailImage(cocktailId: Int)
+    }
 
     companion object {
         private const val VIEW_TYPE_USER = 1
         private const val VIEW_TYPE_BARTENDER = 2
+        private const val VIEW_TYPE_COCKTAIL = 3
     }
 
     // User인지 Bartender인지 구분.
     override fun getItemViewType(position: Int): Int {
-        return if(messages[position].isUser) VIEW_TYPE_USER
-        else VIEW_TYPE_BARTENDER
+        val message = messages[position]
+
+        return when {
+            message.cocktail != null -> VIEW_TYPE_COCKTAIL
+            message.isUser -> VIEW_TYPE_USER
+            else -> VIEW_TYPE_BARTENDER
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if(viewType == VIEW_TYPE_USER) {
-            val binding = ListItemChatRightBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            UserMessageViewHolder(binding)
-        }
-        else {
-            val binding = ListItemChatLeftBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            BartenderMessageViewHolder(binding)
+
+        return when(viewType) {
+
+            VIEW_TYPE_USER -> {
+                val binding = ListItemChatRightBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return UserMessageViewHolder(binding)
+            }
+
+            VIEW_TYPE_BARTENDER -> {
+                val binding = ListItemChatLeftBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return BartenderMessageViewHolder(binding)
+            }
+
+            VIEW_TYPE_COCKTAIL -> {
+                val binding = ListItemChatLeftCocktailBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return CocktailMessageViewHolder((binding))
+            }
+
+            else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
@@ -46,11 +70,11 @@ class BartenderAdapter(private val messages: List<ChatMessage>): RecyclerView.Ad
         val isContinuous = isContinuousMessage(position)
         val isLastMessageInSameTime = isLastMessageInSameTime(position)
 
-        if(holder is UserMessageViewHolder) {
-            holder.bind(message, isContinuous, isLastMessageInSameTime)
-        }
-        else if(holder is BartenderMessageViewHolder) {
-            holder.bind(message, isContinuous, isLastMessageInSameTime)
+        when(holder) {
+
+            is UserMessageViewHolder -> holder.bind(message, isContinuous, isLastMessageInSameTime)
+            is BartenderMessageViewHolder -> holder.bind(message, isContinuous, isLastMessageInSameTime)
+            is CocktailMessageViewHolder -> holder.bind(message)
         }
     }
 
@@ -83,6 +107,11 @@ class BartenderAdapter(private val messages: List<ChatMessage>): RecyclerView.Ad
             dp.toFloat(),
             context.resources.displayMetrics
         ).toInt()
+    }
+
+    fun updateMessages(newMessages: List<ChatMessage>) {
+        messages = newMessages
+        notifyDataSetChanged()
     }
 
     // User 메시지
@@ -132,4 +161,26 @@ class BartenderAdapter(private val messages: List<ChatMessage>): RecyclerView.Ad
             }
         }
     }
+
+    inner class CocktailMessageViewHolder(private val binding: ListItemChatLeftCocktailBinding): RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: ChatMessage) {
+
+            binding.apply {
+
+                textViewListItemChatLeftCocktailName.text = "칵테일러 스위프트"
+
+                Glide.with(context)
+                    .load(item.cocktail?.imageUrl)
+                    .into(imageViewListItemChatLeftCocktailCocktail)
+
+                textViewListItemChatLeftCocktailMessage.text = item.message
+
+                imageViewListItemChatLeftCocktailCocktail.setOnClickListener {
+                    bartenderListener.onClickCocktailImage(item.cocktail!!.id)
+                }
+            }
+        }
+    }
+
 }
