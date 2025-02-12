@@ -84,6 +84,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
                 Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}, user_nickname: ${intent.getStringExtra("user_nickname")}")
                 startActivity(intent)
+
             }
         }
     }
@@ -157,7 +158,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
         })
     }
-    
+
     private fun startAutoSlide() {
         handler.postDelayed(autoScrollRunnable, 3000)
     }
