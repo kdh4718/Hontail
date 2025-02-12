@@ -32,10 +32,12 @@ public class BartenderServiceImpl implements BartenderService {
 
     // 로그인 여부에 따른 호칭 설정 -> 비로그인 : 손님 / 로그인 : 사용자 닉네임
     private String getEffectiveNickname(Integer userId, String nickname) {
+        // 비로그인 사용자
         if (userId == null) {
-            throw new CustomException(ErrorCode.INVALID_USER_SESSION);
+            return "손님";
         }
-        return nickname != null && !nickname.trim().isEmpty() ? nickname : "손";
+        // 로그인 사용자
+        return nickname != null && !nickname.trim().isEmpty() ? nickname : "손님";
     }
 
     // 사용자 첫 입장 시 초기 인사말 생성
