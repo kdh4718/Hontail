@@ -8,14 +8,18 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.hontail.data.model.response.BartenderResponse
-import com.hontail.data.model.response.Cocktail
 import com.hontail.databinding.ListItemChatLeftBinding
 import com.hontail.databinding.ListItemChatLeftCocktailBinding
 import com.hontail.databinding.ListItemChatRightBinding
 import com.hontail.ui.bartender.screen.ChatMessage
 
 class BartenderAdapter(private val context: Context, private var messages: List<ChatMessage>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    lateinit var bartenderListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickCocktailImage(cocktailId: Int)
+    }
 
     companion object {
         private const val VIEW_TYPE_USER = 1
@@ -171,6 +175,10 @@ class BartenderAdapter(private val context: Context, private var messages: List<
                     .into(imageViewListItemChatLeftCocktailCocktail)
 
                 textViewListItemChatLeftCocktailMessage.text = item.message
+
+                imageViewListItemChatLeftCocktailCocktail.setOnClickListener {
+                    bartenderListener.onClickCocktailImage(item.cocktail!!.id)
+                }
             }
         }
     }

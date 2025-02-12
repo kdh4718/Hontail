@@ -18,8 +18,10 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.hontail.databinding.BartenderDialogBinding
 import com.hontail.ui.MainActivity
+import com.hontail.ui.MainActivityViewModel
 import com.hontail.util.CommonUtils
 
 private const val TAG = "BartenderDialogFragment"
@@ -29,8 +31,12 @@ class BartenderDialogFragment(private var mode: CommonUtils.BartenderRecordMode)
 
     private lateinit var mainActivity: MainActivity
 
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
+
     private var speechRecognizer: SpeechRecognizer? = null
     private lateinit var speechIntent: Intent
+
+    var sendVoiceText = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -126,6 +132,7 @@ class BartenderDialogFragment(private var mode: CommonUtils.BartenderRecordMode)
             imageViewDialogBartenderSend.setOnClickListener {
                 // 녹음 파일 전송하기...
 
+                activityViewModel.sendMessageToBartender(sendVoiceText)
                 dismiss()
             }
         }
@@ -206,7 +213,8 @@ class BartenderDialogFragment(private var mode: CommonUtils.BartenderRecordMode)
                         val recognizedText = matches[0]
 
                         Log.d(TAG, "onResults: STT 결과 : $recognizedText")
-                        binding.textViewDialogBartenderTitle.text = recognizedText
+                        binding.textViewDialogBartenderTitle.text = "인식 성공! 음성 녹음을 전송해주세요."
+                        sendVoiceText = recognizedText
                     }
                     changeMode(CommonUtils.BartenderRecordMode.COMPLETED)
                 }
