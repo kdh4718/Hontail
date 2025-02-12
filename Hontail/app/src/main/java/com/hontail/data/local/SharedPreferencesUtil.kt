@@ -11,30 +11,20 @@ class SharedPreferencesUtil(context: Context) {
     var preferences: SharedPreferences =
         context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE)
 
-//    //사용자 정보 저장
-//    fun addUser(user: User){
-//        val editor = preferences.edit()
-//        editor.putString("id", user.id)
-//        editor.putString("name", user.name)
-//        editor.apply()
-//    }
-//
-//    fun getUser(): User {
-//        val id = preferences.getString("id", "")
-//        if (id != "") {
-//            val name = preferences.getString("name", "")
-//            return User(id!!, name!!, "", 0)
-//        } else {
-//            return User()
-//        }
-//    }
-//
-//    fun deleteUser(){
-//        //preference 지우기
-//        val editor = preferences.edit()
-//        editor.clear()
-//        editor.apply()
-//    }
+    private val prefs: SharedPreferences =
+        context.getSharedPreferences("hontail_prefs", Context.MODE_PRIVATE)
+
+    companion object {
+        private const val KEY_JWT = "jwt_token"
+    }
+
+    fun saveJwtToken(token: String) {
+        prefs.edit().putString(KEY_JWT, token).apply()
+    }
+
+    fun getJwtToken(): String? {
+        return prefs.getString(KEY_JWT, null)
+    }
 
     fun addUserCookie(cookies: HashSet<String>) {
         val editor = preferences.edit()
@@ -69,7 +59,7 @@ class SharedPreferencesUtil(context: Context) {
         }
     }
 
-    fun getNotice() : MutableList<String> {
+    fun getNotice(): MutableList<String> {
         val str = preferences.getString("notice", "")!!
         val list = if (str.isEmpty()) mutableListOf<String>() else Gson().fromJson(str, MutableList::class.java) as MutableList<String>
         return list

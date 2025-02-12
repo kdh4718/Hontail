@@ -11,11 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
-    // 사용자 ID로 토큰 조회
-    Optional<RefreshToken> findByUserId(int userId);
-
-    // 토큰 값으로 조회
-    Optional<RefreshToken> findByToken(String token);
 
     // 사용자 ID로 토큰 삭제
     @Modifying

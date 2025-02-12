@@ -14,6 +14,12 @@ public enum ErrorCode {
     INVALID_USER_SESSION(401, "유효하지 않은 사용자 세션입니다."),
     INVALID_NICKNAME(400, "유효하지 않은 닉네임입니다."),
 
+    // JWT 인증 관련 에러
+    UNAUTHORIZED_USER(401, "인증되지 않은 사용자입니다."),
+    TOKEN_EXPIRED(401, "토큰이 만료되었습니다."),
+    INVALID_TOKEN(401, "유효하지 않은 토큰입니다."),
+    TOKEN_CREATION_FAILED(500, "토큰 생성에 실패했습니다."),
+
     // Bartender Error Codes (바텐더 도메인)
     BARTENDER_OPENAI_ERROR(500, "AI 바텐더 응답 생성 중 오류가 발생했습니다."),
     BARTENDER_COCKTAIL_NOT_FOUND(404, "칵테일을 찾을 수 없습니다."),

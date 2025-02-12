@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hontail.base.ApplicationClass
 import com.hontail.data.model.request.LoginRequest
 import com.hontail.data.remote.RetrofitUtil
 import kotlinx.coroutines.launch
@@ -24,6 +25,10 @@ class LoginFragmentViewModel : ViewModel() {
     private val _userEmail = MutableLiveData<String>()
     val userEmail: LiveData<String?> get() = _userEmail
 
+    private val _userNickname = MutableLiveData<String>()
+    val userNickname: LiveData<String?> get() = _userNickname
+
+
     fun loginWithNaver(accessToken: String) {
         viewModelScope.launch {
             runCatching {
@@ -35,6 +40,8 @@ class LoginFragmentViewModel : ViewModel() {
                     val jwt = response.body()?.jwt
                     _jwtToken.value = jwt!!  // JWT 저장
                     Log.d(TAG, "Login Success! JWT: ${_jwtToken.value}")
+
+                    ApplicationClass.sharedPreferencesUtil.saveJwtToken(jwt)
 
                     // JWT 디코딩 및 사용자 정보 저장
                     jwt?.let { decodeJwt(it) }
@@ -95,10 +102,11 @@ class LoginFragmentViewModel : ViewModel() {
 
             // JSON 파싱
             val json = JSONObject(decodedString)
-            _userId.value = json.optString("userId", "Unknown")
-            _userEmail.value = json.optString("email", "Unknown")
+            _userId.value = json.optString("user_id", "Unknown")
+            _userEmail.value = json.optString("user_email", "Unknown")
+            _userNickname.value = json.optString("user_nickname", "Unknown")
 
-            Log.d(TAG, "Extracted UserId: ${_userId.value}, Email: ${_userEmail.value}")
+            Log.d(TAG, "Extracted UserId: ${_userId.value}, Email: ${_userEmail.value}, userNickname: ${_userNickname.value}")
 
         } catch (e: Exception) {
             Log.e(TAG, "Error decoding JWT: ${e.message}")
