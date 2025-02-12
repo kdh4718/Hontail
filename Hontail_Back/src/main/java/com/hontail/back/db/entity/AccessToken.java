@@ -22,9 +22,8 @@ public class AccessToken {
     @Column(name = "user_id", nullable = false)
     private int userId;
 
-    // @Lob 어노테이션을 추가하여 토큰을 긴 문자열로 저장
-    @Lob
-    @Column(nullable = false)
+
+    @Column(name = "token", columnDefinition = "VARCHAR(2048)", nullable = false)
     private String token;
 
     @Column(name = "expiry_date", nullable = false)

@@ -1,4 +1,4 @@
-package com.hontail.back.db.repository;
+ package com.hontail.back.db.repository;
 
 import com.hontail.back.db.entity.Cocktail;
 import org.springframework.data.domain.Page;
