@@ -12,7 +12,15 @@ class CocktailCommentAdapter(
     private var commentList: List<Comment>
 ) : RecyclerView.Adapter<CocktailCommentAdapter.CocktailCommentHolder>() {
 
-    private val swipedItems = mutableSetOf<Int>() // 스와이프된 아이템 저장
+    private val swipedItems = mutableSetOf<Int>()
+    private val SWIPE_AMOUNT = -350f
+
+    interface CommentActionListener {
+        fun onEditComment(comment: Comment)
+        fun onDeleteComment(comment: Comment)
+    }
+
+    var actionListener: CommentActionListener? = null
 
     inner class CocktailCommentHolder(private val binding: ListItemCocktailCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -23,13 +31,11 @@ class CocktailCommentAdapter(
                 textViewCocktailCommentUserName.text = item.name
                 textViewCocktailCommentUserComment.text = item.comment
 
-                // 초기 위치 설정
-                itemView.translationX = if (swipedItems.contains(adapterPosition)) -200f else 0f
-
-                // 버튼 초기 회전 상태 설정
+                // 초기 상태 설정
+                contentContainer.translationX = if (swipedItems.contains(adapterPosition)) SWIPE_AMOUNT else 0f
                 imageViewCocktailCommentUserComment.rotation = if (swipedItems.contains(adapterPosition)) 180f else 0f
 
-                // 옵션 버튼 클릭 시 스와이프 or 원상 복구
+                // 화살표 버튼 클릭 이벤트
                 imageViewCocktailCommentUserComment.setOnClickListener {
                     if (swipedItems.contains(adapterPosition)) {
                         resetSwipe()
@@ -37,20 +43,49 @@ class CocktailCommentAdapter(
                         swipeItem()
                     }
                 }
+
+                // 수정/삭제 버튼 클릭 이벤트 - 콜백만 호출
+                imageViewEdit.setOnClickListener {
+                    actionListener?.onEditComment(item)
+                }
+
+                imageViewDelete.setOnClickListener {
+                    actionListener?.onDeleteComment(item)
+                }
             }
         }
 
-        // 아이템을 왼쪽으로 스와이프 + 버튼 회전
         private fun swipeItem() {
-            itemView.animate().translationX(-200f).setDuration(300).start() // 200px 왼쪽으로 이동
-            binding.imageViewCocktailCommentUserComment.animate().rotation(180f).setDuration(300).start() // 버튼 180도 회전
+            binding.apply {
+                // 컨텐츠 스와이프 애니메이션
+                contentContainer.animate()
+                    .translationX(SWIPE_AMOUNT)
+                    .setDuration(300)
+                    .start()
+
+                // 화살표 회전 애니메이션
+                imageViewCocktailCommentUserComment.animate()
+                    .rotation(180f)
+                    .setDuration(300)
+                    .start()
+            }
             swipedItems.add(adapterPosition)
         }
 
-        // 아이템을 원래 위치로 복구 + 버튼 원래 위치로 회전
         private fun resetSwipe() {
-            itemView.animate().translationX(0f).setDuration(300).start() // 원래 위치로 복귀
-            binding.imageViewCocktailCommentUserComment.animate().rotation(0f).setDuration(300).start() // 버튼 원래 방향으로 복귀
+            binding.apply {
+                // 컨텐츠 원위치 애니메이션
+                contentContainer.animate()
+                    .translationX(0f)
+                    .setDuration(300)
+                    .start()
+
+                // 화살표 원위치 회전
+                imageViewCocktailCommentUserComment.animate()
+                    .rotation(0f)
+                    .setDuration(300)
+                    .start()
+            }
             swipedItems.remove(adapterPosition)
         }
     }
