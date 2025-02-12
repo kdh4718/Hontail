@@ -35,7 +35,17 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
                 Comment(7, "name4", "comment4", R.drawable.add_ingredient),
             )
 
-            cocktailCommentAdapter = CocktailCommentAdapter(requireContext(), items)
+            cocktailCommentAdapter = CocktailCommentAdapter(requireContext(), items).apply {
+                actionListener = object : CocktailCommentAdapter.CommentActionListener {
+                    override fun onEditComment(comment: Comment) {
+                        // 수정 동작 구현
+                    }
+
+                    override fun onDeleteComment(comment: Comment) {
+                        // 삭제 동작 구현
+                    }
+                }
+            }
 
             recyclerViewCocktailCommentBottomSheet.apply {
                 layoutManager = LinearLayoutManager(context)
