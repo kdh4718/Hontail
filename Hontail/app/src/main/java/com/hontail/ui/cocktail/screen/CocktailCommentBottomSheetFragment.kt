@@ -36,7 +36,13 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
         mainActivity = context as MainActivity
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onStart() {
+        super.onStart()
+        val bottomSheet = dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet?.layoutParams?.height = (resources.displayMetrics.heightPixels * 0.6).toInt() // ✅ 화면의 60% 크기로 설정
+    }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         activityViewModel.cocktailId.value?.let { viewModel.setCocktailId(it) }
