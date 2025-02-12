@@ -88,8 +88,6 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
                 textViewCocktailDetailZzimCount.text = item.cocktailDetail.likeCnt.toString()
                 textViewCocktailDetailCommentCount.text = item.cocktailDetail.commentCnt.toString()
 
-                Log.d(TAG, "imageDetail: ${item.cocktailDetail.imageUrl}")
-
                 Glide.with(context)
                     .load(item.cocktailDetail.imageUrl)
                     .into(imageViewCocktailDetailImage)

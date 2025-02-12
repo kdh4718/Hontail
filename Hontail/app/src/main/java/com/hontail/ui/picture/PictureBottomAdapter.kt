@@ -69,16 +69,16 @@ class PictureBottomAdapter(
                 )
             }
 
-            val cocktailAdapter = CocktailItemAdapter(context, cocktails)
-
-            binding.recyclerViewPictureResultCocktailList.apply {
-                layoutManager = GridLayoutManager(context, 2)
-                adapter = cocktailAdapter
-                // ItemDecoration 추가
-                if (itemDecorationCount == 0) {
-                    addItemDecoration(GridSpacingItemDecoration(2, 20))
-                }
-            }
+//            val cocktailAdapter = CocktailItemAdapter(context, cocktails)
+//
+//            binding.recyclerViewPictureResultCocktailList.apply {
+//                layoutManager = GridLayoutManager(context, 2)
+//                adapter = cocktailAdapter
+//                // ItemDecoration 추가
+//                if (itemDecorationCount == 0) {
+//                    addItemDecoration(GridSpacingItemDecoration(2, 20))
+//                }
+//            }
 
             // 필터 클릭 이벤트 설정
             filterAdapter.cocktailListFilterListener = object : CocktailListFilterAdapter.ItemOnClickListener {
