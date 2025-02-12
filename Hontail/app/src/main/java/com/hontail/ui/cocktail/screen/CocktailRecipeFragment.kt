@@ -1,8 +1,16 @@
 package com.hontail.ui.cocktail.screen
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.pm.PackageManager
+import android.Manifest
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.speech.RecognitionListener
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -20,10 +28,10 @@ import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.adapter.CocktailRecipeViewPagerAdapter
 import com.hontail.ui.cocktail.adapter.CocktailRecipeDrawerAdapter
 import com.hontail.ui.cocktail.viewmodel.CocktailDetailFragmentViewModel
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
+import java.util.Locale
+import android.util.Log
 
+private const val TAG = "CocktailRecipeFragment_SSAFY"
 class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
     DrawerCocktailRecipeBinding::bind,
     R.layout.drawer_cocktail_recipe
@@ -35,6 +43,17 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CocktailDetailFragmentViewModel by viewModels()
     private lateinit var drawerAdapter: CocktailRecipeDrawerAdapter
+
+    companion object {
+        private const val PERMISSION_CODE = 100
+    }
+
+    // STT 관련 변수
+    private lateinit var speechRecognizer: SpeechRecognizer
+    private val recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+        putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,39 +83,116 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
             ContextCompat.getColor(requireContext(), android.R.color.transparent)
         )
 
+        checkPermission()
         initObserver()
         initEvent()
         initViewPager()
     }
-    override fun onResume() {
-        super.onResume()
-        mainActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO)
+            != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.RECORD_AUDIO), PERMISSION_CODE)
+        } else {
+            initSpeechRecognizer()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_CODE &&
+            grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            initSpeechRecognizer()
+        }
+    }
+
+    private fun initSpeechRecognizer() {
+        try {
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(requireContext())
+            speechRecognizer.setRecognitionListener(object : RecognitionListener {
+                override fun onReadyForSpeech(params: Bundle?) {}
+                override fun onBeginningOfSpeech() {}
+                override fun onRmsChanged(rmsdB: Float) {}
+                override fun onBufferReceived(buffer: ByteArray?) {}
+
+                override fun onEndOfSpeech() {
+                    // 음성 인식이 끝나면 딜레이 후 다시 시작
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startListening()
+                    }, 500)
+                }
+
+                override fun onError(error: Int) {
+                    Log.d(TAG, "onError: $error")
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startListening()
+                    }, 1000)
+                }
+
+                override fun onResults(results: Bundle?) {
+                    val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
+                    matches?.get(0)?.let { result ->
+                        Log.d("STT_TEST", "인식된 음성: $result")
+                        when {
+                            result.contains("다음") -> {
+                                val currentItem = contentBinding.viewPagerCocktailRecipeViewPager.currentItem
+                                val totalItems = viewModel.cocktailInfo.value?.recipes?.size ?: 0
+                                if (currentItem < totalItems - 1) {
+                                    contentBinding.viewPagerCocktailRecipeViewPager.currentItem = currentItem + 1
+                                }
+                            }
+                        }
+                    }
+                    // 결과 처리 후 딜레이를 주고 재시작
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        startListening()
+                    }, 1000)
+                }
+
+                override fun onPartialResults(partialResults: Bundle?) {}
+                override fun onEvent(eventType: Int, params: Bundle?) {}
+            })
+
+            startListening()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("STT_TEST", "Speech Recognizer 초기화 실패: ${e.message}")
+        }
+    }
+
+    private fun startListening() {
+        try {
+            speechRecognizer.startListening(recognizerIntent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("STT_TEST", "startListening 실패: ${e.message}")
+        }
     }
 
     private fun initObserver() {
         viewModel.cocktailInfo.observe(viewLifecycleOwner) { cocktailDetail ->
             cocktailDetail?.let { detail ->
-
-                // 칵테일 이름 설정 추가
                 contentBinding.textViewCocktailRecipeTitle.text = "${detail.cocktailName} 레시피"
 
-                // ViewPager 설정
                 contentBinding.viewPagerCocktailRecipeViewPager.adapter =
                     CocktailRecipeViewPagerAdapter(mainActivity, detail.recipes)
 
-                // 프로그레스 바 설정
                 val totalSteps = detail.recipes.size
                 contentBinding.indicatorCocktailRecipeIndicator.max = totalSteps
                 updateProgress(1, totalSteps)
 
-                // 드로어 리사이클러뷰 설정
                 drawerAdapter = CocktailRecipeDrawerAdapter(detail.recipes)
                 binding.navigationViewDrawerCocktailRecipeNavigation
                     .findViewById<RecyclerView>(R.id.recyclerViewDrawerRecipes).apply {
                         layoutManager = LinearLayoutManager(context)
                         adapter = drawerAdapter
 
-                        // 드로어 아이템 클릭 시 해당 페이지로 이동
                         drawerAdapter.setOnItemClickListener { position ->
                             contentBinding.viewPagerCocktailRecipeViewPager.currentItem = position
                             binding.drawerLayoutDrawerCocktailRecipeDrawer.closeDrawers()
@@ -112,7 +208,6 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
                 override fun onPageSelected(position: Int) {
                     val totalSteps = viewModel.cocktailInfo.value?.recipes?.size ?: 0
                     updateProgress(position + 1, totalSteps)
-                    // 드로어의 선택된 항목 업데이트
                     drawerAdapter.updateSelectedPosition(position)
                 }
             }
@@ -120,29 +215,9 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
     }
 
     private fun updateProgress(currentStep: Int, totalSteps: Int) {
-        // 프로그레스 바 업데이트
         contentBinding.indicatorCocktailRecipeIndicator.progress = currentStep
-
-        // SpannableString을 사용하여 텍스트 일부분의 색상 변경
-        val fullText = "총 ${totalSteps}단계 중 ${currentStep}단계 제조중"
-        val spannableString = SpannableString(fullText)
-
-        // "중" 이후에 나오는 currentStep의 위치를 찾기
-        val middleText = "중 "
-        val middleIndex = fullText.indexOf(middleText)
-        val startIndex = fullText.indexOf(currentStep.toString(), middleIndex)
-        val endIndex = startIndex + currentStep.toString().length + 2 // "단계" 포함
-
-        // 해당 부분에 색상 적용
-        spannableString.setSpan(
-            ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.basic_sky)),
-            startIndex,
-            endIndex,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-
-        // 드로어의 진행 상태 텍스트 업데이트
-        binding.textViewDrawerCocktailRecipeStep.text = spannableString
+        binding.textViewDrawerCocktailRecipeStep.text =
+            "총 ${totalSteps}단계 중 ${currentStep}단계 제조중"
     }
 
     private fun initEvent() {
@@ -161,10 +236,36 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        if (::speechRecognizer.isInitialized) {
+            startListening()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (::speechRecognizer.isInitialized) {
+            try {
+                speechRecognizer.stopListening()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         mainActivity.hideBottomNav(false)
         mainActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        if (::speechRecognizer.isInitialized) {
+            try {
+                speechRecognizer.destroy()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
         _contentBinding = null
     }
 }
