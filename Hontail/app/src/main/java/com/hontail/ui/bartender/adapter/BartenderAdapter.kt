@@ -66,11 +66,11 @@ class BartenderAdapter(private val context: Context, private var messages: List<
         val isContinuous = isContinuousMessage(position)
         val isLastMessageInSameTime = isLastMessageInSameTime(position)
 
-        if(holder is UserMessageViewHolder) {
-            holder.bind(message, isContinuous, isLastMessageInSameTime)
-        }
-        else if(holder is BartenderMessageViewHolder) {
-            holder.bind(message, isContinuous, isLastMessageInSameTime)
+        when(holder) {
+
+            is UserMessageViewHolder -> holder.bind(message, isContinuous, isLastMessageInSameTime)
+            is BartenderMessageViewHolder -> holder.bind(message, isContinuous, isLastMessageInSameTime)
+            is CocktailMessageViewHolder -> holder.bind(message)
         }
     }
 
@@ -160,14 +160,14 @@ class BartenderAdapter(private val context: Context, private var messages: List<
 
     inner class CocktailMessageViewHolder(private val binding: ListItemChatLeftCocktailBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: BartenderResponse) {
+        fun bind(item: ChatMessage) {
 
             binding.apply {
 
                 textViewListItemChatLeftCocktailName.text = "칵테일러 스위프트"
 
                 Glide.with(context)
-                    .load(item.cocktail.imageUrl)
+                    .load(item.cocktail?.imageUrl)
                     .into(imageViewListItemChatLeftCocktailCocktail)
 
                 textViewListItemChatLeftCocktailMessage.text = item.message
