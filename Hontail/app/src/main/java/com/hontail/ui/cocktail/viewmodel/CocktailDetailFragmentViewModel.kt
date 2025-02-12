@@ -36,16 +36,32 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
     private val recentCocktailIdRepository = RecentCocktailIdRepository.getInstance()
 
     fun getCocktailDetailInfo() {
+        Log.d(TAG, "getCocktailDetailInfo - cocktailId: ${cocktailId}")
+
         saveCocktailId(cocktailId)
         getCocktailDetailInfo(cocktailId, userId)
     }
 
+    // RecentCocktailIdRepository에서 DB 작업을 runCatching으로 감싸서 예외를 처리
     private fun saveCocktailId(cocktailId: Int) {
         // Room에 cocktailId 저장
         viewModelScope.launch {
-            recentCocktailIdRepository.insertCocktail(cocktailId)
+            runCatching {
+                recentCocktailIdRepository.insertCocktail(cocktailId)
+            }.onFailure {
+                Log.e(TAG, "Error saving cocktailId to Room: ${it.message}")
+            }
+        }
+        
+        viewModelScope.launch { 
+            runCatching {
+                recentCocktailIdRepository.getAllCocktails()
+            }.onSuccess {
+                Log.d(TAG, "saveCocktailId: ${it}")
+            }
         }
     }
+
 
     fun getCocktailDetailInfo(cocktailId: Int, userId: Int) {
         viewModelScope.launch {

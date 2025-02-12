@@ -41,17 +41,17 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             handle.set("baseSpirit", value)
         }
 
-//    var page: Int
-//        get() = handle.get<Int>("page") ?: 0
-//        set(value) {
-//            handle.set("page", value)
-//        }
-//
-//    var size: Int
-//        get() = handle.get<Int>("size") ?: 20
-//        set(value) {
-//            handle.set("size", value)
-//        }
+    var page: Int
+        get() = handle.get<Int>("page") ?: 0
+        set(value) {
+            handle.set("page", value)
+        }
+
+    var size: Int
+        get() = handle.get<Int>("size") ?: 20
+        set(value) {
+            handle.set("size", value)
+        }
 
     var isCustom: Boolean
         get() = handle.get<Boolean>("isCustom") ?: false
@@ -69,7 +69,6 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             CocktailPagingSource(orderBy, direction, baseSpirit, isCustom)
         }.flow.cachedIn(viewModelScope) // ✅ 반드시 `cachedIn(viewModelScope)` 사용
 
-
     private val _cocktailList = MutableLiveData<List<CocktailListResponse>>()
     val cocktailList: LiveData<List<CocktailListResponse>>
         get() = _cocktailList
@@ -81,7 +80,7 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
     fun getCocktailFiltering(){
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, 0, 20, isCustom)
+                RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
             }.onSuccess {
                 _cocktailList.value = it.content
                 Log.d(TAG, "getCocktailFiltering: ${it.content}")

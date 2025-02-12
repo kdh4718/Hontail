@@ -35,7 +35,12 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CocktailListFragmentViewModel by viewModels()
-    private val filters = listOf("찜", "시간", "도수", "베이스주")
+    private val filters = mutableListOf<String>().apply {
+        add("찜")
+        add("시간")
+        add("도수")
+        add("베이스주")
+    }
 
     private lateinit var cocktailListAdapter: CocktailListAdapter
 
@@ -48,6 +53,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         super.onCreate(savedInstanceState)
         viewModel.baseSpirit = activityViewModel.baseSpirit.value!!
         viewModel.setUserId(activityViewModel.userId)
+        viewModel.getCocktailFiltering()
     }
 
     override fun onResume() {
@@ -65,61 +71,75 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
 
     private fun initAdapter() {
         binding.apply {
-            // 초기 Adapter 설정
-            cocktailListAdapter = CocktailListAdapter(mainActivity, mutableListOf(), viewLifecycleOwner)
+            val items = mutableListOf<CocktailListItem>().apply {
+                add(CocktailListItem.SearchBar)
+                add(CocktailListItem.TabLayout)
+                add(CocktailListItem.Filter(filters))
+                add(CocktailListItem.CocktailItems(emptyList()))
+            }
+
+            cocktailListAdapter = CocktailListAdapter(mainActivity, items)
+
             recyclerViewCocktailList.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailList.adapter = cocktailListAdapter
         }
     }
 
-    private fun initData() {
-        lifecycleScope.launch {
-            viewModel.pagedCocktailList.collect { pagingData ->
-                cocktailListAdapter.submitData(pagingData)
+    fun initData() {
+        viewModel.cocktailList.observe(viewLifecycleOwner) { cocktailList ->
+            cocktailList?.let {
+                val updatedItems = mutableListOf<CocktailListItem>().apply {
+                    add(CocktailListItem.SearchBar)
+                    add(CocktailListItem.TabLayout)
+                    add(CocktailListItem.Filter(filters))
+                    add(CocktailListItem.CocktailItems(it))
+                }
+
+                cocktailListAdapter.updateItems(updatedItems)  // 어댑터 데이터 변경
             }
         }
-
-//        // 스크롤 리스너 설정
-//        binding.recyclerViewCocktailList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//
-//                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-//                val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-//                val totalItemCount = layoutManager.itemCount
-//
-//                // 페이지 끝에 도달하면 다음 페이지를 로드
-//                if (lastVisibleItem == totalItemCount - 1) {
-//                    Log.d(TAG, "리스트 끝에 도달, 다음 페이지 로딩 시작")
-//                    // 추가 페이지 로드를 위한 작업
-//                    cocktailListAdapter.retry()  // Paging의 loadState를 활용하여 다음 페이지 요청
-//                }
-//            }
-//        })
     }
 
-    private fun initEvent() {
+    fun initEvent() {
         binding.apply {
             cocktailListAdapter.cocktailListListener = object : CocktailListAdapter.ItemOnClickListener {
+
+                // 랜덤 다이얼로그 띄우기.
                 override fun onClickRandom() {
                     val dialog = CocktailRandomDialogFragment()
                     dialog.show(parentFragmentManager, "CocktailRandomDialog")
                 }
 
+                // 칵테일 상세 화면으로 가기.
                 override fun onClickCocktailItem(cocktailId: Int) {
                     activityViewModel.setCocktailId(cocktailId)
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
                 }
 
+                // 칵테일 검색 화면 가기.
                 override fun onClickSearch() {
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_SEARCH_FRAGMENT)
                 }
 
+                // 탭 눌렀을 때
                 override fun onClickTab(position: Int) {
-                    viewModel.isCustom = (position == 1)
-                    viewModel.getCocktailFiltering()
+                    when (position) {
+                        // 디폴트 칵테일
+                        0 -> {
+                            viewModel.isCustom = false
+                            viewModel.getCocktailFiltering()
+                        }
+                        // 커스텀 칵테일
+                        1 -> {
+                            viewModel.isCustom = true
+                            viewModel.getCocktailFiltering()
+                        }
+
+                        else -> {}
+                    }
                 }
 
+                // 필터 눌렀을 때
                 override fun onClickFilter(position: Int) {
                     val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
                     bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
@@ -127,11 +147,12 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
             }
         }
     }
+
 }
 
 sealed class CocktailListItem {
     object SearchBar : CocktailListItem()
     object TabLayout : CocktailListItem()
     data class Filter(val filters: List<String>) : CocktailListItem()
-    data class CocktailItems(val cocktails: PagingData<CocktailListResponse>) : CocktailListItem()
+    data class CocktailItems(val cocktails: List<CocktailListResponse>) : CocktailListItem()
 }

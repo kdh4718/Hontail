@@ -30,11 +30,23 @@ class RecentCocktailIdRepository private constructor(context: Context) {
         }
     }
 
-    // 최근 칵테일 아이디 저장
     fun insertCocktail(cocktailId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val recentCocktailId = RecentCocktailIdTable(cocktailId = cocktailId)
-            recentCocktailIdDao.insertCocktailId(recentCocktailId)
+            // 먼저 데이터베이스에서 이미 존재하는지 확인
+            val existingCocktail = recentCocktailIdDao.getCocktailById(cocktailId)
+
+            // 존재하지 않으면 새로운 cocktailId 추가
+            if (existingCocktail == null) {
+                val recentCocktailId = RecentCocktailIdTable(cocktailId = cocktailId)
+                recentCocktailIdDao.insertCocktailId(recentCocktailId)
+            } else {
+                // 존재하면 기존 항목을 삭제하고 새로 삽입
+                recentCocktailIdDao.deleteCocktail(cocktailId)
+                val recentCocktailId = RecentCocktailIdTable(cocktailId = cocktailId)
+                recentCocktailIdDao.insertCocktailId(recentCocktailId)
+            }
+
+            // 10개 이상일 경우 오래된 데이터 삭제
             deleteOldCocktails()
         }
     }
@@ -42,8 +54,7 @@ class RecentCocktailIdRepository private constructor(context: Context) {
     // 최근 칵테일 목록 가져오기 (List<Int>로 반환하도록 수정)
     suspend fun getAllCocktails(): List<Int> {
         val cocktailList = recentCocktailIdDao.getAllCocktails()
-        // RecentCocktailIdTable 객체에서 id만 추출하여 반환
-        return cocktailList.map { it.id }  // id를 List<Int>로 반환
+        return cocktailList.map { it.cocktailId }
     }
 
     // 리스트에서 10개 이상일 경우 오래된 데이터 삭제
