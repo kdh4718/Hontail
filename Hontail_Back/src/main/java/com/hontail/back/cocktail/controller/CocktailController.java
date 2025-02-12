@@ -14,6 +14,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import com.hontail.back.global.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
+import com.hontail.back.security.util.SecurityUtil;
+import com.hontail.back.global.exception.CustomException;
+import com.hontail.back.global.exception.ErrorCode;
 
 import java.util.List;
 
@@ -41,9 +44,9 @@ public class CocktailController {
             @RequestParam(required = false) String baseSpirit,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(defaultValue = "false") boolean isCustom,
-            @RequestParam(required = false) Integer userId
+            @RequestParam(defaultValue = "false") boolean isCustom
     ) {
+        Integer userId = SecurityUtil.getCurrentUserId();
         return ResponseEntity.ok(cocktailService.getCocktailsByFilter(orderBy, direction, baseSpirit, page, size, isCustom, userId));
     }
 
@@ -65,8 +68,11 @@ public class CocktailController {
             @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음 또는 좋아요한 칵테일이 없음",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<List<CocktailSummaryDto>> getLikedCocktails(
-            @RequestParam Integer userId) {
+    public ResponseEntity<List<CocktailSummaryDto>> getLikedCocktails() {
+        Integer userId = SecurityUtil.getCurrentUserId();
+        if (userId == null) {
+            throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
+        }
         return ResponseEntity.ok(cocktailService.getLikedCocktails(userId));
     }
 
@@ -82,9 +88,9 @@ public class CocktailController {
     public ResponseEntity<Page<CocktailSummaryDto>> searchCocktails(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) Integer userId) {
+            @RequestParam(defaultValue = "20") int size
+    ) {
+        Integer userId = SecurityUtil.getCurrentUserId();
         return ResponseEntity.ok(cocktailService.searchCocktails(keyword, page, size, userId));
     }
-
 }
