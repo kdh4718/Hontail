@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textViewCustomCocktailRecipeStepBottomSheetAnimationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="애니메이션"
+        style="@style/Font_SemiBold_18_Basic_White"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <RadioGroup
+        android:id="@+id/radioGroupCustomCocktailRecipeStepBottomSheet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/textViewCustomCocktailRecipeStepBottomSheetAnimationTitle"
+        app:layout_constraintStart_toStartOf="@+id/textViewCustomCocktailRecipeStepBottomSheetAnimationTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCustomCocktailRecipeStepBottomSheetAnimationTitle">
+
+        <RadioButton
+            android:id="@+id/radioButtonCustomCocktailRecipeStepBottomSheetStir"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="휘젓기"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioButtonCustomCocktailRecipeStepBottomSheetPour"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="붓기"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioButtonCustomCocktailRecipeStepBottomSheetShake"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="흔들기"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+
+        <RadioButton
+            android:id="@+id/radioButtonCustomCocktailRecipeStepBottomSheetDefault"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@drawable/custom_radio_button"
+            android:buttonTint="@null"
+            android:buttonTintMode="@null"
+            android:padding="10dp"
+            android:text="기타"
+            style="@style/Font_Medium_16_Basic_Gray"
+            android:textColor="@drawable/custom_radio_button_text" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textViewCustomCocktailRecipeStepBottomSheetDescriptionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="제조 설명"
+        style="@style/Font_SemiBold_18_Basic_White"
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupCustomCocktailRecipeStepBottomSheet"
+        app:layout_constraintStart_toStartOf="@+id/textViewCustomCocktailRecipeStepBottomSheetAnimationTitle" />
+
+    <TextView
+        android:id="@+id/textViewCustomCocktailRecipeStepBottomSheetSequence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/Font_SemiBold_16_Basic_Sky"
+        android:layout_marginStart="12dp"
+        app:layout_constraintTop_toTopOf="@+id/textViewCustomCocktailRecipeStepBottomSheetDescriptionTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewCustomCocktailRecipeStepBottomSheetDescriptionTitle"
+        app:layout_constraintStart_toEndOf="@+id/textViewCustomCocktailRecipeStepBottomSheetDescriptionTitle"/>
+
+    <EditText
+        android:id="@+id/editTextCustomCocktailRecipeStepBottomSheetDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/Font_Medium_16_Basic_White"
+        android:hint="단계별레시피를 자세하게 적어주세요."
+        android:textColorHint="@color/basic_gray"
+        android:background="@drawable/edit_text_custom_cocktail_recipe_background"
+        android:gravity="top|start"
+        android:minLines="3"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCustomCocktailRecipeStepBottomSheetDescriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/textViewCustomCocktailRecipeStepBottomSheetAnimationTitle"
+        app:layout_constraintEnd_toEndOf="@+id/textViewCustomCocktailRecipeStepBottomSheetAnimationTitle" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCustomCocktailRecipeStepBottomSheetAdd"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="레시피 추가하기"
+        android:background="@drawable/button_bottom_sheet"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCustomCocktailRecipeStepBottomSheetDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

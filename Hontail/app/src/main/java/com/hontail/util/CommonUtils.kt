@@ -135,6 +135,12 @@ object CommonUtils {
     enum class CustomCocktailRecipeAnimationType {
         STIR,
         POUR,
-        SHAKE
+        SHAKE,
+        DEFAULT
+    }
+
+    enum class CustomCocktailRecipeMode {
+        REGISTER,
+        MODIFY
     }
 }
