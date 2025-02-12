@@ -22,7 +22,7 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     @Transactional
-    public void addLike(Integer cocktailId, Integer userId) {
+    public Integer addLike(Integer cocktailId, Integer userId) {
         Cocktail cocktail = cocktailRepository.findById(cocktailId)
                 .orElseThrow(() -> new CustomException(ErrorCode.COCKTAIL_DETAIL_NOT_FOUND));
 
@@ -36,14 +36,15 @@ public class LikeServiceImpl implements LikeService {
         Like like = new Like();
         like.setCocktail(cocktail);
         like.setUser(user);
-
         likeRepository.save(like);
+
+        return likeRepository.countByCocktail(cocktail).intValue();
     }
 
     @Override
     @Transactional
-    public void deleteLike(Integer cocktailId, Integer userId) {
-        cocktailRepository.findById(cocktailId)
+    public Integer deleteLike(Integer cocktailId, Integer userId) {
+        Cocktail cocktail = cocktailRepository.findById(cocktailId)
                 .orElseThrow(() -> new CustomException(ErrorCode.COCKTAIL_DETAIL_NOT_FOUND));
 
         userRepository.findById(userId)
@@ -53,5 +54,7 @@ public class LikeServiceImpl implements LikeService {
                 .orElseThrow(() -> new CustomException(ErrorCode.LIKE_NOT_FOUND));
 
         likeRepository.delete(like);
+
+        return likeRepository.countByCocktail(cocktail).intValue();
     }
 }

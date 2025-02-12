@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.hontail.back.security.util.SecurityUtil;
 
 @RestController
 @RequestMapping("/api/cocktail/detail")
@@ -29,7 +30,9 @@ public class CocktailDetailController {
             @ApiResponse(responseCode = "404", description = "칵테일을 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<CocktailDetailDto> getCocktailDetail(@PathVariable Integer cocktailId) {
-        return ResponseEntity.ok(cocktailDetailService.getCocktailDetail(cocktailId));
+    public ResponseEntity<CocktailDetailDto> getCocktailDetail(
+            @PathVariable Integer cocktailId) {
+        Integer userId = SecurityUtil.getCurrentUserId();
+        return ResponseEntity.ok(cocktailDetailService.getCocktailDetail(cocktailId, userId));
     }
 }

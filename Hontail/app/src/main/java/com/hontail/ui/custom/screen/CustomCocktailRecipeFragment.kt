@@ -259,7 +259,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                         }
                     }
 
-                    val userId = activityViewModel.userId.value
+                    val userId = activityViewModel.userId
 
                     val request = recipeSteps?.let { it1 ->
                         CustomCocktailRecipeRequest(

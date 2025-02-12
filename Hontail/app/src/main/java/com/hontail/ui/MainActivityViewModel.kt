@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hontail.data.model.request.Recipe
@@ -15,16 +16,19 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivityViewModel_SSAFY"
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() {
     // 사용자 아이디
-    private val _userId = MutableLiveData<Int>()
-    val userId: LiveData<Int>
-        get() = _userId
+    var userId = handle.get<Int>("userId") ?: 0
+        set(value) {
+            handle.set("userId", value)
+            field = value
+        }
 
-    fun setUserId(userI: Int) {
-        _userId.postValue(userI)
-        Log.d(TAG, "setUserId: ${_userId.value} - ${userI}")
-    }
+    var userNickname = handle.get<String>("userNickname") ?: ""
+        set(value) {
+            handle.set("userNickname", value)
+            field = value
+        }
 
     // 선택된 cocktailId
     private val _cocktailId = MutableLiveData<Int>()

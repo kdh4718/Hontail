@@ -10,15 +10,15 @@ import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
 import com.hontail.ui.alarm.AlarmFragment
 import com.hontail.ui.bartender.BatenderFragment
-import com.hontail.ui.cocktail.CocktailDetailFragment
-import com.hontail.ui.cocktail.CocktailListFragment
-import com.hontail.ui.cocktail.CocktailRecipeFragment
-import com.hontail.ui.cocktail.CocktailSearchFragment
 import com.hontail.ui.custom.screen.CustomCocktailBottomSheetFragment
 import com.hontail.ui.custom.screen.CustomCocktailFragment
 import com.hontail.ui.custom.screen.CustomCocktailIngredientDetailFragment
 import com.hontail.ui.custom.screen.CustomCocktailRecipeFragment
 import com.hontail.ui.custom.screen.CustomCocktailSearchFragment
+import com.hontail.ui.cocktail.screen.CocktailDetailFragment
+import com.hontail.ui.cocktail.screen.CocktailListFragment
+import com.hontail.ui.cocktail.screen.CocktailRecipeFragment
+import com.hontail.ui.cocktail.screen.CocktailSearchFragment
 import com.hontail.ui.home.HomeFragment
 import com.hontail.ui.ingredient.IngredientAddFragment
 import com.hontail.ui.ingredient.IngredientListFragment
@@ -102,8 +102,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun initData(){
         val userId = intent.getIntExtra("user_id", 0)
+        activityViewModel.userId = userId
 
-        activityViewModel.setUserId(userId)
+        val userNickname = intent.getStringExtra("user_nickname")
+        activityViewModel.userNickname = userNickname ?: ""
     }
 
     fun checkPermissions() {
