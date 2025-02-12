@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hontail.data.local.RecentCocktailIdRepository
 import com.hontail.data.model.response.CocktailDetailResponse
 import com.hontail.data.remote.RetrofitUtil
 import kotlinx.coroutines.launch
