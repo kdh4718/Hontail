@@ -38,7 +38,7 @@ public class CommentController {
         return ResponseEntity.ok(commentService.getCocktailComments(cocktailId));
     }
 
-    @PostMapping("/{cocktailId}/comments")
+    @PostMapping("/{cocktailId}/comment")
     @Operation(summary = "칵테일 댓글 작성")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "댓글 작성 성공"),
