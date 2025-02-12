@@ -211,7 +211,6 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
                 if(editTextListItemCustomCocktailRecipeName.text.isNotBlank() || editTextListItemCustomCocktailRecipeDescription.text.isNotBlank()) {
 
-
                     // 이미지 url
                     val imageUrl = viewModel.uploadedImageUrl.value
                     Log.d(TAG, "initEvent: imageUrl: $imageUrl")
@@ -278,6 +277,9 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     viewModel.insertCustomCocktail(userId!!, request!!,
                         onSuccess = { cocktailId ->
                             Toast.makeText(requireContext(), "칵테일 등록 완료! $cocktailId", Toast.LENGTH_LONG).show()
+
+                            activityViewModel.setCocktailId(cocktailId)
+                            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
                         },
                         onError = { errorMessage ->
                             Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
