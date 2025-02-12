@@ -18,15 +18,14 @@ interface CommentService {
     suspend fun updateComment(
         @Path("cocktailId") cocktailId: Int,
         @Path("commentId") commentId: Int,
-        @Body comment: Comment
-    ): Response<CommentUpdateResponse>
+        @Body content: String
+    ): Response<Void>
 
     // 칵테일 댓글 삭제
     @DELETE("api/cocktail/detail/{cocktailId}/comments/{commentId}")
     suspend fun deleteComment(
         @Path("cocktailId") cocktailId: Int,
         @Path("commentId") commentId: Int,
-        @Query("userId") userId: Int
     ): Response<Void>
 
     // 칵테일 댓글 조회
@@ -35,12 +34,11 @@ interface CommentService {
         @Path("cocktailId") cocktailId: Int
     ): Response<List<Comment>>
 
-
     // 칵테일 댓글 작성
-    @POST("api/cocktail/detail/{cocktailId}/comments")
+    @POST("api/cocktail/detail/{cocktailId}/comment")
     suspend fun insertComment(
         @Path("cocktailId") cocktailId: Int,
-        @Body comment: Comment
+        @Body content: String
     ): Response<Comment>
 
 }
