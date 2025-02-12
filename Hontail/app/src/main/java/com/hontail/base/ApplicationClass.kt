@@ -33,10 +33,22 @@ class ApplicationClass : Application() {
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .readTimeout(5000, TimeUnit.MILLISECONDS) // 읽기 시간 초과
-            .connectTimeout(5000, TimeUnit.MILLISECONDS) // 연결 시간 초과
-            .build()
+            .addInterceptor { chain ->
+                val originalRequest = chain.request()
+                val jwtToken = sharedPreferencesUtil.getJwtToken()
 
+                // JWT가 존재하면 Authorization 헤더 추가
+                val requestBuilder = originalRequest.newBuilder()
+                jwtToken?.let {
+                    requestBuilder.addHeader("Authorization", "Bearer $it")
+                }
+
+                val newRequest = requestBuilder.build()
+                chain.proceed(newRequest)
+            }
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .connectTimeout(5000, TimeUnit.MILLISECONDS)
+            .build()
 
         retrofit = Retrofit.Builder()
             .baseUrl(SERVER_URL)

@@ -20,6 +20,12 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
             field = value
         }
 
+    var userNickname = handle.get<String>("userNickname") ?: ""
+        set(value) {
+            handle.set("userNickname", value)
+            field = value
+        }
+
     // 선택된 cocktailId
     private val _cocktailId = MutableLiveData<Int>()
     val cocktailId: LiveData<Int>
