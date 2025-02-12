@@ -14,6 +14,7 @@ import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.adapter.CocktailCommentAdapter
 import com.hontail.ui.cocktail.viewmodel.CocktailCommentViewModel
+import com.hontail.util.DialogToLoginFragment
 import kotlin.math.absoluteValue
 
 class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCocktailCommentBottomSheetBinding>(
@@ -92,6 +93,16 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
     private fun initEvent() {
 
         binding.apply {
+
+            editTextCocktailCommentBottomSheetMessage.setOnClickListener {
+
+                val userId = viewModel.userId.value
+
+                if(userId == 0) {
+                    val dialog = DialogToLoginFragment()
+                    dialog.show(parentFragmentManager, "DialogToLoginFragment")
+                }
+            }
 
             // 댓글 전송 버튼
             imageViewCocktailCommentBottomSheetSend.setOnClickListener {
