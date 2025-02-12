@@ -36,6 +36,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                     log.debug("기존 사용자 정보 업데이트 - Email: {}, RealName: {}", email, realName);
                     if (!realName.equals(existingUser.getUserNickname())) {
                         existingUser.setUserNickname(realName);
+                        existingUser.setUserImageUrl(oauth2User.getAttribute("profile_image"));
                         return userRepository.save(existingUser);
                     }
                     return existingUser;
