@@ -19,6 +19,12 @@ class PictureBottomAdapter(
     private var data: CocktailPictureResultFragment.PictureResultType.Bottom
 ) : RecyclerView.Adapter<PictureBottomAdapter.ViewHolder>() {
 
+    lateinit var pictureBottomListener: ItemClickListener
+
+    interface ItemClickListener {
+        fun onClickCocktailItem(cocktailId: Int)
+    }
+
     // GridSpacing 클래스 추가
     class GridSpacingItemDecoration(
         private val spanCount: Int,
@@ -54,6 +60,14 @@ class PictureBottomAdapter(
                     addItemDecoration(GridSpacingItemDecoration(2, 20))
 
                 }
+
+                cocktailAdapter.cocktailItemListener =
+                    object : CocktailItemAdapter.ItemOnClickListener {
+                        override fun onClickCocktailItem(cocktailId: Int) {
+                            pictureBottomListener.onClickCocktailItem(cocktailId)
+                        }
+
+                    }
             }
         }
     }
@@ -74,7 +88,7 @@ class PictureBottomAdapter(
 
     override fun getItemCount(): Int = 1
 
-    fun updateData(newData: CocktailPictureResultFragment.PictureResultType.Bottom){
+    fun updateData(newData: CocktailPictureResultFragment.PictureResultType.Bottom) {
         Log.d(TAG, "AI updateData: ${newData}")
         data = newData
         notifyDataSetChanged()

@@ -17,6 +17,7 @@ import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.picture.adapter.PictureBottomAdapter
 import com.hontail.ui.picture.adapter.PictureTopAdapter
 import com.hontail.ui.picture.viewmodel.CocktailPictureResultFragmentViewModel
+import com.hontail.util.CommonUtils
 
 private const val TAG = "CocktailPictureResultFr_SSAFY"
 
@@ -27,6 +28,9 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CocktailPictureResultFragmentViewModel by viewModels()
+
+    private lateinit var pictureTopAdapter: PictureTopAdapter
+    private lateinit var pictureBottomAdapter: PictureBottomAdapter
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,6 +48,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
 
         initRecyclerView()
         initData()
+        initEvent()
         setupBackButton()
     }
 
@@ -53,6 +58,17 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         }
     }
 
+    fun initEvent() {
+        pictureBottomAdapter.pictureBottomListener =
+            object : PictureBottomAdapter.ItemClickListener {
+                override fun onClickCocktailItem(cocktailId: Int) {
+                    activityViewModel.setCocktailId(cocktailId)
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+                }
+
+            }
+    }
+
     fun initData() {
         viewModel.getIngredientAnalyze()
     }
@@ -60,8 +76,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     private fun initRecyclerView() {
         binding.recyclerViewPictureResult.layoutManager = LinearLayoutManager(requireContext())
 
-        // 어댑터를 미리 생성 (초기 빈 데이터)
-        val pictureTopAdapter = PictureTopAdapter(
+        pictureTopAdapter = PictureTopAdapter(
             requireContext(),
             PictureResultType.Top(
                 listOf(
@@ -72,7 +87,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
                 ), emptyList()
             )
         )
-        val pictureBottomAdapter =
+        pictureBottomAdapter =
             PictureBottomAdapter(requireContext(), PictureResultType.Bottom("", emptyList()))
 
         // 어댑터를 ConcatAdapter로 묶기
