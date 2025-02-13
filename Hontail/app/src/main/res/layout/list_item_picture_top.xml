@@ -24,6 +24,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="10dp"
         android:src="@drawable/add_ingredient"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewPictureResultSuggestion" />
 

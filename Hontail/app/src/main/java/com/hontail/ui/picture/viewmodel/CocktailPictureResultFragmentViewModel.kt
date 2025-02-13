@@ -21,6 +21,12 @@ class CocktailPictureResultFragmentViewModel(private val handle: SavedStateHandl
             field = value
         }
 
+    var userId = handle.get<Int>("userId") ?: 0
+        set(value) {
+            handle.set("userId", value)
+            field = value
+        }
+
     // 분석 결과 재료 리스트
     private val _ingredientList = MutableLiveData<List<String>>()
     val ingredientList: LiveData<List<String>>
@@ -40,13 +46,16 @@ class CocktailPictureResultFragmentViewModel(private val handle: SavedStateHandl
         Log.d(TAG, "getIngredientAnalyze: ${analyzeList}")
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.pictureService.ingredientAnalyze(analyzeList)
+                RetrofitUtil.pictureService.ingredientAnalyze(userId, analyzeList)
             }.onSuccess {
+                Log.d(TAG, "AI getIngredientAnalyze: ${it}")
                 it.body()?.let {
-                    _ingredientAnalyzeCoctailList.value = it.first
-                    _ingredientList.value = it.second
+                    Log.d(TAG, "AI body getIngredientAnalyze: ${it}")
+                    _ingredientAnalyzeCoctailList.postValue(it)
+                    Log.d(TAG, "AI my getIngredientAnalyze: ${_ingredientAnalyzeCoctailList.value}")
                 }
             }.onFailure {
+                Log.d(TAG, "AI getIngredientAnalyze: ${it.message}")
                 _ingredientAnalyzeCoctailList.value = emptyList()
             }
         }

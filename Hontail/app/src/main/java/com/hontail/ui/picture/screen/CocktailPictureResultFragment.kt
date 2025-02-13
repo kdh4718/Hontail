@@ -2,6 +2,7 @@ package com.hontail.ui.picture.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,6 +18,8 @@ import com.hontail.ui.picture.adapter.PictureBottomAdapter
 import com.hontail.ui.picture.adapter.PictureTopAdapter
 import com.hontail.ui.picture.viewmodel.CocktailPictureResultFragmentViewModel
 
+private const val TAG = "CocktailPictureResultFr_SSAFY"
+
 class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResultBinding>(
     FragmentCocktailPictureResultBinding::bind,
     R.layout.fragment_cocktail_picture_result
@@ -24,7 +27,6 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
     private val viewModel: CocktailPictureResultFragmentViewModel by viewModels()
-    private val bottomSheet = FilterBottomSheetFragment()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,6 +36,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.detectedTextList = activityViewModel.ingredientList.value!!
+        viewModel.userId = activityViewModel.userId
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,7 +53,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         }
     }
 
-    fun initData(){
+    fun initData() {
         viewModel.getIngredientAnalyze()
     }
 
@@ -58,31 +61,59 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         binding.recyclerViewPictureResult.layoutManager = LinearLayoutManager(requireContext())
 
         // 어댑터를 미리 생성 (초기 빈 데이터)
-        val pictureTopAdapter = PictureTopAdapter(requireContext(), PictureResultType.Top(listOf(), emptyList()))
-        val pictureBottomAdapter = PictureBottomAdapter(requireContext(), PictureResultType.Bottom("", emptyList()))
+        val pictureTopAdapter = PictureTopAdapter(
+            requireContext(),
+            PictureResultType.Top(
+                listOf(
+                    getString(
+                        R.string.user_cocktail_recommendations,
+                        activityViewModel.userNickname
+                    ), activityViewModel.userNickname
+                ), emptyList()
+            )
+        )
+        val pictureBottomAdapter =
+            PictureBottomAdapter(requireContext(), PictureResultType.Bottom("", emptyList()))
 
         // 어댑터를 ConcatAdapter로 묶기
         val concatAdapter = ConcatAdapter(pictureTopAdapter, pictureBottomAdapter)
         binding.recyclerViewPictureResult.adapter = concatAdapter
 
         // ViewModel의 데이터 변경 감지 및 UI 업데이트
-        // 유저 아이디 받아서 변경 필요
-        viewModel.ingredientList.observe(viewLifecycleOwner) { ingredientList ->
-            val pictureTopData = PictureResultType.Top(
-                suggestion = listOf(getString(R.string.user_cocktail_recommendations, "홍길동"), "홍길동"),
-                ingredients = ingredientList
-            )
+//        viewModel.ingredientList.observe(viewLifecycleOwner) { ingredientList ->
+//            val pictureTopData = PictureResultType.Top(
+//                suggestion = listOf(
+//                    getString(
+//                        R.string.user_cocktail_recommendations,
+//                        activityViewModel.userNickname
+//                    ), activityViewModel.userNickname
+//                ),
+//                ingredients = ingredientList
+//            )
+//
+//            pictureTopAdapter.updateData(pictureTopData)
+//        }
 
-            pictureTopAdapter.updateData(pictureTopData)
-        }
-
-        viewModel.ingredientAnalyzeCoctailList.observe(viewLifecycleOwner){
+        viewModel.ingredientAnalyzeCoctailList.observe(viewLifecycleOwner) {
+            Log.d(TAG, "AIAIAIAIAIAIAIAIinitRecyclerView: ${it}")
             val pictureBottomData = PictureResultType.Bottom(
                 cocktailCount = it.size.toString(),
                 cocktails = it
             )
 
             pictureBottomAdapter.updateData(pictureBottomData)
+
+            val pictureTopData = PictureResultType.Top(
+                suggestion = listOf(
+                    getString(
+                        R.string.user_cocktail_recommendations,
+                        activityViewModel.userNickname
+                    ), activityViewModel.userNickname
+                ),
+                ingredients = emptyList()
+            )
+
+            pictureTopAdapter.updateData(pictureTopData)
         }
     }
 
