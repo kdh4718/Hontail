@@ -8,11 +8,11 @@ data class CocktailDetailResponse(
     val userId: Int,
     val makerNickname: String,
     val alcoholContent: Int,
-    val likeCnt: Int,
+    var likeCnt: Int,
     val commentCnt: Int,
     val cocktailIngredients: List<CocktailIngredient>,
     val recipes: List<Recipe>,
-    val isLiked: Boolean
+    var isLiked: Boolean
 ){
     constructor() : this(
         cocktailId = 0,

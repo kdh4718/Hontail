@@ -1,20 +1,31 @@
-package com.hontail.ui.home
+package com.hontail.ui.home.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemHomeCategoryCategoryBinding
+import com.hontail.ui.home.screen.HomeCategoryItem
 
 class BaseCategoryAdapter(val context: Context, var categoryList: List<HomeCategoryItem>) :
     RecyclerView.Adapter<BaseCategoryAdapter.BaseCategoryHolder>() {
 
+    lateinit var cocktailBaseCategoryListener: ItemOnClickListener
+
+    interface ItemOnClickListener{
+        fun onClickCategory(name: String)
+    }
+
     inner class BaseCategoryHolder(private val binding: ListItemHomeCategoryCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: HomeCategoryItem){
+        fun bind(item: HomeCategoryItem) {
             binding.apply {
                 textViewHomeCategoryExplanation.text = item.explanation
                 textViewHomeCategoryName.text = item.name
                 imageViewHomeCategory.setImageResource(item.imageRes)
+
+                root.setOnClickListener{
+                    cocktailBaseCategoryListener.onClickCategory(item.name)
+                }
             }
         }
     }

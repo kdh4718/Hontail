@@ -45,7 +45,7 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
         viewModel.selectedBaseFilter.observe(viewLifecycleOwner) { radioButtonId ->
             radioButtonId?.let {
                 // 기존에 선택된 베이스 필터 복원
-                radioButtons.find { it.id == radioButtonId }?.isChecked = true
+                radioButtons.find { it.id.toString() == radioButtonId }?.isChecked = true
             }
         }
     }
@@ -121,7 +121,7 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
 
                     // 베이스주 필터
                     radioButtons.find { it.isChecked }?.let {
-                        viewModel.setBaseFilter(it.id)
+                        viewModel.setBaseFilter(it.text.toString())
                         viewModel.updateBaseButtonState(true)
                     }
 
@@ -145,7 +145,7 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
                 }
                 // Base 필터의 경우 선택된 RadioButton ID 저장
                 radioButtons.find { it.isChecked }?.let {
-                    viewModel.setBaseFilter(it.id)
+                    viewModel.setBaseFilter(it.text.toString())
                 }
                 dismiss()
             }

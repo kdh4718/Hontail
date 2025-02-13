@@ -1,21 +1,30 @@
-package com.hontail.ui.home
+package com.hontail.ui.home.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
+import com.hontail.data.model.response.CocktailTopLikedResponseItem
 import com.hontail.databinding.ListItemHomeCategoryBinding
 import com.hontail.databinding.ListItemHomePictureDescriptionBinding
 import com.hontail.databinding.ListItemHomeToptenBinding
 import com.hontail.ui.MainActivity
+import com.hontail.ui.home.screen.HomeCategoryItem
+import com.hontail.ui.home.screen.HomeItem
 import com.hontail.util.CommonUtils
 
-class HomeAdapter(private val context: Context, private val items: List<HomeItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeAdapter(private val context: Context, private var items: MutableList<HomeItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val mainActivity = context as MainActivity
+
+    lateinit var homeListener: ItemOnClickListener
+
+    interface ItemOnClickListener{
+        fun onClickCategory(name: String)
+        fun onClickTopTen(cocktailId: Int)
+    }
 
     override fun getItemViewType(position: Int): Int {
         return when (items[position]) {
@@ -80,12 +89,19 @@ class HomeAdapter(private val context: Context, private val items: List<HomeItem
             val adapter = BaseCategoryAdapter(binding.root.context, categoryList)
             binding.recyclerViewHomeCategory.layoutManager = GridLayoutManager(binding.root.context, 3)
             binding.recyclerViewHomeCategory.adapter = adapter
+
+            adapter.cocktailBaseCategoryListener = object : BaseCategoryAdapter.ItemOnClickListener{
+                override fun onClickCategory(name: String) {
+                    homeListener.onClickCategory(name)
+                }
+
+            }
         }
     }
 
     inner class HomeTopTenViewHolder(private val binding: ListItemHomeToptenBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(topTenList: List<HomeTopTenItem>) {
+        fun bind(topTenList: List<CocktailTopLikedResponseItem>) {
             val adapter = TopTenAdapter(binding.root.context, topTenList)
             binding.recyclerViewHomeTopTen.layoutManager = SlowScrollLinearLayoutManager(binding.root.context)
             binding.recyclerViewHomeTopTen.adapter = adapter
@@ -96,9 +112,21 @@ class HomeAdapter(private val context: Context, private val items: List<HomeItem
 
             val pagerSnapHelper = PagerSnapHelper()
             pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHomeTopTen)
+
+            adapter.topTenListener = object : TopTenAdapter.ItemOnClickListener{
+                override fun onClickTopTen(cocktailId: Int) {
+                    homeListener.onClickTopTen(cocktailId)
+                }
+
+            }
         }
     }
 
+    fun updateItems(newItems: List<HomeItem>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged() // 전체 갱신
+    }
 
     companion object {
         const val VIEW_TYPE_PICTURE_DESCRIPTION = 0

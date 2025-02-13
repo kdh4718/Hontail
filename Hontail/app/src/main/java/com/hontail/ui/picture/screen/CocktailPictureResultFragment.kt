@@ -79,21 +79,6 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         val concatAdapter = ConcatAdapter(pictureTopAdapter, pictureBottomAdapter)
         binding.recyclerViewPictureResult.adapter = concatAdapter
 
-        // ViewModel의 데이터 변경 감지 및 UI 업데이트
-//        viewModel.ingredientList.observe(viewLifecycleOwner) { ingredientList ->
-//            val pictureTopData = PictureResultType.Top(
-//                suggestion = listOf(
-//                    getString(
-//                        R.string.user_cocktail_recommendations,
-//                        activityViewModel.userNickname
-//                    ), activityViewModel.userNickname
-//                ),
-//                ingredients = ingredientList
-//            )
-//
-//            pictureTopAdapter.updateData(pictureTopData)
-//        }
-
         viewModel.ingredientAnalyzeCoctailList.observe(viewLifecycleOwner) {
             Log.d(TAG, "AIAIAIAIAIAIAIAIinitRecyclerView: ${it}")
             val pictureBottomData = PictureResultType.Bottom(

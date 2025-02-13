@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.remote.RetrofitUtil
+import kotlinx.coroutines.delay
 
 class CocktailPagingSource(
     private val orderBy: String,
@@ -18,7 +19,7 @@ class CocktailPagingSource(
             val size = params.loadSize // 요청할 데이터 크기
 
             val response = RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
-
+            delay(2000)
             LoadResult.Page(
                 data = response.content,
                 prevKey = if (page == 0) null else page - 1,  // 이전 페이지 없음이면 null

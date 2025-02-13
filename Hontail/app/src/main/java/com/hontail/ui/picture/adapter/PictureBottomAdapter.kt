@@ -7,14 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemPictureBottomBinding
-import com.hontail.ui.MainActivity
 import com.hontail.ui.picture.screen.CocktailPictureResultFragment
-import com.hontail.ui.picture.screen.FilterBottomSheetFragment
-import com.hontail.ui.cocktail.adapter.CocktailListFilterAdapter
 import com.hontail.util.CocktailItemAdapter
 
 private const val TAG = "PictureBottomAdapter_SSAFY"
@@ -57,6 +52,7 @@ class PictureBottomAdapter(
                 // ItemDecoration 추가
                 if (itemDecorationCount == 0) {
                     addItemDecoration(GridSpacingItemDecoration(2, 20))
+
                 }
             }
         }
