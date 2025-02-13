@@ -6,8 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.hontail.data.model.response.CocktailListResponse
+import com.hontail.data.paging.CocktailPagingSource
 import com.hontail.data.remote.RetrofitUtil
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 private const val TAG = "CocktailListFragmentVie_SSAFY"
@@ -53,6 +59,19 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             handle.set("isCustom", value)
         }
 
+    private val _filterSelectedList = MutableLiveData<List<Boolean>>(listOf(false, false, false, false))
+    val filterSelectedList: LiveData<List<Boolean>> get() = _filterSelectedList
+
+    // Paging 데이터를 담을 LiveData 추가
+    val pagedCocktailList: Flow<PagingData<CocktailListResponse>> =
+        Pager(PagingConfig(
+            pageSize = 20,
+            prefetchDistance = 5,
+            maxSize = 100
+        )) {
+            CocktailPagingSource(orderBy, direction, baseSpirit, isCustom)
+        }.flow.cachedIn(viewModelScope) // ✅ 반드시 `cachedIn(viewModelScope)` 사용
+
     private val _cocktailList = MutableLiveData<List<CocktailListResponse>>()
     val cocktailList: LiveData<List<CocktailListResponse>>
         get() = _cocktailList
@@ -61,7 +80,9 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
         _userId.postValue(userId)
     }
 
+
     fun getCocktailFiltering(){
+        Log.d(TAG, "getCocktailFiltering: orderBy - ${orderBy}, direction - ${direction}, baseSpirit - ${baseSpirit}, isCustom - ${isCustom}, page - ${page}")
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)

@@ -1,4 +1,4 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

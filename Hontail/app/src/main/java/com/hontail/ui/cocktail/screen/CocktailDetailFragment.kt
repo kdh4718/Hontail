@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.local.RecentCocktailIdRepository
 import com.hontail.data.model.response.CocktailDetailResponse
 import com.hontail.data.model.response.Recipe
 import com.hontail.databinding.FragmentCocktailDetailBinding
@@ -29,6 +30,7 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+        RecentCocktailIdRepository.initialize(context)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,6 +99,14 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
                 override fun onClickCommentBottomSheet() {
                     val bottomSheet = CocktailCommentBottomSheetFragment()
                     bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+                }
+
+                override fun onClickZzimButton(cocktailId: Int, isLiked: Boolean) {
+                    if (isLiked){
+                        viewModel.addLikes(cocktailId)
+                    }else{
+                        viewModel.deleteLikes(cocktailId)
+                    }
                 }
             }
         }
