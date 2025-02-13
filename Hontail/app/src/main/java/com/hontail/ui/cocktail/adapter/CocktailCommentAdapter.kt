@@ -2,34 +2,77 @@ package com.hontail.ui.cocktail.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.hontail.R
+import com.hontail.data.model.response.Comment
 import com.hontail.databinding.ListItemCocktailCommentBinding
-import com.hontail.ui.cocktail.screen.Comment
 
-class CocktailCommentAdapter(
-    private val context: Context,
-    private var commentList: List<Comment>
-) : RecyclerView.Adapter<CocktailCommentAdapter.CocktailCommentHolder>() {
+class CocktailCommentAdapter(private val context: Context, private var commentList: MutableList<Comment>, private val userId: Int?) : RecyclerView.Adapter<CocktailCommentAdapter.CocktailCommentHolder>() {
+
+    lateinit var cocktailCommentListener: ItemOnClickListener
+
+    interface ItemOnClickListener {
+        fun onClickDelete(commentId: Int)
+        fun onClickModify(commentId: Int, content: String)
+    }
 
     private val swipedItems = mutableSetOf<Int>()
     private val SWIPE_AMOUNT = -350f
 
-    interface CommentActionListener {
-        fun onEditComment(comment: Comment)
-        fun onDeleteComment(comment: Comment)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailCommentHolder {
+        val binding = ListItemCocktailCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CocktailCommentHolder(binding)
     }
 
-    var actionListener: CommentActionListener? = null
+    override fun getItemCount(): Int = commentList.size
 
-    inner class CocktailCommentHolder(private val binding: ListItemCocktailCommentBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    override fun onBindViewHolder(holder: CocktailCommentHolder, position: Int) {
+        holder.bindInfo(commentList[position])
+    }
+
+    fun updateComments(newComments: List<Comment>) {
+        val diffCallback = object : DiffUtil.Callback() {
+            override fun getOldListSize() = commentList.size
+
+            override fun getNewListSize() = newComments.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return commentList[oldItemPosition].commentId == newComments[newItemPosition].commentId
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return commentList[oldItemPosition] == newComments[newItemPosition]
+            }
+        }
+
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        commentList = newComments.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    inner class CocktailCommentHolder(private val binding: ListItemCocktailCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bindInfo(item: Comment) {
             binding.apply {
-                imageViewCocktailCommentUserImage.setImageResource(item.imageRes)
-                textViewCocktailCommentUserName.text = item.name
-                textViewCocktailCommentUserComment.text = item.comment
+
+                Glide.with(context)
+                    .load(item.userImageUrl)
+                    .placeholder(R.drawable.logo_image)
+                    .into(imageViewCocktailCommentUserImage)
+
+                textViewCocktailCommentUserName.text = item.userNickname
+                textViewCocktailCommentUserComment.text = item.content
+
+
+                // 현재 로그인 한 사용자 id와 같은 댓글 사용자 id에서만 나타나도록 '>'
+                imageViewCocktailCommentUserComment.visibility = View.GONE
+                if(item.userId == userId) {
+                    imageViewCocktailCommentUserComment.visibility = View.VISIBLE
+                }
 
                 // 초기 상태 설정
                 contentContainer.translationX = if (swipedItems.contains(adapterPosition)) SWIPE_AMOUNT else 0f
@@ -44,13 +87,14 @@ class CocktailCommentAdapter(
                     }
                 }
 
-                // 수정/삭제 버튼 클릭 이벤트 - 콜백만 호출
+                // 수정 모드
                 imageViewEdit.setOnClickListener {
-                    actionListener?.onEditComment(item)
+                    cocktailCommentListener.onClickModify(item.commentId, item.content)
                 }
 
+                // 삭제
                 imageViewDelete.setOnClickListener {
-                    actionListener?.onDeleteComment(item)
+                    cocktailCommentListener.onClickDelete(item.commentId)
                 }
             }
         }
@@ -88,18 +132,5 @@ class CocktailCommentAdapter(
             }
             swipedItems.remove(adapterPosition)
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailCommentHolder {
-        val binding = ListItemCocktailCommentBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
-        return CocktailCommentHolder(binding)
-    }
-
-    override fun getItemCount(): Int = commentList.size
-
-    override fun onBindViewHolder(holder: CocktailCommentHolder, position: Int) {
-        holder.bindInfo(commentList[position])
     }
 }
