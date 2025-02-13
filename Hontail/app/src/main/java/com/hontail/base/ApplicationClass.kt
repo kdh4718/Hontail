@@ -37,11 +37,19 @@ class ApplicationClass : Application() {
             .addInterceptor(loggingInterceptor)
             .addInterceptor { chain ->
                 val originalRequest = chain.request()
-                val jwtToken = sharedPreferencesUtil.getJwtToken()
+//                val jwtToken = sharedPreferencesUtil.getJwtToken()
+//
+//                // JWT가 존재하면 Authorization 헤더 추가
+//                val requestBuilder = originalRequest.newBuilder()
+//                jwtToken?.let {
+//                    requestBuilder.addHeader("Authorization", "Bearer $it")
+//                }
+
+                val refreshToken = sharedPreferencesUtil.getRefreshToken()
 
                 // JWT가 존재하면 Authorization 헤더 추가
                 val requestBuilder = originalRequest.newBuilder()
-                jwtToken?.let {
+                refreshToken?.let {
                     requestBuilder.addHeader("Authorization", "Bearer $it")
                 }
 
