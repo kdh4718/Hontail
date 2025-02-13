@@ -44,10 +44,11 @@ class VisionService(private val context: Context) {
         val detectedText = response.textAnnotationsList.firstOrNull()?.description
             ?.split("\n")
             ?.filter { it.isNotBlank() }
+            ?.map { it.trim() }
             ?: emptyList()
 
         // 라벨 감지 결과 추출 (최대 5개 라벨)
-        val detectedLabels = response.labelAnnotationsList.map { it.description }.take(10)
+        val detectedLabels = response.labelAnnotationsList.map { it.description.trim() }.take(10)
 
         return detectedText + detectedLabels
     }

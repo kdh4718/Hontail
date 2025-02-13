@@ -124,17 +124,17 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
 
             binding.apply {
 
-                val cocktailSearchResultAdapter = CocktailItemAdapter(context, cocktailList)
-
-                recyclerViewListItemCocktailSearchResult.layoutManager = GridLayoutManager(context, 2)
-                recyclerViewListItemCocktailSearchResult.adapter = cocktailSearchResultAdapter
-
-                cocktailSearchResultAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
-                    // 칵테일 아이템으로 상세화면 가기.
-                    override fun onClickCocktailItem(cocktailId: Int) {
-                        cocktailSearchListener.onClickCocktailItem()
-                    }
-                }
+//                val cocktailSearchResultAdapter = CocktailItemAdapter(context, cocktailList)
+//
+//                recyclerViewListItemCocktailSearchResult.layoutManager = GridLayoutManager(context, 2)
+//                recyclerViewListItemCocktailSearchResult.adapter = cocktailSearchResultAdapter
+//
+//                cocktailSearchResultAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
+//                    // 칵테일 아이템으로 상세화면 가기.
+//                    override fun onClickCocktailItem(cocktailId: Int) {
+//                        cocktailSearchListener.onClickCocktailItem()
+//                    }
+//                }
             }
         }
     }

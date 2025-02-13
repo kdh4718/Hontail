@@ -100,10 +100,10 @@ class MyPageAdapter(private val context: Context, private val items: List<MyPage
 
             binding.apply {
 
-                val myPageCocktailAdapter = CocktailItemAdapter(context, cocktailList)
-
-                recyclerViewListItemMyPageCocktail.layoutManager = GridLayoutManager(context, 2)
-                recyclerViewListItemMyPageCocktail.adapter = myPageCocktailAdapter
+//                val myPageCocktailAdapter = CocktailItemAdapter(context, cocktailList)
+//
+//                recyclerViewListItemMyPageCocktail.layoutManager = GridLayoutManager(context, 2)
+//                recyclerViewListItemMyPageCocktail.adapter = myPageCocktailAdapter
             }
         }
     }
