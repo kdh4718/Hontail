@@ -1,6 +1,8 @@
 package com.hontail.back.cocktail.controller;
 
 import com.hontail.back.cocktail.dto.CocktailSummaryDto;
+import com.hontail.back.cocktail.dto.RecentViewedRequestDto;
+import com.hontail.back.cocktail.dto.UserCocktailResponseDto;
 import com.hontail.back.cocktail.dto.TopLikedCocktailDto;
 import com.hontail.back.cocktail.service.CocktailService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -61,19 +63,20 @@ public class CocktailController {
         return ResponseEntity.ok(cocktailService.getTopLikedCocktails());
     }
 
-    @GetMapping("/liked")
-    @Operation(summary = "사용자가 좋아요 한 칵테일 목록 조회")
+    @PostMapping("/liked")
+    @Operation(summary = "사용자가 좋아요 한 칵테일과 최근 본 칵테일 목록 조회")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공"),
-            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음 또는 좋아요한 칵테일이 없음",
+            @ApiResponse(responseCode = "404", description = "사용자를 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public ResponseEntity<List<CocktailSummaryDto>> getLikedCocktails() {
+    public ResponseEntity<UserCocktailResponseDto> getLikedAndRecentCocktails(
+            @RequestBody RecentViewedRequestDto request) {
         Integer userId = SecurityUtil.getCurrentUserId();
         if (userId == null) {
             throw new CustomException(ErrorCode.UNAUTHORIZED_USER);
         }
-        return ResponseEntity.ok(cocktailService.getLikedCocktails(userId));
+        return ResponseEntity.ok(cocktailService.getLikedAndRecentCocktails(userId, request.getCocktailIds()));
     }
 
     @GetMapping("/search")

@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
@@ -24,8 +26,8 @@ public class AuthController {
     private final OAuth2AuthorizedClientService authorizedClientService;
 
     @GetMapping("/login-success")
-    @Operation(summary = "소셜 로그인 성공", description = "소셜 로그인 성공 후 Access Token 반환")
-    public ResponseEntity<String> loginSuccess(OAuth2AuthenticationToken authenticationToken) {
+    @Operation(summary = "소셜 로그인 성공", description = "소셜 로그인 성공 후 Access Token과 Refresh Token 반환")
+    public ResponseEntity<Map<String, String>> loginSuccess(OAuth2AuthenticationToken authenticationToken) {
         log.info("로그인 성공 처리 시작");
 
         try {
@@ -38,14 +40,14 @@ public class AuthController {
             String accessToken = client.getAccessToken().getTokenValue();
             log.info("OAuth2 액세스 토큰 획득 완료");
 
-            // JWT 토큰 생성
-            String token = jwtOAuth2LoginService.login(
+            // JWT 토큰 생성 (액세스 토큰과 리프레시 토큰 포함)
+            Map<String, String> tokens = jwtOAuth2LoginService.login(
                     authenticationToken.getAuthorizedClientRegistrationId(),
                     accessToken
             );
             log.info("JWT 토큰 생성 완료");
 
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(tokens);
 
         } catch (Exception e) {
             log.error("토큰 생성 중 오류 발생", e);
@@ -63,5 +65,19 @@ public class AuthController {
 
         log.info("로그아웃 처리 완료");
         return ResponseEntity.ok("로그아웃 되었습니다.");
+    }
+
+    @PostMapping("/refresh")
+    @Operation(summary = "토큰 갱신", description = "Refresh Token으로 새로운 Access Token 발급")
+    public ResponseEntity<Map<String, String>> refreshToken(@RequestBody Map<String, String> request) {
+        try {
+            String refreshToken = request.get("refreshToken");
+            String newAccessToken = jwtOAuth2LoginService.refreshAccessToken(refreshToken);
+
+            return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
+        } catch (Exception e) {
+            log.error("토큰 갱신 중 오류 발생", e);
+            return ResponseEntity.status(401).build();
+        }
     }
 }

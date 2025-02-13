@@ -175,6 +175,7 @@ package com.hontail.back.cocktail.service;
 
 import com.hontail.back.cocktail.dto.CocktailSummaryDto;
 import com.hontail.back.cocktail.dto.TopLikedCocktailDto;
+import com.hontail.back.cocktail.dto.UserCocktailResponseDto;
 import com.hontail.back.db.entity.Cocktail;
 import com.hontail.back.db.repository.CocktailIngredientRepository;
 import com.hontail.back.db.repository.CocktailRepository;
@@ -286,10 +287,6 @@ public class CocktailServiceImpl implements CocktailService {
 
         List<Cocktail> likedCocktails = likeRepository.findCocktailsByUserId(userId);
 
-        if (likedCocktails.isEmpty()) {
-            throw new CustomException(ErrorCode.COCKTAIL_NOT_FOUND);
-        }
-
         return likedCocktails.stream()
                 .map(cocktail -> {
                     Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
@@ -307,6 +304,57 @@ public class CocktailServiceImpl implements CocktailService {
                     );
                 })
                 .toList();
+    }
+
+    @Override
+    public UserCocktailResponseDto getLikedAndRecentCocktails(Integer userId, List<Integer> recentCocktailIds) {
+        // 사용자 존재 여부 확인
+        if (!userRepository.existsById(userId)) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        // 좋아요한 칵테일 목록 조회
+        List<Cocktail> likedCocktails = likeRepository.findCocktailsByUserId(userId);
+        List<CocktailSummaryDto> likedCocktailDtos = likedCocktails.stream()
+                .map(cocktail -> {
+                    Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
+                    Long likesCnt = likeRepository.countByCocktail(cocktail);
+                    return new CocktailSummaryDto(
+                            cocktail.getId(),
+                            cocktail.getCocktailName(),
+                            cocktail.getImageUrl(),
+                            likesCnt.intValue(),
+                            cocktail.getAlcoholContent(),
+                            cocktail.getBaseSpirit(),
+                            cocktail.getCreatedAt(),
+                            ingredientCnt,
+                            true
+                    );
+                })
+                .toList();
+
+        // 최근 본 칵테일 목록 조회
+        List<Cocktail> recentCocktails = cocktailRepository.findAllById(recentCocktailIds);
+        List<CocktailSummaryDto> recentCocktailDtos = recentCocktails.stream()
+                .map(cocktail -> {
+                    Long ingredientCnt = cocktailIngredientRepository.countByCocktail(cocktail);
+                    Long likesCnt = likeRepository.countByCocktail(cocktail);
+                    boolean isLiked = likeRepository.findByCocktailIdAndUserId(cocktail.getId(), userId).isPresent();
+                    return new CocktailSummaryDto(
+                            cocktail.getId(),
+                            cocktail.getCocktailName(),
+                            cocktail.getImageUrl(),
+                            likesCnt.intValue(),
+                            cocktail.getAlcoholContent(),
+                            cocktail.getBaseSpirit(),
+                            cocktail.getCreatedAt(),
+                            ingredientCnt,
+                            isLiked
+                    );
+                })
+                .toList();
+
+        return new UserCocktailResponseDto(likedCocktailDtos, recentCocktailDtos);
     }
 
     @Override

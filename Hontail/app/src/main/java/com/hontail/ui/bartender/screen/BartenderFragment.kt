@@ -1,31 +1,29 @@
-package com.hontail.ui.bartender
+package com.hontail.ui.bartender.screen
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hontail.R
 import com.hontail.R.*
-import com.hontail.R.color.*
 import com.hontail.base.BaseFragment
+import com.hontail.data.model.response.Cocktail
 import com.hontail.databinding.FragmentBatenderBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.bartender.adapter.BartenderAdapter
 import com.hontail.util.CommonUtils
 
-class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
+class BartenderFragment : BaseFragment<FragmentBatenderBinding>(
     FragmentBatenderBinding::bind,
     layout.fragment_batender
 ) {
     private lateinit var mainActivity: MainActivity
+
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var bartenderAdapter: BartenderAdapter
-
-    private val messages = mutableListOf<ChatMessage>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -36,6 +34,9 @@ class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         mainActivity.hideBottomNav(state = true)
+        activityViewModel.receiveBartenderGreeting()
+
+        observeBartender()
         initToolbar()
         initAdapter()
         initEvent()
@@ -53,23 +54,25 @@ class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
         }
     }
 
+    // ViewModel Observe 등록
+    private fun observeBartender() {
+
+        binding.apply {
+
+            // 메시지 리스트
+            activityViewModel.messages.observe(viewLifecycleOwner)  { messages ->
+                bartenderAdapter.updateMessages(messages)
+                scrollToLastMessage()
+            }
+        }
+    }
+
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {
 
         binding.apply {
 
-            val messages = listOf(
-                ChatMessage("hyuun님 안녕하세요!\n바텐더 칵테일러 스위프트예요.1", false, "오전 08:13"),
-                ChatMessage("hyuun님 안녕하세요!\n바텐더 칵테일러 스위프트예요.2", false, "오전 08:13"),
-                ChatMessage("오늘은 좀 꿀꿀해.\n이런 날엔 어떤 칵테일을 먹으면 좋을까?", true, "오전 08:14"),
-                ChatMessage("hyuun님 안녕하세요!\n바텐더 칵테일러 스위프트예요.1", false, "오전 08:15"),
-                ChatMessage("hyuun님 안녕하세요!\n바텐더 칵테일러 스위프트예요.2", false, "오전 08:15"),
-                ChatMessage("오늘은 좀 꿀꿀해.\n이런 날엔 어떤 칵테일을 먹으면 좋을까?", true, "오전 08:15"),
-                ChatMessage("hyuun님 안녕하세요!\n바텐더 칵테일러 스위프트예요.1", false, "오전 08:17"),
-                ChatMessage("hyuun님 안녕하세요!\n바텐더 칵테일러 스위프트예요.2", false, "오전 08:18"),
-            )
-
-            bartenderAdapter = BartenderAdapter(messages)
+            bartenderAdapter = BartenderAdapter(mainActivity, emptyList())
 
             recyclerViewBartender.adapter = bartenderAdapter
             recyclerViewBartender.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
@@ -80,13 +83,6 @@ class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
     private fun initEvent() {
         binding.apply {
 
-            // 키보드 올라오면 recyclerview 맨 마지막으로 이동 (근데 적용 안 됨)
-            editTextBartenderMessage.setOnFocusChangeListener { _, hasFocus ->
-                if(hasFocus) {
-                    scrollToLastMessage()
-                }
-            }
-
             // 음성 녹음 이벤트
             imageViewBartenderVoice.setOnClickListener {
                 val dialog = BartenderDialogFragment(CommonUtils.BartenderRecordMode.READY)
@@ -96,6 +92,21 @@ class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
             // 보내기 이벤트
             imageViewBartenderSend.setOnClickListener {
 
+                val messageText = editTextBartenderMessage.text.toString()
+
+                if(messageText.isNotEmpty()) {
+                    activityViewModel.sendMessageToBartender(messageText)
+                    editTextBartenderMessage.text.clear()
+                }
+            }
+
+            bartenderAdapter.bartenderListener = object : BartenderAdapter.ItemOnClickListener {
+
+                // 칵테일 상세 화면으로 가기.
+                override fun onClickCocktailImage(cocktailId: Int) {
+                    activityViewModel.setCocktailId(cocktailId)
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+                }
             }
         }
     }
@@ -104,8 +115,8 @@ class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
     private fun scrollToLastMessage() {
         binding.apply {
             recyclerViewBartender.postDelayed({
-                if(messages.isNotEmpty()) {
-                    recyclerViewBartender.smoothScrollToPosition(messages.size - 1)
+                if(bartenderAdapter.itemCount > 0) {
+                    recyclerViewBartender.smoothScrollToPosition(bartenderAdapter.itemCount - 1)
                 }
             }, 100)
         }
@@ -116,5 +127,6 @@ class BatenderFragment : BaseFragment<FragmentBatenderBinding>(
 data class ChatMessage(
     val message: String,
     val isUser: Boolean,
-    val timestamp: String
+    val timestamp: String,
+    val cocktail: Cocktail? = null
 )
