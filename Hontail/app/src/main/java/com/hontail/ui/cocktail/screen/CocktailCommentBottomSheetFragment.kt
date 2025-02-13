@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,7 +46,8 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
         bottomSheet?.layoutParams?.height = (resources.displayMetrics.heightPixels * 0.6).toInt() // ✅ 화면의 60% 크기로 설정
     }
 
-        override fun onCreate(savedInstanceState: Bundle?) {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         activityViewModel.cocktailId.value?.let { viewModel.setCocktailId(it) }
@@ -121,7 +123,7 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
                     // 기존 댓글 수정
                     else {
                         viewModel.updateComment(editingCommentId!!, content)
-                        editingCommentId == null
+                        editingCommentId = null
                     }
 
                     editTextCocktailCommentBottomSheetMessage.text.clear()
