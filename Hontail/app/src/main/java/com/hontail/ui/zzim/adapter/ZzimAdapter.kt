@@ -16,7 +16,7 @@ import com.hontail.databinding.ListItemZzimRecentViewedBinding
 import com.hontail.ui.zzim.screen.ZzimItem
 import com.hontail.util.CocktailItemAdapter
 
-class ZzimAdapter(private val context: Context, private val items: List<ZzimItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ZzimAdapter(private val context: Context, private var items: List<ZzimItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_LIKED = 0
@@ -66,6 +66,11 @@ class ZzimAdapter(private val context: Context, private val items: List<ZzimItem
             is ZzimItem.RecentViewedList -> (holder as ZzimRecentViewedViewHolder).bind(item.recentList)
             is ZzimItem.Empty -> (holder as ZzimEmptyViewHolder).bind()
         }
+    }
+
+    fun updateItems(newItems: List<ZzimItem>) {
+        items = newItems
+        notifyDataSetChanged()
     }
 
     // 찜한 리스트

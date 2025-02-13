@@ -36,7 +36,25 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeCocktailComment()
         initAdapter()
+    }
+
+    // ViewModel Observe 등록
+    private fun observeCocktailComment() {
+
+        binding.apply {
+
+            // 찜한 리스트
+            viewModel.likedList.observe(viewLifecycleOwner) { likedList ->
+                updateRecyclerView(likedList, viewModel.recentViewedList.value)
+            }
+
+            // 최근 본 리스트
+            viewModel.recentViewedList.observe(viewLifecycleOwner) { recentViewedList ->
+                updateRecyclerView(viewModel.likedList.value, recentViewedList)
+            }
+        }
     }
 
     // RecyclerView Adapter 연결
@@ -44,46 +62,65 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
 
         binding.apply {
 
-            // 찜 리스트 X, 최근 본 상품 X
-            val items = mutableListOf<ZzimItem>(
-                ZzimItem.Empty
-            )
+//            // 찜 리스트 X, 최근 본 상품 X
+//            val items = mutableListOf<ZzimItem>(
+//                ZzimItem.Empty
+//            )
+//
+//            // 찜 리스트 X, 최근 본 상품 O
+//            val items2 = mutableListOf<ZzimItem>(
+//                ZzimItem.Empty,
+//                ZzimItem.RecentViewedList(
+//                    listOf(
+//                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+//                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+//                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+//                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+//                    )
+//                )
+//            )
+//
+//            val items3 = mutableListOf<ZzimItem>(
+//                ZzimItem.LikedList(
+//                    listOf(
+//                        CocktailListResponse(4, "Margarita", "image_url_4", 300, 38, "Tequila", "2024-02-09", 6, true),
+//                        CocktailListResponse(5, "Negroni", "image_url_5", 250, 39, "Gin", "2024-02-08", 4, true),
+//                        CocktailListResponse(6, "Daiquiri", "image_url_6", 220, 37, "Rum", "2024-02-07", 5, true),
+//                        CocktailListResponse(7, "Cosmopolitan", "image_url_7", 280, 35, "Vodka", "2024-02-06", 5, true)
+//                    )
+//                ),
+//                ZzimItem.RecentViewedList(
+//                    listOf(
+//                        CocktailListResponse(8, "Whiskey Sour", "image_url_8", 190, 41, "Whiskey", "2024-02-05", 3, false),
+//                        CocktailListResponse(9, "Pina Colada", "image_url_9", 210, 34, "Rum", "2024-02-04", 6, false)
+//                    )
+//                )
+//            )
 
-            // 찜 리스트 X, 최근 본 상품 O
-            val items2 = mutableListOf<ZzimItem>(
-                ZzimItem.Empty,
-                ZzimItem.RecentViewedList(
-                    listOf(
-                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
-                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
-                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
-                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
-                    )
-                )
-            )
-
-            val items3 = mutableListOf<ZzimItem>(
-                ZzimItem.LikedList(
-                    listOf(
-                        CocktailListResponse(4, "Margarita", "image_url_4", 300, 38, "Tequila", "2024-02-09", 6, true),
-                        CocktailListResponse(5, "Negroni", "image_url_5", 250, 39, "Gin", "2024-02-08", 4, true),
-                        CocktailListResponse(6, "Daiquiri", "image_url_6", 220, 37, "Rum", "2024-02-07", 5, true),
-                        CocktailListResponse(7, "Cosmopolitan", "image_url_7", 280, 35, "Vodka", "2024-02-06", 5, true)
-                    )
-                ),
-                ZzimItem.RecentViewedList(
-                    listOf(
-                        CocktailListResponse(8, "Whiskey Sour", "image_url_8", 190, 41, "Whiskey", "2024-02-05", 3, false),
-                        CocktailListResponse(9, "Pina Colada", "image_url_9", 210, 34, "Rum", "2024-02-04", 6, false)
-                    )
-                )
-            )
-
-            zzimAdapter = ZzimAdapter(mainActivity, items3)
+            zzimAdapter = ZzimAdapter(mainActivity, emptyList())
 
             recyclerViewZzim.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewZzim.adapter = zzimAdapter
         }
+    }
+
+    // RecyclerView Update
+    private fun updateRecyclerView(likedList: List<CocktailListResponse>?, recentList: List<CocktailListResponse>?) {
+        val items = mutableListOf<ZzimItem>()
+
+        if (!likedList.isNullOrEmpty()) {
+            items.add(ZzimItem.LikedList(likedList))
+        }
+
+        if (!recentList.isNullOrEmpty()) {
+            items.add(ZzimItem.RecentViewedList(recentList))
+        }
+
+        if (items.isEmpty()) {
+            items.add(ZzimItem.Empty)
+        }
+
+        zzimAdapter.updateItems(items)
     }
 }
 
