@@ -2,7 +2,6 @@ package com.hontail.ui.cocktail.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +20,7 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
     }
 
     private val swipedItems = mutableSetOf<Int>()
-    private val SWIPE_AMOUNT = -350f
+    private val SWIPE_AMOUNT = -320f
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailCommentHolder {
         val binding = ListItemCocktailCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -51,6 +50,7 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
 
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         commentList = newComments.toMutableList()
+        swipedItems.clear()
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -58,6 +58,9 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
 
         fun bindInfo(item: Comment) {
             binding.apply {
+                // 수정/삭제 버튼 초기 상태 설정
+                imageViewEdit.isEnabled = false
+                imageViewDelete.isEnabled = false
 
                 Glide.with(context)
                     .load(item.userImageUrl)
@@ -67,35 +70,49 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
                 textViewCocktailCommentUserName.text = item.userNickname
                 textViewCocktailCommentUserComment.text = item.content
 
-
-                // 현재 로그인 한 사용자 id와 같은 댓글 사용자 id에서만 나타나도록 '>'
-                imageViewCocktailCommentUserComment.visibility = View.GONE
-                if(item.userId == userId) {
-                    imageViewCocktailCommentUserComment.visibility = View.VISIBLE
-                }
+                // 현재 로그인 한 사용자 id와 같은 댓글 사용자 id에서만 활성화되도록 '>'
+                imageViewCocktailCommentUserComment.isEnabled = item.userId == userId
 
                 // 초기 상태 설정
                 contentContainer.translationX = if (swipedItems.contains(adapterPosition)) SWIPE_AMOUNT else 0f
                 imageViewCocktailCommentUserComment.rotation = if (swipedItems.contains(adapterPosition)) 180f else 0f
 
+                // 스와이프 상태에 따른 버튼 상태 업데이트
+                updateButtonStates(swipedItems.contains(adapterPosition))
+
                 // 화살표 버튼 클릭 이벤트
                 imageViewCocktailCommentUserComment.setOnClickListener {
-                    if (swipedItems.contains(adapterPosition)) {
-                        resetSwipe()
-                    } else {
-                        swipeItem()
+                    if (imageViewCocktailCommentUserComment.isEnabled) {
+                        if (swipedItems.contains(adapterPosition)) {
+                            resetSwipe()
+                        } else {
+                            swipeItem()
+                        }
                     }
                 }
 
                 // 수정 모드
                 imageViewEdit.setOnClickListener {
-                    cocktailCommentListener.onClickModify(item.commentId, item.content)
+                    if (imageViewEdit.isEnabled) {
+                        cocktailCommentListener.onClickModify(item.commentId, item.content)
+                        resetSwipe()
+                    }
                 }
 
                 // 삭제
                 imageViewDelete.setOnClickListener {
-                    cocktailCommentListener.onClickDelete(item.commentId)
+                    if (imageViewDelete.isEnabled) {
+                        cocktailCommentListener.onClickDelete(item.commentId)
+                        swipedItems.clear()
+                    }
                 }
+            }
+        }
+
+        private fun updateButtonStates(isSwipedState: Boolean) {
+            binding.apply {
+                imageViewEdit.isEnabled = isSwipedState
+                imageViewDelete.isEnabled = isSwipedState
             }
         }
 
@@ -112,6 +129,9 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
                     .rotation(180f)
                     .setDuration(300)
                     .start()
+
+                // 수정, 삭제 버튼 활성화
+                updateButtonStates(true)
             }
             swipedItems.add(adapterPosition)
         }
@@ -129,6 +149,9 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
                     .rotation(0f)
                     .setDuration(300)
                     .start()
+
+                // 수정, 삭제 버튼 비활성화
+                updateButtonStates(false)
             }
             swipedItems.remove(adapterPosition)
         }
