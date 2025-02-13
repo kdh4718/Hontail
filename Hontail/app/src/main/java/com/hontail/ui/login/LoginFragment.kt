@@ -130,7 +130,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                     UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
                 } else if (token != null) {
                     Log.d(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-                    viewModel.loginWithKakao(token.accessToken)
+//                    viewModel.loginWithKakao(token.accessToken)
                 }
             }
         } else {
