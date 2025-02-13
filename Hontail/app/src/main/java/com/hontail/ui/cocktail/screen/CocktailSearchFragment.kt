@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -14,6 +15,7 @@ import com.hontail.databinding.FragmentCocktailSearchBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.adapter.CocktailSearchAdapter
+import com.hontail.ui.cocktail.viewmodel.CocktailSearchFragmentViewModel
 import com.hontail.util.CommonUtils
 
 class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
@@ -22,6 +24,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
 ) {
     private lateinit var mainActivity: MainActivity
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: CocktailSearchFragmentViewModel by viewModels()
 
     private lateinit var cocktailSearchAdapter: CocktailSearchAdapter
 
@@ -79,10 +82,13 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
     private fun initEvent() {
         binding.apply {
             cocktailSearchAdapter.cocktailSearchListener = object : CocktailSearchAdapter.ItemOnClickListener {
-
                 // 취소
                 override fun onClickCancel() {
                     parentFragmentManager.popBackStack("CocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                }
+
+                override fun onClickSearch(text: String) {
+                    viewModel.getCocktailByName(text)
                 }
 
                 // 최근 검색 아이템 or 칵테일 아이템으로 상세 화면 가기.
