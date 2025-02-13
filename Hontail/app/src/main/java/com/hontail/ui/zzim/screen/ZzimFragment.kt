@@ -1,4 +1,4 @@
-package com.hontail.ui.zzim
+package com.hontail.ui.zzim.screen
 
 import android.content.Context
 import android.graphics.Rect
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
 import com.hontail.databinding.FragmentZzimBinding
 import com.hontail.ui.MainActivity
+import com.hontail.ui.zzim.adapter.ZzimAdapter
 
 class ZzimFragment : Fragment(R.layout.fragment_zzim) {
 

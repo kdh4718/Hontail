@@ -29,7 +29,7 @@ import com.hontail.ui.picture.CocktailPictureResultFragment
 import com.hontail.ui.picture.CocktailTakePictureFragment
 import com.hontail.ui.picture.FilterBottomSheetFragment
 import com.hontail.ui.profile.ProfileFragment
-import com.hontail.ui.zzim.ZzimFragment
+import com.hontail.ui.zzim.screen.ZzimFragment
 import com.hontail.util.CommonUtils
 import com.hontail.util.PermissionChecker
 
