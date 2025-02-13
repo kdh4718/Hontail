@@ -1,5 +1,6 @@
 package com.hontail.ui.cocktail.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.hontail.data.remote.RetrofitUtil
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
+private const val TAG = "CocktailCommentViewMode"
 class CocktailCommentViewModel: ViewModel() {
 
     private val commentService = RetrofitUtil.commentService
@@ -25,12 +27,10 @@ class CocktailCommentViewModel: ViewModel() {
     private val _comments = MutableLiveData<List<Comment>>()
     val comments: LiveData<List<Comment>> get() = _comments
 
-    // 댓글 입력 상태
-    private val _commentStatus = MutableLiveData<String>()
-    val commentStatus: LiveData<String> get() = _commentStatus
 
     fun setCocktailId(cocktailId: Int) {
         _cocktailId.value = cocktailId
+        loadComments()
     }
 
     fun setUserId(userId: Int) {
@@ -45,13 +45,14 @@ class CocktailCommentViewModel: ViewModel() {
             try {
                 val response: Response<Comment> = commentService.insertComment(cocktailId, content)
                 if (response.isSuccessful) {
-                    _commentStatus.postValue("댓글 작성 성공!")
+                    Log.d(TAG, "insertComment: 댓글 작성 성공")
                     loadComments() // 댓글 목록 다시 불러오기
                 } else {
-                    _commentStatus.postValue("댓글 작성 실패: ${response.message()}")
+                    val errorMsg = response.errorBody()?.string()
+                    Log.d(TAG, "insertComment: 댓글 작성 실패 : $errorMsg")
                 }
             } catch (e: Exception) {
-                _commentStatus.postValue("오류 발생: ${e.message}")
+                Log.d(TAG, "insertComment: 오류 발생 : ${e.message}")
             }
         }
     }
@@ -64,13 +65,14 @@ class CocktailCommentViewModel: ViewModel() {
             try {
                 val response = commentService.updateComment(cocktailId, commentId, newContent)
                 if (response.isSuccessful) {
-                    _commentStatus.postValue("댓글 수정 성공!")
+                    Log.d(TAG, "updateComment: 댓글 수정 성공")
                     loadComments()
                 } else {
-                    _commentStatus.postValue("댓글 수정 실패: ${response.message()}")
+                    val errorMsg = response.errorBody()?.string()
+                    Log.d(TAG, "updateComment: 댓글 수정 실패 : $errorMsg")
                 }
             } catch (e: Exception) {
-                _commentStatus.postValue("오류 발생: ${e.message}")
+                Log.d(TAG, "updateComment: 오류 발생 : ${e.message}")
             }
         }
     }
@@ -83,13 +85,14 @@ class CocktailCommentViewModel: ViewModel() {
             try {
                 val response = commentService.deleteComment(cocktailId, commentId)
                 if (response.isSuccessful) {
-                    _commentStatus.postValue("댓글 삭제 성공!")
+                    Log.d(TAG, "deleteComment: 댓글 삭제 성공")
                     loadComments()
                 } else {
-                    _commentStatus.postValue("댓글 삭제 실패: ${response.message()}")
+                    val errorMsg = response.errorBody()?.string()
+                    Log.d(TAG, "deleteComment: 댓글 삭제 실패 : $errorMsg")
                 }
             } catch (e: Exception) {
-                _commentStatus.postValue("오류 발생: ${e.message}")
+                Log.d(TAG, "deleteComment: 오류 발생 : ${e.message}")
             }
         }
     }
@@ -102,12 +105,14 @@ class CocktailCommentViewModel: ViewModel() {
             try {
                 val response: Response<List<Comment>> = commentService.getComments(cocktailId)
                 if (response.isSuccessful) {
+                    Log.d(TAG, "loadComments: 댓글 조회 성공")
                     _comments.postValue(response.body())
                 } else {
-                    _commentStatus.postValue("댓글 불러오기 실패: ${response.message()}")
+                    val errorMsg = response.errorBody()?.string()
+                    Log.d(TAG, "loadComment: 댓글 조회 실패 : $errorMsg")
                 }
             } catch (e: Exception) {
-                _commentStatus.postValue("오류 발생: ${e.message}")
+                Log.d(TAG, "loadComments: ${e.message}")
             }
         }
     }

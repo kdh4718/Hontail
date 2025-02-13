@@ -28,17 +28,17 @@ interface CommentService {
         @Path("commentId") commentId: Int,
     ): Response<Void>
 
-    // 칵테일 댓글 조회
-    @GET("api/cocktail/detail/{cocktailId}/comments")
-    suspend fun getComments(
-        @Path("cocktailId") cocktailId: Int
-    ): Response<List<Comment>>
-
     // 칵테일 댓글 작성
     @POST("api/cocktail/detail/{cocktailId}/comment")
     suspend fun insertComment(
         @Path("cocktailId") cocktailId: Int,
         @Body content: String
     ): Response<Comment>
+
+    // 칵테일 댓글 조회
+    @GET("api/cocktail/detail/{cocktailId}/comments")
+    suspend fun getComments(
+        @Path("cocktailId") cocktailId: Int
+    ): Response<List<Comment>>
 
 }

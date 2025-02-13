@@ -3,6 +3,7 @@ package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,6 +18,7 @@ import com.hontail.ui.cocktail.viewmodel.CocktailCommentViewModel
 import com.hontail.util.DialogToLoginFragment
 import kotlin.math.absoluteValue
 
+private const val TAG = "CocktailCommentBottomSh"
 class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCocktailCommentBottomSheetBinding>(
     FragmentCocktailCommentBottomSheetBinding::bind,
     R.layout.fragment_cocktail_comment_bottom_sheet
@@ -71,6 +73,7 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
 
             // 댓글 리스트
             viewModel.comments.observe(viewLifecycleOwner) { commentList ->
+                Log.d(TAG, "observeCocktailComment: ${commentList.size}개 업데이트")
                 cocktailCommentAdapter.updateComments(commentList)
             }
         }
