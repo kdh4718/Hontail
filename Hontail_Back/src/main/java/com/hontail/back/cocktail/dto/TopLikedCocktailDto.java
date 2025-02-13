@@ -14,7 +14,7 @@ public class TopLikedCocktailDto {
     private Integer id;
     private String cocktailName;
     private String imageUrl;
-    private Integer likeCnt;
+    private Integer likesCnt;
     private Integer alcoholContent;
     private String baseSpirit;
     private LocalDateTime createdAt;
