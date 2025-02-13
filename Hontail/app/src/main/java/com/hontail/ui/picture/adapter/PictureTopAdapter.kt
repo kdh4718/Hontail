@@ -1,4 +1,4 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import com.google.android.flexbox.JustifyContent
 import com.hontail.R
 import com.hontail.databinding.ListItemPictureTopBinding
 import com.hontail.ui.MainActivity
+import com.hontail.ui.picture.screen.CocktailPictureResultFragment
 import com.hontail.util.CommonUtils
 
 class PictureTopAdapter(
@@ -22,7 +23,7 @@ class PictureTopAdapter(
 
         fun bind(item: CocktailPictureResultFragment.PictureResultType.Top) {
             binding.textViewPictureResultSuggestion.text =
-                CommonUtils.changeTextColor(context, item.suggestion, "hyunn", R.color.basic_sky)
+                CommonUtils.changeTextColor(context, item.suggestion[0], item.suggestion[1], R.color.basic_sky)
 
             val layoutManager = FlexboxLayoutManager(context).apply {
                 flexWrap = FlexWrap.WRAP
@@ -61,4 +62,9 @@ class PictureTopAdapter(
     }
 
     override fun getItemCount(): Int = 1
+
+    fun updateData(newData: CocktailPictureResultFragment.PictureResultType.Top) {
+        data = newData
+        notifyDataSetChanged()
+    }
 }

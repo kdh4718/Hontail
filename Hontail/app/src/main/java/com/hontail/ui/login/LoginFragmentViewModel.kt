@@ -3,6 +3,7 @@ package com.hontail.ui.login
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,6 +28,17 @@ class LoginFragmentViewModel : ViewModel() {
 
     private val _userNickname = MutableLiveData<String>()
     val userNickname: LiveData<String?> get() = _userNickname
+
+
+    private val _isUserDataReady = MediatorLiveData<Boolean>().apply {
+        addSource(_userId) { checkUserDataReady() }
+        addSource(_userNickname) { checkUserDataReady() }
+    }
+    val isUserDataReady: LiveData<Boolean> get() = _isUserDataReady
+
+    private fun checkUserDataReady() {
+        _isUserDataReady.value = !(_userId.value.isNullOrEmpty() || _userNickname.value.isNullOrEmpty())
+    }
 
 
     fun loginWithNaver(accessToken: String) {
@@ -107,6 +119,7 @@ class LoginFragmentViewModel : ViewModel() {
             _userNickname.value = json.optString("user_nickname", "Unknown")
 
             Log.d(TAG, "Extracted UserId: ${_userId.value}, Email: ${_userEmail.value}, userNickname: ${_userNickname.value}")
+
 
         } catch (e: Exception) {
             Log.e(TAG, "Error decoding JWT: ${e.message}")

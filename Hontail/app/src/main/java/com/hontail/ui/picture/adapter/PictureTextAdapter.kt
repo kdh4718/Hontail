@@ -1,4 +1,4 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

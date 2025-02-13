@@ -5,4 +5,6 @@
 
     <string name="underlined_text_filter_clear"><u>초기화</u></string>
     <string name="kakao_app_key">e80c115bd5107f8e685473d264224ae6</string>
+    
+    <string name="user_cocktail_recommendations">%1$s님, 오늘은 이 재료로\n딱 맞는 칵테일을 만들어 볼까요?</string>
 </resources>

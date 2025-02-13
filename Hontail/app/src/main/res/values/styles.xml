@@ -14,6 +14,22 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <!-- Bold 22 basic black -->
+    <style name="Font_Bold_22_Basic_Black">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_black</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 22 basic gray -->
+    <style name="Font_Bold_22_Basic_Gray">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <!-- Bold 22 basic pink -->
     <style name="Font_Bold_22_Basic_Pink">
         <item name="fontFamily">@font/suit_bold</item>
@@ -43,6 +59,14 @@
         <item name="fontFamily">@font/suit_bold</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 20 basic black -->
+    <style name="Font_Bold_20_Basic_Black">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_black</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 

@@ -4,10 +4,12 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.hontail.R
 import com.hontail.data.model.response.CocktailIngredient
 import com.hontail.data.model.response.Recipe
 import com.hontail.databinding.ListItemCocktailDetailInfosBinding
@@ -30,6 +32,7 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
     interface ItemOnClickListener {
         fun onClickRecipeBottomSheet()
         fun onClickCommentBottomSheet()
+        fun onClickZzimButton(cocktailId: Int, isLiked: Boolean) // 좋아요 버튼 클릭 이벤트
     }
 
     companion object {
@@ -88,11 +91,24 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
                 textViewCocktailDetailZzimCount.text = item.cocktailDetail.likeCnt.toString()
                 textViewCocktailDetailCommentCount.text = item.cocktailDetail.commentCnt.toString()
 
-                Log.d(TAG, "imageDetail: ${item.cocktailDetail.imageUrl}")
-
                 Glide.with(context)
                     .load(item.cocktailDetail.imageUrl)
                     .into(imageViewCocktailDetailImage)
+
+                if (item.cocktailDetail.isLiked){
+                    imageViewCocktailDetailZzim.setImageDrawable(
+                        ContextCompat.getDrawable(context, R.drawable.ic_bottom_navi_zzim_selected)
+                    )
+                    imageViewCocktailDetailZzim.setColorFilter(
+                        ContextCompat.getColor(context, R.color.basic_pink),
+                        android.graphics.PorterDuff.Mode.SRC_IN
+                    )
+                }else{
+                    imageViewCocktailDetailZzim.setImageDrawable(
+                        ContextCompat.getDrawable(context, R.drawable.ic_bottom_navi_zzim_unselected)
+                    )
+                }
+
 
                 // 뒤로가기 버튼 클릭 리스너
                 imageViewCocktailDetailGoBack.setOnClickListener {
@@ -103,6 +119,33 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
                 imageViewCocktailDetailComment.setOnClickListener {
                     cocktailDetailListener.onClickCommentBottomSheet()
                 }
+
+                // 좋아요 버튼 클릭 리스너 추가
+                imageViewCocktailDetailZzim.setOnClickListener {
+                    val newLikeStatus = !item.cocktailDetail.isLiked
+                    item.cocktailDetail.isLiked = newLikeStatus
+                    item.cocktailDetail.likeCnt = if (newLikeStatus) item.cocktailDetail.likeCnt + 1 else item.cocktailDetail.likeCnt - 1
+
+                    updateZzimButton(newLikeStatus)
+
+                    // 좋아요 상태 변경 이벤트를 프래그먼트로 전달
+                    cocktailDetailListener.onClickZzimButton(item.cocktailDetail.cocktailId, newLikeStatus)
+                }
+            }
+        }
+        private fun updateZzimButton(isLiked: Boolean) {
+            if (isLiked) {
+                binding.imageViewCocktailDetailZzim.setImageDrawable(
+                    ContextCompat.getDrawable(context, R.drawable.ic_bottom_navi_zzim_selected)
+                )
+                binding.imageViewCocktailDetailZzim.setColorFilter(
+                    ContextCompat.getColor(context, R.color.basic_pink),
+                    android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            } else {
+                binding.imageViewCocktailDetailZzim.setImageDrawable(
+                    ContextCompat.getDrawable(context, R.drawable.ic_bottom_navi_zzim_unselected)
+                )
             }
         }
     }

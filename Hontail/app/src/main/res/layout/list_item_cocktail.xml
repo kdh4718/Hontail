@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -9,19 +8,26 @@
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="16dp">
 
-    <ImageView
-        android:id="@+id/imageViewListItemCocktailCocktail"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cradViewListItemCocktailCocktail"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/ingredient_background"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_sample"
+        app:cardCornerRadius="10dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/basic_gray" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageViewListItemCocktailCocktail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_sample"
+            android:tintMode="src_over"
+            app:tint="#10000000" />
+    </androidx.cardview.widget.CardView>
+    
     <ImageView
         android:id="@+id/imageViewListItemCocktailZzim"
         android:layout_width="wrap_content"
@@ -29,8 +35,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/ic_bottom_navi_zzim_unselected"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewListItemCocktailCocktail"
-        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailCocktail" />
+        app:layout_constraintEnd_toEndOf="@+id/cradViewListItemCocktailCocktail"
+        app:layout_constraintTop_toTopOf="@+id/cradViewListItemCocktailCocktail" />
 
     <TextView
         android:id="@+id/textViewListItemCocktailBaseSpirit"
@@ -40,8 +46,8 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/textview_list_item_cocktail_label_background"
         android:text="리큐어"
-        app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewListItemCocktailCocktail" />
+        app:layout_constraintStart_toStartOf="@+id/cradViewListItemCocktailCocktail"
+        app:layout_constraintTop_toBottomOf="@+id/cradViewListItemCocktailCocktail" />
 
     <TextView
         android:id="@+id/textViewListItemCocktailIngredientCount"
@@ -61,8 +67,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="깔루아 밀크"
-        app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintStart_toStartOf="@+id/cradViewListItemCocktailCocktail"
         app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailBaseSpirit" />
 
     <ImageView
@@ -71,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_bottom_navi_zzim_selected"
-        app:layout_constraintStart_toStartOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintStart_toStartOf="@+id/cradViewListItemCocktailCocktail"
         app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailName"
         app:tint="@color/basic_pink" />
 
@@ -93,7 +101,7 @@
         android:layout_height="wrap_content"
         android:text="5%"
         app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewListItemCocktailCocktail"
+        app:layout_constraintEnd_toEndOf="@+id/cradViewListItemCocktailCocktail"
         app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

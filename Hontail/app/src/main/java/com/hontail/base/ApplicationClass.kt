@@ -20,7 +20,7 @@ class ApplicationClass : Application() {
 
     val SERVER_URL = "http://i12d207.p.ssafy.io:9090/"
 
-//    val SERVER_URL = "http://192.168.100.72:8080/"
+//    val SERVER_URL = "http://192.168.100.193:9090/"
 
     override fun onCreate() {
         super.onCreate()
