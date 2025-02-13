@@ -17,8 +17,8 @@ private const val TAG = "LoginFragmentViewModel_SSAFY"
 
 class LoginFragmentViewModel : ViewModel() {
 
-    private val _refreshTk = MutableLiveData<String>()
-    val refreshTk: LiveData<String?> get() = _refreshTk
+//    private val _refreshTk = MutableLiveData<String>()
+//    val refreshTk: LiveData<String?> get() = _refreshTk
 
     private val _userId = MutableLiveData<String>()
     val userId: LiveData<String?> get() = _userId
@@ -49,14 +49,17 @@ class LoginFragmentViewModel : ViewModel() {
             }.onSuccess { response ->
                 Log.d(TAG, "loginWithNaver: ${response.code()} - ${response.message()} - ${response.body()?.refreshToken} - ${response}")
                 if (response.isSuccessful) {
-                    val refreshTk = response.body()?.refreshToken
-                    _refreshTk.value = refreshTk!!  // JWT 저장
-                    Log.d(TAG, "Login Success! JWT: ${_refreshTk.value}")
+                    val refreshTk = response.body()?.refreshToken ?: return@onSuccess
+                    val accessTK = response.body()?.accessToken ?: return@onSuccess
 
-                    ApplicationClass.sharedPreferencesUtil.saveJwtToken(refreshTk)
+//                    _refreshTk.value = refreshTk  // JWT 저장
+                    Log.d(TAG, "Login Success! JWT: ${refreshTk}")
+
+                    ApplicationClass.sharedPreferencesUtil.saveTokens(refreshTk, accessTK)
 
                     // JWT 디코딩 및 사용자 정보 저장
-                    refreshTk.let { decodeJwt(it) }
+//                    refreshTk.let { decodeJwt(it) }
+                    decodeJwt(accessTK)
 
                 } else {
                     val errorBody = response.errorBody()?.string()
