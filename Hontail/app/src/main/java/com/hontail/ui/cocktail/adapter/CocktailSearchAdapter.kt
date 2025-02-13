@@ -3,6 +3,7 @@ package com.hontail.ui.cocktail.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,8 +78,14 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
     inner class CocktailSearchBarViewHolder(private val binding: ListItemCocktailSearchSearchBarBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
-
             binding.apply {
+                editTextCocktailSearchBar.requestFocus() // ✅ EditText에 포커스 설정
+
+                val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+                editTextCocktailSearchBar.postDelayed({
+                    imm.showSoftInput(editTextCocktailSearchBar, InputMethodManager.SHOW_IMPLICIT)
+                }, 100) 
 
                 // 취소 이벤트
                 textViewListItemCocktailSearchBarCancel.setOnClickListener {
@@ -87,6 +94,7 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
             }
         }
     }
+
 
     // 최근 검색
     inner class CocktailRecentViewHolder(private val binding: ListItemCocktailSearchRecentBinding): RecyclerView.ViewHolder(binding.root) {
