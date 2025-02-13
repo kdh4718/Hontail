@@ -1,13 +1,15 @@
 package com.hontail.data.model.response
 
+import com.google.gson.annotations.SerializedName
+
 data class LikedCocktail(
-    val alcoholContent: Int,
-    val baseSpirit: String,
-    val cocktailName: String,
-    val createdAt: String,
-    val id: Int,
-    val imageUrl: String,
-    val ingredientCount: Int,
-    val isLiked: Boolean,
-    val likeCnt: Int
+    @SerializedName("alcoholContent") val alcoholContent: Int,
+    @SerializedName("baseSpirit") val baseSpirit: String,
+    @SerializedName("cocktailName") val cocktailName: String,
+    @SerializedName("createdAt") val createdAt: String,
+    @SerializedName("id") val id: Int,
+    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("ingredientCount") val ingredientCount: Int,
+    @SerializedName("isLiked") val isLiked: Boolean,
+    @SerializedName("likeCnt") val likeCnt: Int
 )

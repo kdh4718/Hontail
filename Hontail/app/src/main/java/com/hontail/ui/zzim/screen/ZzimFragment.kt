@@ -1,21 +1,31 @@
 package com.hontail.ui.zzim.screen
 
 import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
+import com.hontail.base.BaseFragment
+import com.hontail.data.model.response.CocktailListResponse
+import com.hontail.data.model.response.LikedCocktail
+import com.hontail.data.model.response.RecentViewedCocktail
 import com.hontail.databinding.FragmentZzimBinding
 import com.hontail.ui.MainActivity
+import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.zzim.adapter.ZzimAdapter
+import com.hontail.ui.zzim.viewmodel.ZzimViewModel
 
-class ZzimFragment : Fragment(R.layout.fragment_zzim) {
-
-    private lateinit var binding: FragmentZzimBinding
+class ZzimFragment: BaseFragment<FragmentZzimBinding>(
+    FragmentZzimBinding::bind,
+    R.layout.fragment_zzim
+) {
     private lateinit var mainActivity: MainActivity
+
+    private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: ZzimViewModel by viewModels()
+
     private lateinit var zzimAdapter: ZzimAdapter
 
     override fun onAttach(context: Context) {
@@ -23,63 +33,62 @@ class ZzimFragment : Fragment(R.layout.fragment_zzim) {
         mainActivity = context as MainActivity
     }
 
-    override fun onResume() {
-        super.onResume()
-        mainActivity.hideBottomNav(false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentZzimBinding.bind(view)
 
         initAdapter()
     }
 
+    // RecyclerView Adapter 연결
     private fun initAdapter() {
-        val zzimList = listOf(
-            ZzimItem("아이템 1"),
-            ZzimItem("아이템 2"),
-            ZzimItem("아이템 3"),
-            ZzimItem("아이템 4"),
-            ZzimItem("아이템 5"),
-            ZzimItem("아이템 6"),
-            ZzimItem("아이템 7"),
-            ZzimItem("아이템 8"),
-            ZzimItem("아이템 9"),
-            ZzimItem("아이템 10")
-        )
 
-        zzimAdapter = ZzimAdapter(requireContext(), zzimList)
+        binding.apply {
 
-        binding.recyclerViewZzim.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = zzimAdapter
-            addItemDecoration(GridSpacingItemDecoration(2, 8)) // 16dp 간격
-        }
-    }
-    inner class GridSpacingItemDecoration(
-        private val spanCount: Int,
-        private val spacing: Int
-    ) : RecyclerView.ItemDecoration() {
-        override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
-        ) {
-            val position = parent.getChildAdapterPosition(view)
-            val column = position % spanCount
+            // 찜 리스트 X, 최근 본 상품 X
+            val items = mutableListOf<ZzimItem>(
+                ZzimItem.Empty
+            )
 
-            outRect.left = spacing - column * spacing / spanCount
-            outRect.right = (column + 1) * spacing / spanCount
+            // 찜 리스트 X, 최근 본 상품 O
+            val items2 = mutableListOf<ZzimItem>(
+                ZzimItem.Empty,
+                ZzimItem.RecentViewedList(
+                    listOf(
+                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+                        CocktailListResponse(1, "Mojito", "image_url", 150, 40, "Rum", "2024-02-10", 5, false),
+                    )
+                )
+            )
 
-            if (position >= spanCount) {
-                outRect.top = spacing
-            }
+            val items3 = mutableListOf<ZzimItem>(
+                ZzimItem.LikedList(
+                    listOf(
+                        CocktailListResponse(4, "Margarita", "image_url_4", 300, 38, "Tequila", "2024-02-09", 6, true),
+                        CocktailListResponse(5, "Negroni", "image_url_5", 250, 39, "Gin", "2024-02-08", 4, true),
+                        CocktailListResponse(6, "Daiquiri", "image_url_6", 220, 37, "Rum", "2024-02-07", 5, true),
+                        CocktailListResponse(7, "Cosmopolitan", "image_url_7", 280, 35, "Vodka", "2024-02-06", 5, true)
+                    )
+                ),
+                ZzimItem.RecentViewedList(
+                    listOf(
+                        CocktailListResponse(8, "Whiskey Sour", "image_url_8", 190, 41, "Whiskey", "2024-02-05", 3, false),
+                        CocktailListResponse(9, "Pina Colada", "image_url_9", 210, 34, "Rum", "2024-02-04", 6, false)
+                    )
+                )
+            )
+
+            zzimAdapter = ZzimAdapter(mainActivity, items3)
+
+            recyclerViewZzim.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+            recyclerViewZzim.adapter = zzimAdapter
         }
     }
 }
 
-data class ZzimItem(
-    val title: String
-)
+sealed class ZzimItem {
+    data class LikedList(val likedList: List<CocktailListResponse>): ZzimItem()
+    data class RecentViewedList(val recentList: List<CocktailListResponse>): ZzimItem()
+    object Empty: ZzimItem()
+}
