@@ -8,12 +8,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.dto.SearchHistoryTable
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemCocktailSearchRecentBinding
 import com.hontail.databinding.ListItemCocktailSearchResultBinding
 import com.hontail.databinding.ListItemCocktailSearchSearchBarBinding
 import com.hontail.ui.cocktail.screen.CocktailSearchItem
-import com.hontail.ui.cocktail.screen.RecentItem
 import com.hontail.util.CocktailItemAdapter
 
 class CocktailSearchAdapter(private val context: Context, private val items: List<CocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -122,7 +122,7 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
     // 최근 검색
     inner class CocktailRecentViewHolder(private val binding: ListItemCocktailSearchRecentBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(recentList: List<RecentItem>) {
+        fun bind(recentList: List<SearchHistoryTable>) {
 
             binding.apply {
 

@@ -4,11 +4,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.hontail.data.model.dto.SearchHistoryTable
 import com.hontail.databinding.ListItemCocktailSearchRecentItemBinding
 import com.hontail.ui.cocktail.screen.RecentItem
 
 private const val TAG = "CocktailSearchRecentAda"
-class CocktailSearchRecentAdapter(private val items: List<RecentItem>): RecyclerView.Adapter<CocktailSearchRecentAdapter.CocktailSearchRecentViewHolder>() {
+class CocktailSearchRecentAdapter(private val items: List<SearchHistoryTable>): RecyclerView.Adapter<CocktailSearchRecentAdapter.CocktailSearchRecentViewHolder>() {
 
     lateinit var cocktailSearchRecentItemListener: ItemOnClickListener
 
@@ -34,11 +35,11 @@ class CocktailSearchRecentAdapter(private val items: List<RecentItem>): Recycler
 
     inner class CocktailSearchRecentViewHolder(private val binding: ListItemCocktailSearchRecentItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: RecentItem) {
+        fun bind(item: SearchHistoryTable) {
 
             binding.apply {
 
-                textViewListItemCocktailRecentItemName.text = item.searchName
+                textViewListItemCocktailRecentItemName.text = item.searchHistory
 
                 // 최근 검색 아이템으로 들어가기.
                 textViewListItemCocktailRecentItemName.setOnClickListener {

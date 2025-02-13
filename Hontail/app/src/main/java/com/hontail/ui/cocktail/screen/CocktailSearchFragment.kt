@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
+import com.hontail.data.model.dto.SearchHistoryTable
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.FragmentCocktailSearchBinding
 import com.hontail.ui.MainActivity
@@ -31,6 +32,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+        viewModel.loadSearchHistory()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,12 +46,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
     private fun initAdapter() {
 
         binding.apply {
-
-            val recentList = mutableListOf<RecentItem>().apply {
-                add(RecentItem("깔루아 밀크"))
-                add(RecentItem("에스프레소 마티니"))
-                add(RecentItem("몽키 숄더"))
-            }
+            val searchHistory = viewModel.searchHistoryList.value ?: emptyList()
 
             val cocktailList = mutableListOf<CocktailListResponse>().apply {
                 add(
@@ -66,12 +63,12 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 )
             }
 
-            val items2 = mutableListOf<CocktailSearchItem>().apply {
+            val items = mutableListOf<CocktailSearchItem>().apply {
                 add(CocktailSearchItem.SearchBar(null))
-                add(CocktailSearchItem.Recent(recentList))
+                add(CocktailSearchItem.Recent(searchHistory))
             }
 
-            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items2)
+            cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items)
 
             recyclerViewCocktailSearch.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailSearch.adapter = cocktailSearchAdapter
@@ -89,6 +86,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
 
                 override fun onClickSearch(text: String) {
                     viewModel.getCocktailByName(text)
+                    viewModel.insertSearchHistory(text)
                 }
 
                 // 최근 검색 아이템 or 칵테일 아이템으로 상세 화면 가기.
@@ -101,10 +99,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
 }
 
 sealed class CocktailSearchItem {
-
     data class SearchBar(val query: String?): CocktailSearchItem()
-    data class Recent(val recentList: List<RecentItem>): CocktailSearchItem()
+    data class Recent(val recentList: List<SearchHistoryTable>): CocktailSearchItem()
     data class Result(val resultList: List<CocktailListResponse>): CocktailSearchItem()
 }
-
-data class RecentItem(val searchName: String)

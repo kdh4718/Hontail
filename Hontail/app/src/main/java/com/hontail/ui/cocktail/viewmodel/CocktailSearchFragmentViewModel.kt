@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hontail.data.local.SearchHistoryRepository
+import com.hontail.data.model.dto.SearchHistoryTable
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.remote.RetrofitUtil
 import com.hontail.data.remote.RetrofitUtil.Companion.cocktailService
@@ -14,6 +16,11 @@ import kotlinx.coroutines.launch
 private const val TAG = "CocktailSearchFragmentV_SSAFY"
 
 class CocktailSearchFragmentViewModel(private val handle: SavedStateHandle): ViewModel() {
+    private val searchHistoryRepository = SearchHistoryRepository.getInstance()
+
+    private val _searchHistoryList = MutableLiveData<List<SearchHistoryTable>>()
+    val searchHistoryList: LiveData<List<SearchHistoryTable>> get() = _searchHistoryList
+
     var page: Int
         get() = handle.get<Int>("page") ?: 0
         set(value) {
@@ -35,12 +42,25 @@ class CocktailSearchFragmentViewModel(private val handle: SavedStateHandle): Vie
             runCatching {
                 RetrofitUtil.cocktailService.getCocktailByName(name, page, size)
             }.onSuccess {
+                insertSearchHistory(name)
                 _cocktailList.value = it.content
                 Log.d(TAG, "getCocktailByName: ${_cocktailList.value}")
             }.onFailure {
                 Log.d(TAG, "getCocktailByName: ${it.message}")
             }
         }
+    }
 
+    fun loadSearchHistory() {
+        viewModelScope.launch {
+            _searchHistoryList.value = searchHistoryRepository.getAllSearches()
+        }
+    }
+
+    fun insertSearchHistory(searchText: String) {
+        viewModelScope.launch {
+            searchHistoryRepository.insertSearch(searchText)
+            loadSearchHistory()
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.hontail.R
 import com.hontail.data.local.IngredientRepository
+import com.hontail.data.local.SearchHistoryRepository
 import com.hontail.data.local.SharedPreferencesUtil
 import com.hontail.data.model.dto.IngredientsTable
 import com.kakao.sdk.common.KakaoSdk
@@ -74,6 +75,8 @@ class ApplicationClass : Application() {
         // 앱 처음 생성되는 순간 룸 디비 생성.
         IngredientRepository.initialize(this)
         IngredientRepository.getInstance().refreshIngredients()
+
+        SearchHistoryRepository.initialize(this)
     }
 
     companion object{

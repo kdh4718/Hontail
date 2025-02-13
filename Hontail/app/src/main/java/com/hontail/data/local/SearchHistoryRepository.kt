@@ -15,17 +15,6 @@ class SearchHistoryRepository private constructor(context: Context) {
 
     private val searchHistoryDao: SearchHistoryDao = database.getSearchHistoryDao()
 
-    companion object {
-        @Volatile
-        private var INSTANCE: SearchHistoryRepository? = null
-
-        fun getInstance(context: Context): SearchHistoryRepository {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: SearchHistoryRepository(context).also { INSTANCE = it }
-            }
-        }
-    }
-
     // 검색어 삽입 (중복이면 삭제 후 삽입)
     suspend fun insertSearch(searchText: String) {
         searchHistoryDao.deleteByHistory(searchText) // 중복 삭제
@@ -46,5 +35,19 @@ class SearchHistoryRepository private constructor(context: Context) {
     // 전체 검색어 가져오기
     suspend fun getAllSearches(): List<SearchHistoryTable> {
         return searchHistoryDao.getAllSearches()
+    }
+
+    companion object {
+        private var INSTANCE: SearchHistoryRepository? = null
+
+        fun initialize(context: Context) {
+            if (INSTANCE == null) {
+                INSTANCE = SearchHistoryRepository(context)
+            }
+        }
+
+        fun getInstance(): SearchHistoryRepository {
+            return INSTANCE ?: throw IllegalStateException("SearchHistoryRepository must be initialized")
+        }
     }
 }
