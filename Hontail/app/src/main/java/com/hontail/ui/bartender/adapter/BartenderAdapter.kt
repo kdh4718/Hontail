@@ -74,7 +74,7 @@ class BartenderAdapter(private val context: Context, private var messages: List<
 
             is UserMessageViewHolder -> holder.bind(message, isContinuous, isLastMessageInSameTime)
             is BartenderMessageViewHolder -> holder.bind(message, isContinuous, isLastMessageInSameTime)
-            is CocktailMessageViewHolder -> holder.bind(message)
+            is CocktailMessageViewHolder -> holder.bind(message, isContinuous, isLastMessageInSameTime)
         }
     }
 
@@ -164,20 +164,24 @@ class BartenderAdapter(private val context: Context, private var messages: List<
 
     inner class CocktailMessageViewHolder(private val binding: ListItemChatLeftCocktailBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ChatMessage) {
+        fun bind(message: ChatMessage, isContinuous: Boolean, isLastMessageInSameTime: Boolean) {
 
             binding.apply {
 
                 textViewListItemChatLeftCocktailName.text = "칵테일러 스위프트"
 
                 Glide.with(context)
-                    .load(item.cocktail?.imageUrl)
+                    .load(message.cocktail?.imageUrl)
                     .into(imageViewListItemChatLeftCocktailCocktail)
 
-                textViewListItemChatLeftCocktailMessage.text = item.message
+                textViewListItemChatLeftCocktailMessage.text = message.message
+
+                // 같은 시간대의 마지막 메시지인 경우에만 보이도록.
+                textViewListItemChatLeftCocktailTime.text = message.timestamp
+                textViewListItemChatLeftCocktailTime.visibility = if(isLastMessageInSameTime) View.VISIBLE else View.GONE
 
                 imageViewListItemChatLeftCocktailCocktail.setOnClickListener {
-                    bartenderListener.onClickCocktailImage(item.cocktail!!.id)
+                    bartenderListener.onClickCocktailImage(message.cocktail!!.id)
                 }
             }
         }
