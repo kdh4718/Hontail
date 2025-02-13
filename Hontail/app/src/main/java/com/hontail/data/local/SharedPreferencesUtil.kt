@@ -15,16 +15,47 @@ class SharedPreferencesUtil(context: Context) {
         context.getSharedPreferences("hontail_prefs", Context.MODE_PRIVATE)
 
     companion object {
-        private const val KEY_JWT = "jwt_token"
+//        private const val KEY_JWT = "jwt_token"
+
+        private const val KEY_REFRESH_TOKEN = "refresh_token"
+        private const val KEY_ACCESS_TOKEN = "access_token"
     }
 
-    fun saveJwtToken(token: String) {
-        prefs.edit().putString(KEY_JWT, token).apply()
+    // Token들 저장
+    fun saveTokens(refreshToken: String, accessToken: String) {
+        prefs.edit().apply {
+            putString(KEY_REFRESH_TOKEN, refreshToken)
+            putString(KEY_ACCESS_TOKEN, accessToken)
+            apply()
+        }
     }
 
-    fun getJwtToken(): String? {
-        return prefs.getString(KEY_JWT, null)
+    // RefreshToken 가져오기.
+    fun getRefreshToken(): String? {
+        return prefs.getString(KEY_REFRESH_TOKEN, null)
     }
+
+    // AccessToken 가져오기.
+    fun getAccessToken(): String? {
+        return prefs.getString(KEY_ACCESS_TOKEN, null)
+    }
+
+    // 토큰 삭제
+    fun clearTokens() {
+        prefs.edit().apply {
+            remove(KEY_REFRESH_TOKEN)
+            remove(KEY_ACCESS_TOKEN)
+            apply()
+        }
+    }
+
+//    fun saveJwtToken(token: String) {
+//        prefs.edit().putString(KEY_JWT, token).apply()
+//    }
+//
+//    fun getJwtToken(): String? {
+//        return prefs.getString(KEY_JWT, null)
+//    }
 
     fun addUserCookie(cookies: HashSet<String>) {
         val editor = preferences.edit()
