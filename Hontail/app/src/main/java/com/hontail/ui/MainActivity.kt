@@ -9,16 +9,16 @@ import com.hontail.R
 import com.hontail.base.BaseActivity
 import com.hontail.databinding.ActivityMainBinding
 import com.hontail.ui.alarm.AlarmFragment
-import com.hontail.ui.bartender.BatenderFragment
+import com.hontail.ui.bartender.screen.BartenderFragment
+import com.hontail.ui.custom.screen.CustomCocktailBottomSheetFragment
+import com.hontail.ui.custom.screen.CustomCocktailFragment
+import com.hontail.ui.custom.screen.CustomCocktailIngredientDetailFragment
+import com.hontail.ui.custom.screen.CustomCocktailRecipeFragment
+import com.hontail.ui.custom.screen.CustomCocktailSearchFragment
 import com.hontail.ui.cocktail.screen.CocktailDetailFragment
 import com.hontail.ui.cocktail.screen.CocktailListFragment
 import com.hontail.ui.cocktail.screen.CocktailRecipeFragment
 import com.hontail.ui.cocktail.screen.CocktailSearchFragment
-import com.hontail.ui.custom.CustomCocktailBottomSheetFragment
-import com.hontail.ui.custom.CustomCocktailFragment
-import com.hontail.ui.custom.CustomCocktailIngredientDetailFragment
-import com.hontail.ui.custom.CustomCocktailRecipeFragment
-import com.hontail.ui.custom.CustomCocktailSearchFragment
 import com.hontail.ui.home.HomeFragment
 import com.hontail.ui.ingredient.IngredientAddFragment
 import com.hontail.ui.ingredient.IngredientListFragment
@@ -130,7 +130,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     .addToBackStack("AlarmFragment")
             }
             CommonUtils.MainFragmentName.BARTENDER_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, BatenderFragment())
+                transaction.replace(R.id.frameLayoutMainFragment, BartenderFragment())
                     .addToBackStack("bartenderFragment")
             }
             CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT -> {
@@ -222,7 +222,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     .addToBackStack("AlarmFragment")
             }
             CommonUtils.MainFragmentName.BARTENDER_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, BatenderFragment())
+                transaction.replace(R.id.frameLayoutMainFragment, BartenderFragment())
                     .addToBackStack("bartenderFragment")
             }
             CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT -> {

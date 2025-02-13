@@ -1,10 +1,11 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCustomCocktailBottomSheetUnitBinding
+import com.hontail.ui.custom.screen.UnitItem
 
 class CustomCocktailBottomSheetAdapter(private val items: List<UnitItem>): RecyclerView.Adapter<CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder>() {
 
@@ -14,7 +15,7 @@ class CustomCocktailBottomSheetAdapter(private val items: List<UnitItem>): Recyc
         fun onClick(position: Int)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomCocktailBottomSheetUnitViewHolder {
         val binding = ListItemCustomCocktailBottomSheetUnitBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CustomCocktailBottomSheetUnitViewHolder(binding)
     }
@@ -23,7 +24,7 @@ class CustomCocktailBottomSheetAdapter(private val items: List<UnitItem>): Recyc
         return items.size
     }
 
-    override fun onBindViewHolder(holder: CustomCocktailBottomSheetAdapter.CustomCocktailBottomSheetUnitViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomCocktailBottomSheetUnitViewHolder, position: Int) {
         holder.bind(items[position], position)
     }
 

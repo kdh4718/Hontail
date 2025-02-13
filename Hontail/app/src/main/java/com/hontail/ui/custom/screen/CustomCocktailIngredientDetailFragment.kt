@@ -1,4 +1,4 @@
-package com.hontail.ui.custom
+package com.hontail.ui.custom.screen
 
 import android.content.Context
 import android.os.Bundle
@@ -12,7 +12,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentCustomCocktailIngredientDetailBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.util.CommonUtils
+import com.hontail.ui.custom.viewmodel.CustomCocktailIngredientDetailViewModel
 
 class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCocktailIngredientDetailBinding>(
     FragmentCustomCocktailIngredientDetailBinding::bind,
@@ -74,7 +74,7 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
     private fun initEvent() {
         binding.apply {
             // 단위 선택 - 화살표 아이콘 클릭 시
-            imageViewCustomCocktailIngredientDetailUnit.setOnClickListener {
+            textViewCustomCocktailIngredientDetailUnit.setOnClickListener {
 
                 val currentSelectedUnit = textViewCustomCocktailIngredientDetailUnit.text.toString()
 
@@ -91,7 +91,26 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
 
             // 재료 추가 버튼
             buttonCustomCocktailIngredientDetail.setOnClickListener {
+
+                viewModel.ingredientDetailInfo.value?.let { ingredient ->
+
+                    val ingredientQuantity = "${editTextCustomCocktailIngredientDetailContent.text} ${textViewCustomCocktailIngredientDetailUnit.text}"
+
+                    val newItem = CustomCocktailItem.IngredientItem(
+                        ingredient.ingredientId,
+                        ingredient.ingredientNameKor,
+                        ingredientQuantity,
+                        ingredient.ingredientImage,
+                        ingredient.ingredientAlcoholContent.toDouble(),
+                        ingredient.ingredientCategoryKor,
+                        ingredient.ingredientType
+                    )
+                    // 공유 ViewModel(MainActivityViewModel)에 재료 추가
+                    activityViewModel.addCustomCocktailIngredient(newItem)
+                }
+
                 parentFragmentManager.popBackStack("CustomCocktailIngredientDetailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                parentFragmentManager.popBackStack("CustomCocktailSearchFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
             }
         }
     }

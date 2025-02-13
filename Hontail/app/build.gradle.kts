@@ -66,6 +66,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    // ScalarsConverterFactory 의존성 추가
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
 
     //framework ktx dependency 추가
     implementation("androidx.fragment:fragment-ktx:1.6.2")
