@@ -20,6 +20,7 @@ class ApplicationClass : Application() {
 
     val SERVER_URL = "http://i12d207.p.ssafy.io:9090/"
 
+
 //    val SERVER_URL = "http://192.168.100.193:9090/"
 
     override fun onCreate() {
@@ -58,6 +59,13 @@ class ApplicationClass : Application() {
             .client(okHttpClient) // OkHttpClient 설정 적용
             .build()
 
+        retrofit9091 = Retrofit.Builder()
+            .baseUrl(SERVER_URL_9091)
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+
         // KaKao SDK 초기화
 //        val kakaoAppKey = getString(R.string.kakao_app_key)
 //        KakaoSdk.init(this, kakaoAppKey)
@@ -71,6 +79,7 @@ class ApplicationClass : Application() {
     companion object{
         lateinit var sharedPreferencesUtil: SharedPreferencesUtil
         lateinit var retrofit: Retrofit
+        lateinit var retrofit9091: Retrofit
 
         val gson : Gson = GsonBuilder()
             .setLenient()
@@ -84,5 +93,6 @@ class ApplicationClass : Application() {
             Manifest.permission.BLUETOOTH_ADVERTISE,
             Manifest.permission.BLUETOOTH_CONNECT
         )
+        const val SERVER_URL_9091 = "http://i12d207.p.ssafy.io:9091/"
     }
 }

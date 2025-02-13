@@ -25,6 +25,9 @@ class RetrofitUtil {
         // 칵테일 서비스
         val cocktailService = ApplicationClass.retrofit.create(CocktailService::class.java)
 
+        // 칵테일 추천 서비스
+        val recommendedCocktailService = ApplicationClass.retrofit9091.create(CocktailService::class.java)
+
         // 이미지 분석 서비스
         val pictureService = ApplicationClass.retrofit.create(PictureService::class.java)
 

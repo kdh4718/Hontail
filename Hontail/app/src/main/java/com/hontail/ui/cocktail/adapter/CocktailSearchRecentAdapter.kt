@@ -38,7 +38,7 @@ class CocktailSearchRecentAdapter(private val items: List<RecentItem>): Recycler
 
             binding.apply {
 
-                textViewListItemCocktailRecentItemName.text = item.cocktailName
+                textViewListItemCocktailRecentItemName.text = item.searchName
 
                 // 최근 검색 아이템으로 들어가기.
                 textViewListItemCocktailRecentItemName.setOnClickListener {

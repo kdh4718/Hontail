@@ -62,10 +62,6 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 )
             }
 
-            val items = mutableListOf<CocktailSearchItem>().apply {
-                add(CocktailSearchItem.SearchBar(null))
-                add(CocktailSearchItem.Result(cocktailList))
-            }
             val items2 = mutableListOf<CocktailSearchItem>().apply {
                 add(CocktailSearchItem.SearchBar(null))
                 add(CocktailSearchItem.Recent(recentList))
@@ -80,10 +76,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
 
     // 이벤트
     private fun initEvent() {
-
         binding.apply {
-
-
             cocktailSearchAdapter.cocktailSearchListener = object : CocktailSearchAdapter.ItemOnClickListener {
 
                 // 취소
@@ -107,4 +100,4 @@ sealed class CocktailSearchItem {
     data class Result(val resultList: List<CocktailListResponse>): CocktailSearchItem()
 }
 
-data class RecentItem(val cocktailName: String)
+data class RecentItem(val searchName: String)
