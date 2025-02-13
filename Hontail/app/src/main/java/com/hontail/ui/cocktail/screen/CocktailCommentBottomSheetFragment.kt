@@ -121,7 +121,7 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
                     // 기존 댓글 수정
                     else {
                         viewModel.updateComment(editingCommentId!!, content)
-                        editingCommentId == null
+                        editingCommentId = null
                     }
 
                     editTextCocktailCommentBottomSheetMessage.text.clear()
