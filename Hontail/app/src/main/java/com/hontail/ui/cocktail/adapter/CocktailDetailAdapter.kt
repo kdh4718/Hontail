@@ -154,7 +154,7 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
     inner class CocktailDetailIngredientsViewHolder(private val binding: ListItemCocktailDetailIngredientsBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(ingredients: List<CocktailIngredient>) {
             binding.apply {
-                val cocktailDetailIngredientAdapter = CocktailDetailIngredientAdapter(ingredients)
+                val cocktailDetailIngredientAdapter = CocktailDetailIngredientAdapter(context, ingredients)
                 recyclerViewCocktailDetailIngredientIngredient.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 recyclerViewCocktailDetailIngredientIngredient.adapter = cocktailDetailIngredientAdapter
             }
