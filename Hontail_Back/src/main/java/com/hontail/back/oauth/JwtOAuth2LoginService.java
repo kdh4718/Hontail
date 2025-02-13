@@ -28,13 +28,14 @@ public class JwtOAuth2LoginService {
             Map<String, Object> userInfo = getUserInfoFromProvider(provider, accessToken);
             String email = extractEmail(provider, userInfo);
             String nickname = extractNickname(provider, userInfo);
+            String imageUrl = extractImageUrl(provider, userInfo);
 
             if (email == null) {
                 throw new RuntimeException("OAuth2 인증에서 이메일을 찾을 수 없습니다.");
             }
 
-            log.debug("소셜 로그인 정보 추출 - Email: {}, Nickname: {}", email, nickname);
-            String jwtToken = jwtProvider.createToken(email, nickname);
+            log.debug("소셜 로그인 정보 추출 - Email: {}, Nickname: {}, ProfileImage : {}", email, nickname, imageUrl);
+            String jwtToken = jwtProvider.createToken(email, nickname, imageUrl);
             log.info("JWT 토큰 생성 완료");
 
             return jwtToken;
@@ -96,4 +97,19 @@ public class JwtOAuth2LoginService {
         };
         return nickname;
     }
+
+    private String extractImageUrl(String provider, Map<String, Object> attributes) {
+        String imageUrl = switch (provider.toLowerCase()) {
+            case "google" -> (String) attributes.get("name");
+            case "naver" -> {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+                String image = response != null ? (String) response.get("profile_image") : null;
+                yield image != null ? image : null;
+            }
+            default -> null;
+        };
+        return imageUrl;
+    }
+
 }
