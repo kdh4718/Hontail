@@ -75,16 +75,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
     fun initLogin() {
         NaverIdLoginSDK.initialize(requireContext(), "KY6PkSapyHMt232etHJz", "${NAVER_CLIENT_SECRET}", "hontail")
 
-        viewModel.userId.observe(viewLifecycleOwner) {
-            Log.d(TAG, "initLogin: $it") // 여기까지 정상 출력됨
+        viewModel.isUserDataReady.observe(viewLifecycleOwner) { isReady ->
+            if (isReady) {
+                val intent = Intent(requireContext(), MainActivity::class.java).apply {
+                    putExtra("user_id", viewModel.userId.value?.toInt())
+                    putExtra("user_nickname", viewModel.userNickname.value)
+                }
 
-            val intent = Intent(requireContext(), MainActivity::class.java).apply {
-                putExtra("user_id", it?.toInt())
-                putExtra("user_nickname", viewModel.userNickname.value)
+                Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}, user_nickname: ${intent.getStringExtra("user_nickname")}")
+                startActivity(intent)
+
             }
-
-            Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}") // 여기서 10이 찍혀야 정상
-            startActivity(intent)
         }
     }
 
@@ -106,7 +107,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
 
             imageViewLoginGoogle.setOnClickListener {
-                // TODO: 구글 로그인 추가 가능
+
             }
 
             // ✅ 비회원으로 시작하기 버튼 클릭 시 MainActivity로 이동
@@ -129,7 +130,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                     UserApiClient.instance.loginWithKakaoAccount(requireContext(), callback = callback)
                 } else if (token != null) {
                     Log.d(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
-                    viewModel.loginWithKakao(token.accessToken)
+//                    viewModel.loginWithKakao(token.accessToken)
                 }
             }
         } else {
@@ -157,7 +158,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
         })
     }
-    
+
     private fun startAutoSlide() {
         handler.postDelayed(autoScrollRunnable, 3000)
     }

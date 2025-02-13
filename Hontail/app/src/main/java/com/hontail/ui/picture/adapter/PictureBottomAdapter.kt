@@ -1,23 +1,29 @@
-package com.hontail.ui.picture
+package com.hontail.ui.picture.adapter
 
 import android.content.Context
 import android.graphics.Rect
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemPictureBottomBinding
-import com.hontail.ui.MainActivity
-import com.hontail.ui.cocktail.adapter.CocktailListFilterAdapter
+import com.hontail.ui.picture.screen.CocktailPictureResultFragment
 import com.hontail.util.CocktailItemAdapter
+
+private const val TAG = "PictureBottomAdapter_SSAFY"
 
 class PictureBottomAdapter(
     private val context: Context,
     private var data: CocktailPictureResultFragment.PictureResultType.Bottom
 ) : RecyclerView.Adapter<PictureBottomAdapter.ViewHolder>() {
+
+    lateinit var pictureBottomListener: ItemClickListener
+
+    interface ItemClickListener {
+        fun onClickCocktailItem(cocktailId: Int)
+    }
 
     // GridSpacing 클래스 추가
     class GridSpacingItemDecoration(
@@ -42,34 +48,9 @@ class PictureBottomAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CocktailPictureResultFragment.PictureResultType.Bottom) {
-            binding.textViewPictureResultCocktailList.text = item.cocktailCount
+            binding.textViewPictureResultCocktailList.text = "칵테일 " + item.cocktailCount + "개"
 
-            // 필터 리사이클러뷰 설정
-            val filters = listOf("찜", "시간", "도수", "베이스주")
-            val filterAdapter = CocktailListFilterAdapter(filters)
-
-            binding.recyclerViewPictureResultFilter.apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = filterAdapter
-            }
-
-            // 칵테일 리스트 리사이클러뷰 설정
-            val cocktails = mutableListOf<CocktailListResponse>().apply {
-                add(
-                    CocktailListResponse(
-                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
-                        "2025-01-27 00:13:32", 5, false
-                    )
-                )
-                add(
-                    CocktailListResponse(
-                        2, "에스프레소 마티니", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 0, 0, "리큐어",
-                        "2025-01-27 00:13:32", 3, true
-                    )
-                )
-            }
-
-            val cocktailAdapter = CocktailItemAdapter(context, cocktails)
+            val cocktailAdapter = CocktailItemAdapter(context, item.cocktails)
 
             binding.recyclerViewPictureResultCocktailList.apply {
                 layoutManager = GridLayoutManager(context, 2)
@@ -77,18 +58,16 @@ class PictureBottomAdapter(
                 // ItemDecoration 추가
                 if (itemDecorationCount == 0) {
                     addItemDecoration(GridSpacingItemDecoration(2, 20))
-                }
-            }
 
-            // 필터 클릭 이벤트 설정
-            filterAdapter.cocktailListFilterListener = object : CocktailListFilterAdapter.ItemOnClickListener {
-                override fun onClickFilter(position: Int) {
-                    val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
-                    bottomSheetFragment.show(
-                        (context as MainActivity).supportFragmentManager,
-                        bottomSheetFragment.tag
-                    )
                 }
+
+                cocktailAdapter.cocktailItemListener =
+                    object : CocktailItemAdapter.ItemOnClickListener {
+                        override fun onClickCocktailItem(cocktailId: Int) {
+                            pictureBottomListener.onClickCocktailItem(cocktailId)
+                        }
+
+                    }
             }
         }
     }
@@ -108,4 +87,10 @@ class PictureBottomAdapter(
     }
 
     override fun getItemCount(): Int = 1
+
+    fun updateData(newData: CocktailPictureResultFragment.PictureResultType.Bottom) {
+        Log.d(TAG, "AI updateData: ${newData}")
+        data = newData
+        notifyDataSetChanged()
+    }
 }

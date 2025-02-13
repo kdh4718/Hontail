@@ -11,38 +11,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.Map;
 
-@Controller  // @RestController에서 @Controller로 변경
+@Controller
 @CrossOrigin("*")
 @RequestMapping("/api")
 public class LoginController {
 
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired // 의존성 주입
+    @Autowired
     private JwtOAuth2LoginService oAuth2UserService;
 
     @GetMapping("/login")
     public String loginPage() {
         log.info("로그인 페이지 접속 시도");
-        return "login";  // resources/templates/login.html을 찾음
+        return "login";
     }
 
     @PostMapping("/login")
-    @ResponseBody  // JSON 응답을 위해 @ResponseBody 추가
+    @ResponseBody
     @Operation(description = "로그인")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
         log.debug("Received login request: {}", request);
         try {
-            String jwt = oAuth2UserService.login(request.getProvider(), request.getToken());
+            Map<String, String> tokens = oAuth2UserService.login(request.getProvider(), request.getToken());
             log.info("JWT 토큰 생성 성공");
-            return ResponseEntity.ok(Collections.singletonMap("jwt", jwt));
+            return ResponseEntity.ok(tokens);
         } catch (Exception e) {
             log.error("로그인 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("error", "Internal server error"));
+                    .body(Map.of("error", "Internal server error"));
         }
     }
 }

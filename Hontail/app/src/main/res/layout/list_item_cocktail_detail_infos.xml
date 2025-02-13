@@ -68,23 +68,14 @@
     <TextView
         android:id="@+id/textViewCocktailDetailNameKor"
         style="@style/Font_Bold_22_Basic_White"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="32dp"
         android:text="쉐리 코블러"
+        app:layout_constraintEnd_toStartOf="@+id/textViewCocktailDetailAlcoholLevel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageViewCocktailDetailImage" />
-
-    <TextView
-        android:id="@+id/textViewCocktailDetailNameEng"
-        style="@style/Font_SemiBold_18_Basic_Pink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Sherry cobbler"
-        app:layout_constraintStart_toStartOf="@id/textViewCocktailDetailNameKor"
-        app:layout_constraintTop_toBottomOf="@id/textViewCocktailDetailNameKor" />
 
     <TextView
         android:id="@+id/textViewCocktailDetailAlcoholLevel"
@@ -92,19 +83,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="15%"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewCocktailDetailNameEng"
-        app:layout_constraintEnd_toEndOf="@id/textViewCocktailDetailNameKor"
-        app:layout_constraintTop_toTopOf="@id/textViewCocktailDetailNameEng" />
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewCocktailDetailNameKor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewCocktailDetailNameKor" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayoutListItemCocktailDetailZzimComments"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintEnd_toEndOf="@id/textViewCocktailDetailNameKor"
-        app:layout_constraintStart_toStartOf="@id/textViewCocktailDetailNameKor"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailDetailNameEng">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailDetailNameKor">
 
         <ImageView
             android:id="@+id/imageViewCocktailDetailZzim"
@@ -154,10 +146,11 @@
         style="@style/Font_Medium_16_Basic_White"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
         android:text="아몬틸라도 쉐리와 팔로 코르타도가 어우러진 고전적이고 상쾌한 맛의 칵테일 입니다."
-        app:layout_constraintEnd_toEndOf="@id/textViewCocktailDetailNameKor"
-        app:layout_constraintStart_toStartOf="@id/textViewCocktailDetailNameKor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayoutListItemCocktailDetailZzimComments" />
 
     <com.google.android.material.divider.MaterialDivider

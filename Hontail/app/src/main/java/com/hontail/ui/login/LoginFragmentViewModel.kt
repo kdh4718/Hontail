@@ -3,6 +3,7 @@ package com.hontail.ui.login
 import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,8 +17,8 @@ private const val TAG = "LoginFragmentViewModel_SSAFY"
 
 class LoginFragmentViewModel : ViewModel() {
 
-    private val _jwtToken = MutableLiveData<String>()
-    val jwtToken: LiveData<String?> get() = _jwtToken
+    private val _refreshTk = MutableLiveData<String>()
+    val refreshTk: LiveData<String?> get() = _refreshTk
 
     private val _userId = MutableLiveData<String>()
     val userId: LiveData<String?> get() = _userId
@@ -29,22 +30,33 @@ class LoginFragmentViewModel : ViewModel() {
     val userNickname: LiveData<String?> get() = _userNickname
 
 
+    private val _isUserDataReady = MediatorLiveData<Boolean>().apply {
+        addSource(_userId) { checkUserDataReady() }
+        addSource(_userNickname) { checkUserDataReady() }
+    }
+    val isUserDataReady: LiveData<Boolean> get() = _isUserDataReady
+
+    private fun checkUserDataReady() {
+        _isUserDataReady.value = !(_userId.value.isNullOrEmpty() || _userNickname.value.isNullOrEmpty())
+    }
+
+
     fun loginWithNaver(accessToken: String) {
         viewModelScope.launch {
             runCatching {
                 Log.d(TAG, "loginWithNaver: $accessToken")
                 RetrofitUtil.loginService.socialLogin(LoginRequest(token = accessToken, provider = "Naver"))
             }.onSuccess { response ->
-                Log.d(TAG, "loginWithNaver: ${response.code()} - ${response.message()}")
+                Log.d(TAG, "loginWithNaver: ${response.code()} - ${response.message()} - ${response.body()?.refreshToken} - ${response}")
                 if (response.isSuccessful) {
-                    val jwt = response.body()?.jwt
-                    _jwtToken.value = jwt!!  // JWT 저장
-                    Log.d(TAG, "Login Success! JWT: ${_jwtToken.value}")
+                    val refreshTk = response.body()?.refreshToken
+                    _refreshTk.value = refreshTk!!  // JWT 저장
+                    Log.d(TAG, "Login Success! JWT: ${_refreshTk.value}")
 
-                    ApplicationClass.sharedPreferencesUtil.saveJwtToken(jwt)
+                    ApplicationClass.sharedPreferencesUtil.saveJwtToken(refreshTk)
 
                     // JWT 디코딩 및 사용자 정보 저장
-                    jwt?.let { decodeJwt(it) }
+                    refreshTk.let { decodeJwt(it) }
 
                 } else {
                     val errorBody = response.errorBody()?.string()
@@ -58,32 +70,32 @@ class LoginFragmentViewModel : ViewModel() {
         }
     }
 
-    fun loginWithKakao(accessToken: String) {
-        viewModelScope.launch {
-            runCatching {
-                Log.d(TAG, "loginWithKakao: $accessToken")
-                RetrofitUtil.loginService.socialLogin(LoginRequest(token = accessToken, provider = "Kakao"))
-            }.onSuccess { response ->
-                Log.d(TAG, "loginWithKakao: ${response.code()} - ${response.message()}")
-                if (response.isSuccessful) {
-                    val jwt = response.body()?.jwt
-                    _jwtToken.value = jwt!!  // JWT 저장
-                    Log.d(TAG, "Login Success! JWT: ${_jwtToken.value}")
-
-                    // JWT 디코딩 및 사용자 정보 저장
-                    jwt?.let { decodeJwt(it) }
-
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    Log.e(TAG, "Login Failed: $errorBody")
-                    Log.e(TAG, "Response code: ${response.code()}, Message: ${response.message()}")
-                }
-            }.onFailure { throwable ->
-                Log.e(TAG, "Network error: ${throwable.message}")
-                throwable.printStackTrace()
-            }
-        }
-    }
+//    fun loginWithKakao(accessToken: String) {
+//        viewModelScope.launch {
+//            runCatching {
+//                Log.d(TAG, "loginWithKakao: $accessToken")
+//                RetrofitUtil.loginService.socialLogin(LoginRequest(token = accessToken, provider = "Kakao"))
+//            }.onSuccess { response ->
+//                Log.d(TAG, "loginWithKakao: ${response.code()} - ${response.message()}")
+//                if (response.isSuccessful) {
+//                    val jwt = response.body()?.jwt
+//                    _jwtToken.value = jwt!!  // JWT 저장
+//                    Log.d(TAG, "Login Success! JWT: ${_jwtToken.value}")
+//
+//                    // JWT 디코딩 및 사용자 정보 저장
+//                    jwt?.let { decodeJwt(it) }
+//
+//                } else {
+//                    val errorBody = response.errorBody()?.string()
+//                    Log.e(TAG, "Login Failed: $errorBody")
+//                    Log.e(TAG, "Response code: ${response.code()}, Message: ${response.message()}")
+//                }
+//            }.onFailure { throwable ->
+//                Log.e(TAG, "Network error: ${throwable.message}")
+//                throwable.printStackTrace()
+//            }
+//        }
+//    }
 
     // 🔹 JWT 디코딩 메서드
     private fun decodeJwt(jwt: String) {
@@ -107,6 +119,7 @@ class LoginFragmentViewModel : ViewModel() {
             _userNickname.value = json.optString("user_nickname", "Unknown")
 
             Log.d(TAG, "Extracted UserId: ${_userId.value}, Email: ${_userEmail.value}, userNickname: ${_userNickname.value}")
+
 
         } catch (e: Exception) {
             Log.e(TAG, "Error decoding JWT: ${e.message}")

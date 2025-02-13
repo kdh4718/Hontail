@@ -1,5 +1,9 @@
 package com.hontail.back.oauth;
 
+import com.hontail.back.db.entity.RefreshToken;
+import com.hontail.back.db.entity.User;
+import com.hontail.back.db.repository.RefreshTokenRepository;
+import com.hontail.back.db.repository.UserRepository;
 import com.hontail.back.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +25,11 @@ public class JwtOAuth2LoginService {
 
     private final JwtProvider jwtProvider;
     private final RestTemplate restTemplate;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     @Transactional
-    public String login(String provider, String accessToken) {
+    public Map<String, String> login(String provider, String accessToken) {
         try {
             Map<String, Object> userInfo = getUserInfoFromProvider(provider, accessToken);
             String email = extractEmail(provider, userInfo);
@@ -35,15 +41,31 @@ public class JwtOAuth2LoginService {
             }
 
             log.debug("소셜 로그인 정보 추출 - Email: {}, Nickname: {}, ProfileImage : {}", email, nickname, imageUrl);
+
+            // JwtProvider의 createToken 메서드는 이미 액세스, 리프레시 토큰을 함께 처리하고 있음
             String jwtToken = jwtProvider.createToken(email, nickname, imageUrl);
             log.info("JWT 토큰 생성 완료");
 
-            return jwtToken;
+            // 리프레시 토큰을 찾아옴
+            RefreshToken refreshToken = refreshTokenRepository.findByUserId(
+                    userRepository.findByUserEmail(email)
+                            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."))
+                            .getId()
+            ).orElseThrow(() -> new RuntimeException("리프레시 토큰을 찾을 수 없습니다."));
+
+            return Map.of(
+                    "accessToken", jwtToken,
+                    "refreshToken", refreshToken.getToken()
+            );
 
         } catch (Exception e) {
             log.error("OAuth2 로그인 처리 중 오류 발생", e);
             throw e;
         }
+    }
+
+    public String refreshAccessToken(String refreshToken) {
+        return jwtProvider.refreshAccessToken(refreshToken);
     }
 
     private Map<String, Object> getUserInfoFromProvider(String provider, String accessToken) {
@@ -100,7 +122,7 @@ public class JwtOAuth2LoginService {
 
     private String extractImageUrl(String provider, Map<String, Object> attributes) {
         String imageUrl = switch (provider.toLowerCase()) {
-            case "google" -> (String) attributes.get("name");
+            case "google" -> (String) attributes.get("picture");
             case "naver" -> {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> response = (Map<String, Object>) attributes.get("response");
@@ -111,5 +133,4 @@ public class JwtOAuth2LoginService {
         };
         return imageUrl;
     }
-
 }

@@ -24,7 +24,7 @@ public class BartenderServiceImpl implements BartenderService {
     private final OpenAiService openAiService;
     private final Map<Integer, List<ChatMessageDto>> chatHistory = new HashMap<>();    // 사용자별 채팅 기록
     private final List<Integer> recentRecommendations = new ArrayList<>();           // 최근 추천 기록
-    private static final int MAX_HISTORY_SIZE = 3;                                   // 최근 추천 기록 최대 크기
+    private static final int MAX_HISTORY_SIZE = 5;                                   // 최근 추천 기록 최대 크기
 
     // 응답 마커 상수
     private static final String RECOMMENDATION_MARKER = "###RECOMMENDATION###";
@@ -142,6 +142,10 @@ public class BartenderServiceImpl implements BartenderService {
                 throw new CustomException(ErrorCode.BARTENDER_OPENAI_ERROR);
             }
 
+            if (nickname.equals("손님")) {
+                greeting += " 추가로 로그인하셔서 저를 이용하신다면, 대화 내역을 토대로 더 개인화된 추천을 받으실 수 있어요!";
+            }
+
             return greeting;
         } catch (Exception e) {
             log.error("인사말 생성 중 오류 발생: {}", e.getMessage());
@@ -198,27 +202,39 @@ public class BartenderServiceImpl implements BartenderService {
                 "   - 추천할 수 있는 유일한 칵테일: %s (도수: %d%%)\n" +
                 "   - 손님 호칭: %s\n\n" +
                 "2. 응답 규칙:\n" +
+                "   - 자연스러운 대화 흐름 유지\n" +
                 "   - 손님의 감정과 경험에 먼저 공감\n" +
                 "   - 공감 내용과 연결하여 칵테일 추천\n" +
                 "   - 전문적이고 따뜻한 톤 유지\n" +
                 "   - 이전 대화 맥락 유지\n" +
                 "   - 다른 칵테일 언급하지 않기\n\n" +
-                "3. 첫 방문 손님 응답 예시:\n" +
-                "   - 처음 방문하셨네요! 특별한 %s 칵테일로 시작하시는 건 어떠세요?\n" +
-                "   - 첫 방문을 환영합니다! %s의 매력적인 맛으로 좋은 추억을 만들어보세요.\n" +
-                "   - 새로운 손님을 맞이하게 되어 기쁩니다. %s와 함께 특별한 시간 보내세요.\n\n" +
+                "3. 칵테일 추천 규칙:\n" +
+                "   - 추천해야 하는 경우:\n" +
+                "     * 손님이 직접적으로 추천을 요청할 때 ('추천해주세요', '다른 거 없나요?', '다른거는요?' 등)\n" +
+                "     * 손님이 기분이나 상황을 응답하였을 때\n" +
+                "     * 손님이 이전 추천과 다른 새로운 칵테일을 원할 때\n" +
+                "   - 추천 시 응답 예시:\n" +
+                "     * '네, 오늘은 %s를 추천드립니다. 이 칵테일은...' + RECOMMENDATION\n" +
+                "     * '다른 칵테일을 원하신다면, %s는 어떠세요?' + RECOMMENDATION\n" +
+                "   - 절대 추천하지 않아야 하는 경우:\n" +
+                "     * 이전 추천 목록을 물어볼 때 (단순히 기억하고 있음을 보여주기)\n" +
+                "     * 술을 마시지 않겠다는 의사 표현시\n" +
+                "     * 단순 감정 표현이나 일상 대화시 (예: 안녕하세요, 감사합니다)\n" +
                 "4. 응답 형식:\n" +
                 "   - 칵테일 추천 시: 응답 끝에 '%s' 추가\n" +
                 "   - 추천하지 않을 시: 응답 끝에 '%s' 추가\n\n" +
-                "5. 추천 기준:\n" +
-                "   - 추천 요청 시\n" +
-                "   - 이전 추천 거절 시\n" +
-                "   - 상황이 어울릴 때\n" +
-                "   - 술 자체를 거절할 경우 추천 중단",
+                "5. 대화 예시:\n" +
+                "   Q: '지금까지 어떤 칵테일을 추천해주셨나요?'\n" +
+                "   A: (이전 추천 내역 언급, 취향 파악 시도) + NO_RECOMMENDATION\n\n" +
+                "   Q: '오늘 기분이 좋아서 특별한 걸 마시고 싶어요'\n" +
+                "   A: (공감 + 칵테일 추천) + RECOMMENDATION\n\n" +
+                "   Q: '술은 안 마시고 싶어요'\n" +
+                "   A: (이해와 공감 표현) + NO_RECOMMENDATION\n\n" +
+                "   Q: '아까 추천해주신 칵테일 다시 한번 설명해주세요'\n" +
+                "   A: (해당 칵테일 재설명) + RECOMMENDATION",
                 cocktail.getCocktailName(),
                 cocktail.getAlcoholContent(),
                 effectiveNickname,
-                cocktail.getCocktailName(),
                 cocktail.getCocktailName(),
                 cocktail.getCocktailName(),
                 RECOMMENDATION_MARKER,
@@ -251,33 +267,135 @@ public class BartenderServiceImpl implements BartenderService {
                 .build();
 
         try {
-            // API 호출 및 응답 받기
-            String response = openAiService.createChatCompletion(request)
-                    .getChoices().get(0).getMessage().getContent();
-
-            if (response == null || response.trim().isEmpty()) {
-                throw new CustomException(ErrorCode.BARTENDER_OPENAI_ERROR);
-            }
-
-            // 응답 처리 및 마커 확인
+            int maxRetries = 3;  // 최대 재시도 횟수
+            String response = null;
+            boolean isValidResponse = false;
             boolean isRecommendation = false;
-            String cleanResponse = response;
+            String cleanResponse = null;
 
-            if (response.contains(RECOMMENDATION_MARKER)) {
-                isRecommendation = true;
-                cleanResponse = response.replace(RECOMMENDATION_MARKER, "").trim();
-            } else if (response.contains(NO_RECOMMENDATION_MARKER)) {
+            for (int attempt = 0; attempt < maxRetries && !isValidResponse; attempt++) {
+                // API 호출 및 응답 받기
+                response = openAiService.createChatCompletion(request)
+                        .getChoices().get(0).getMessage().getContent();
+
+                if (response == null || response.trim().isEmpty()) {
+                    if (attempt == maxRetries - 1) {
+                        throw new CustomException(ErrorCode.BARTENDER_OPENAI_ERROR);
+                    }
+                    continue;
+                }
+
+                // 응답 처리 및 마커 확인
                 isRecommendation = false;
-                cleanResponse = response.replace(NO_RECOMMENDATION_MARKER, "").trim();
-            } else {
-                log.warn("응답에 추천 마커가 없습니다. 응답: {}", response);
-                isRecommendation = response.contains(cocktail.getCocktailName()) &&
-                        (response.contains("추천") || response.contains("권해드리"));
+                cleanResponse = response;
+
+                // 마커 확인 및 제거
+                if (response.contains(RECOMMENDATION_MARKER)) {
+                    isRecommendation = true;
+                    cleanResponse = response.replace(RECOMMENDATION_MARKER, "").trim();
+                } else if (response.contains(NO_RECOMMENDATION_MARKER)) {
+                    isRecommendation = false;
+                    cleanResponse = response.replace(NO_RECOMMENDATION_MARKER, "").trim();
+                    isValidResponse = true;  // 추천하지 않는 경우는 항상 유효
+                    break;
+                } else {
+                    log.warn("응답에 마커가 없습니다. 응답 분석을 시작합니다.");
+
+                    // 이전 추천 내역 관련 질문 확인
+                    boolean isAskingPreviousRecommendations =
+                            (userMessage.contains("어떤") || userMessage.contains("무슨") ||
+                                    userMessage.contains("뭐") || userMessage.contains("어떻게")) &&
+                                    (userMessage.contains("추천") || userMessage.contains("칵테일")) &&
+                                    (userMessage.contains("했") || userMessage.contains("주") ||
+                                            userMessage.contains("받"));
+
+                    // 술 거절 의사 확인
+                    boolean isRejectingAlcohol =
+                            userMessage.toLowerCase().contains("안 마실래") ||
+                                    userMessage.contains("그만") ||
+                                    userMessage.contains("안주세요") ||
+                                    userMessage.contains("괜찮아요") ||
+                                    userMessage.contains("다음에") ||
+                                    userMessage.contains("안 마실");
+
+                    // 새로운 추천 요청 확인 추가
+                    boolean isAskingNewRecommendation =
+                            userMessage.contains("다른") ||
+                                    userMessage.contains("또") ||
+                                    userMessage.contains("다음") ||
+                                    (userMessage.contains("추천") && userMessage.length() < 10) ||
+                                    (userMessage.endsWith("는요?") || userMessage.endsWith("있어요?"));
+
+                    if (isAskingPreviousRecommendations || isRejectingAlcohol) {
+                        isRecommendation = false;
+                        isValidResponse = true;  // 추천하지 않는 경우는 항상 유효
+                        break;
+                    } else if (isAskingNewRecommendation && !isRejectingAlcohol) {
+                        isRecommendation = true;
+                    } else {
+                        boolean containsCocktailName = response.contains(cocktail.getCocktailName());
+                        boolean hasRecommendationIntent =
+                                response.contains("추천") ||
+                                        response.contains("권해드리") ||
+                                        response.contains("어떠세요") ||
+                                        response.contains("마셔보세요") ||
+                                        response.contains("준비해드릴게요") ||
+                                        response.contains("드시면 좋을 것 같아요") ||
+                                        (response.contains(cocktail.getCocktailName()) &&
+                                                (response.contains("는") || response.contains("을") || response.contains("를")));
+
+                        boolean hasRejectionIntent =
+                                response.contains("죄송") ||
+                                        response.contains("다음에") ||
+                                        response.contains("안마시") ||
+                                        response.contains("힘들") ||
+                                        response.contains("괜찮으세요");
+
+                        isRecommendation = containsCocktailName &&
+                                hasRecommendationIntent &&
+                                !hasRejectionIntent;
+                    }
+                }
+
+                // 추천인 경우에만 칵테일 이름 검증
+                if (isRecommendation) {
+                    if (response.contains(cocktail.getCocktailName())) {
+                        isValidResponse = true;
+                    } else {
+                        log.warn("응답이 선택된 칵테일과 일치하지 않습니다. 재시도 #{}", attempt + 1);
+                        continue;
+                    }
+                } else {
+                    isValidResponse = true;  // 추천이 아닌 경우는 항상 유효
+                }
+
+                // 추천일 경우 안내 문구 추가
+                if (isRecommendation) {
+                    boolean hasClickGuide =
+                            cleanResponse.contains("이미지를 클릭") ||
+                                    cleanResponse.contains("상세 정보");
+
+                    if (!hasClickGuide) {
+                        if (response.contains("다시") || response.contains("재")) {
+                            cleanResponse += " 칵테일 상세 정보는 이미지를 클릭하시면 확인하실 수 있어요!";
+                        } else {
+                            cleanResponse += " 말씀드린 칵테일이 궁금하시다면 이미지를 클릭해서 자세히 살펴보실 수 있어요!";
+                        }
+                    }
+                }
+
+                // 응답 길이 제한
+                if (cleanResponse.length() > 1000) {
+                    if (attempt == maxRetries - 1) {
+                        throw new CustomException(ErrorCode.BARTENDER_RESPONSE_TOO_LONG);
+                    }
+                    continue;
+                }
             }
 
-            // 응답 길이 제한
-            if (cleanResponse.length() > 1000) {
-                throw new CustomException(ErrorCode.BARTENDER_RESPONSE_TOO_LONG);
+            // 모든 재시도가 실패한 경우
+            if (!isValidResponse) {
+                throw new CustomException(ErrorCode.BARTENDER_OPENAI_ERROR);
             }
 
             // 로그인한 사용자만 채팅 기록 저장

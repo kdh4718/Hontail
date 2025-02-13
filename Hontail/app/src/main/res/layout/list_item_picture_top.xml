@@ -24,14 +24,14 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="10dp"
         android:src="@drawable/add_ingredient"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textViewPictureResultSuggestion" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPictureResultIngredient"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
+        android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
