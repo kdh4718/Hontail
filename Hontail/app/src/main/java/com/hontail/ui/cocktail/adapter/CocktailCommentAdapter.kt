@@ -1,7 +1,9 @@
 package com.hontail.ui.cocktail.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +12,7 @@ import com.hontail.R
 import com.hontail.data.model.response.Comment
 import com.hontail.databinding.ListItemCocktailCommentBinding
 
+private const val TAG = "CocktailCommentAdapter"
 class CocktailCommentAdapter(private val context: Context, private var commentList: MutableList<Comment>, private val userId: Int?) : RecyclerView.Adapter<CocktailCommentAdapter.CocktailCommentHolder>() {
 
     lateinit var cocktailCommentListener: ItemOnClickListener
@@ -70,8 +73,12 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
                 textViewCocktailCommentUserName.text = item.userNickname
                 textViewCocktailCommentUserComment.text = item.content
 
+                Log.d(TAG, "bindInfo: 댓글 userId: ${item.userId} / 로그인한 userId: $userId")
                 // 현재 로그인 한 사용자 id와 같은 댓글 사용자 id에서만 활성화되도록 '>'
-                imageViewCocktailCommentUserComment.isEnabled = item.userId == userId
+                if(item.userId != userId) {
+                    imageViewCocktailCommentUserComment.visibility = View.GONE
+                }
+
 
                 // 초기 상태 설정
                 contentContainer.translationX = if (swipedItems.contains(adapterPosition)) SWIPE_AMOUNT else 0f
