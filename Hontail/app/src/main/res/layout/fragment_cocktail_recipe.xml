@@ -39,6 +39,17 @@
                 app:layout_constraintStart_toEndOf="@+id/imageViewCocktailRecipeGoBack"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/textViewCocktailRecipeEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="완료"
+                style="@style/Font_Bold_16_Basic_White"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageButtonCocktailRecipeSideBar"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageButton
                 android:id="@+id/imageButtonCocktailRecipeSideBar"
                 android:layout_width="wrap_content"
