@@ -370,4 +370,16 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         }
     }
 
+    fun getRecommendedCocktailId(){
+        viewModelScope.launch {
+            runCatching {
+                RetrofitUtil.recommendedCocktailService.getRecommendedCocktail(userId)
+            }.onSuccess {
+                setCocktailId(it)
+            }.onFailure {
+                Log.d(TAG, "getRecommendedCocktailId: ${it.message}")
+                setCocktailId(1)
+            }
+        }
+    }
 }

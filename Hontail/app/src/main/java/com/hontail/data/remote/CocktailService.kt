@@ -3,6 +3,7 @@ package com.hontail.data.remote
 import com.hontail.data.model.response.CocktailResponse
 import com.hontail.data.model.response.CocktailTopLikedResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CocktailService {
@@ -21,4 +22,9 @@ interface CocktailService {
         @Query("size") size: Int,
         @Query("isCustom") isCustom: Boolean
     ): CocktailResponse
+
+    @GET("/recommend/{user_id}")
+    suspend fun getRecommendedCocktail(
+        @Path("user_id") userId: Int
+    ): Int
 }
