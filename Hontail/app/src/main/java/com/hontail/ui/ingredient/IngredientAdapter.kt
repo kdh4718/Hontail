@@ -9,23 +9,22 @@ import com.hontail.R
 import androidx.core.content.res.ResourcesCompat
 
 class IngredientAdapter : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
-    private var ingredients = listOf<Ingredient>()
+    var ingredients = listOf<Ingredient>()
+    var itemClickListener: ((Int) -> Unit)? = null
 
     class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nameTextView: TextView = itemView as TextView
 
         init {
-            val density = itemView.context.resources.displayMetrics.density
-            val heightInPixels = (20 * density).toInt()
-
             nameTextView.apply {
                 layoutParams = RecyclerView.LayoutParams(
                     RecyclerView.LayoutParams.MATCH_PARENT,
-                    heightInPixels
+                    ViewGroup.LayoutParams.WRAP_CONTENT
                 )
                 typeface = ResourcesCompat.getFont(context, R.font.suit_semibold)
                 setTextColor(context.getColor(R.color.basic_white))
                 textSize = 16f
+                setPadding(0, 32, 0, 32) // 상하 여백 추가
             }
         }
 
@@ -37,7 +36,11 @@ class IngredientAdapter : RecyclerView.Adapter<IngredientAdapter.IngredientViewH
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(android.R.layout.simple_list_item_1, parent, false)
-        return IngredientViewHolder(view)
+        return IngredientViewHolder(view).apply {
+            itemView.setOnClickListener {
+                itemClickListener?.invoke(adapterPosition)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {

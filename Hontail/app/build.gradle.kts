@@ -66,6 +66,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    // ScalarsConverterFactory 의존성 추가
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
 
     //framework ktx dependency 추가
     implementation("androidx.fragment:fragment-ktx:1.6.2")
@@ -89,7 +91,7 @@ dependencies {
 
     // 원형 이미지
     implementation ("de.hdodenhof:circleimageview:3.1.0")
-
+    // indicator
     implementation("me.relex:circleindicator:2.1.6")
 
     // kakao login
@@ -98,7 +100,7 @@ dependencies {
     implementation("com.navercorp.nid:oauth:5.3.0")
     // google login
     implementation("com.google.android.gms:play-services-auth:21.3.0")
-
+    // flexbox
     implementation("com.google.android.flexbox:flexbox:3.0.0")
 
     // Room DB
@@ -111,4 +113,7 @@ dependencies {
     // Glide 사용
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+    // Paging 3
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 }

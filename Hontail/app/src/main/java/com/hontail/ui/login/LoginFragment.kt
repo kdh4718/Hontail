@@ -80,6 +80,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
             val intent = Intent(requireContext(), MainActivity::class.java).apply {
                 putExtra("user_id", it?.toInt())
+                putExtra("user_nickname", viewModel.userNickname.value)
             }
 
             Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}") // 여기서 10이 찍혀야 정상

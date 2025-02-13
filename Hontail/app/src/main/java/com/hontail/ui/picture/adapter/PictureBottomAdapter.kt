@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemPictureBottomBinding
 import com.hontail.ui.MainActivity
-import com.hontail.ui.cocktail.CocktailListFilterAdapter
 import com.hontail.ui.picture.screen.CocktailPictureResultFragment
 import com.hontail.ui.picture.screen.FilterBottomSheetFragment
+import com.hontail.ui.cocktail.adapter.CocktailListFilterAdapter
 import com.hontail.util.CocktailItemAdapter
 
 class PictureBottomAdapter(

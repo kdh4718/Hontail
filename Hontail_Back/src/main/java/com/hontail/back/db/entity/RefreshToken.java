@@ -22,7 +22,7 @@ public class RefreshToken {
     @Column(name = "user_id", nullable = false)
     private int userId;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "VARCHAR(2048)", nullable = false)
     private String token;
 
     @Column(name = "expiry_date", nullable = false)

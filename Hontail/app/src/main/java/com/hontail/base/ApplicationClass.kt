@@ -13,6 +13,7 @@ import com.kakao.sdk.common.KakaoSdk
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 class ApplicationClass : Application() {
@@ -24,8 +25,6 @@ class ApplicationClass : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        KakaoSdk.init(this, R.string.kakao_app_key.toString())
-
         sharedPreferencesUtil = SharedPreferencesUtil(applicationContext)
         // 앱이 처음 생성되는 순간, retrofit 인스턴스를 생성
 
@@ -35,16 +34,34 @@ class ApplicationClass : Application() {
 
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .readTimeout(5000, TimeUnit.MILLISECONDS) // 읽기 시간 초과
-            .connectTimeout(5000, TimeUnit.MILLISECONDS) // 연결 시간 초과
-            .build()
+            .addInterceptor { chain ->
+                val originalRequest = chain.request()
+                val jwtToken = sharedPreferencesUtil.getJwtToken()
 
+                // JWT가 존재하면 Authorization 헤더 추가
+                val requestBuilder = originalRequest.newBuilder()
+                jwtToken?.let {
+                    requestBuilder.addHeader("Authorization", "Bearer $it")
+                }
+
+                val newRequest = requestBuilder.build()
+                chain.proceed(newRequest)
+            }
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .connectTimeout(5000, TimeUnit.MILLISECONDS)
+            .build()
 
         retrofit = Retrofit.Builder()
             .baseUrl(SERVER_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(ScalarsConverterFactory.create()) // 단순 문자열 응답 처리
+            .addConverterFactory(GsonConverterFactory.create(gson)) // JSON 응답 처리
             .client(okHttpClient) // OkHttpClient 설정 적용
             .build()
+
+        // KaKao SDK 초기화
+//        val kakaoAppKey = getString(R.string.kakao_app_key)
+//        KakaoSdk.init(this, kakaoAppKey)
+
 
         // 앱 처음 생성되는 순간 룸 디비 생성.
         IngredientRepository.initialize(this)
