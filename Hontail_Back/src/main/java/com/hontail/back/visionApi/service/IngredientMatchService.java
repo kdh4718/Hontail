@@ -48,7 +48,7 @@ public class IngredientMatchService {
 
         List<CocktailIngredientCountDto> sortedCocktailStats = cocktailCountStats.stream()
                 .sorted(Comparator.comparing(CocktailIngredientCountDto::getMissingIngredients))
-                .limit(100)
+                .limit(40)
                 .toList();
 
         List<Integer> cocktailIds = sortedCocktailStats.stream()
