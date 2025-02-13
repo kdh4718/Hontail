@@ -25,6 +25,7 @@ interface CocktailService {
 
     @GET("/recommend/{user_id}")
     suspend fun getRecommendedCocktail(
-        @Path("user_id") userId: Int
+        @Path("user_id") userId: Int,
+        @Query("top_n") top_n: Int
     ): Int
 }
