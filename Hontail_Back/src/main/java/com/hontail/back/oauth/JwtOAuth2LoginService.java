@@ -90,7 +90,7 @@ public class JwtOAuth2LoginService {
             case "naver" -> {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-                String name = response != null ? (String) response.get("name") : null;
+                String name = response != null ? (String) response.get("nickname") : null;
                 yield name != null ? name : "Unknown User";
             }
             default -> "Unknown User";
