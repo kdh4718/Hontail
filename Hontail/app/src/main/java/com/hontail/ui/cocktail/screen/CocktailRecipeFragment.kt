@@ -147,6 +147,12 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
                                     contentBinding.viewPagerCocktailRecipeViewPager.currentItem = currentItem + 1
                                 }
                             }
+                            result.contains("이전") -> {
+                                val currentItem = contentBinding.viewPagerCocktailRecipeViewPager.currentItem
+                                if (currentItem > 0) {
+                                    contentBinding.viewPagerCocktailRecipeViewPager.currentItem = currentItem - 1
+                                }
+                            }
                         }
                     }
                     // 결과 처리 후 딜레이를 주고 재시작
@@ -186,6 +192,8 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
                 val totalSteps = detail.recipes.size
                 contentBinding.indicatorCocktailRecipeIndicator.max = totalSteps
                 updateProgress(1, totalSteps)
+                // 초기에는 완료 버튼 숨기기
+                contentBinding.textViewCocktailRecipeEnd.visibility = View.GONE
 
                 drawerAdapter = CocktailRecipeDrawerAdapter(detail.recipes)
                 binding.navigationViewDrawerCocktailRecipeNavigation
@@ -209,6 +217,10 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
                     val totalSteps = viewModel.cocktailInfo.value?.recipes?.size ?: 0
                     updateProgress(position + 1, totalSteps)
                     drawerAdapter.updateSelectedPosition(position)
+
+                    // 마지막 페이지에서만 완료 버튼 표시
+                    contentBinding.textViewCocktailRecipeEnd.visibility =
+                        if (position == totalSteps - 1) View.VISIBLE else View.GONE
                 }
             }
         )
@@ -232,6 +244,10 @@ class CocktailRecipeFragment : BaseFragment<DrawerCocktailRecipeBinding>(
 
             imageViewDrawerCocktailRecipeClose.setOnClickListener {
                 drawerLayoutDrawerCocktailRecipeDrawer.closeDrawers()
+            }
+
+            includeDrawerCocktailRecipeInclude.textViewCocktailRecipeEnd.setOnClickListener {
+                mainActivity.onBackPressed()
             }
         }
     }
