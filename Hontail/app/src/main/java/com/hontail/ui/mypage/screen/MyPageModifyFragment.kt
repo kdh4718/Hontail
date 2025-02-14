@@ -1,4 +1,4 @@
-package com.hontail.ui.mypage
+package com.hontail.ui.mypage.screen
 
 import android.content.Context
 import android.os.Bundle

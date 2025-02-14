@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemProfileEmptyBinding
 import com.hontail.databinding.ListItemProfileProfileBinding
-import com.hontail.ui.mypage.MyPageAdapter
+import com.hontail.ui.mypage.adapter.MyPageAdapter
 import com.hontail.util.CommonUtils
 
 class ProfileAdapter(private val items: List<ProfileItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -1,16 +1,14 @@
-package com.hontail.ui.mypage
+package com.hontail.ui.mypage.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.data.model.response.CocktailListResponse
-import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemMypageCocktailBinding
 import com.hontail.databinding.ListItemMypageEmptyBinding
 import com.hontail.databinding.ListItemMypageProfileBinding
-import com.hontail.util.CocktailItemAdapter
+import com.hontail.ui.mypage.screen.MyPageItem
 
 class MyPageAdapter(private val context: Context, private val items: List<MyPageItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

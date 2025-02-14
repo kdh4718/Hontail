@@ -22,9 +22,9 @@ import com.hontail.ui.cocktail.screen.CocktailSearchFragment
 import com.hontail.ui.home.screen.HomeFragment
 import com.hontail.ui.ingredient.IngredientAddFragment
 import com.hontail.ui.ingredient.IngredientListFragment
-import com.hontail.ui.mypage.MyPageFragment
-import com.hontail.ui.mypage.MyPageModifyFragment
-import com.hontail.ui.mypage.MyPageNicknameModifyFragment
+import com.hontail.ui.mypage.screen.MyPageFragment
+import com.hontail.ui.mypage.screen.MyPageModifyFragment
+import com.hontail.ui.mypage.screen.MyPageNicknameModifyFragment
 import com.hontail.ui.picture.screen.CocktailTakePictureFragment
 import com.hontail.ui.cocktail.screen.FilterBottomSheetFragment
 import com.hontail.ui.picture.screen.CocktailPictureResultFragment

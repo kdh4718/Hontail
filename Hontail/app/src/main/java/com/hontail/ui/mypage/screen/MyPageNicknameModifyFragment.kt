@@ -1,4 +1,4 @@
-package com.hontail.ui.mypage
+package com.hontail.ui.mypage.screen
 
 import android.content.Context
 import android.os.Bundle
@@ -11,8 +11,6 @@ import com.hontail.databinding.FragmentMyPageNicknameModifyBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.util.CommonUtils
-
-private const val TAG = "MyPageNicknameModifyFra"
 
 class MyPageNicknameModifyFragment: BaseFragment<FragmentMyPageNicknameModifyBinding>(
     FragmentMyPageNicknameModifyBinding::bind,

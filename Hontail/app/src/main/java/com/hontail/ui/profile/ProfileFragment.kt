@@ -11,7 +11,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentProfileBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.mypage.MyPageAdapter
+import com.hontail.ui.mypage.adapter.MyPageAdapter
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(
     FragmentProfileBinding::bind,

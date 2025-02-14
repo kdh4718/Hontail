@@ -1,11 +1,10 @@
-package com.hontail.ui.mypage
+package com.hontail.ui.mypage.screen
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
@@ -14,6 +13,7 @@ import com.hontail.databinding.FragmentMyPageBinding
 import com.hontail.ui.LoginActivity
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.mypage.adapter.MyPageAdapter
 import com.hontail.util.CommonUtils
 
 
