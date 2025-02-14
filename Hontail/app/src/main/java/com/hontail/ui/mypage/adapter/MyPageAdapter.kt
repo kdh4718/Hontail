@@ -17,11 +17,12 @@ import com.hontail.util.CocktailItemAdapter
 private const val TAG = "MyPageAdapter"
 class MyPageAdapter(private val context: Context, var items: List<MyPageItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var myPageProfileListener: ItemOnClickListener
-    lateinit var myPageIngredientListener: ItemOnClickListener
+    lateinit var myPageListener: ItemOnClickListener
 
     interface ItemOnClickListener {
-        fun onClick()
+        fun onClickToCocktailDetail(cocktailId: Int)
+        fun onClickManageProfile()
+        fun onClickRequestIngredient()
     }
 
     companion object {
@@ -102,12 +103,12 @@ class MyPageAdapter(private val context: Context, var items: List<MyPageItem>): 
 
                 // 프로필 관리
                 buttonProfileManagement.setOnClickListener {
-                    myPageProfileListener.onClick()
+                    myPageListener.onClickManageProfile()
                 }
 
                 // 재료 요청
                 buttonRequestMaterial.setOnClickListener {
-                    myPageIngredientListener.onClick()
+                    myPageListener.onClickRequestIngredient()
                 }
             }
         }
@@ -124,6 +125,13 @@ class MyPageAdapter(private val context: Context, var items: List<MyPageItem>): 
 
                 recyclerViewListItemMyPageCocktail.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemMyPageCocktail.adapter = myPageCocktailAdapter
+
+                myPageCocktailAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
+                    override fun onClickCocktailItem(cocktailId: Int) {
+                        myPageListener.onClickToCocktailDetail(cocktailId)
+                    }
+                }
+
             }
         }
     }

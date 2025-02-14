@@ -154,16 +154,21 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
         binding.apply {
 
-            // 프로필 관리
-            myPageAdapter.myPageProfileListener = object : MyPageAdapter.ItemOnClickListener {
-                override fun onClick() {
+            myPageAdapter.myPageListener = object : MyPageAdapter.ItemOnClickListener {
+
+                // 상세 화면으로 가기.
+                override fun onClickToCocktailDetail(cocktailId: Int) {
+                    activityViewModel.setCocktailId(cocktailId)
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+                }
+
+                // 프로필 관리
+                override fun onClickManageProfile() {
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.MY_PAGE_MODIFY_FRAGMENT)
                 }
-            }
 
-            // 재료 요청 버튼 클릭 시 INGREDIENT_ADD_FRAGMENT로 이동
-            myPageAdapter.myPageIngredientListener = object : MyPageAdapter.ItemOnClickListener {
-                override fun onClick() {
+                // 재료 요청
+                override fun onClickRequestIngredient() {
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
                 }
             }
