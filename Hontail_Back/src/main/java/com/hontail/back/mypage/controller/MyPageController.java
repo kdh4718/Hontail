@@ -89,6 +89,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/mypage")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class MyPageController {
 
     private final MyPageService myPageService;
