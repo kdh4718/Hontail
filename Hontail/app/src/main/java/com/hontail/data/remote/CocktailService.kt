@@ -23,9 +23,18 @@ interface CocktailService {
         @Query("isCustom") isCustom: Boolean
     ): CocktailResponse
 
+    // 추천 칵테일 조회
     @GET("/recommend/{user_id}")
     suspend fun getRecommendedCocktail(
         @Path("user_id") userId: Int,
         @Query("top_n") top_n: Int
     ): Int
+
+    // 칵테일 이름으로 조회
+    @GET("api/cocktail/search")
+    suspend fun getCocktailByName(
+        @Query("keyword") name: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+    ): CocktailResponse
 }

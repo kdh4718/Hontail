@@ -116,16 +116,18 @@ class CocktailRandomDialogFragment(): DialogFragment(), SensorEventListener {
         // 흔들기 감지 시 실행할 동작
         Log.d(TAG, "Recommendation onShakeDetected!!!!!!!")
         activityViewModel.getRecommendedCocktailId()
-        mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
     }
 
     private fun initEvent() {
-
         binding.apply {
 
             imageViewCustomDialogShakeClose.setOnClickListener {
                 dismiss()
             }
+        }
+
+        activityViewModel.cocktailId.observe(viewLifecycleOwner){
+            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
         }
     }
 }

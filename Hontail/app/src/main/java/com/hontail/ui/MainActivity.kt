@@ -84,6 +84,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_search -> {
+                    activityViewModel.setFilterClear()
                     changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
                     true
                 }
