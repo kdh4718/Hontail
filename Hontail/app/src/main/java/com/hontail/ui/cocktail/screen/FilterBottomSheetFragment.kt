@@ -172,7 +172,6 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
             radioGroupFilterZzim.setOnCheckedChangeListener { _, checkedId ->
                 Log.d(TAG, "initRadioButtons: $checkedId")
                 if (checkedId != -1) {
-                    activityViewModel.setZzimFilter(checkedId)
                     activityViewModel.updateZzimButtonState(true)
                     clearOtherSelections(radioGroupFilterZzim) // 해당 그룹 외 다른 그룹 취소
                 }
@@ -181,7 +180,6 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
             radioGroupFilterTime.setOnCheckedChangeListener { _, checkedId ->
                 Log.d(TAG, "initRadioButtons: $checkedId")
                 if (checkedId != -1) {
-                    activityViewModel.setTimeFilter(checkedId)
                     activityViewModel.updateTimeButtonState(true)
                     clearOtherSelections(radioGroupFilterTime) // 해당 그룹 외 다른 그룹 취소
                 }
@@ -190,7 +188,6 @@ class FilterBottomSheetFragment : BaseBottomSheetFragment<FragmentFilterBottomSh
             radioGroupFilterAlcoholContent.setOnCheckedChangeListener { _, checkedId ->
                 Log.d(TAG, "initRadioButtons: $checkedId")
                 if (checkedId != -1) {
-                    activityViewModel.setAlcoholFilter(checkedId)
                     activityViewModel.updateAlcoholButtonState(true)
                     clearOtherSelections(radioGroupFilterAlcoholContent) // 해당 그룹 외 다른 그룹 취소
                 }

@@ -48,12 +48,11 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     }
 
     private fun applySelectedFilters() {
-        val selectedFilters =
-            viewModel.filterSelectedList.value ?: listOf(
+        val selectedFilters = listOf(
                 activityViewModel.zzimButtonSelected,
-                activityViewModel.timeButtonSelected ?: false,
-                activityViewModel.alcoholButtonSelected ?: false,
-                activityViewModel.baseButtonSelected ?: false)
+                activityViewModel.timeButtonSelected,
+                activityViewModel.alcoholButtonSelected,
+                activityViewModel.baseButtonSelected)
 
         Log.d(TAG, "Filter applySelectedFilters: ${selectedFilters}")
 
@@ -117,6 +116,31 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private fun initData() {
         activityViewModel.selectedBaseFilter.observe(viewLifecycleOwner) {
             viewModel.baseSpirit = it
+        }
+
+        activityViewModel.filterSelectedList.observe(viewLifecycleOwner){
+            val firstTrueIndex = it.indexOf(true)
+            when(firstTrueIndex) {
+                0 -> { // 좋아요
+                    viewModel.orderBy = "likes"
+                    viewModel.direction =
+                        if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
+                }
+                1 -> { // 시간
+                    viewModel.orderBy = "createdAt"
+                    viewModel.direction =
+                        if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
+                }
+                2 -> { // 도수
+                    viewModel.orderBy = "alcoholContent"
+                    viewModel.direction =
+                        if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
+                }
+                3 -> {
+                    viewModel.orderBy = "id"
+                    viewModel.direction = "ASC"
+                }
+            }
             viewModel.getCocktailFiltering()
         }
 

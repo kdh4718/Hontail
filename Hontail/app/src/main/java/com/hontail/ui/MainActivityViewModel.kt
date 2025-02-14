@@ -230,6 +230,10 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     private val _selectedBaseFilter = MutableLiveData<String>()
     val selectedBaseFilter: LiveData<String> = _selectedBaseFilter
 
+    private val _filterSelectedList =
+        MutableLiveData<List<Boolean>>(listOf(false, false, false, false))
+    val filterSelectedList: LiveData<List<Boolean>> get() = _filterSelectedList
+
     var zzimButtonSelected: Boolean
         get() = handle.get("zzimButtonSelected") ?: false
         set(value) {
@@ -294,39 +298,57 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         }
         // 선택한 필터는 true로 유지
         when (selected) {
-            "zzim" -> updateZzimButtonState(true)
-            "time" -> updateTimeButtonState(true)
-            "alcohol" -> updateAlcoholButtonState(true)
-            "base" -> updateBaseButtonState(true)
+            "zzim" -> {
+                updateZzimButtonState(true)
+                _filterSelectedList.value = listOf(true, false, false, false)
+            }
+
+            "time" -> {
+                updateTimeButtonState(true)
+                _filterSelectedList.value = listOf(false, true, false, false)
+            }
+
+            "alcohol" -> {
+                updateAlcoholButtonState(true)
+                _filterSelectedList.value = listOf(false, false, true, false)
+            }
+
+            "base" -> {
+                updateBaseButtonState(true)
+                _filterSelectedList.value = listOf(false, false, false, true)
+            }
         }
 
         Log.d(
             TAG,
             "Filter clearOtherFilters: Zzim: $zzimButtonSelected, Time: $timeButtonSelected, Alcohol: $alcoholButtonSelected, Base: $baseButtonSelected"
         )
-
-        Log.d(TAG, "clearOtherFilters: Zzim: ${_selectedZzimFilter.value}, Time: ${_selectedTimeFilter.value}, Alcohol: ${_selectedAlcoholFilter.value}, Base: ${_selectedBaseFilter.value}")
+        Log.d(TAG, "Filter clearOtherFilters: filterList ${_filterSelectedList.value}")
+        Log.d(
+            TAG,
+            "Filter clearOtherFilters: Zzim: ${_selectedZzimFilter.value}, Time: ${_selectedTimeFilter.value}, Alcohol: ${_selectedAlcoholFilter.value}, Base: ${_selectedBaseFilter.value}"
+        )
     }
 
 
     fun updateZzimButtonState(selected: Boolean) {
         zzimButtonSelected = selected
-        Log.d(TAG, "Filter clear updateZzimButtonState: $selected")
+//        Log.d(TAG, "Filter clear updateZzimButtonState: $selected")
     }
 
     fun updateTimeButtonState(selected: Boolean) {
         timeButtonSelected = selected
-        Log.d(TAG, "Filter clear updateTimeButtonState: $selected")
+//        Log.d(TAG, "Filter clear updateTimeButtonState: $selected")
     }
 
     fun updateAlcoholButtonState(selected: Boolean) {
         alcoholButtonSelected = selected
-        Log.d(TAG, "Filter clear updateAlcoholButtonState: $selected")
+//        Log.d(TAG, "Filter clear updateAlcoholButtonState: $selected")
     }
 
     fun updateBaseButtonState(selected: Boolean) {
         baseButtonSelected = selected
-        Log.d(TAG, "Filter clear updateBaseButtonState: $selected")
+//        Log.d(TAG, "Filter clear updateBaseButtonState: $selected")
     }
 
     private val bartenderService = RetrofitUtil.bartenderService
