@@ -15,6 +15,9 @@ import kotlinx.coroutines.launch
 private const val TAG = "CocktailDetailFragmentV_SSAFY"
 
 class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : ViewModel() {
+
+    private val customCocktailService = RetrofitUtil.customCocktailService
+
     var cocktailId = handle.get<Int>("cocktailId") ?: 0
         set(value) {
             handle.set("cocktailId", value)
@@ -96,6 +99,19 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
             }.onFailure {
                 Log.d(TAG, "getCocktailDetailInfo: ${it.message}")
                 _cocktailInfo.value = CocktailDetailResponse()
+            }
+        }
+    }
+
+    // 칵테일 삭제
+    fun deleteCustomCocktail(cocktailId: Int) {
+        viewModelScope.launch {
+            runCatching {
+                customCocktailService.deleteCustomCocktail(cocktailId)
+            }.onSuccess {
+                Log.d(TAG, "deleteCustomCocktail: 성공적으로 삭제")
+            }.onFailure {
+                Log.d(TAG, "deleteCustomCocktail: 실패 ${it.message}")
             }
         }
     }

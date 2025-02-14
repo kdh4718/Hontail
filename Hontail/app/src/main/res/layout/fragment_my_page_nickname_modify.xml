@@ -51,6 +51,7 @@
         android:text="확인"
         style="@style/Font_Medium_16_Basic_White"
         android:background="@drawable/button_mypage_outline"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@+id/editTextMyPageModifyNickname"
         app:layout_constraintBottom_toBottomOf="@+id/editTextMyPageModifyNickname"
         app:layout_constraintEnd_toEndOf="@+id/textViewMyPageNicknameModifyNicknameTitle"/>

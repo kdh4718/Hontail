@@ -1,24 +1,28 @@
-package com.hontail.ui.mypage
+package com.hontail.ui.mypage.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.hontail.data.model.response.CocktailListResponse
-import com.hontail.databinding.ListItemCocktailBinding
 import com.hontail.databinding.ListItemMypageCocktailBinding
 import com.hontail.databinding.ListItemMypageEmptyBinding
 import com.hontail.databinding.ListItemMypageProfileBinding
+import com.hontail.ui.mypage.screen.MyPageItem
 import com.hontail.util.CocktailItemAdapter
 
-class MyPageAdapter(private val context: Context, private val items: List<MyPageItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+private const val TAG = "MyPageAdapter"
+class MyPageAdapter(private val context: Context, var items: List<MyPageItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    lateinit var myPageProfileListener: ItemOnClickListener
-    lateinit var myPageIngredientListener: ItemOnClickListener
+    lateinit var myPageListener: ItemOnClickListener
 
     interface ItemOnClickListener {
-        fun onClick()
+        fun onClickToCocktailDetail(cocktailId: Int)
+        fun onClickManageProfile()
+        fun onClickRequestIngredient()
     }
 
     companion object {
@@ -28,7 +32,12 @@ class MyPageAdapter(private val context: Context, private val items: List<MyPage
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(items[position]) {
+
+        val item = items[position]
+
+        Log.d(TAG, "getItemViewType: position $position -> $item")
+
+        return when(item) {
             is MyPageItem.Profile -> VIEW_TYPE_PROFILE
             is MyPageItem.MyCocktail -> VIEW_TYPE_COCKTAIL
             is MyPageItem.Empty -> VIEW_TYPE_EMPTY
@@ -67,27 +76,39 @@ class MyPageAdapter(private val context: Context, private val items: List<MyPage
         when(val item = items[position]) {
             is MyPageItem.Profile -> (holder as MyPageProfileViewHolder).bind(item)
             is MyPageItem.MyCocktail -> (holder as MyPageCocktailViewHolder).bind(item.cocktailList)
-            is MyPageItem.Empty -> (holder as MyPageEmptyViewHolder).bind()
+            is MyPageItem.Empty -> (holder as MyPageEmptyViewHolder).bind(item)
         }
+    }
+
+    fun updateItems(newItems: List<MyPageItem>) {
+        Log.d(TAG, "updateItems: 새로운 아이템 갱신 -> $newItems")
+        items = newItems
+        notifyDataSetChanged()
     }
 
     // 프로필 ViewHolder
     inner class MyPageProfileViewHolder(private val binding: ListItemMypageProfileBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: MyPageItem.Profile) {
+            Log.d(TAG, "bind: MyPageProfileViewHolder bind() 호출됌. -> $item")
 
             binding.apply {
-                textViewMyPageNickname.text = item.userName
-                textViewMyPageCocktailCount.text = "레시피 ${item.recipeCnt}"
+
+                Glide.with(context)
+                    .load(item.userInfo.user_image_url)
+                    .into(imageViewMyPageProfile)
+
+                textViewMyPageNickname.text = item.userInfo.user_nickname
+                textViewMyPageCocktailCount.text = "레시피 ${item.cocktailCnt}개"
 
                 // 프로필 관리
                 buttonProfileManagement.setOnClickListener {
-                    myPageProfileListener.onClick()
+                    myPageListener.onClickManageProfile()
                 }
 
                 // 재료 요청
                 buttonRequestMaterial.setOnClickListener {
-                    myPageIngredientListener.onClick()
+                    myPageListener.onClickRequestIngredient()
                 }
             }
         }
@@ -100,10 +121,17 @@ class MyPageAdapter(private val context: Context, private val items: List<MyPage
 
             binding.apply {
 
-//                val myPageCocktailAdapter = CocktailItemAdapter(context, cocktailList)
-//
-//                recyclerViewListItemMyPageCocktail.layoutManager = GridLayoutManager(context, 2)
-//                recyclerViewListItemMyPageCocktail.adapter = myPageCocktailAdapter
+                val myPageCocktailAdapter = CocktailItemAdapter(context, cocktailList)
+
+                recyclerViewListItemMyPageCocktail.layoutManager = GridLayoutManager(context, 2)
+                recyclerViewListItemMyPageCocktail.adapter = myPageCocktailAdapter
+
+                myPageCocktailAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener {
+                    override fun onClickCocktailItem(cocktailId: Int) {
+                        myPageListener.onClickToCocktailDetail(cocktailId)
+                    }
+                }
+
             }
         }
     }
@@ -111,11 +139,11 @@ class MyPageAdapter(private val context: Context, private val items: List<MyPage
     // 비어있을 때 ViewHolder
     inner class MyPageEmptyViewHolder(private val binding: ListItemMypageEmptyBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind() {
+        fun bind(item: MyPageItem.Empty) {
 
             binding.apply {
                 textViewListItemMyPageEmptyTitle.text = "나만의 칵테일이 없어요."
-                textViewListItemMyPageEmptySubTitle.text = "hyuun님만의 레시피를 등록해주세요."
+                textViewListItemMyPageEmptySubTitle.text = "${item.userInfo.user_nickname}님만의 레시피를 등록해주세요."
             }
         }
     }

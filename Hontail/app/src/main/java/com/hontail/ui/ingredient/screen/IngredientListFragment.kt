@@ -1,7 +1,6 @@
-package com.hontail.ui.ingredient
+package com.hontail.ui.ingredient.screen
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
@@ -13,7 +12,7 @@ import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentIngredientListBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import org.threeten.bp.temporal.TemporalAmount
+import com.hontail.ui.ingredient.adapter.IngredientAdapter
 
 class IngredientListFragment : BaseFragment<FragmentIngredientListBinding>(
     FragmentIngredientListBinding::bind,
