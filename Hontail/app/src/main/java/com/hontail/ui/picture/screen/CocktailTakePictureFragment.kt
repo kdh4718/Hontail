@@ -1,4 +1,3 @@
-// CocktailTakePictureFragment.kt
 package com.hontail.ui.picture.screen
 
 import android.content.Context
@@ -241,7 +240,6 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
     }
 }
 
-// LoadingDialogFragment.kt
 class LoadingDialogFragment : DialogFragment() {
     private var _binding: CustomDialogPhotoLoadingBinding? = null
     private val binding get() = _binding!!
@@ -312,13 +310,23 @@ class LoadingDialogFragment : DialogFragment() {
 
             setOnShowListener { dialogInterface ->
                 val dialog = dialogInterface as Dialog
-                val width = (resources.displayMetrics.widthPixels * 0.9).toInt()  // 화면 너비의 90%
+                val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
                 dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
             }
         }
     }
 
     private fun setupAnimation() {
+        try {
+            // assets 폴더에서 loading.json 파일 로드
+            context?.assets?.open("loading.json")?.let { inputStream ->
+                binding.loadingAnimation.setAnimation(inputStream, null)
+                binding.loadingAnimation.playAnimation()
+            }
+        } catch (e: Exception) {
+            Log.e("LoadingDialog", "Error loading animation", e)
+        }
+
         val slideUp = AnimationSet(true).apply {
             addAnimation(AlphaAnimation(1f, 0f).apply {
                 duration = 500
@@ -329,22 +337,6 @@ class LoadingDialogFragment : DialogFragment() {
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, -1f
-            ).apply {
-                duration = 500
-                fillAfter = true
-            })
-        }
-
-        val slideIn = AnimationSet(true).apply {
-            addAnimation(AlphaAnimation(0f, 1f).apply {
-                duration = 500
-                fillAfter = true
-            })
-            addAnimation(TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0f,
-                Animation.RELATIVE_TO_SELF, 0f,
-                Animation.RELATIVE_TO_SELF, 1f,
-                Animation.RELATIVE_TO_SELF, 0f
             ).apply {
                 duration = 500
                 fillAfter = true
