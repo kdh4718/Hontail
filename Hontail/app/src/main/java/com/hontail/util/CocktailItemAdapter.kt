@@ -44,8 +44,8 @@ class CocktailItemAdapter(private val context: Context, private val items: List<
                 textViewListItemCocktailName.text = item.cocktailName
                 textViewListItemCocktailBaseSpirit.text = item.baseSpirit
                 textViewListItemCocktailIngredientCount.text = "재료 ${item.ingredientCount}개"
-                textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.likes)
-                textViewListItemCocktailAlcoholContent.text = "${item.alcoholContent}%"
+                textViewListItemCocktailTotalZzim.text = CommonUtils.makeComma(item.likesCnt)
+                textViewListItemCocktailAlcoholContent.text = "${item.alcoholContent}도"
 
 //                Log.d(TAG, "listImageURL: ${item.imageUrl}")
 
