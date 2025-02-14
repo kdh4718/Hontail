@@ -72,4 +72,21 @@ public class MyCocktailController {
         return ResponseEntity.ok(cocktailId);
     }
 
+    @DeleteMapping("/delete/{cocktailId}")
+    @Operation(description = "칵테일 id를 통해 해당 칵테일 삭제")
+    public ResponseEntity<Integer> deleteMyCocktail(@PathVariable Integer cocktailId) {
+        int deletedId = myCocktailService.deleteMyCocktail(cocktailId);
+
+        return ResponseEntity.ok(deletedId);
+
+    }
+
+    @PutMapping("/update/{cocktailId}")
+    @Operation(description = "칵테일 id를 통해 해당 칵테일 정보 수정")
+    public ResponseEntity<Integer> updateMyCocktail(@PathVariable Integer cocktailId, @RequestBody MyCocktailRequestDto requestDto) {
+        int updatedId = myCocktailService.updateMyCocktail(cocktailId, requestDto);
+
+        return ResponseEntity.ok(updatedId);
+    }
+
 }
