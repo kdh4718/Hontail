@@ -91,9 +91,13 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                     viewModel.insertSearchHistory(text)
                 }
 
-                // 최근 검색 아이템 or 칵테일 아이템으로 상세 화면 가기.
-                override fun onClickCocktailItem() {
+                override fun onClickCocktailItem(cocktailId: Int) {
+                    activityViewModel.setCocktailId(cocktailId)
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+                }
+
+                override fun onClickSearchHistoryDelete(id: Int) {
+                    viewModel.deleteSearchHistory(id)
                 }
             }
         }

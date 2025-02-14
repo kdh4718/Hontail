@@ -63,4 +63,11 @@ class CocktailSearchFragmentViewModel(private val handle: SavedStateHandle): Vie
             searchHistoryRepository.insertSearch(searchText)
         }
     }
+
+    fun deleteSearchHistory(id: Int){
+        viewModelScope.launch {
+            searchHistoryRepository.deleteById(id)
+            loadSearchHistory()
+        }
+    }
 }
