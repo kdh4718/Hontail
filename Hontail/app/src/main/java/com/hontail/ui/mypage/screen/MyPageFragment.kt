@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
+import com.hontail.base.ApplicationClass
 import com.hontail.base.BaseFragment
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.model.response.MyPageInformationResponse

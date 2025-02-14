@@ -1,4 +1,4 @@
-package com.hontail.ui.ingredient
+package com.hontail.ui.ingredient.screen
 
 import android.app.Dialog
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.hontail.R
 import com.hontail.base.BaseBottomSheetFragment
 import com.hontail.databinding.FragmentIngredientListBinding
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.ingredient.adapter.IngredientAdapter
 
 class IngredientListBottomSheetFragment : BaseBottomSheetFragment<FragmentIngredientListBinding>(
     FragmentIngredientListBinding::bind,
