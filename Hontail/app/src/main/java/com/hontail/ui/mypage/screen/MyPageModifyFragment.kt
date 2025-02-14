@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.databinding.FragmentMyPageModifyBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
+import com.hontail.ui.mypage.viewmodel.MyPageViewModel
 import com.hontail.util.CommonUtils
 
 class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
@@ -17,7 +20,9 @@ class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
     R.layout.fragment_my_page_modify
 ) {
     private lateinit var mainActivity: MainActivity
+
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: MyPageViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -28,6 +33,8 @@ class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         mainActivity.hideBottomNav(state = true)
+
+        observeMyPage()
         initToolbar()
         initEvent()
     }
@@ -43,6 +50,23 @@ class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
                 setNavigationOnClickListener {
                     parentFragmentManager.popBackStack("MyPageModifyFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
+            }
+        }
+    }
+
+    // Observe ViewModel
+    private fun observeMyPage() {
+
+        binding.apply {
+
+            viewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
+
+                Glide.with(mainActivity)
+                    .load(userInfo.user_image_url)
+                    .into(imageViewMyPageModifyProfile)
+
+                textViewMyPageModifyNickname.text = userInfo.user_nickname
+                textViewMyPageModifyLoginAccount.text = userInfo.user_email
             }
         }
     }

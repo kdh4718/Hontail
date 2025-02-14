@@ -24,11 +24,10 @@
             style="@style/Font_Bold_22_Basic_White" />
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewMyPageModifyProfile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:padding="20dp"
         android:src="@drawable/ic_bottom_navi_profile_selected"
         app:tint="@color/secondary_black"
         android:background="@drawable/profile_background"
