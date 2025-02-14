@@ -92,20 +92,16 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
             viewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
                 Log.d(TAG, "observeMyPage: userInfo 업데이트 감지됨 -> $userInfo")
-                Log.d(TAG, "observeMyPage: 기존 아이템 리스트 -> ${myPageAdapter.items}")
 
                 val cocktailCnt = viewModel.cocktailList.value?.size ?: 0
+                val currentItems = myPageAdapter.items.toMutableList()
 
                 userInfo?.let {
-                    val updatedItems = if (myPageAdapter.items.isNotEmpty()) {
-                        myPageAdapter.items.map { item ->
-                            if (item is MyPageItem.Profile) {
-                                MyPageItem.Profile(userInfo, cocktailCnt) // Profile만 업데이트
-                            } else item
-                        }
-                    } else {
-                        listOf(MyPageItem.Profile(userInfo, cocktailCnt)) // 새로운 리스트로 초기화
-                    }
+                    val profileItem = MyPageItem.Profile(it, cocktailCnt)
+
+                    // ✅ 기존 리스트에서 Profile을 유지하면서 갱신
+                    val updatedItems = currentItems.filterNot { it is MyPageItem.Profile }.toMutableList()
+                    updatedItems.add(0, profileItem) // 항상 첫 번째에 Profile 추가
 
                     Log.d(TAG, "observeMyPage: updatedItems 리스트 -> $updatedItems")
 
@@ -116,26 +112,34 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
             viewModel.cocktailList.observe(viewLifecycleOwner) { cocktails ->
                 Log.d(TAG, "observeMyPage: 칵테일 리스트 업데이트 감지됨 -> ${cocktails.size} 개")
 
-                val updatedItems = mutableListOf<MyPageItem>()
+                val currentItems = myPageAdapter.items.toMutableList()
 
                 val userInfo = viewModel.userInfo.value
                 val cocktailCount = cocktails.size
 
                 userInfo?.let {
-                    updatedItems.add(MyPageItem.Profile(it, cocktailCount)) // 프로필 추가
-                }
+                    val profileItem = MyPageItem.Profile(it, cocktailCount)
 
-                if (cocktails.isNotEmpty()) {
-                    updatedItems.add(MyPageItem.MyCocktail(cocktails))
-                } else {
-                    Log.d(TAG, "observeMyPage: 칵테일 없음 -> Empty 아이템 추가")
-                    updatedItems.add(MyPageItem.Empty) // 칵테일이 없을 때 Empty 추가
-                }
+                    // ✅ 기존 리스트에서 Profile을 유지하면서 갱신
+                    val updatedItems = currentItems.filterNot { it is MyPageItem.Profile }.toMutableList()
+                    updatedItems.add(0, profileItem) // 항상 첫 번째에 Profile 추가
 
-                myPageAdapter.updateItems(updatedItems)
+                    if (cocktails.isNotEmpty()) {
+                        updatedItems.add(MyPageItem.MyCocktail(cocktails))
+                    } else {
+                        Log.d(TAG, "observeMyPage: 칵테일 없음 -> Empty 아이템 추가")
+                        updatedItems.add(MyPageItem.Empty)
+                    }
+
+                    Log.d(TAG, "observeMyPage: 최종 updatedItems 리스트 -> $updatedItems")
+
+                    myPageAdapter.updateItems(updatedItems)
+                }
             }
+
         }
     }
+
 
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {

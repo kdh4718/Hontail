@@ -4,14 +4,12 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewMyPageProfile"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:padding="20dp"
         android:src="@drawable/ic_bottom_navi_profile_selected"
         app:tint="@color/secondary_black"
-        android:background="@drawable/profile_background"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

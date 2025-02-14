@@ -19,7 +19,7 @@ class MyPageViewModel: ViewModel() {
     private val _userInfo = MutableLiveData<MyPageInformationResponse>()
     val userInfo: LiveData<MyPageInformationResponse> get() = _userInfo
 
-    private val _cocktailList = MutableLiveData<List<CocktailListResponse>>()
+    private val _cocktailList = MutableLiveData<List<CocktailListResponse>>(emptyList())
     val cocktailList: LiveData<List<CocktailListResponse>> get() = _cocktailList
 
     init {
@@ -69,6 +69,8 @@ class MyPageViewModel: ViewModel() {
                     _cocktailList.value = cocktailList
                 } else {
                     Log.d(TAG, "getUserCustomCocktails: 응답 실패 -> ${response.errorBody()?.string()}")
+
+                    _cocktailList.value = emptyList()
                 }
             } catch (e: Exception) {
                 Log.d(TAG, "getUserCustomCocktails: 서버 오류 -> ${e.message}")
