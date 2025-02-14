@@ -234,6 +234,10 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         MutableLiveData<List<Boolean>>(listOf(false, false, false, false))
     val filterSelectedList: LiveData<List<Boolean>> get() = _filterSelectedList
 
+    fun setFilterSelectedList(newFilter: List<Boolean>){
+        _filterSelectedList.postValue(newFilter)
+    }
+
     var zzimButtonSelected: Boolean
         get() = handle.get("zzimButtonSelected") ?: false
         set(value) {
@@ -257,8 +261,7 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         set(value) {
             handle.set("baseButtonSelected", value)
         }
-
-
+    
     fun setZzimFilter(radioButtonId: Int) {
         _selectedZzimFilter.value = radioButtonId
         clearOtherFilters("zzim")
@@ -330,6 +333,13 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         )
     }
 
+    fun setFilterClear(){
+        _filterSelectedList.value = listOf(false, false, false, false)
+        _selectedZzimFilter.value = -1
+        _selectedTimeFilter.value = -1
+        _selectedAlcoholFilter.value = -1
+        _selectedBaseFilter.value = ""
+    }
 
     fun updateZzimButtonState(selected: Boolean) {
         zzimButtonSelected = selected
