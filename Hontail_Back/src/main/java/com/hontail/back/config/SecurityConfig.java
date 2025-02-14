@@ -100,7 +100,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
+        configuration.setAllowedOriginPatterns(Arrays.asList( // "*" 대신 allowedOriginPatterns 사용
                 "http://localhost:8080",
                 "http://localhost:3000",
                 "https://i12d207.p.ssafy.io",
