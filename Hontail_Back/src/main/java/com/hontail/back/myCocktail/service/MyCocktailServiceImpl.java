@@ -4,11 +4,13 @@ import com.hontail.back.db.entity.*;
 import com.hontail.back.db.repository.*;
 import com.hontail.back.myCocktail.dto.IngredientRequestDto;
 import com.hontail.back.myCocktail.dto.MyCocktailRequestDto;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,5 +81,19 @@ public class MyCocktailServiceImpl implements MyCocktailService {
 
         return savedCocktail.getId();
 
+    }
+
+    @Override
+    public int deleteMyCocktail(Integer cocktailId) {
+        // 삭제할 칵테일을 미리 조회
+        Optional<Cocktail> cocktail = cocktailRepository.findById(cocktailId);
+
+        if (cocktail.isPresent()) {
+            // 삭제 수행
+            cocktailRepository.deleteById(cocktailId);
+            return cocktailId; // 삭제된 ID 반환
+        } else {
+            throw new EntityNotFoundException("Cocktail with ID " + cocktailId + " not found.");
+        }
     }
 }

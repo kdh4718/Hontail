@@ -72,4 +72,13 @@ public class MyCocktailController {
         return ResponseEntity.ok(cocktailId);
     }
 
+    @DeleteMapping("/delete/{cocktailId}")
+    @Operation(description = "칵테일 id를 통해 해당 칵테일 삭제")
+    public ResponseEntity<Integer> deleteMyCocktail(@PathVariable Integer cocktailId) {
+        int deletedId = myCocktailService.deleteMyCocktail(cocktailId);
+
+        return ResponseEntity.ok(deletedId);
+
+    }
+
 }

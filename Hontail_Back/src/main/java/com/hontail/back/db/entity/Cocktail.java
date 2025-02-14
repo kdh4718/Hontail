@@ -66,16 +66,16 @@ public class Cocktail {
     @Column(name = "base_spirit", length = 50)
     private String baseSpirit;
 
-    @OneToMany(mappedBy = "cocktail")
+    @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktail")
+    @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktail")
+    @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "cocktail")
+    @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recipe> recipes = new ArrayList<>();
 
 }
