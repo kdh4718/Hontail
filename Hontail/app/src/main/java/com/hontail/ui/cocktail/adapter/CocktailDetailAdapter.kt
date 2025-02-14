@@ -3,6 +3,7 @@ package com.hontail.ui.cocktail.adapter
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -86,6 +87,14 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
     inner class CocktailDetailInfosViewHolder(private val binding: ListItemCocktailDetailInfosBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CocktailDetailItem.CocktailInfo) {
             binding.apply {
+                if (item.cocktailDetail.userId == item.userId){
+                    imageViewCocktailDetailEdit.visibility = View.VISIBLE
+                    imageViewCocktailDetailTrashCan.visibility = View.VISIBLE
+                }else{
+                    imageViewCocktailDetailEdit.visibility = View.GONE
+                    imageViewCocktailDetailTrashCan.visibility = View.GONE
+                }
+
                 textViewCocktailDetailNameKor.text = item.cocktailDetail.cocktailName
                 textViewCocktailDetailAlcoholLevel.text = "${item.cocktailDetail.alcoholContent}%"
                 textViewCocktailDetailZzimCount.text = item.cocktailDetail.likeCnt.toString()

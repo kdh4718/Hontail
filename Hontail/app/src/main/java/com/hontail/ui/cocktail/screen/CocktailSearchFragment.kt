@@ -67,10 +67,20 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
 
     fun initData(){
         viewModel.searchHistoryList.observe(viewLifecycleOwner){
-            Log.d(TAG, "initData: ${it}")
+            Log.d(TAG, "initData Search: ${it}")
             val updatedItems = mutableListOf<CocktailSearchItem>().apply {
                 add(CocktailSearchItem.SearchBar(null))
                 add(CocktailSearchItem.Recent(it))
+            }
+
+            cocktailSearchAdapter.updateItems(updatedItems)
+        }
+
+        viewModel.cocktailList.observe(viewLifecycleOwner){
+            Log.d(TAG, "initData Cocktail: ${it}")
+            val updatedItems = mutableListOf<CocktailSearchItem>().apply {
+                add(CocktailSearchItem.SearchBar(null))
+                add(CocktailSearchItem.Result(it))
             }
 
             cocktailSearchAdapter.updateItems(updatedItems)
