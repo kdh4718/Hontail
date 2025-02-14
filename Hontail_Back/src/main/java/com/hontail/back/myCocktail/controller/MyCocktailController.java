@@ -81,4 +81,12 @@ public class MyCocktailController {
 
     }
 
+    @PutMapping("/update/{cocktailId}")
+    @Operation(description = "칵테일 id를 통해 해당 칵테일 정보 수정")
+    public ResponseEntity<Integer> updateMyCocktail(@PathVariable Integer cocktailId, @RequestBody MyCocktailRequestDto requestDto) {
+        int updatedId = myCocktailService.updateMyCocktail(cocktailId, requestDto);
+
+        return ResponseEntity.ok(updatedId);
+    }
+
 }
