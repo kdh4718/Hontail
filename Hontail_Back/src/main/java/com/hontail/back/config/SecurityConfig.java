@@ -103,7 +103,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:8080",
                 "http://localhost:3000",
-                "https://yourproductiondomain.com"
+                "https://i12d207.p.ssafy.io",
+                "http://localhost:9090"
         ));
         configuration.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
