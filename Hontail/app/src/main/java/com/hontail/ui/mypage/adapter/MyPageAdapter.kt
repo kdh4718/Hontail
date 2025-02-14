@@ -76,7 +76,7 @@ class MyPageAdapter(private val context: Context, var items: List<MyPageItem>): 
         when(val item = items[position]) {
             is MyPageItem.Profile -> (holder as MyPageProfileViewHolder).bind(item)
             is MyPageItem.MyCocktail -> (holder as MyPageCocktailViewHolder).bind(item.cocktailList)
-            is MyPageItem.Empty -> (holder as MyPageEmptyViewHolder).bind()
+            is MyPageItem.Empty -> (holder as MyPageEmptyViewHolder).bind(item)
         }
     }
 
@@ -139,11 +139,11 @@ class MyPageAdapter(private val context: Context, var items: List<MyPageItem>): 
     // 비어있을 때 ViewHolder
     inner class MyPageEmptyViewHolder(private val binding: ListItemMypageEmptyBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind() {
+        fun bind(item: MyPageItem.Empty) {
 
             binding.apply {
                 textViewListItemMyPageEmptyTitle.text = "나만의 칵테일이 없어요."
-                textViewListItemMyPageEmptySubTitle.text = "hyuun님만의 레시피를 등록해주세요."
+                textViewListItemMyPageEmptySubTitle.text = "${item.userInfo.user_nickname}님만의 레시피를 등록해주세요."
             }
         }
     }

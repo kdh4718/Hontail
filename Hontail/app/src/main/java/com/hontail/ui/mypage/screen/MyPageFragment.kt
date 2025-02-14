@@ -128,7 +128,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                         updatedItems.add(MyPageItem.MyCocktail(cocktails))
                     } else {
                         Log.d(TAG, "observeMyPage: 칵테일 없음 -> Empty 아이템 추가")
-                        updatedItems.add(MyPageItem.Empty)
+                        updatedItems.add(MyPageItem.Empty(userInfo))
                     }
 
                     Log.d(TAG, "observeMyPage: 최종 updatedItems 리스트 -> $updatedItems")
@@ -185,5 +185,5 @@ sealed class MyPageItem {
 
     data class Profile(val userInfo: MyPageInformationResponse, val cocktailCnt: Int) : MyPageItem()
     data class MyCocktail(val cocktailList: List<CocktailListResponse>) : MyPageItem()
-    object Empty : MyPageItem()
+    data class Empty(val userInfo: MyPageInformationResponse) : MyPageItem()
 }

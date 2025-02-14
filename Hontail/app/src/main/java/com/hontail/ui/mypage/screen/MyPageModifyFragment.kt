@@ -2,6 +2,7 @@ package com.hontail.ui.mypage.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -15,6 +16,7 @@ import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.mypage.viewmodel.MyPageViewModel
 import com.hontail.util.CommonUtils
 
+private const val TAG = "MyPageModifyFragment"
 class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
     FragmentMyPageModifyBinding::bind,
     R.layout.fragment_my_page_modify
@@ -59,6 +61,10 @@ class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
 
         binding.apply {
 
+//            activityViewModel.userNickname.let { nickname ->
+//                textViewMyPageModifyNickname.text = nickname
+//            }
+
             viewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
 
                 Glide.with(mainActivity)
@@ -66,6 +72,7 @@ class MyPageModifyFragment : BaseFragment<FragmentMyPageModifyBinding>(
                     .into(imageViewMyPageModifyProfile)
 
                 textViewMyPageModifyNickname.text = userInfo.user_nickname
+                Log.d(TAG, "observeMyPage: activityViewModel.userNickname: ${activityViewModel.userNickname}")
                 textViewMyPageModifyLoginAccount.text = userInfo.user_email
             }
         }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hontail.data.model.request.MyPageNicknameRequest
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.model.response.ContentX
 import com.hontail.data.model.response.MyPageInformationResponse
@@ -21,6 +22,9 @@ class MyPageViewModel: ViewModel() {
 
     private val _cocktailList = MutableLiveData<List<CocktailListResponse>>(emptyList())
     val cocktailList: LiveData<List<CocktailListResponse>> get() = _cocktailList
+
+    private val _isOkay = MutableLiveData<Boolean?>()
+    val isOkay: LiveData<Boolean?> get() = _isOkay
 
     init {
         getUserInformation()
@@ -91,5 +95,38 @@ class MyPageViewModel: ViewModel() {
             ingredientCount = this.ingredientCount,
             isLiked = this.isLiked
         )
+    }
+
+    // 닉네임 변경
+    fun modifyUserNickname(newNickname: String) {
+
+        viewModelScope.launch {
+
+            try {
+
+                Log.d(TAG, "modifyUserNickname: 닉네임 변경 요청 -> $newNickname")
+
+                val request =MyPageNicknameRequest(newNickname)
+                val response = myPageService.modifyUserNickname(request)
+
+                if(response.isSuccessful) {
+
+                    Log.d(TAG, "modifyUserNickname: 닉네임 변경 성공 -> ${response.body()}")
+
+                    response.body()?.let {
+                        _userInfo.value = it
+                        _isOkay.value = true
+                    }
+                }
+                else {
+                    Log.d(TAG, "modifyUserNickname: 닉네임 변경 실패 -> ${response.errorBody()}")
+                    _isOkay.value = false
+                }
+            }
+            catch (e: Exception) {
+                Log.d(TAG, "modifyUserNickname: 서버 오류 -> ${e.message}")
+                _isOkay.value = false
+            }
+        }
     }
 }
