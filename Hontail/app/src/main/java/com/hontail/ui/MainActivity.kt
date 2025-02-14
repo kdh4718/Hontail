@@ -32,6 +32,7 @@ import com.hontail.ui.profile.ProfileFragment
 import com.hontail.ui.zzim.screen.ZzimFragment
 import com.hontail.util.CommonUtils
 import com.hontail.util.PermissionChecker
+import com.hontail.util.DialogToLoginFragment
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -47,7 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         window.statusBarColor = Color.TRANSPARENT
 
         checkPermissions()
-        initData()        
+        initData()
         initBottomNavigation()
         initBackStackListener()
         changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
@@ -70,6 +71,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun initBottomNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
+            // 로그인이 필요한 메뉴 아이디 리스트
+            val requireLoginMenus = listOf(
+                R.id.navigation_plus,
+                R.id.navigation_heart,
+                R.id.navigation_mypage
+            )
+
             when (item.itemId) {
                 R.id.navigation_home -> {
                     changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
@@ -79,17 +87,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
                     true
                 }
-                R.id.navigation_plus -> {
-                    changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_FRAGMENT)
-                    true
-                }
-                R.id.navigation_heart -> {
-                    changeFragment(CommonUtils.MainFragmentName.ZZIM_FRAGMENT)
-                    true
-                }
+                // 로그인이 필요한 메뉴들
+                R.id.navigation_plus,
+                R.id.navigation_heart,
                 R.id.navigation_mypage -> {
-                    changeFragment(CommonUtils.MainFragmentName.MY_PAGE_FRAGMENT)
-                    true
+                    if (activityViewModel.userId == 0) {
+                        // 로그인 다이얼로그 표시
+                        val dialog = DialogToLoginFragment()
+                        dialog.show(supportFragmentManager, "DialogToLoginFragment")
+
+                        // 현재 선택된 탭 유지
+                        false
+                    } else {
+                        // 로그인된 상태면 해당 페이지로 이동
+                        when (item.itemId) {
+                            R.id.navigation_plus -> {
+                                changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_FRAGMENT)
+                            }
+                            R.id.navigation_heart -> {
+                                changeFragment(CommonUtils.MainFragmentName.ZZIM_FRAGMENT)
+                            }
+                            R.id.navigation_mypage -> {
+                                changeFragment(CommonUtils.MainFragmentName.MY_PAGE_FRAGMENT)
+                            }
+                        }
+                        true
+                    }
                 }
                 else -> false
             }
