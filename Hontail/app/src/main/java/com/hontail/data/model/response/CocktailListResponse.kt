@@ -4,7 +4,7 @@ data class CocktailListResponse(
     val id: Int,
     val cocktailName: String,
     val imageUrl: String,
-    val likes: Int,
+    val likesCnt: Int,
     val alcoholContent: Int,
     val baseSpirit: String,
     val createdAt: String,
