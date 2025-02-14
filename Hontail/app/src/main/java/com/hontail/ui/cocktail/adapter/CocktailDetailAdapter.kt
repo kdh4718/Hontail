@@ -33,6 +33,8 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
         fun onClickRecipeBottomSheet()
         fun onClickCommentBottomSheet()
         fun onClickZzimButton(cocktailId: Int, isLiked: Boolean) // 좋아요 버튼 클릭 이벤트
+        fun onClickModify()
+        fun onClickDelete(cocktailId: Int)
     }
 
     companion object {
@@ -130,6 +132,16 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
 
                     // 좋아요 상태 변경 이벤트를 프래그먼트로 전달
                     cocktailDetailListener.onClickZzimButton(item.cocktailDetail.cocktailId, newLikeStatus)
+                }
+
+                // 칵테일 수정하기.
+                imageViewCocktailDetailEdit.setOnClickListener {
+                    cocktailDetailListener.onClickModify()
+                }
+
+                // 칵테일 삭제하기.
+                imageViewCocktailDetailTrashCan.setOnClickListener {
+                    cocktailDetailListener.onClickDelete(item.cocktailDetail.cocktailId)
                 }
             }
         }

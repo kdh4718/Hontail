@@ -108,6 +108,17 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
                         viewModel.deleteLikes(cocktailId)
                     }
                 }
+
+                // 수정
+                override fun onClickModify() {
+                    TODO("Not yet implemented")
+                }
+
+                // 삭제
+                override fun onClickDelete(cocktailId: Int) {
+                    val dialog = CocktailDeleteDialogFragment(cocktailId)
+                    dialog.show(parentFragmentManager, "CocktailDeleteDialogFragment")
+                }
             }
         }
     }
