@@ -77,12 +77,35 @@ class CocktailTakePictureFragment : BaseFragment<FragmentCocktailTakePictureBind
             }
 
             imageViewTakePictureExplanationCancel.setOnClickListener {
-                cardViewTakePictureExplanation.visibility = View.GONE
+                hideExplanationCard()
             }
 
+            // 사진 촬영 버튼 클릭 시 카드 상태에 따라 다른 동작 수행
             imageViewTakePictureTakePicture.setOnClickListener {
-                takePhoto()
+                if (cardViewTakePictureExplanation.visibility == View.VISIBLE) {
+                    hideExplanationCard()
+                } else {
+                    takePhoto()
+                }
             }
+
+            viewTakePictureExplanationBackground.setOnClickListener {
+                hideExplanationCard()
+            }
+        }
+    }
+
+    private fun hideExplanationCard() {
+        binding.apply {
+            cardViewTakePictureExplanation.visibility = View.GONE
+            viewTakePictureExplanationBackground.visibility = View.GONE
+        }
+    }
+
+    private fun showExplanationCard() {
+        binding.apply {
+            cardViewTakePictureExplanation.visibility = View.VISIBLE
+            viewTakePictureExplanationBackground.visibility = View.VISIBLE
         }
     }
 
@@ -286,6 +309,12 @@ class LoadingDialogFragment : DialogFragment() {
         return super.onCreateDialog(savedInstanceState).apply {
             setCanceledOnTouchOutside(false)
             setCancelable(false)
+
+            setOnShowListener { dialogInterface ->
+                val dialog = dialogInterface as Dialog
+                val width = (resources.displayMetrics.widthPixels * 0.9).toInt()  // 화면 너비의 90%
+                dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+            }
         }
     }
 
