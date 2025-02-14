@@ -4,8 +4,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -25,6 +28,9 @@ public class SwaggerConfig {
                                 .name(schemeName)
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
-                                .bearerFormat("JWT"))); // Bearer 토큰 인증 방식 설정
+                                .bearerFormat("JWT")))
+                .servers(List.of(
+                        new Server().url("https://i12d207.p.ssafy.io").description("혼테일 API 서버")
+                )); // Bearer 토큰 인증 방식 설정
     }
 }
