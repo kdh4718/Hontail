@@ -230,17 +230,30 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     private val _selectedBaseFilter = MutableLiveData<String>()
     val selectedBaseFilter: LiveData<String> = _selectedBaseFilter
 
-    private val _zzimButtonSelected = MutableLiveData<Boolean>()
-    val zzimButtonSelected: LiveData<Boolean> = _zzimButtonSelected
+    var zzimButtonSelected: Boolean
+        get() = handle.get("zzimButtonSelected") ?: false
+        set(value) {
+            handle.set("zzimButtonSelected", value)
+        }
 
-    private val _timeButtonSelected = MutableLiveData<Boolean>()
-    val timeButtonSelected: LiveData<Boolean> = _timeButtonSelected
+    var timeButtonSelected: Boolean
+        get() = handle.get("timeButtonSelected") ?: false
+        set(value) {
+            handle.set("timeButtonSelected", value)
+        }
 
-    private val _alcoholButtonSelected = MutableLiveData<Boolean>()
-    val alcoholButtonSelected: LiveData<Boolean> = _alcoholButtonSelected
+    var alcoholButtonSelected: Boolean
+        get() = handle.get("alcoholButtonSelected") ?: false
+        set(value) {
+            handle.set("alcoholButtonSelected", value)
+        }
 
-    private val _baseButtonSelected = MutableLiveData<Boolean>()
-    val baseButtonSelected: LiveData<Boolean> = _baseButtonSelected
+    var baseButtonSelected: Boolean
+        get() = handle.get("baseButtonSelected") ?: false
+        set(value) {
+            handle.set("baseButtonSelected", value)
+        }
+
 
     fun setZzimFilter(radioButtonId: Int) {
         _selectedZzimFilter.value = radioButtonId
@@ -264,37 +277,56 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
 
     private fun clearOtherFilters(selected: String) {
         if (selected != "zzim") {
-            _selectedZzimFilter.value = null
+            _selectedZzimFilter.value = -1
             updateZzimButtonState(false)
         }
         if (selected != "time") {
-            _selectedTimeFilter.value = null
+            _selectedTimeFilter.value = -1
             updateTimeButtonState(false)
         }
         if (selected != "alcohol") {
-            _selectedAlcoholFilter.value = null
+            _selectedAlcoholFilter.value = -1
             updateAlcoholButtonState(false)
         }
         if (selected != "base") {
             _selectedBaseFilter.value = ""
             updateBaseButtonState(false)
         }
+        // 선택한 필터는 true로 유지
+        when (selected) {
+            "zzim" -> updateZzimButtonState(true)
+            "time" -> updateTimeButtonState(true)
+            "alcohol" -> updateAlcoholButtonState(true)
+            "base" -> updateBaseButtonState(true)
+        }
+
+        Log.d(
+            TAG,
+            "Filter clearOtherFilters: Zzim: $zzimButtonSelected, Time: $timeButtonSelected, Alcohol: $alcoholButtonSelected, Base: $baseButtonSelected"
+        )
+
+        Log.d(TAG, "clearOtherFilters: Zzim: ${_selectedZzimFilter.value}, Time: ${_selectedTimeFilter.value}, Alcohol: ${_selectedAlcoholFilter.value}, Base: ${_selectedBaseFilter.value}")
     }
 
+
     fun updateZzimButtonState(selected: Boolean) {
-        _zzimButtonSelected.value = selected
+        zzimButtonSelected = selected
+        Log.d(TAG, "Filter clear updateZzimButtonState: $selected")
     }
 
     fun updateTimeButtonState(selected: Boolean) {
-        _timeButtonSelected.value = selected
+        timeButtonSelected = selected
+        Log.d(TAG, "Filter clear updateTimeButtonState: $selected")
     }
 
     fun updateAlcoholButtonState(selected: Boolean) {
-        _alcoholButtonSelected.value = selected
+        alcoholButtonSelected = selected
+        Log.d(TAG, "Filter clear updateAlcoholButtonState: $selected")
     }
 
     fun updateBaseButtonState(selected: Boolean) {
-        _baseButtonSelected.value = selected
+        baseButtonSelected = selected
+        Log.d(TAG, "Filter clear updateBaseButtonState: $selected")
     }
 
     private val bartenderService = RetrofitUtil.bartenderService
@@ -357,11 +389,22 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
                         cocktail = if (bartenderResponse.cocktailRecommendation) bartenderResponse.cocktail else null
                     )
                     addMessage(bartenderMessage) // ✅ 바텐더 응답 추가
-                }
-                else {
-                    Log.d(TAG, "sendMessageToBartender: 서버 오류 : ${response.code()} - ${response.message()}")
-                    Log.d(TAG, "sendMessageToBartender: 서버 응답 바디 : ${response.errorBody()?.string()}")
-                    addMessage(ChatMessage("⚠️ 서버 오류 발생 (${response.code()})", false, getCurrentTime()))
+                } else {
+                    Log.d(
+                        TAG,
+                        "sendMessageToBartender: 서버 오류 : ${response.code()} - ${response.message()}"
+                    )
+                    Log.d(
+                        TAG,
+                        "sendMessageToBartender: 서버 응답 바디 : ${response.errorBody()?.string()}"
+                    )
+                    addMessage(
+                        ChatMessage(
+                            "⚠️ 서버 오류 발생 (${response.code()})",
+                            false,
+                            getCurrentTime()
+                        )
+                    )
                 }
             } catch (e: Exception) {
                 Log.e("BartenderAPI", "네트워크 오류 발생", e)
@@ -370,7 +413,7 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         }
     }
 
-    fun getRecommendedCocktailId(){
+    fun getRecommendedCocktailId() {
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.recommendedCocktailService.getRecommendedCocktail(userId, 5)
