@@ -3,27 +3,33 @@ package com.hontail.ui.mypage.screen
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.data.model.response.CocktailListResponse
+import com.hontail.data.model.response.MyPageInformationResponse
 import com.hontail.databinding.FragmentMyPageBinding
 import com.hontail.ui.LoginActivity
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.mypage.adapter.MyPageAdapter
+import com.hontail.ui.mypage.viewmodel.MyPageViewModel
 import com.hontail.util.CommonUtils
 
-
+private const val TAG = "MyPageFragment"
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
     FragmentMyPageBinding::bind,
     R.layout.fragment_my_page
 ) {
     private lateinit var mainActivity: MainActivity
     private lateinit var loginActivity: LoginActivity
+
     private val activityViewModel: MainActivityViewModel by activityViewModels()
+    private val viewModel: MyPageViewModel by viewModels()
 
     private lateinit var myPageAdapter: MyPageAdapter
 
@@ -36,6 +42,8 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         mainActivity.hideBottomNav(false)  // 하단바 다시 보이게 설정
+
+        observeMyPage()
         initToolbar()
         initAdapter()
         initEvent()
@@ -77,46 +85,64 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         startActivity(intent)
     }
 
+    // ViewModel Observe 등록
+    private fun observeMyPage() {
+
+        binding.apply {
+
+            viewModel.userInfo.observe(viewLifecycleOwner) { userInfo ->
+                Log.d(TAG, "observeMyPage: userInfo 업데이트 감지됨 -> $userInfo")
+                Log.d(TAG, "observeMyPage: 기존 아이템 리스트 -> ${myPageAdapter.items}")
+
+                val cocktailCnt = viewModel.cocktailList.value?.size ?: 0
+
+                userInfo?.let {
+                    val updatedItems = if (myPageAdapter.items.isNotEmpty()) {
+                        myPageAdapter.items.map { item ->
+                            if (item is MyPageItem.Profile) {
+                                MyPageItem.Profile(userInfo, cocktailCnt) // Profile만 업데이트
+                            } else item
+                        }
+                    } else {
+                        listOf(MyPageItem.Profile(userInfo, cocktailCnt)) // 새로운 리스트로 초기화
+                    }
+
+                    Log.d(TAG, "observeMyPage: updatedItems 리스트 -> $updatedItems")
+
+                    myPageAdapter.updateItems(updatedItems)
+                }
+            }
+
+            viewModel.cocktailList.observe(viewLifecycleOwner) { cocktails ->
+                Log.d(TAG, "observeMyPage: 칵테일 리스트 업데이트 감지됨 -> ${cocktails.size} 개")
+
+                val updatedItems = mutableListOf<MyPageItem>()
+
+                val userInfo = viewModel.userInfo.value
+                val cocktailCount = cocktails.size
+
+                userInfo?.let {
+                    updatedItems.add(MyPageItem.Profile(it, cocktailCount)) // 프로필 추가
+                }
+
+                if (cocktails.isNotEmpty()) {
+                    updatedItems.add(MyPageItem.MyCocktail(cocktails))
+                } else {
+                    Log.d(TAG, "observeMyPage: 칵테일 없음 -> Empty 아이템 추가")
+                    updatedItems.add(MyPageItem.Empty) // 칵테일이 없을 때 Empty 추가
+                }
+
+                myPageAdapter.updateItems(updatedItems)
+            }
+        }
+    }
+
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {
 
         binding.apply {
 
-            val cocktailList = mutableListOf<CocktailListResponse>().apply {
-                add(
-                    CocktailListResponse(
-                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
-                        "2025-01-27 00:13:32", 5, false
-                    )
-                )
-                add(
-                    CocktailListResponse(
-                        2,
-                        "에스프레소 마티니",
-                        "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg",
-                        0,
-                        0,
-                        "리큐어",
-                        "2025-01-27 00:13:32",
-                        3,
-                        true
-                    )
-                )
-            }
-
-            val items = mutableListOf<MyPageItem>().apply {
-                add(MyPageItem.Profile("hyuun", 5))
-                add(MyPageItem.MyCocktail(cocktailList))
-            }
-
-            val items2 = mutableListOf<MyPageItem>().apply {
-                add(MyPageItem.Profile("hyuun", 5))
-                if (isCocktailListEmpty()) {
-                    add(MyPageItem.Empty)
-                }
-            }
-
-            myPageAdapter = MyPageAdapter(mainActivity, items)
+            myPageAdapter = MyPageAdapter(mainActivity, emptyList())
 
             recyclerViewMyPage.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewMyPage.adapter = myPageAdapter
@@ -144,16 +170,11 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
         }
     }
 
-
-    // 레시피가 존재하는지 확인
-    private fun isCocktailListEmpty(): Boolean {
-        return true
-    }
 }
 
 sealed class MyPageItem {
 
-    data class Profile(val userName: String, val recipeCnt: Int) : MyPageItem()
+    data class Profile(val userInfo: MyPageInformationResponse, val cocktailCnt: Int) : MyPageItem()
     data class MyCocktail(val cocktailList: List<CocktailListResponse>) : MyPageItem()
     object Empty : MyPageItem()
 }

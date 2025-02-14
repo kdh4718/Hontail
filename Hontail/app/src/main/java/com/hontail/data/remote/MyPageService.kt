@@ -19,7 +19,7 @@ interface MyPageService {
 
     // 현재 사용자 정보 가져오기
     @GET("api/mypage/me")
-    suspend fun getUserInformaion(): Response<MyPageInformationResponse>
+    suspend fun getUserInformation(): Response<MyPageInformationResponse>
 
     // 내가 만든 칵테일 조회
     @GET("api/mypage/cocktail")
