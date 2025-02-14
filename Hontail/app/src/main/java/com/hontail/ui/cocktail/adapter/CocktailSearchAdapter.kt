@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -115,18 +116,20 @@ class CocktailSearchAdapter(
                     }
                 }
 
-                editTextCocktailSearchBar.setOnEditorActionListener { _, actionId, _ ->
+                editTextCocktailSearchBar.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         val query = editTextCocktailSearchBar.text.toString().trim()
                         if (query.isNotEmpty()) { // 검색 실행
                             cocktailSearchListener.onClickSearch(query)
                             editTextCocktailSearchBar.text.clear()
+
                         }
                         true
                     } else {
                         false
                     }
-                }
+                    return@OnEditorActionListener true
+                })
 
                 // 취소 이벤트
                 textViewListItemCocktailSearchBarCancel.setOnClickListener {
