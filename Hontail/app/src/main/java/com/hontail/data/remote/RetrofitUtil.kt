@@ -36,5 +36,8 @@ class RetrofitUtil {
 
         // 커스텀 칵테일 서비스
         val customCocktailService = ApplicationClass.retrofit.create(CustomCocktailService::class.java)
+
+        // 마이페이지 서비스
+        val myPageService = ApplicationClass.retrofit.create(MyPageService::class.java)
     }
 }

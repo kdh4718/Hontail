@@ -1,4 +1,4 @@
-package com.hontail.ui.ingredient
+package com.hontail.ui.ingredient.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
 import androidx.core.content.res.ResourcesCompat
+import com.hontail.ui.ingredient.screen.Ingredient
 
 class IngredientAdapter : RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
     var ingredients = listOf<Ingredient>()
