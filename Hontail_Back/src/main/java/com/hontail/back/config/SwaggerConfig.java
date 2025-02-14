@@ -31,6 +31,6 @@ public class SwaggerConfig {
                                 .bearerFormat("JWT")))
                 .servers(List.of(
                         new Server().url("https://i12d207.p.ssafy.io").description("혼테일 API 서버")
-                ));
+                )); // Bearer 토큰 인증 방식 설정
     }
 }
