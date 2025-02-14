@@ -16,7 +16,7 @@ import com.hontail.databinding.ListItemCocktailSearchSearchBarBinding
 import com.hontail.ui.cocktail.screen.CocktailSearchItem
 import com.hontail.util.CocktailItemAdapter
 
-class CocktailSearchAdapter(private val context: Context, private val items: List<CocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CocktailSearchAdapter(private val context: Context, private var items: MutableList<CocktailSearchItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var cocktailSearchListener: ItemOnClickListener
 
@@ -168,5 +168,11 @@ class CocktailSearchAdapter(private val context: Context, private val items: Lis
                 }
             }
         }
+    }
+
+    fun updateItems(newItems: List<CocktailSearchItem>){
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
     }
 }

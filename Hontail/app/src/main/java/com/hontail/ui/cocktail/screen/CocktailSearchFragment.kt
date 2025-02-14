@@ -2,6 +2,7 @@ package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.FragmentManager
@@ -19,6 +20,8 @@ import com.hontail.ui.cocktail.adapter.CocktailSearchAdapter
 import com.hontail.ui.cocktail.viewmodel.CocktailSearchFragmentViewModel
 import com.hontail.util.CommonUtils
 
+private const val TAG = "CocktailSearchFragment_SSAFY"
+
 class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
     FragmentCocktailSearchBinding::bind,
     R.layout.fragment_cocktail_search
@@ -32,6 +35,10 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel.loadSearchHistory()
     }
 
@@ -39,39 +46,34 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
+        initData()
         initEvent()
     }
 
     // 리사이클러뷰 어댑터 연결
     private fun initAdapter() {
-
         binding.apply {
-            val searchHistory = viewModel.searchHistoryList.value ?: emptyList()
-
-            val cocktailList = mutableListOf<CocktailListResponse>().apply {
-                add(
-                    CocktailListResponse(
-                        1, "깔루아 밀크", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 1231, 12, "",
-                        "2025-01-27 00:13:32", 5, false
-                    )
-                )
-                add(
-                    CocktailListResponse(
-                        2, "에스프레소 마티니", "https://cdn.diffords.com/contrib/stock-images/2016/7/30/20168fcf1a85da47c9369831cca42ee82d33.jpg", 0, 0, "리큐어",
-                        "2025-01-27 00:13:32", 3, true
-                    )
-                )
-            }
-
             val items = mutableListOf<CocktailSearchItem>().apply {
                 add(CocktailSearchItem.SearchBar(null))
-                add(CocktailSearchItem.Recent(searchHistory))
+                add(CocktailSearchItem.Recent(emptyList()))
             }
 
             cocktailSearchAdapter = CocktailSearchAdapter(mainActivity, items)
 
             recyclerViewCocktailSearch.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailSearch.adapter = cocktailSearchAdapter
+        }
+    }
+
+    fun initData(){
+        viewModel.searchHistoryList.observe(viewLifecycleOwner){
+            Log.d(TAG, "initData: ${it}")
+            val updatedItems = mutableListOf<CocktailSearchItem>().apply {
+                add(CocktailSearchItem.SearchBar(null))
+                add(CocktailSearchItem.Recent(it))
+            }
+
+            cocktailSearchAdapter.updateItems(updatedItems)
         }
     }
 

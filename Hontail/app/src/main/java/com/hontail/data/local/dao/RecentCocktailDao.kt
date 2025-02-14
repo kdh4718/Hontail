@@ -15,7 +15,7 @@ interface RecentCocktailDao {
     @Query("SELECT * FROM recent_cocktailId_table ORDER BY id DESC")
     suspend fun getAllCocktails(): List<RecentCocktailIdTable>
 
-    @Query("DELETE FROM search_history WHERE id = :id")
+    @Query("DELETE FROM recent_cocktailId_table WHERE id = :id")
     suspend fun deleteCocktail(id: Int)
 
     @Query("DELETE FROM recent_cocktailId_table WHERE cocktailId NOT IN (SELECT cocktailId FROM recent_cocktailId_table ORDER BY id DESC LIMIT 10)")

@@ -22,7 +22,13 @@ interface SearchHistoryDao {
     @Query("SELECT * FROM search_history ORDER BY id DESC")
     suspend fun getAllSearches(): List<SearchHistoryTable>
 
-    // 10개 초과 시 가장 오래된 검색어 삭제
-    @Query("DELETE FROM search_history WHERE id IN (SELECT id FROM search_history ORDER BY id ASC LIMIT 1)")
+    @Query("""
+    DELETE FROM search_history 
+    WHERE id IN (
+        SELECT id FROM search_history ORDER BY id ASC LIMIT 1
+    ) 
+    AND (SELECT COUNT(*) FROM search_history) > 10
+""")
     suspend fun deleteOldestIfNeeded()
+
 }

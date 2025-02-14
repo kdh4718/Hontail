@@ -54,13 +54,13 @@ class CocktailSearchFragmentViewModel(private val handle: SavedStateHandle): Vie
     fun loadSearchHistory() {
         viewModelScope.launch {
             _searchHistoryList.value = searchHistoryRepository.getAllSearches()
+            Log.d(TAG, "loadSearchHistory: ${_searchHistoryList.value}")
         }
     }
 
     fun insertSearchHistory(searchText: String) {
         viewModelScope.launch {
             searchHistoryRepository.insertSearch(searchText)
-            loadSearchHistory()
         }
     }
 }

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.data.model.dto.SearchHistoryTable
 import com.hontail.databinding.ListItemCocktailSearchRecentItemBinding
-import com.hontail.ui.cocktail.screen.RecentItem
 
 private const val TAG = "CocktailSearchRecentAda"
 class CocktailSearchRecentAdapter(private val items: List<SearchHistoryTable>): RecyclerView.Adapter<CocktailSearchRecentAdapter.CocktailSearchRecentViewHolder>() {
