@@ -73,7 +73,7 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     // 어댑터에 새로운 데이터를 반영하는 메서드
     private fun updateAdapterData(cocktailDetail: CocktailDetailResponse) {
         val items = mutableListOf<CocktailDetailItem>().apply {
-            add(CocktailDetailItem.CocktailInfo(cocktailDetail)) // 전체 객체를 넘김
+            add(CocktailDetailItem.CocktailInfo(cocktailDetail, viewModel.userId)) // 전체 객체를 넘김
             add(CocktailDetailItem.IngredientList(cocktailDetail.cocktailIngredients))
             add(CocktailDetailItem.RecipeList(cocktailDetail.recipes))
         }
@@ -125,7 +125,7 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
 }
 
 sealed class CocktailDetailItem {
-    data class CocktailInfo(val cocktailDetail: CocktailDetailResponse) : CocktailDetailItem()
+    data class CocktailInfo(val cocktailDetail: CocktailDetailResponse, val userId: Int) : CocktailDetailItem()
     data class IngredientList(val ingredients: List<com.hontail.data.model.response.CocktailIngredient>): CocktailDetailItem()
     data class RecipeList(val recipes: List<Recipe>): CocktailDetailItem()
 }

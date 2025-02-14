@@ -2,6 +2,7 @@ package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -12,7 +13,6 @@ import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.FragmentCocktailListBinding
 import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
-import com.hontail.ui.picture.screen.FilterBottomSheetFragment
 import com.hontail.ui.cocktail.viewmodel.CocktailListFragmentViewModel
 import com.hontail.ui.cocktail.adapter.CocktailListAdapter
 import com.hontail.util.CommonUtils
@@ -48,12 +48,18 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     }
 
     private fun applySelectedFilters() {
-        val selectedFilters =
-            viewModel.filterSelectedList.value ?: listOf(false, false, false, false)
+        val selectedFilters = listOf(
+                activityViewModel.zzimButtonSelected,
+                activityViewModel.timeButtonSelected,
+                activityViewModel.alcoholButtonSelected,
+                activityViewModel.baseButtonSelected)
 
+        Log.d(TAG, "Filter applySelectedFilters: ${selectedFilters}")
+
+        // 필터가 true인 경우에만 적용하도록
         when {
             selectedFilters[0] -> { // 찜
-                viewModel.orderBy = "likeCnt"
+                viewModel.orderBy = "likes"
                 viewModel.direction =
                     if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
             }
@@ -80,6 +86,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     override fun onResume() {
         super.onResume()
         mainActivity.hideBottomNav(false)
+        applySelectedFilters()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,6 +116,31 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private fun initData() {
         activityViewModel.selectedBaseFilter.observe(viewLifecycleOwner) {
             viewModel.baseSpirit = it
+        }
+
+        activityViewModel.filterSelectedList.observe(viewLifecycleOwner){
+            val firstTrueIndex = it.indexOf(true)
+            when(firstTrueIndex) {
+                0 -> { // 좋아요
+                    viewModel.orderBy = "likes"
+                    viewModel.direction =
+                        if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
+                }
+                1 -> { // 시간
+                    viewModel.orderBy = "createdAt"
+                    viewModel.direction =
+                        if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
+                }
+                2 -> { // 도수
+                    viewModel.orderBy = "alcoholContent"
+                    viewModel.direction =
+                        if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
+                }
+                3 -> {
+                    viewModel.orderBy = "id"
+                    viewModel.direction = "ASC"
+                }
+            }
             viewModel.getCocktailFiltering()
         }
 
@@ -147,11 +179,19 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                         when (position) {
                             0 -> {
                                 viewModel.isCustom = false
+                                viewModel.baseSpirit = ""
+                                viewModel.page = 0
+                                viewModel.direction = "ASC"
+                                viewModel.orderBy = "id"
                                 resetFilters()
                             }
 
                             1 -> {
                                 viewModel.isCustom = true
+                                viewModel.baseSpirit = ""
+                                viewModel.page = 0
+                                viewModel.direction = "ASC"
+                                viewModel.orderBy = "id"
                                 resetFilters()
                             }
                         }
