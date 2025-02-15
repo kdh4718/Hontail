@@ -20,6 +20,7 @@ private const val TAG = "CocktailListAdapter_SSAFY"
 class CocktailListAdapter(private val context: Context, private var items: MutableList<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var cocktailListListener: ItemOnClickListener
+    private var selectedFilterPosition: Int = -1
 
     interface ItemOnClickListener {
         fun onClickRandom()
@@ -75,7 +76,7 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
         when(val item = items[position]) {
             is CocktailListItem.SearchBar -> (holder as CocktailListSearchBarViewHolder).bind()
             is CocktailListItem.TabLayout -> (holder as CocktailListTabLayoutViewHolder).bind()
-            is CocktailListItem.Filter -> (holder as CocktailListFilterViewHolder).bind(item.filters)
+            is CocktailListItem.Filter -> (holder as CocktailListFilterViewHolder).bind(item.filters, selectedFilterPosition)
             is CocktailListItem.CocktailItems -> (holder as CocktailListCocktailItemsViewHolder).bind(item.cocktails)
         }
     }
@@ -118,11 +119,16 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
         }
     }
 
+    fun updateSelectedFilter(position: Int) {
+        selectedFilterPosition = position
+        notifyItemChanged(2)  // FILTER의 위치 (Index 2)
+    }
+
     // Filter
     inner class CocktailListFilterViewHolder(private val binding: ListItemCocktailListFilterBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(filters: List<String>) {
+        fun bind(filters: List<String>, selectedPosition: Int) {
             binding.apply {
-                val cocktailListFilterAdapter = CocktailListFilterAdapter(filters)
+                val cocktailListFilterAdapter = CocktailListFilterAdapter(filters, selectedPosition)
 
                 recyclerViewListItemCocktailListFilter.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 recyclerViewListItemCocktailListFilter.adapter = cocktailListFilterAdapter

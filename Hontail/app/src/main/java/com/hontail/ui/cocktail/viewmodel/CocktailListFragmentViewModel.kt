@@ -60,14 +60,14 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
         }
 
     // Paging 데이터를 담을 LiveData 추가
-    val pagedCocktailList: Flow<PagingData<CocktailListResponse>> =
-        Pager(PagingConfig(
-            pageSize = 20,
-            prefetchDistance = 5,
-            maxSize = 100
-        )) {
-            CocktailPagingSource(orderBy, direction, baseSpirit, isCustom)
-        }.flow.cachedIn(viewModelScope) // ✅ 반드시 `cachedIn(viewModelScope)` 사용
+//    val pagedCocktailList: Flow<PagingData<CocktailListResponse>> =
+//        Pager(PagingConfig(
+//            pageSize = 20,
+//            prefetchDistance = 5,
+//            maxSize = 100
+//        )) {
+//            CocktailPagingSource(orderBy, direction, baseSpirit, isCustom)
+//        }.flow.cachedIn(viewModelScope) // ✅ 반드시 `cachedIn(viewModelScope)` 사용
 
     private val _cocktailList = MutableLiveData<List<CocktailListResponse>>()
     val cocktailList: LiveData<List<CocktailListResponse>>

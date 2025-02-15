@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hontail.databinding.ListItemCocktailListFilterItemBinding
 
-class CocktailListFilterAdapter(private val items: List<String>): RecyclerView.Adapter<CocktailListFilterAdapter.CocktailListFilterViewHolder>() {
+class CocktailListFilterAdapter(private val items: List<String>, private val selectedPosition: Int): RecyclerView.Adapter<CocktailListFilterAdapter.CocktailListFilterViewHolder>() {
 
     lateinit var cocktailListFilterListener: ItemOnClickListener
 
@@ -23,18 +23,18 @@ class CocktailListFilterAdapter(private val items: List<String>): RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: CocktailListFilterViewHolder, position: Int) {
-        holder.bind(items[position], position)
+        holder.bind(items[position], position, position == selectedPosition)
     }
 
     inner class CocktailListFilterViewHolder(private val binding: ListItemCocktailListFilterItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: String, position: Int) {
-
+        fun bind(item: String, position: Int, isSelected: Boolean) {
             binding.apply {
-
                 textViewListItemCocktailListFilterItem.text = item
+                root.isSelected = isSelected
 
                 root.setOnClickListener {
+
                     cocktailListFilterListener.onClickFilter(position)
                 }
             }

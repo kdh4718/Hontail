@@ -5,7 +5,6 @@ import retrofit2.Retrofit
 import android.Manifest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.hontail.R
 import com.hontail.data.local.IngredientRepository
 import com.hontail.data.local.SearchHistoryRepository
 import com.hontail.data.local.SharedPreferencesUtil
