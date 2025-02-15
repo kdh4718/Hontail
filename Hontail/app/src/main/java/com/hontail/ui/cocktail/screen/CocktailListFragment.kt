@@ -155,14 +155,12 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     override fun onClickTab(position: Int) {
                         when (position) {
                             0 -> {
-                                activityViewModel.setFilterClear()
                                 viewModel.isCustom = false
                                 resetFilters()
                                 cocktailListAdapter.updateSelectedFilter(-1)
                             }
 
                             1 -> {
-                                activityViewModel.setFilterClear()
                                 viewModel.isCustom = true
                                 resetFilters()
                                 cocktailListAdapter.updateSelectedFilter(-1)
@@ -188,6 +186,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         viewModel.direction = "ASC"
         viewModel.orderBy = "id"
         viewModel.baseSpirit = ""
+        activityViewModel.setFilterClear()
         viewModel.getCocktailFiltering()
     }
 }
