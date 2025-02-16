@@ -39,7 +39,6 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
     fun updateComments(newComments: List<Comment>) {
         val diffCallback = object : DiffUtil.Callback() {
             override fun getOldListSize() = commentList.size
-
             override fun getNewListSize() = newComments.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -52,10 +51,17 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
         }
 
         val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        // 🔥 새로운 리스트 적용 전에 기존 리스트에서 삭제된 아이템을 감지!
+        val deletedComments = commentList.map { it.commentId } - newComments.map { it.commentId }
+
+        // 🔥 삭제된 댓글과 관련된 스와이프 상태 초기화
+        swipedItems.removeAll(deletedComments)
+
         commentList = newComments.toMutableList()
-        swipedItems.clear()
         diffResult.dispatchUpdatesTo(this)
     }
+
 
     inner class CocktailCommentHolder(private val binding: ListItemCocktailCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -73,9 +79,12 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
                 textViewCocktailCommentUserName.text = item.userNickname
                 textViewCocktailCommentUserComment.text = item.content
 
-                Log.d(TAG, "bindInfo: 댓글 userId: ${item.userId} / 로그인한 userId: $userId")
+                Log.d(TAG, "bindInfo: 댓글 userId: ${item.userId} / 로그인한 userId: $userId / 댓글 닉네임 : ${item.userNickname} / 댓글 내용: ${item.content}")
+
                 // 현재 로그인 한 사용자 id와 같은 댓글 사용자 id에서만 활성화되도록 '>'
-                if(item.userId != userId) {
+                if (item.userId == userId) {
+                    imageViewCocktailCommentUserComment.visibility = View.VISIBLE
+                } else {
                     imageViewCocktailCommentUserComment.visibility = View.GONE
                 }
 
@@ -110,7 +119,7 @@ class CocktailCommentAdapter(private val context: Context, private var commentLi
                 imageViewDelete.setOnClickListener {
                     if (imageViewDelete.isEnabled) {
                         cocktailCommentListener.onClickDelete(item.commentId)
-                        swipedItems.clear()
+                        swipedItems.remove(item.commentId)
                     }
                 }
             }
