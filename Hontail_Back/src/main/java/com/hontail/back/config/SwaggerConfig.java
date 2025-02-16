@@ -30,7 +30,7 @@ public class SwaggerConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")))
                 .servers(List.of(
-                        new Server().url("http://127.0.0.1:9090"),
+                        new Server().url("http://localhost:9090"),
                         new Server().url("https://i12d207.p.ssafy.io").description("혼테일 API 서버")
                 )); // Bearer 토큰 인증 방식 설정
     }
