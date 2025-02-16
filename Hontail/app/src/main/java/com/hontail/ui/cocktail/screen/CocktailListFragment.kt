@@ -113,7 +113,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         val firstTrueIndex = selectedFilter.indexOf(true)
         when(firstTrueIndex) {
             0 -> { // 좋아요
-                viewModel.orderBy = "likes"
+                viewModel.orderBy = "likesCount"
                 viewModel.direction =
                     if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
             }
