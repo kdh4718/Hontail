@@ -89,6 +89,12 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
     inner class CocktailDetailInfosViewHolder(private val binding: ListItemCocktailDetailInfosBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CocktailDetailItem.CocktailInfo) {
             binding.apply {
+                if (item.userId != 0){
+                    imageViewCocktailDetailZzim.isEnabled = true
+                }else{
+                    imageViewCocktailDetailZzim.isEnabled = false
+                }
+
                 if (item.cocktailDetail.userId == item.userId){
                     imageViewCocktailDetailEdit.visibility = View.VISIBLE
                     imageViewCocktailDetailTrashCan.visibility = View.VISIBLE
