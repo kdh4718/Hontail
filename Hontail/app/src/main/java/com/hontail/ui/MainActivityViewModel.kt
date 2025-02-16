@@ -457,4 +457,11 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
             }
         }
     }
+
+    private val _isBottomSheetClosed = MutableLiveData<Boolean>()
+    val isBottomSheetClosed: LiveData<Boolean> get() = _isBottomSheetClosed
+
+    fun setBottomSheetClosed(isClosed: Boolean) {
+        _isBottomSheetClosed.value = isClosed
+    }
 }

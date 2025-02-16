@@ -32,6 +32,7 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+        mainActivity.hideBottomNav(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

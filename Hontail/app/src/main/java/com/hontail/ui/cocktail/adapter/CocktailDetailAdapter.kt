@@ -98,7 +98,7 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
                 }
 
                 textViewCocktailDetailNameKor.text = item.cocktailDetail.cocktailName
-                textViewCocktailDetailAlcoholLevel.text = "${item.cocktailDetail.alcoholContent}%"
+                textViewCocktailDetailAlcoholLevel.text = "${item.cocktailDetail.alcoholContent}도"
                 textViewCocktailDetailZzimCount.text = item.cocktailDetail.likeCnt.toString()
                 textViewCocktailDetailCommentCount.text = item.cocktailDetail.commentCnt.toString()
 
@@ -120,7 +120,6 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
                     )
                 }
 
-
                 // 뒤로가기 버튼 클릭 리스너
                 imageViewCocktailDetailGoBack.setOnClickListener {
                     backButtonClickListener?.invoke()
@@ -141,6 +140,7 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
 
                     // 좋아요 상태 변경 이벤트를 프래그먼트로 전달
                     cocktailDetailListener.onClickZzimButton(item.cocktailDetail.cocktailId, newLikeStatus)
+                    notifyDataSetChanged()
                 }
 
                 // 칵테일 수정하기.
@@ -154,6 +154,7 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
                 }
             }
         }
+
         private fun updateZzimButton(isLiked: Boolean) {
             if (isLiked) {
                 binding.imageViewCocktailDetailZzim.setImageDrawable(
@@ -201,5 +202,9 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged() // 전체 갱신
+    }
+
+    fun updateLikesCnt(){
+        val index = items.indexOfFirst { it is CocktailDetailItem.CocktailInfo }
     }
 }

@@ -148,8 +148,6 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
             binding.apply {
                 val cocktailListCocktailAdapter = CocktailItemAdapter(context, cocktails)
 
-//                Log.d(TAG, "Ingredients: ${cocktails}")
-
                 recyclerViewListItemCocktailListCocktailItem.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemCocktailListCocktailItem.adapter = cocktailListCocktailAdapter
 

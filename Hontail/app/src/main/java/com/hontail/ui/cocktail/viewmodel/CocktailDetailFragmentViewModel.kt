@@ -44,6 +44,7 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
                 RetrofitUtil.cocktailDetailService.addCocktailLikes(cocktailId)
             }.onSuccess {
                 _cocktailInfo.value!!.likeCnt = it.body() ?: _cocktailInfo.value!!.likeCnt
+                Log.d(TAG, "Detail addLikes: ${_cocktailInfo.value!!.likeCnt}")
             }.onFailure {
                 Log.d(TAG, "addLikes: ${it.message}")
             }
@@ -56,6 +57,7 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
                 RetrofitUtil.cocktailDetailService.deleteCocktailLikes(cocktailId)
             }.onSuccess {
                 _cocktailInfo.value!!.likeCnt = it.body() ?: _cocktailInfo.value!!.likeCnt
+                Log.d(TAG, "Detail deleteLikes: ${_cocktailInfo.value!!.likeCnt}")
             }.onFailure {
                 Log.d(TAG, "deleteLikes: ${it.message}")
             }
