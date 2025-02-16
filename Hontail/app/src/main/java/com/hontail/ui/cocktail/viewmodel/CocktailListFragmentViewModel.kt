@@ -64,7 +64,7 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
     init {
         viewModelScope.launch {
             _filterRequestFlow
-                .debounce(100) // 0.5초 동안 추가 호출 없을 때 실행
+                .debounce(100) // 0.1초 동안 추가 호출 없을 때 실행
                 .collectLatest {
                     fetchCocktailFiltering()
                 }
