@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface LikeRepository extends JpaRepository<Like, Integer> {
 
     Long countByCocktail(Cocktail cocktail);
+
     Optional<Like> findByCocktailIdAndUserId(Integer cocktailId, Integer userId);
 
     // 사용자가 좋아요한 칵테일 목록 조회

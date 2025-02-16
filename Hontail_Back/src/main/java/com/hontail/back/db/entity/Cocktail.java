@@ -66,6 +66,9 @@ public class Cocktail {
     @Column(name = "base_spirit", length = 50)
     private String baseSpirit;
 
+    @Column(nullable = false)
+    private int likesCount;  // 좋아요 개수 필드 추가
+
     @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CocktailIngredient> cocktailIngredients = new ArrayList<>();
 
@@ -77,5 +80,17 @@ public class Cocktail {
 
     @OneToMany(mappedBy = "cocktail", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Recipe> recipes = new ArrayList<>();
+
+    // 좋아요 개수 증가 메서드
+    public void increaseLikes() {
+        this.likesCount++;
+    }
+
+    // 좋아요 개수 감소 메서드
+    public void decreaseLikes() {
+        if (this.likesCount > 0) {
+            this.likesCount--;
+        }
+    }
 
 }

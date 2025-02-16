@@ -38,6 +38,8 @@ public class LikeServiceImpl implements LikeService {
         like.setUser(user);
         likeRepository.save(like);
 
+        cocktail.increaseLikes();
+
         return likeRepository.countByCocktail(cocktail).intValue();
     }
 
@@ -54,6 +56,8 @@ public class LikeServiceImpl implements LikeService {
                 .orElseThrow(() -> new CustomException(ErrorCode.LIKE_NOT_FOUND));
 
         likeRepository.delete(like);
+
+        cocktail.decreaseLikes();
 
         return likeRepository.countByCocktail(cocktail).intValue();
     }
