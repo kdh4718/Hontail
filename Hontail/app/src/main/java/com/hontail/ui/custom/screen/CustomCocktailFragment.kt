@@ -14,6 +14,7 @@ import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.custom.adapter.CustomCocktailAdapter
 import com.hontail.util.CommonUtils
+import com.hontail.util.DialogToLoginFragment
 
 private const val TAG = "CustomCocktailFragment"
 class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
@@ -40,6 +41,23 @@ class CustomCocktailFragment : BaseFragment<FragmentCustomCocktailBinding>(
         initToolbar()
         initAdapter()
         initEvent()
+        initView()
+    }
+
+    // 비회원일 경우 못 하도록 막기.
+    private fun initView() {
+
+        binding.apply {
+
+            val userId = activityViewModel.userId
+
+            // 비회원이라면.
+            if(userId == 0) {
+
+                val dialog = DialogToLoginFragment()
+                dialog.show(parentFragmentManager, dialog.tag)
+            }
+        }
     }
 
     // 툴바 설정
