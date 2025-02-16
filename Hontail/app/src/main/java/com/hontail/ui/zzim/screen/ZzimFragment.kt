@@ -42,6 +42,11 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
         initEvent()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(false)
+    }
+
     // ViewModel Observe 등록
     private fun observeCocktailComment() {
         binding.apply {
