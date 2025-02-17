@@ -248,6 +248,10 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         MutableLiveData<List<Boolean>>(listOf(false, false, false, false))
     val filterSelectedList: LiveData<List<Boolean>> get() = _filterSelectedList
 
+    private val _isBaseFromHome = MutableLiveData<Boolean>()
+    val isBaseFromHome: LiveData<Boolean>
+        get() = _isBaseFromHome
+
     fun setFilterSelectedList(newFilter: List<Boolean>){
         _filterSelectedList.postValue(newFilter)
     }
@@ -294,6 +298,10 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     fun setBaseFilter(baseSpirit: String) {
         _selectedBaseFilter.value = baseSpirit
         clearOtherFilters("base")
+    }
+
+    fun setBaseFromHome(isFromHome: Boolean){
+        _isBaseFromHome.value = isFromHome
     }
 
     private fun clearOtherFilters(selected: String) {
