@@ -34,6 +34,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         binding.viewPagerLoginImage.setCurrentItem(nextItem, true)
     }
 
+    private var isClickDisabled = false
+
     private val viewModel: LoginFragmentViewModel by viewModels()
     private lateinit var loginActivity: LoginActivity
 
@@ -103,7 +105,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
 
             imageViewLoginNaver.setOnClickListener {
-                loginWithNaver()
+                if (!isClickDisabled){
+                    Log.d(TAG, "initEvent: mem")
+                    loginWithNaver()
+                    isClickDisabled = true
+                }
             }
 
             imageViewLoginGoogle.setOnClickListener {
@@ -112,7 +118,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
             // ✅ 비회원으로 시작하기 버튼 클릭 시 MainActivity로 이동
             textViewLoginNonMember.setOnClickListener {
-                moveToMainActivity()
+                if (!isClickDisabled){
+                    Log.d(TAG, "initEvent: non")
+                    moveToMainActivity()
+                    isClickDisabled = true
+                }
             }
         }
     }
