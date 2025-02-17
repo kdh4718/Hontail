@@ -86,7 +86,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
                 Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}, user_nickname: ${intent.getStringExtra("user_nickname")}")
                 startActivity(intent)
-
+                requireActivity().finish()
             }
         }
     }
@@ -107,8 +107,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             imageViewLoginNaver.setOnClickListener {
                 if (!isClickDisabled){
                     Log.d(TAG, "initEvent: mem")
-                    loginWithNaver()
                     isClickDisabled = true
+                    loginWithNaver()
                 }
             }
 
@@ -120,8 +120,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             textViewLoginNonMember.setOnClickListener {
                 if (!isClickDisabled){
                     Log.d(TAG, "initEvent: non")
-                    moveToMainActivity()
                     isClickDisabled = true
+                    moveToMainActivity()
                 }
             }
         }
@@ -158,11 +158,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                     viewModel.loginWithNaver(accessToken)
                 }
             }
-
             override fun onFailure(httpStatus: Int, message: String) {
                 Log.d(TAG, "NaverLogin onFailure: $message")
             }
-
             override fun onError(errorCode: Int, message: String) {
                 Log.d(TAG, "NaverLogin onError: $message")
             }
