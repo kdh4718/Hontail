@@ -33,6 +33,7 @@ import com.hontail.ui.zzim.screen.ZzimFragment
 import com.hontail.util.CommonUtils
 import com.hontail.util.PermissionChecker
 import com.hontail.util.DialogToLoginFragment
+import io.grpc.netty.shaded.io.netty.util.internal.logging.CommonsLoggerFactory
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -234,8 +235,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         callback.invoke()
     }
 
+    private var currentFragment : CommonUtils.MainFragmentName? = null
+
     fun changeFragment(name: CommonUtils.MainFragmentName) {
         val transaction = supportFragmentManager.beginTransaction()
+
+        val enterAnim = when {
+            currentFragment == null -> R.anim.anim_slide_in_from_right_fade_in
+            currentFragment!!.ordinal < name.ordinal -> R.anim.anim_slide_in_from_right_fade_in
+            else -> R.anim.anim_slide_in_from_left_fade_in
+        }
+
+        transaction.setCustomAnimations(enterAnim, 0)
 
         when (name) {
             CommonUtils.MainFragmentName.HOME_FRAGMENT -> {
@@ -250,6 +261,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     .addToBackStack("bartenderFragment")
             }
             CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT -> {
+
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+
                 transaction.replace(R.id.frameLayoutMainFragment, CocktailDetailFragment())
                     .addToBackStack("CocktailDetailFragment")
             }
@@ -322,6 +339,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
         transaction.commit()
+        currentFragment = name
     }
 
     fun hideBottomNav(state: Boolean) {
