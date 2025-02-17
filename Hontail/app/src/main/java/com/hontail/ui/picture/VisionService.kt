@@ -45,10 +45,14 @@ class VisionService(private val context: Context) {
             ?.split("\n")
             ?.filter { it.isNotBlank() }
             ?.map { it.trim() }
+            ?.filter { it.length > 2 }
             ?: emptyList()
 
         // 라벨 감지 결과 추출 (최대 5개 라벨)
-        val detectedLabels = response.labelAnnotationsList.map { it.description.trim() }.take(10)
+        val detectedLabels = response.labelAnnotationsList
+            .map { it.description.trim() }
+            .filter { it.length > 2 }
+            .take(10)
 
         return detectedText + detectedLabels
     }
@@ -56,7 +60,8 @@ class VisionService(private val context: Context) {
     // Vision API 클라이언트를 생성하는 함수
     private fun getVisionClient(): ImageAnnotatorClient {
         val credentials = GoogleCredentials.fromStream(context.assets.open("gcloud-key.json"))
-        val settings = ImageAnnotatorSettings.newBuilder().setCredentialsProvider { credentials }.build()
+        val settings =
+            ImageAnnotatorSettings.newBuilder().setCredentialsProvider { credentials }.build()
         return ImageAnnotatorClient.create(settings)
     }
 }
