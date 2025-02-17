@@ -115,7 +115,6 @@ object CommonUtils {
         CUSTOM_COCKTAIL_BOTTOM_SHEET_FRAGMENT("CustomCocktailBottomSheetFragment"),
         CUSTOM_COCKTAIL_RECIPE_FRAGMENT("CustomCocktailRecipeFragment"),
         INGREDIENT_ADD_FRAGMENT("IngredientAddFragment"),
-        INGREDIENT_LIST_FRAGMENT("IngredientListFragment"),
         MY_PAGE_FRAGMENT("MyPageFragment"),
         MY_PAGE_MODIFY_FRAGMENT("MyPageModifyFragment"),
         MY_PAGE_NICKNAME_MODIFY_FRAGMENT("MyPageNicknameModifyFragment"),
