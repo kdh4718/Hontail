@@ -3,6 +3,7 @@ package com.hontail.ui.custom.screen
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -91,6 +92,11 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
 
             // 재료 추가 버튼
             buttonCustomCocktailIngredientDetail.setOnClickListener {
+
+                if(editTextCustomCocktailIngredientDetailContent.text.isNullOrEmpty()) {
+                    Toast.makeText(mainActivity, "용량을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
 
                 viewModel.ingredientDetailInfo.value?.let { ingredient ->
 
