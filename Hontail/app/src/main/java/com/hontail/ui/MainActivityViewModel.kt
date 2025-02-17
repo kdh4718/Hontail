@@ -460,10 +460,10 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
             runCatching {
                 RetrofitUtil.recommendedCocktailService.getRecommendedCocktail(userId, 5)
             }.onSuccess {
-                setCocktailId(it)
+                Log.d(TAG, "getRecommendedCocktailId: ${it.recommended_cocktails}")
+                setCocktailId(it.recommended_cocktails)
             }.onFailure {
                 Log.d(TAG, "getRecommendedCocktailId: ${it.message}")
-                setCocktailId(1)
             }
         }
     }

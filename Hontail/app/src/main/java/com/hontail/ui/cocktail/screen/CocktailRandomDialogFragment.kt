@@ -128,6 +128,13 @@ class CocktailRandomDialogFragment(): DialogFragment(), SensorEventListener {
         }
 
         activityViewModel.cocktailId.observe(viewLifecycleOwner){
+            changeFragment(it)
+        }
+    }
+
+    private fun changeFragment(id: Int){
+        Log.d(TAG, "initEvent: ${id}")
+        if (id != 1){
             dismiss()
             mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
         }
