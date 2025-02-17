@@ -40,7 +40,6 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.detectedTextList = activityViewModel.ingredientList.value!!
-        viewModel.userId = activityViewModel.userId
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,6 +66,26 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
                 }
 
             }
+
+        viewModel.userInfo.observe(viewLifecycleOwner) {
+            viewModel.setUserNickname(it.user_nickname)
+        }
+
+        viewModel.userNickname.observe(viewLifecycleOwner) {
+            Log.d(TAG, "userNickname observe: ${it}")
+
+            val pictureTopData = PictureResultType.Top(
+                suggestion = listOf(
+                    getString(
+                        R.string.user_cocktail_recommendations,
+                        it
+                    ), it
+                ),
+                ingredients = emptyList()
+            )
+
+            pictureTopAdapter.updateData(pictureTopData)
+        }
     }
 
     fun initData() {
@@ -82,8 +101,8 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
                 listOf(
                     getString(
                         R.string.user_cocktail_recommendations,
-                        activityViewModel.userNickname
-                    ), activityViewModel.userNickname
+                        viewModel.userNickname.value
+                    ), viewModel.userNickname.value ?: ""
                 ), emptyList()
             )
         )
@@ -107,8 +126,8 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
                 suggestion = listOf(
                     getString(
                         R.string.user_cocktail_recommendations,
-                        activityViewModel.userNickname
-                    ), activityViewModel.userNickname
+                        viewModel.userNickname.value
+                    ), viewModel.userNickname.value!!
                 ),
                 ingredients = emptyList()
             )
