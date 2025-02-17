@@ -107,6 +107,7 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
                 textViewCocktailDetailAlcoholLevel.text = "${item.cocktailDetail.alcoholContent}도"
                 textViewCocktailDetailZzimCount.text = item.cocktailDetail.likeCnt.toString()
                 textViewCocktailDetailCommentCount.text = item.cocktailDetail.commentCnt.toString()
+                textViewListItemCocktailDetailInfosDescription.text = item.cocktailDetail.cocktailDescription
 
                 Glide.with(context)
                     .load(item.cocktailDetail.imageUrl)
