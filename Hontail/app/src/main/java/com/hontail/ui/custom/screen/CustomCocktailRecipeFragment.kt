@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
@@ -293,7 +295,19 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                             Toast.makeText(requireContext(), "칵테일 등록 완료! $cocktailId", Toast.LENGTH_LONG).show()
 
                             activityViewModel.setCocktailId(cocktailId)
-                            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+
+                            // 🔥 CustomCocktailRecipeFragment 제거
+//                            parentFragmentManager.popBackStack("CustomCocktailRecipeFragment", 0)
+
+                            // 🔥 CustomCocktailFragment 제거
+                            parentFragmentManager.popBackStack("CustomCocktailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//
+//                            Log.d(TAG, "🎯 changeFragment 호출 전: $cocktailId")
+//                            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+//                            Log.d(TAG, "🎯 changeFragment 호출 후")
+
+                            activityViewModel.clearCustomCocktailIngredient()
+                            activityViewModel.clearRecipeStep()
                         },
                         onError = { errorMessage ->
                             Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()

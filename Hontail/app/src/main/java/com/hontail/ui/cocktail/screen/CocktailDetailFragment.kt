@@ -3,7 +3,10 @@ package com.hontail.ui.cocktail.screen
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +20,7 @@ import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.adapter.CocktailDetailAdapter
 import com.hontail.ui.cocktail.viewmodel.CocktailDetailFragmentViewModel
+import com.hontail.util.CommonUtils
 
 private const val TAG = "CocktailDetailFragment_SSAFY"
 
@@ -50,9 +54,16 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
         viewModel.getCocktailDetailInfo()
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d(TAG, "onCreateView: CocktailDetailFragment")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG, "onViewCreated: CocktailDetailFragment")
+        
         mainActivity.hideBottomNav(true)  // 하단바 안보이게 설정
         initAdapter()
         initData()
