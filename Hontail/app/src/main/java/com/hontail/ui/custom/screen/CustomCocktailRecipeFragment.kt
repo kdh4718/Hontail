@@ -239,9 +239,23 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     val baseSpirit = activityViewModel.customCocktailIngredients.value
                         ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // IngredientItem만 필터링
                         ?.filter { it.ingredientCategoryKor == "베이스 주류" } // 베이스 주류만 필터링
-                        ?.sortedBy { it.ingredientId } // ingredientId 기준 오름차순 정렬
+                        ?.sortedByDescending { it.alcoholContent } // ingredientId 기준 오름차순 정렬
                         ?.firstOrNull() // 가장 첫 번째 값 선택
-                        ?.ingredientType ?: "기본 베이스"
+                        ?.ingredientType
+                        ?.let { ingredientType ->
+                            when(ingredientType) {
+                                "Liqueur" -> "리큐어"
+                                "Rum" -> "럼"
+                                "Wine" -> "와인"
+                                "Others", null -> "기타"
+                                "Vodka" -> "보드카"
+                                "Brandy" -> "브랜디"
+                                "Whisky" -> "위스키"
+                                "Tequila" -> "데킬라"
+                                "Gin" -> "진"
+                                else -> "기타"
+                            }
+                        } ?: "기타"
                     Log.d(TAG, "initEvent: baseSpirit: $baseSpirit")
 
                     // 커스텀인지
