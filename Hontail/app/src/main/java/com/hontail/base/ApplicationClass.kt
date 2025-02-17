@@ -55,8 +55,8 @@ class ApplicationClass : Application() {
                 val newRequest = requestBuilder.build()
                 chain.proceed(newRequest)
             }
-            .readTimeout(5000, TimeUnit.MILLISECONDS)
-            .connectTimeout(5000, TimeUnit.MILLISECONDS)
+            .readTimeout(15000, TimeUnit.MILLISECONDS)
+            .connectTimeout(15000, TimeUnit.MILLISECONDS)
             .build()
 
         retrofit = Retrofit.Builder()

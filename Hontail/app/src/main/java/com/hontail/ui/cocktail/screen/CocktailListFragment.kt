@@ -58,6 +58,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     override fun onResume() {
         super.onResume()
         mainActivity.hideBottomNav(false)
+        activityViewModel.setCocktailId(1)
         applySelectedFilters()
     }
 
