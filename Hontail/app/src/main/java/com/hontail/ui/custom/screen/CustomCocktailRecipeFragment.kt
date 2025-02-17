@@ -262,7 +262,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     val isCustom = 1
 
                     // 만든 사람
-                    val makerNickname = "admin" // 여기 나중에 수정해야 함.
+                    val makerNickname = activityViewModel.userNickname // 여기 나중에 수정해야 함.
 
                     // 레시피 스텝
                     val recipeSteps = activityViewModel.recipeSteps.value
