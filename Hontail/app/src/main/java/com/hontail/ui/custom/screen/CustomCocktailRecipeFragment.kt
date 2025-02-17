@@ -414,38 +414,13 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                             )
                         }
 
-                        viewModel.insertCustomCocktail(userId!!, request!!,
-                            onSuccess = { cocktailId ->
-                                Toast.makeText(requireContext(), "칵테일 등록 완료! $cocktailId", Toast.LENGTH_LONG).show()
-
-                                activityViewModel.setCocktailId(cocktailId)
-
-                                // 🔥 CustomCocktailRecipeFragment 제거
-//                            parentFragmentManager.popBackStack("CustomCocktailRecipeFragment", 0)
-
-                                // 🔥 CustomCocktailFragment 제거
-                                parentFragmentManager.popBackStack("CustomCocktailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-//
-//                            Log.d(TAG, "🎯 changeFragment 호출 전: $cocktailId")
-//                            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
-//                            Log.d(TAG, "🎯 changeFragment 호출 후")
-
-                                activityViewModel.clearCustomCocktailIngredient()
-                                activityViewModel.clearRecipeStep()
-                            },
-                            onError = { errorMessage ->
-                                Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
-                                Log.d(TAG, "initEvent: $errorMessage")
-                            }
-                        )
-
-                        viewModel.updateCustomCocktail(activityViewModel.cocktailId.value!!, request,
+                        viewModel.updateCustomCocktail(activityViewModel.cocktailId.value!!, request!!,
                             onSuccess = { cocktailId ->
                                 Toast.makeText(requireContext(), "칵테일 수정 완료! $cocktailId", Toast.LENGTH_LONG).show()
 
                                 activityViewModel.setCocktailId(cocktailId)
 
-                                parentFragmentManager.popBackStack("CustomCocktailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                                parentFragmentManager.popBackStack("CustomCocktailRecipeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
                                 activityViewModel.clearCustomCocktailIngredient()
                                 activityViewModel.clearRecipeStep()
