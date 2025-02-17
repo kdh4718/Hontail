@@ -34,6 +34,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         binding.viewPagerLoginImage.setCurrentItem(nextItem, true)
     }
 
+    private var isClickDisabled = false
+
     private val viewModel: LoginFragmentViewModel by viewModels()
     private lateinit var loginActivity: LoginActivity
 
@@ -84,7 +86,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
                 Log.d(TAG, "Intent Extra user_id: ${intent.getIntExtra("user_id", 0)}, user_nickname: ${intent.getStringExtra("user_nickname")}")
                 startActivity(intent)
-
+                requireActivity().finish()
             }
         }
     }
@@ -103,7 +105,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             }
 
             imageViewLoginNaver.setOnClickListener {
-                loginWithNaver()
+                if (!isClickDisabled){
+                    Log.d(TAG, "initEvent: mem")
+                    isClickDisabled = true
+                    loginWithNaver()
+                }
             }
 
             imageViewLoginGoogle.setOnClickListener {
@@ -112,7 +118,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
             // ✅ 비회원으로 시작하기 버튼 클릭 시 MainActivity로 이동
             textViewLoginNonMember.setOnClickListener {
-                moveToMainActivity()
+                if (!isClickDisabled){
+                    Log.d(TAG, "initEvent: non")
+                    isClickDisabled = true
+                    moveToMainActivity()
+                }
             }
         }
     }
@@ -148,11 +158,9 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                     viewModel.loginWithNaver(accessToken)
                 }
             }
-
             override fun onFailure(httpStatus: Int, message: String) {
                 Log.d(TAG, "NaverLogin onFailure: $message")
             }
-
             override fun onError(errorCode: Int, message: String) {
                 Log.d(TAG, "NaverLogin onError: $message")
             }

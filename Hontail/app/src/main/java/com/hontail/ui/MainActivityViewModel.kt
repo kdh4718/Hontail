@@ -83,6 +83,11 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         }
     }
 
+    // 재료 리스트 초기화.
+    fun clearCustomCocktailIngredient() {
+        _customCocktailIngredients.value = mutableListOf()
+    }
+
     // 레시피 단계 리스트
     private val _recipeSteps = MutableLiveData<MutableList<Recipe>>(mutableListOf())
     val recipeSteps: LiveData<MutableList<Recipe>> get() = _recipeSteps
@@ -128,6 +133,11 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
                 _recipeSteps.postValue(updatedList)
             }
         }
+    }
+
+    // 단계 리스트 초기화
+    fun clearRecipeStep() {
+        _recipeSteps.value = mutableListOf()
     }
 
     // -------------------------------------------

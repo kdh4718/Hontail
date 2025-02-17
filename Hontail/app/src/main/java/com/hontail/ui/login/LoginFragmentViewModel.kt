@@ -122,8 +122,6 @@ class LoginFragmentViewModel : ViewModel() {
             _userNickname.value = json.optString("user_nickname", "Unknown")
 
             Log.d(TAG, "Extracted UserId: ${_userId.value}, Email: ${_userEmail.value}, userNickname: ${_userNickname.value}")
-
-
         } catch (e: Exception) {
             Log.e(TAG, "Error decoding JWT: ${e.message}")
         }
