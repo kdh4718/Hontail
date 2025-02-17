@@ -28,6 +28,8 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
         fun onClickSearch()
         fun onClickTab(position: Int)
         fun onClickFilter(position: Int)
+        fun onClickPageDown()
+        fun onClickPageUp()
     }
 
     companion object {
@@ -77,7 +79,7 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
             is CocktailListItem.SearchBar -> (holder as CocktailListSearchBarViewHolder).bind()
             is CocktailListItem.TabLayout -> (holder as CocktailListTabLayoutViewHolder).bind()
             is CocktailListItem.Filter -> (holder as CocktailListFilterViewHolder).bind(item.filters, selectedFilterPosition)
-            is CocktailListItem.CocktailItems -> (holder as CocktailListCocktailItemsViewHolder).bind(item.cocktails)
+            is CocktailListItem.CocktailItems -> (holder as CocktailListCocktailItemsViewHolder).bind(item.cocktails, item.currentPage, item.totalPage)
         }
     }
 
@@ -144,7 +146,7 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
 
     // Cocktail Items
     inner class CocktailListCocktailItemsViewHolder(private val binding: ListItemCocktailListCocktailItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(cocktails: List<CocktailListResponse>) {
+        fun bind(cocktails: List<CocktailListResponse>, currentPage: Int, totalPage: Int) {
             binding.apply {
                 val cocktailListCocktailAdapter = CocktailItemAdapter(context, cocktails)
 
@@ -157,6 +159,18 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
                         cocktailListListener.onClickCocktailItem(cocktailId)
                     }
                 }
+
+                // 페이지 다운
+                imageViewListItemCocktailListCocktailPagePreview.setOnClickListener {
+                    cocktailListListener.onClickPageDown()
+                }
+
+                // 페이지 업
+                imageViewListItemCocktailListCocktailPageNext.setOnClickListener {
+                    cocktailListListener.onClickPageUp()
+                }
+
+                textViewListItemCocktailListCocktailPage.text = "${currentPage + 1} / $totalPage"
             }
         }
     }

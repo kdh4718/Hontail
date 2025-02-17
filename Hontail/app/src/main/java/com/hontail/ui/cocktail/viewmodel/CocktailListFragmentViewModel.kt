@@ -42,6 +42,8 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             handle.set("page", value)
         }
 
+    var totalPage: Int = 0
+
     var size: Int
         get() = handle.get<Int>("size") ?: 20
         set(value) {
@@ -87,6 +89,7 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
         }.onSuccess {
             _cocktailList.postValue(it.content)
+            totalPage = it.totalPages
             Log.d(TAG, "fetchCocktailFiltering: ${it.content}")
         }.onFailure {
             _cocktailList.postValue(emptyList())

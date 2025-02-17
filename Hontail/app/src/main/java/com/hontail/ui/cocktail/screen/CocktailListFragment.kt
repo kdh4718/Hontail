@@ -58,6 +58,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     override fun onResume() {
         super.onResume()
         mainActivity.hideBottomNav(false)
+        activityViewModel.setCocktailId(1)
         applySelectedFilters()
     }
 
@@ -75,7 +76,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                 add(CocktailListItem.SearchBar)
                 add(CocktailListItem.TabLayout)
                 add(CocktailListItem.Filter(filters))
-                add(CocktailListItem.CocktailItems(emptyList()))
+                add(CocktailListItem.CocktailItems(emptyList(), 0, 0))
             }
 
             cocktailListAdapter = CocktailListAdapter(mainActivity, items)
@@ -102,9 +103,10 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     add(CocktailListItem.SearchBar)
                     add(CocktailListItem.TabLayout)
                     add(CocktailListItem.Filter(filters))
-                    add(CocktailListItem.CocktailItems(it))
+                    add(CocktailListItem.CocktailItems(it, viewModel.page, viewModel.totalPage))
                 }
                 cocktailListAdapter.updateItems(updatedItems)
+                binding.recyclerViewCocktailList.smoothScrollToPosition(0)
             }
         }
     }
@@ -173,6 +175,20 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
                         selectedFilterPosition = position
                     }
+
+                    override fun onClickPageDown() {
+                        if (viewModel.page > 0) {
+                            viewModel.page -= 1
+                            viewModel.getCocktailFiltering()
+                        }
+                    }
+
+                    override fun onClickPageUp() {
+                        if(viewModel.page < viewModel.totalPage - 1) {
+                            viewModel.page += 1
+                            viewModel.getCocktailFiltering()
+                        }
+                    }
                 }
         }
     }
@@ -195,5 +211,5 @@ sealed class CocktailListItem {
     object SearchBar : CocktailListItem()
     object TabLayout : CocktailListItem()
     data class Filter(val filters: List<String>) : CocktailListItem()
-    data class CocktailItems(val cocktails: List<CocktailListResponse>) : CocktailListItem()
+    data class CocktailItems(val cocktails: List<CocktailListResponse>, val currentPage: Int, val totalPage: Int) : CocktailListItem()
 }
