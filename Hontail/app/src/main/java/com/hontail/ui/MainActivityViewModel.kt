@@ -147,6 +147,10 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
     private val _overallAlcoholContent = MediatorLiveData<Double>()
     val overallAlcoholContent: LiveData<Double> get() = _overallAlcoholContent
 
+    fun setOverAllAlcoholContent(alcoholContent: Int) {
+        _overallAlcoholContent.value = alcoholContent.toDouble()
+    }
+
     init {
         // _customCocktailIngredients가 변경될 때마다 전체 도수를 다시 계산
         _overallAlcoholContent.addSource(_customCocktailIngredients) { ingredientList ->
