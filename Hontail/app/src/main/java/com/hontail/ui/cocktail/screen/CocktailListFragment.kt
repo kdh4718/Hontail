@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.data.model.response.CocktailListResponse
@@ -29,6 +30,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private val filters = mutableListOf("찜", "시간", "도수", "베이스주")
 
     private lateinit var cocktailListAdapter: CocktailListAdapter
+    private var selectedFilterPosition: Int = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,39 +50,9 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     }
 
     private fun applySelectedFilters() {
-        val selectedFilters = listOf(
-                activityViewModel.zzimButtonSelected,
-                activityViewModel.timeButtonSelected,
-                activityViewModel.alcoholButtonSelected,
-                activityViewModel.baseButtonSelected)
-
-        Log.d(TAG, "Filter applySelectedFilters: ${selectedFilters}")
-
-        // 필터가 true인 경우에만 적용하도록
-        when {
-            selectedFilters[0] -> { // 찜
-                viewModel.orderBy = "likes"
-                viewModel.direction =
-                    if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
-            }
-
-            selectedFilters[1] -> { // 시간
-                viewModel.orderBy = "createdAt"
-                viewModel.direction =
-                    if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
-            }
-
-            selectedFilters[2] -> { // 도수
-                viewModel.orderBy = "alcoholContent"
-                viewModel.direction =
-                    if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
-            }
-
-            selectedFilters[3] -> { // 베이스주
-                viewModel.orderBy = "id"
-                viewModel.direction = "ASC"
-            }
-        }
+        val selectedFilters = activityViewModel.filterSelectedList
+        Log.d(TAG, "Filter applySelectedFilters: ${selectedFilters.value}")
+        changeFilter(selectedFilters.value ?: listOf(false, false, false, false))
     }
 
     override fun onResume() {
@@ -119,28 +91,8 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         }
 
         activityViewModel.filterSelectedList.observe(viewLifecycleOwner){
-            val firstTrueIndex = it.indexOf(true)
-            when(firstTrueIndex) {
-                0 -> { // 좋아요
-                    viewModel.orderBy = "likes"
-                    viewModel.direction =
-                        if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
-                }
-                1 -> { // 시간
-                    viewModel.orderBy = "createdAt"
-                    viewModel.direction =
-                        if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
-                }
-                2 -> { // 도수
-                    viewModel.orderBy = "alcoholContent"
-                    viewModel.direction =
-                        if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
-                }
-                3 -> {
-                    viewModel.orderBy = "id"
-                    viewModel.direction = "ASC"
-                }
-            }
+            changeFilter(it)
+            updateFilterUI()
             viewModel.getCocktailFiltering()
         }
 
@@ -153,6 +105,31 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     add(CocktailListItem.CocktailItems(it))
                 }
                 cocktailListAdapter.updateItems(updatedItems)
+            }
+        }
+    }
+
+    fun changeFilter(selectedFilter: List<Boolean>){
+        val firstTrueIndex = selectedFilter.indexOf(true)
+        when(firstTrueIndex) {
+            0 -> { // 좋아요
+                viewModel.orderBy = "likesCount"
+                viewModel.direction =
+                    if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
+            }
+            1 -> { // 시간
+                viewModel.orderBy = "createdAt"
+                viewModel.direction =
+                    if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
+            }
+            2 -> { // 도수
+                viewModel.orderBy = "alcoholContent"
+                viewModel.direction =
+                    if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
+            }
+            3 -> {
+                viewModel.orderBy = "id"
+                viewModel.direction = "ASC"
             }
         }
     }
@@ -179,20 +156,14 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                         when (position) {
                             0 -> {
                                 viewModel.isCustom = false
-                                viewModel.baseSpirit = ""
-                                viewModel.page = 0
-                                viewModel.direction = "ASC"
-                                viewModel.orderBy = "id"
                                 resetFilters()
+                                cocktailListAdapter.updateSelectedFilter(-1)
                             }
 
                             1 -> {
                                 viewModel.isCustom = true
-                                viewModel.baseSpirit = ""
-                                viewModel.page = 0
-                                viewModel.direction = "ASC"
-                                viewModel.orderBy = "id"
                                 resetFilters()
+                                cocktailListAdapter.updateSelectedFilter(-1)
                             }
                         }
                     }
@@ -200,9 +171,14 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     override fun onClickFilter(position: Int) {
                         val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
                         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+                        selectedFilterPosition = position
                     }
                 }
         }
+    }
+
+    private fun updateFilterUI() {
+        cocktailListAdapter.updateSelectedFilter(selectedFilterPosition)
     }
 
     private fun resetFilters() {
@@ -210,6 +186,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         viewModel.direction = "ASC"
         viewModel.orderBy = "id"
         viewModel.baseSpirit = ""
+        activityViewModel.setFilterClear()
         viewModel.getCocktailFiltering()
     }
 }

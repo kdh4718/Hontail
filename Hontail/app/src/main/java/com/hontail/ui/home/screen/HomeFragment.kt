@@ -109,6 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             homeAdapter.homeListener = object : HomeAdapter.ItemOnClickListener {
                 override fun onClickCategory(name: String) {
                     activityViewModel.setBaseFilter(name)
+                    mainActivity.setSelectedBottomNavigation(R.id.navigation_search)
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
                 }
 

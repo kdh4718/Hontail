@@ -99,7 +99,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             })
 
             imageViewLoginKakao.setOnClickListener {
-                loginWithKakao()
+//                loginWithKakao()
             }
 
             imageViewLoginNaver.setOnClickListener {

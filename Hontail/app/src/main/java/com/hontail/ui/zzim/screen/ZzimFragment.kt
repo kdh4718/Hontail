@@ -16,6 +16,7 @@ import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.zzim.adapter.ZzimAdapter
 import com.hontail.ui.zzim.viewmodel.ZzimViewModel
+import com.hontail.util.CommonUtils
 
 class ZzimFragment: BaseFragment<FragmentZzimBinding>(
     FragmentZzimBinding::bind,
@@ -31,6 +32,7 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+        mainActivity.hideBottomNav(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,13 +40,17 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
 
         observeCocktailComment()
         initAdapter()
+        initEvent()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNav(false)
     }
 
     // ViewModel Observe 등록
     private fun observeCocktailComment() {
-
         binding.apply {
-
             // 찜한 리스트
             viewModel.likedList.observe(viewLifecycleOwner) { likedList ->
                 updateRecyclerView(likedList, viewModel.recentViewedList.value)
@@ -59,9 +65,7 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
 
     // RecyclerView Adapter 연결
     private fun initAdapter() {
-
         binding.apply {
-
             zzimAdapter = ZzimAdapter(mainActivity, emptyList())
 
             recyclerViewZzim.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
@@ -69,10 +73,18 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
         }
     }
 
+    private fun initEvent(){
+        zzimAdapter.zzimListListener = object : ZzimAdapter.ItemOnClickListener{
+            override fun onClickCocktailItem(cocktailId: Int) {
+                activityViewModel.setCocktailId(cocktailId)
+                mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+            }
+        }
+    }
+
     // RecyclerView Update
     private fun updateRecyclerView(likedList: List<CocktailListResponse>?, recentList: List<CocktailListResponse>?) {
         val items = mutableListOf<ZzimItem>()
-
         if (!likedList.isNullOrEmpty()) {
             items.add(ZzimItem.LikedList(likedList))
         }
