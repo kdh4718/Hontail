@@ -18,11 +18,11 @@ class ZzimViewModel: ViewModel() {
     private val recentCocktailIdRepository = RecentCocktailIdRepository.getInstance()
 
     // 찜한 칵테일 리스트
-    private val _likedList = MutableLiveData<List<CocktailListResponse>>()
+    private val _likedList = MutableLiveData<List<CocktailListResponse>>(emptyList())
     val likedList: LiveData<List<CocktailListResponse>> get() = _likedList
 
     // 최근 본 칵테일 리스트
-    private val _recentViewedList = MutableLiveData<List<CocktailListResponse>>()
+    private val _recentViewedList = MutableLiveData<List<CocktailListResponse>>(emptyList())
     val recentViewedList: LiveData<List<CocktailListResponse>> get() = _recentViewedList
 
     private val _recentCoctailId = MutableLiveData<List<Int>>()

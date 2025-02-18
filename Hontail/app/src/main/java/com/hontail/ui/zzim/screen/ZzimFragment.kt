@@ -97,23 +97,22 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
     // RecyclerView Update
     private fun updateRecyclerView(likedList: List<CocktailListResponse>?, recentList: List<CocktailListResponse>?) {
         val items = mutableListOf<ZzimItem>()
+
+        // 찜한 리스트 여부에 따라 아이템 추가
         if (!likedList.isNullOrEmpty()) {
             items.add(ZzimItem.LikedList(likedList))
-        }
-        else {
+        } else {
             items.add(ZzimItem.Empty)
         }
 
+        // 최근 본 리스트가 있다면 추가
         if (!recentList.isNullOrEmpty()) {
             items.add(ZzimItem.RecentViewedList(recentList))
         }
 
-        if (items.isEmpty()) {
-            items.add(ZzimItem.Empty)
-        }
-
         zzimAdapter.updateItems(items)
     }
+
 }
 
 sealed class ZzimItem {
