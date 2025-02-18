@@ -229,7 +229,12 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 // 등록 모드일 때
                 if(activityViewModel.recipeMode.value == CommonUtils.CustomCocktailRecipeMode.REGISTER) {
 
-                    if(editTextListItemCustomCocktailRecipeName.text.isNullOrEmpty() || editTextListItemCustomCocktailRecipeDescription.text.isNullOrEmpty() || viewModel.uploadedImageUrl.value.isNullOrEmpty() || viewModel.recipeSteps.value.isNullOrEmpty()) {
+                    if(editTextListItemCustomCocktailRecipeName.text.isNullOrEmpty() || editTextListItemCustomCocktailRecipeDescription.text.isNullOrEmpty() || viewModel.uploadedImageUrl.value.isNullOrEmpty() || activityViewModel.recipeSteps.value.isNullOrEmpty()) {
+
+                        Log.d(TAG, "initEvent: editTextListItemCustomCocktailRecipeName: ${editTextListItemCustomCocktailRecipeName.text}")
+                        Log.d(TAG, "initEvent: editTextListItemCustomCocktailRecipeDescription: ${editTextListItemCustomCocktailRecipeDescription.text}")
+                        Log.d(TAG, "initEvent: uploadedImageUrl: ${viewModel.uploadedImageUrl.value}")
+                        Log.d(TAG, "initEvent: recipeSteps: ${viewModel.recipeSteps.value}")
 
                         Toast.makeText(mainActivity, "필수인 영역을 채워주세요.", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
