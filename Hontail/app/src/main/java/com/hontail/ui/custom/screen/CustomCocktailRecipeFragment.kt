@@ -149,7 +149,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
             // 도수
             activityViewModel.overallAlcoholContent.observe(viewLifecycleOwner) { alcoholContent ->
-                textViewListItemCustomCocktailRecipeAlcoholLevelAlcoholLevel.text = "${alcoholContent.toInt()}%"
+                textViewListItemCustomCocktailRecipeAlcoholLevelAlcoholLevel.text = "${alcoholContent.toInt()}도"
             }
 
             // 재료 리스트 새롭게 변환.
