@@ -91,13 +91,13 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
         }.onFailure {
             Log.e(TAG, "Error saving cocktailId to Room: ${it.message}")
         }
+        getRecentCoctailId()
     }
 
     fun getCocktailDetailInfo() {
         Log.d(TAG, "getCocktailDetailInfo - cocktailId: $cocktailId")
         viewModelScope.launch {
             _cocktailIdFlow.emit(cocktailId)  // 한 번만 emit
-            getRecentCoctailId()
         }
     }
 
