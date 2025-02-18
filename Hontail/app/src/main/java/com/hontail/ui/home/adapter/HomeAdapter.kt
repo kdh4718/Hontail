@@ -113,6 +113,20 @@ class HomeAdapter(private val context: Context, private var items: MutableList<H
             val pagerSnapHelper = PagerSnapHelper()
             pagerSnapHelper.attachToRecyclerView(binding.recyclerViewHomeTopTen)
 
+            // TOP 10 1번 항목의 초기 상태를 중앙으로 정렬하기 위해 추가된 코드(이 부분 외에 다른거 건드린거 없음)
+            binding.recyclerViewHomeTopTen.post {
+                val snapView = pagerSnapHelper.findSnapView(binding.recyclerViewHomeTopTen.layoutManager)
+                snapView?.let {
+                    val snapDistance = pagerSnapHelper.calculateDistanceToFinalSnap(
+                        binding.recyclerViewHomeTopTen.layoutManager!!,
+                        it
+                    )
+                    if (snapDistance != null) {
+                        binding.recyclerViewHomeTopTen.scrollBy(snapDistance[0], snapDistance[1])
+                    }
+                }
+            }
+
             adapter.topTenListener = object : TopTenAdapter.ItemOnClickListener{
                 override fun onClickTopTen(cocktailId: Int) {
                     homeListener.onClickTopTen(cocktailId)
