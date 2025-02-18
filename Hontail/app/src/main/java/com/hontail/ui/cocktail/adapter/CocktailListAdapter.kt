@@ -123,6 +123,7 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
 
     fun updateSelectedFilter(position: Int) {
         selectedFilterPosition = position
+        Log.d(TAG, "HomeFilter adapter: ${selectedFilterPosition}")
         notifyItemChanged(2)  // FILTER의 위치 (Index 2)
     }
 

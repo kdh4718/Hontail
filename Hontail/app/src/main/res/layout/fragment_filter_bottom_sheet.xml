@@ -166,7 +166,7 @@
                 style="@style/Font_Medium_16_Basic_Gray_Check_Box"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
                 android:button="@drawable/custom_radio_button"
                 android:padding="10dp"
                 android:text="도수 높은 순"

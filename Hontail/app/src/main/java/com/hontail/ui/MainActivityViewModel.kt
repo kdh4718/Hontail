@@ -263,7 +263,7 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         get() = _isBaseFromHome
 
     fun setFilterSelectedList(newFilter: List<Boolean>){
-        _filterSelectedList.postValue(newFilter)
+        _filterSelectedList.value = newFilter
     }
 
     var zzimButtonSelected: Boolean
