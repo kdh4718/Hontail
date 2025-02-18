@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.hontail.R
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.databinding.ListItemMypageCocktailBinding
 import com.hontail.databinding.ListItemMypageEmptyBinding
@@ -96,6 +97,8 @@ class MyPageAdapter(private val context: Context, var items: List<MyPageItem>): 
 
                 Glide.with(context)
                     .load(item.userInfo.user_image_url)
+                    .placeholder(R.drawable.logo_final)
+                    .error(R.drawable.logo_final)
                     .into(imageViewMyPageProfile)
 
                 textViewMyPageNickname.text = item.userInfo.user_nickname

@@ -51,8 +51,8 @@ class CocktailItemAdapter(private val context: Context, private val items: List<
 
                 Glide.with(context)
                     .load(item.imageUrl)
-                    .placeholder(R.drawable.ic_bottom_navi_zzim_selected)
-                    .error(R.drawable.ic_bottom_navi_zzim_unselected)
+                    .placeholder(R.drawable.logo_final)
+                    .error(R.drawable.logo_final)
                     .into(imageViewListItemCocktailCocktail)
 
                 if (item.isLiked){

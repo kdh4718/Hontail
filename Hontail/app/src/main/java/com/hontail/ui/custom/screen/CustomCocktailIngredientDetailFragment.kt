@@ -65,7 +65,8 @@ class CustomCocktailIngredientDetailFragment : BaseFragment<FragmentCustomCockta
 
                 Glide.with(mainActivity)
                     .load(ingredient.ingredientImage)
-                    .placeholder(R.drawable.logo_image)
+                    .placeholder(R.drawable.logo_final)
+                    .error(R.drawable.logo_final)
                     .into(imageViewCustomCocktailIngredientDetail)
             }
         }
