@@ -50,10 +50,14 @@ class CocktailRecipeDrawerAdapter(
 
                 imageViewCocktailRecipeDrawerImage.apply {
                     setAnimation(animationFile)
-                    playAnimation() // Always play animation regardless of selection
+                    if (bindingAdapterPosition == selectedPosition) {
+                        playAnimation()
+                    } else {
+                        pauseAnimation()
+                    }
                 }
 
-                // Highlight selected item background only
+                // Highlight selected item
                 if (bindingAdapterPosition == selectedPosition) {
                     root.setBackgroundColor(
                         ContextCompat.getColor(
@@ -61,6 +65,7 @@ class CocktailRecipeDrawerAdapter(
                             R.color.basic_gray
                         )
                     )
+                    imageViewCocktailRecipeDrawerImage.playAnimation()
                 } else {
                     root.setBackgroundColor(
                         ContextCompat.getColor(
@@ -68,6 +73,7 @@ class CocktailRecipeDrawerAdapter(
                             android.R.color.transparent
                         )
                     )
+                    imageViewCocktailRecipeDrawerImage.pauseAnimation()
                 }
             }
         }
