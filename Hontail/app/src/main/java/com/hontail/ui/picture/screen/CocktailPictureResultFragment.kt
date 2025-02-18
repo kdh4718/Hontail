@@ -114,6 +114,7 @@ class CocktailPictureResultFragment : BaseFragment<FragmentCocktailPictureResult
         binding.recyclerViewPictureResult.adapter = concatAdapter
 
         viewModel.ingredientAnalyzeCoctailList.observe(viewLifecycleOwner) {
+
             Log.d(TAG, "AIAIAIAIAIAIAIAIinitRecyclerView: ${it}")
             val pictureBottomData = PictureResultType.Bottom(
                 cocktailCount = it.size.toString(),

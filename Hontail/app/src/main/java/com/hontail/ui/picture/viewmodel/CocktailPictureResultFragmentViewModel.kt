@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hontail.data.model.response.Cocktail
 import com.hontail.data.model.response.CocktailListResponse
+import com.hontail.data.model.response.CocktailListResponseX
 import com.hontail.data.model.response.MyPageInformationResponse
 import com.hontail.data.remote.RetrofitUtil
 import com.hontail.data.remote.RetrofitUtil.Companion.myPageService
@@ -69,7 +70,9 @@ class CocktailPictureResultFragmentViewModel(private val handle: SavedStateHandl
                 Log.d(TAG, "AI getIngredientAnalyze: ${it}")
                 it.body()?.let {
                     Log.d(TAG, "AI body getIngredientAnalyze: ${it}")
-                    _ingredientAnalyzeCoctailList.postValue(it)
+
+                    val convertedList = it.map { it.toCocktailListResponse() }
+                    _ingredientAnalyzeCoctailList.postValue(convertedList)
                     Log.d(TAG, "AI my getIngredientAnalyze: ${_ingredientAnalyzeCoctailList.value}")
                 }
             }.onFailure {
@@ -78,6 +81,21 @@ class CocktailPictureResultFragmentViewModel(private val handle: SavedStateHandl
             }
         }
     }
+
+    private fun CocktailListResponseX.toCocktailListResponse(): CocktailListResponse {
+        return CocktailListResponse(
+            id = this.id,
+            cocktailName = this.cocktailName,
+            imageUrl = this.imageUrl,
+            likesCnt = this.likes, // 필드 이름 맞춰줌
+            alcoholContent = this.alcoholContent,
+            baseSpirit = this.baseSpirit,
+            createdAt = this.createdAt,
+            ingredientCount = this.ingredientCount,
+            isLiked = this.isLiked
+        )
+    }
+
 
     // 사용자 정보 가져오기.
     private fun getUserInformation() {
