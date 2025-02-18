@@ -10,6 +10,10 @@ import com.hontail.data.local.RecentCocktailIdDatabase
 import com.hontail.data.local.RecentCocktailIdRepository
 import com.hontail.data.model.response.CocktailDetailResponse
 import com.hontail.data.remote.RetrofitUtil
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 private const val TAG = "CocktailDetailFragmentV_SSAFY"
@@ -19,11 +23,21 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
     private val customCocktailService = RetrofitUtil.customCocktailService
     private val recentCocktailIdRepository = RecentCocktailIdRepository.getInstance()
 
+    private val _cocktailIdFlow = MutableSharedFlow<Int>(replay = 1)  // 최신 값 유지
+    val cocktailIdFlow = _cocktailIdFlow.asSharedFlow()
+
     var cocktailId = handle.get<Int>("cocktailId") ?: 0
         set(value) {
             handle.set("cocktailId", value)
             field = value
+            viewModelScope.launch {
+                _cocktailIdFlow.emit(value)  // 중복 방지된 값 emit
+            }
         }
+
+    init {
+        observeCocktailIdChanges()
+    }
 
     var userId = handle.get<Int>("userId") ?: 0
         set(value) {
@@ -35,6 +49,15 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
     private val _cocktailInfo = MutableLiveData<CocktailDetailResponse>()
     val cocktailInfo: LiveData<CocktailDetailResponse>
         get() = _cocktailInfo
+
+    private fun observeCocktailIdChanges() {
+        viewModelScope.launch {
+            cocktailIdFlow.filterNotNull().collectLatest { id ->
+                saveCocktailId(id)
+                getCocktailDetailInfo(id, userId)
+            }
+        }
+    }
 
     fun addLikes(cocktailId: Int){
         viewModelScope.launch {
@@ -62,25 +85,24 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
         }
     }
 
-    fun getCocktailDetailInfo() {
-        Log.d(TAG, "getCocktailDetailInfo - cocktailId: ${cocktailId}")
-
-        saveCocktailId(cocktailId)
-        getCocktailDetailInfo(cocktailId, userId)
+    private suspend fun saveCocktailId(cocktailId: Int) {
+        runCatching {
+            recentCocktailIdRepository.insertCocktail(cocktailId)
+        }.onFailure {
+            Log.e(TAG, "Error saving cocktailId to Room: ${it.message}")
+        }
     }
 
-    // RecentCocktailIdRepository에서 DB 작업을 runCatching으로 감싸서 예외를 처리
-    private fun saveCocktailId(cocktailId: Int) {
-        // Room에 cocktailId 저장
+    fun getCocktailDetailInfo() {
+        Log.d(TAG, "getCocktailDetailInfo - cocktailId: $cocktailId")
         viewModelScope.launch {
-            runCatching {
-                recentCocktailIdRepository.insertCocktail(cocktailId)
-            }.onFailure {
-                Log.e(TAG, "Error saving cocktailId to Room: ${it.message}")
-            }
+            _cocktailIdFlow.emit(cocktailId)  // 한 번만 emit
+            getRecentCoctailId()
         }
-        
-        viewModelScope.launch { 
+    }
+
+    private fun getRecentCoctailId(){
+        viewModelScope.launch {
             runCatching {
                 recentCocktailIdRepository.getAllCocktails()
             }.onSuccess {
