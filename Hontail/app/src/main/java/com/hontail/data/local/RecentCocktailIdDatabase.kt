@@ -10,7 +10,7 @@ import com.hontail.data.model.dto.RecentCocktailIdTable
 @Database(entities = [RecentCocktailIdTable::class], version = 1)
 abstract class RecentCocktailIdDatabase : RoomDatabase() {
 
-    abstract fun recentCocktailIdDao(): RecentCocktailDao
+    abstract fun getRecentCocktailIdDao(): RecentCocktailDao
 
     companion object {
         @Volatile
