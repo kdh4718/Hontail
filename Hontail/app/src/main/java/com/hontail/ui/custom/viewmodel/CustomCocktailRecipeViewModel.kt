@@ -69,7 +69,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
      * - REGISTER 모드.
      * - MODIFY 모드:
      */
-    fun initializeRecipeData(mode: CommonUtils.CustomCocktailRecipeMode, cocktailId: Int, userId: Int) {
+    fun initializeRecipeData(mode: CommonUtils.CustomCocktailRecipeMode, cocktailId: Int?, userId: Int?) {
         if (mode == CommonUtils.CustomCocktailRecipeMode.REGISTER) {
             Log.d(TAG, "initializeRecipeData: 등록모드입니다.")
             _recipeImage.value = Uri.EMPTY
@@ -79,7 +79,11 @@ class CustomCocktailRecipeViewModel: ViewModel() {
         }
         else {
             Log.d(TAG, "initializeRecipeData: 수정모드입니다.")
-            loadExistingRecipeData(cocktailId, userId)
+            if (cocktailId != null) {
+                if (userId != null) {
+                    loadExistingRecipeData(cocktailId, userId)
+                }
+            }
         }
     }
 

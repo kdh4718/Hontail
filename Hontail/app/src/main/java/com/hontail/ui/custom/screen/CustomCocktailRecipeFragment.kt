@@ -107,7 +107,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             // 레시피 모드 등록 / 수정
             activityViewModel.recipeMode.observe(viewLifecycleOwner) { mode ->
                 recipeMode = mode
-                viewModel.initializeRecipeData(mode, activityViewModel.cocktailId.value!!, activityViewModel.userId)
+                viewModel.initializeRecipeData(mode, activityViewModel.cocktailId.value, activityViewModel.userId)
             }
 
             // 칵테일 이미지
