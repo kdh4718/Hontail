@@ -150,6 +150,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         callback: () -> Unit
     ) {
         val transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
 
         when (fragmentName) {
             CommonUtils.MainFragmentName.HOME_FRAGMENT -> {
