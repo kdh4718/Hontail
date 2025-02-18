@@ -111,6 +111,8 @@ class CocktailDetailAdapter(private val context: Context, private var items: Mut
 
                 Glide.with(context)
                     .load(item.cocktailDetail.imageUrl)
+                    .placeholder(R.drawable.logo_final)
+                    .error(R.drawable.logo_final)
                     .into(imageViewCocktailDetailImage)
 
                 if (item.cocktailDetail.isLiked){

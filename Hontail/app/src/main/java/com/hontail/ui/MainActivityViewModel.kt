@@ -231,6 +231,16 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         _recipeMode.value = mode
     }
 
+    private val _selectedZzimRadioId = MutableLiveData<Int>()
+    val selectedZzimRadioId: LiveData<Int> = _selectedZzimRadioId
+
+    private val _selectedTimeRadioId = MutableLiveData<Int>()
+    val selectedTimeRadioId: LiveData<Int> = _selectedTimeRadioId
+
+    private val _selectedAlcoholRadioId = MutableLiveData<Int>()
+    val selectedAlcoholRadioId: LiveData<Int> = _selectedAlcoholRadioId
+
+
     // 필터 관련 코드 추가
     private val _selectedZzimFilter = MutableLiveData<Int?>()
     val selectedZzimFilter: LiveData<Int?> = _selectedZzimFilter
@@ -279,19 +289,23 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         set(value) {
             handle.set("baseButtonSelected", value)
         }
-    
+
+    // 라디오 버튼 ID 설정 함수 수정
     fun setZzimFilter(radioButtonId: Int) {
         _selectedZzimFilter.value = radioButtonId
+        _selectedZzimRadioId.value = radioButtonId  // 선택된 라디오 버튼 ID 저장
         clearOtherFilters("zzim")
     }
 
     fun setTimeFilter(radioButtonId: Int) {
         _selectedTimeFilter.value = radioButtonId
+        _selectedTimeRadioId.value = radioButtonId  // 선택된 라디오 버튼 ID 저장
         clearOtherFilters("time")
     }
 
     fun setAlcoholFilter(radioButtonId: Int) {
         _selectedAlcoholFilter.value = radioButtonId
+        _selectedAlcoholRadioId.value = radioButtonId  // 선택된 라디오 버튼 ID 저장
         clearOtherFilters("alcohol")
     }
 
@@ -355,12 +369,17 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         )
     }
 
-    fun setFilterClear(){
+    fun setFilterClear() {
         _filterSelectedList.value = listOf(false, false, false, false)
         _selectedZzimFilter.value = -1
         _selectedTimeFilter.value = -1
         _selectedAlcoholFilter.value = -1
         _selectedBaseFilter.value = ""
+
+        // 라디오 버튼 선택 상태도 초기화
+        _selectedZzimRadioId.value = -1
+        _selectedTimeRadioId.value = -1
+        _selectedAlcoholRadioId.value = -1
     }
 
     fun updateZzimButtonState(selected: Boolean) {
