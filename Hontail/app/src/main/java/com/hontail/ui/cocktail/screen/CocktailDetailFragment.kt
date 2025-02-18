@@ -136,7 +136,8 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
 
                     // 수정
                     override fun onClickModify() {
-                        TODO("Not yet implemented")
+                        activityViewModel.setRecipeMode(CommonUtils.CustomCocktailRecipeMode.MODIFY)
+                        mainActivity.changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_RECIPE_FRAGMENT)
                     }
 
                     // 삭제

@@ -21,7 +21,6 @@ import com.hontail.ui.cocktail.screen.CocktailRecipeFragment
 import com.hontail.ui.cocktail.screen.CocktailSearchFragment
 import com.hontail.ui.home.screen.HomeFragment
 import com.hontail.ui.ingredient.screen.IngredientAddFragment
-import com.hontail.ui.ingredient.screen.IngredientListFragment
 import com.hontail.ui.mypage.screen.MyPageFragment
 import com.hontail.ui.mypage.screen.MyPageModifyFragment
 import com.hontail.ui.mypage.screen.MyPageNicknameModifyFragment
@@ -85,8 +84,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_search -> {
-                    activityViewModel.setFilterClear()
-                    changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                    if (activityViewModel.isBaseFromHome.value == true){
+                        changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                        activityViewModel.setBaseFromHome(false)
+                    }else{
+                        activityViewModel.setFilterClear()
+                        changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                    }
+
                     true
                 }
                 // 로그인이 필요한 메뉴들
@@ -196,9 +201,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 transaction.replace(R.id.frameLayoutMainFragment, IngredientAddFragment())
                     .addToBackStack("IngredientAddFragment")
             }
-            CommonUtils.MainFragmentName.INGREDIENT_LIST_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, IngredientListFragment())
-            }
             CommonUtils.MainFragmentName.MY_PAGE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, MyPageFragment())
             }
@@ -303,9 +305,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, IngredientAddFragment())
                     .addToBackStack("IngredientAddFragment")
-            }
-            CommonUtils.MainFragmentName.INGREDIENT_LIST_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, IngredientListFragment())
             }
             CommonUtils.MainFragmentName.MY_PAGE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, MyPageFragment())

@@ -20,6 +20,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
 
     private val s3Service = RetrofitUtil.s3Service
     private val customCocktailService = RetrofitUtil.customCocktailService
+    private val cocktailDetailService = RetrofitUtil.cocktailDetailService
 
     // 1. 레시피 이미지 (CustomCocktailRecipeItem.CustomCocktailRecipeImage는 파라미터가 없는 object로 가정)
     private val _recipeImage = MutableLiveData<Uri>()
@@ -37,8 +38,6 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     private val _description = MutableLiveData<String>()
     val description: LiveData<String> get() = _description
 
-
-
     // ※ 이미지 업로드 후 최종 이미지 URL을 저장할 LiveData (uploadImageToServer의 응답 URL에서 확장자까지의 부분)
     private val _uploadedImageUrl = MutableLiveData<String>()
     val uploadedImageUrl: LiveData<String> get() = _uploadedImageUrl
@@ -46,6 +45,9 @@ class CustomCocktailRecipeViewModel: ViewModel() {
     // ✅ 새롭게 관리할 ingredient 리스트 (ingredientId, ingredientQuantity만 포함)
     private val _recipeIngredients = MutableLiveData<List<Ingredient>>()
     val recipeIngredients: LiveData<List<Ingredient>> get() = _recipeIngredients
+
+    private val _recipeSteps = MutableLiveData<MutableList<Recipe>>(mutableListOf())
+    val recipeSteps: LiveData<MutableList<Recipe>> get() = _recipeSteps
 
     /**
      * ✅ ActivityViewModel에서 받아온 ingredientList를 가공하여 저장
@@ -67,7 +69,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
      * - REGISTER 모드.
      * - MODIFY 모드:
      */
-    fun initializeRecipeData(mode: CommonUtils.CustomCocktailRecipeMode) {
+    fun initializeRecipeData(mode: CommonUtils.CustomCocktailRecipeMode, cocktailId: Int, userId: Int) {
         if (mode == CommonUtils.CustomCocktailRecipeMode.REGISTER) {
             Log.d(TAG, "initializeRecipeData: 등록모드입니다.")
             _recipeImage.value = Uri.EMPTY
@@ -77,21 +79,37 @@ class CustomCocktailRecipeViewModel: ViewModel() {
         }
         else {
             Log.d(TAG, "initializeRecipeData: 수정모드입니다.")
-            loadExistingRecipeData()
+            loadExistingRecipeData(cocktailId, userId)
         }
     }
 
     /**
      * 기존 레시피 데이터를 불러오는 함수 (수정 모드용)
      */
-    private fun loadExistingRecipeData() {
-        // TODO: 실제 데이터를 불러오는 로직을 구현
-        // 예시로 더미 데이터를 설정합니다.
-        _recipeImage.value = Uri.EMPTY
-        _recipeName.value = "완성된 칵테일 이름 수정할 것."
-        _alcoholLevel.value = 30
-        _description.value = "수정된 칵테일 설명"
+    private fun loadExistingRecipeData(cocktailId: Int, userId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = cocktailDetailService.getCocktailDetail(cocktailId, userId)
+                response.body()?.let { cocktailDetail ->
+                    _uploadedImageUrl.value = cocktailDetail.imageUrl
+                    _recipeName.value = cocktailDetail.cocktailName
+                    _alcoholLevel.value = cocktailDetail.alcoholContent
+                    _description.value = cocktailDetail.cocktailDescription
+
+                    // cocktailIngredients (List<CocktailIngredient>) -> List<Ingredient> 변환
+                    _recipeIngredients.value = cocktailDetail.cocktailIngredients?.map { cocktailIngredient ->
+                        Ingredient(
+                            ingredientId = cocktailIngredient.ingredient.ingredientId, // IngredientX의 ingredientId를 사용
+                            ingredientQuantity = cocktailIngredient.ingredientQuantity
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "loadExistingRecipeData 오류: ${e.message}")
+            }
+        }
     }
+
 
     // === 각 항목별 업데이트 메서드 ===
 
@@ -155,6 +173,20 @@ class CustomCocktailRecipeViewModel: ViewModel() {
                 onSuccess(response) // ✅ Int를 직접 반환
             } catch (e: Exception) {
                 Log.e(TAG, "insertCustomCocktail 오류: ${e.message}")
+                onError(e.message ?: "알 수 없는 오류")
+            }
+        }
+    }
+
+    fun updateCustomCocktail(cocktailId: Int, customCocktailRecipeRequest: CustomCocktailRecipeRequest, onSuccess: (Int) -> Unit, onError: (String) -> Unit) {
+
+        viewModelScope.launch {
+            try {
+
+                val response = customCocktailService.updateCustomCocktail(cocktailId, customCocktailRecipeRequest)
+                onSuccess(response)
+            }
+            catch (e: Exception) {
                 onError(e.message ?: "알 수 없는 오류")
             }
         }

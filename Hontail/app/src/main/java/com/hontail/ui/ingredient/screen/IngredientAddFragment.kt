@@ -28,21 +28,22 @@ class IngredientAddFragment : BaseFragment<FragmentIngredientAddBinding>(
         super.onViewCreated(view, savedInstanceState)
 
         mainActivity.hideBottomNav(true)
-        setupBackButton()
-        setupCategoryButton()
+
+        initToolbar()
         initEvent()
     }
 
-    private fun setupBackButton() {
-        binding.imageViewIngredientArrow.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-    }
+    private fun initToolbar() {
 
-    private fun setupCategoryButton() {
-        binding.textViewIngredientSort.setOnClickListener {
-            val bottomSheetFragment = IngredientListBottomSheetFragment.newInstance()
-            bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+        binding.apply {
+
+            toolbarIngredientAdd.apply {
+
+                setNavigationIcon(R.drawable.go_back)
+                setNavigationOnClickListener {
+                    parentFragmentManager.popBackStack("IngredientAddFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                }
+            }
         }
     }
 
@@ -50,7 +51,30 @@ class IngredientAddFragment : BaseFragment<FragmentIngredientAddBinding>(
 
         binding.apply {
 
-            textViewIngredientRequest.setOnClickListener {
+            // 분류 바텀 시트
+            buttonIngredientAddCategory.setOnClickListener {
+
+                val currentSelectedUnit = textViewIngredientAddCategory.text.toString()
+
+                val bottomSheetFragment = IngredientBottomSheetFragment.newInstance(currentSelectedUnit)
+
+                bottomSheetFragment.onUnitSelectedListener = object : OnUnitSelectedListener {
+                    override fun onUnitSelected(unitItem: UnitItem) {
+                        textViewIngredientAddCategory.text = unitItem.unitName
+                    }
+                }
+
+                bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+            }
+
+            // 재료 요청 보내기.
+            buttonIngredientAddRequest.setOnClickListener {
+
+                if(textViewIngredientAddName.text.isNullOrEmpty() || textViewIngredientAddCategory.text.isNullOrEmpty() || textViewIngredientAddAlcoholContent.text.isNullOrEmpty()) {
+                    Toast.makeText(mainActivity, "빈 곳을 다 채워주세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 Toast.makeText(mainActivity, "재료 요청이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                 parentFragmentManager.popBackStack("IngredientAddFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
             }
