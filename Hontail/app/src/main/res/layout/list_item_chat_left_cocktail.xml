@@ -8,10 +8,10 @@
         android:id="@+id/imageViewListItemChatLeftCocktailProfile"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/logo_image"
+        android:src="@drawable/logo_final"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewListItemChatLeftCocktailName"
