@@ -39,14 +39,15 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivity.hideBottomNav(true)
         viewModel.loadSearchHistory()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initAdapter()
         initData()
+        initAdapter()
         initEvent()
     }
 
@@ -54,7 +55,7 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
     private fun initAdapter() {
         binding.apply {
             val items = mutableListOf<CocktailSearchItem>().apply {
-                add(CocktailSearchItem.SearchBar(null))
+                add(CocktailSearchItem.SearchBar(null, viewModel.initSearch))
                 add(CocktailSearchItem.Recent(emptyList()))
             }
 
@@ -69,21 +70,27 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
         viewModel.searchHistoryList.observe(viewLifecycleOwner){
             Log.d(TAG, "initData Search: ${it}")
             val updatedItems = mutableListOf<CocktailSearchItem>().apply {
-                add(CocktailSearchItem.SearchBar(null))
+                add(CocktailSearchItem.SearchBar(null, viewModel.initSearch))
                 add(CocktailSearchItem.Recent(it))
             }
 
             cocktailSearchAdapter.updateItems(updatedItems)
         }
 
-        viewModel.cocktailList.observe(viewLifecycleOwner){
-            Log.d(TAG, "initData Cocktail: ${it}")
-            val updatedItems = mutableListOf<CocktailSearchItem>().apply {
-                add(CocktailSearchItem.SearchBar(null))
-                add(CocktailSearchItem.Result(it))
-            }
+        viewModel.cocktailList.observe(viewLifecycleOwner){ cocktailList ->
 
-            cocktailSearchAdapter.updateItems(updatedItems)
+            cocktailList?.let {
+
+                Log.d(TAG, "initData Cocktail: ${it}")
+                val updatedItems = mutableListOf<CocktailSearchItem>().apply {
+                    add(CocktailSearchItem.SearchBar(null, viewModel.initSearch))
+                    Log.d(TAG, "initData: viewmodel.totalPage: ${viewModel.totalPage}")
+                    add(CocktailSearchItem.Result(it, viewModel.page, viewModel.totalPage))
+                }
+
+                cocktailSearchAdapter.updateItems(updatedItems)
+                binding.recyclerViewCocktailSearch.smoothScrollToPosition(0)
+            }
         }
     }
 
@@ -97,6 +104,8 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 }
 
                 override fun onClickSearch(text: String) {
+                    viewModel.initSearch = false
+                    viewModel.currentSearchQuery = text
                     viewModel.getCocktailByName(text)
                     viewModel.insertSearchHistory(text)
                 }
@@ -109,13 +118,27 @@ class CocktailSearchFragment : BaseFragment<FragmentCocktailSearchBinding>(
                 override fun onClickSearchHistoryDelete(id: Int) {
                     viewModel.deleteSearchHistory(id)
                 }
+
+                override fun onClickPageDown() {
+                    if (viewModel.page > 0) {
+                        viewModel.page -= 1
+                        viewModel.getCocktailByName(viewModel.currentSearchQuery!!)
+                    }
+                }
+
+                override fun onClickPageUp() {
+                    if(viewModel.page < viewModel.totalPage - 1) {
+                        viewModel.page += 1
+                        viewModel.getCocktailByName(viewModel.currentSearchQuery!!)
+                    }
+                }
             }
         }
     }
 }
 
 sealed class CocktailSearchItem {
-    data class SearchBar(val query: String?): CocktailSearchItem()
+    data class SearchBar(val query: String?, var initSearch: Boolean): CocktailSearchItem()
     data class Recent(val recentList: List<SearchHistoryTable>): CocktailSearchItem()
-    data class Result(val resultList: List<CocktailListResponse>): CocktailSearchItem()
+    data class Result(val resultList: List<CocktailListResponse>, val currentPage: Int, val totalPage: Int): CocktailSearchItem()
 }

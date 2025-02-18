@@ -26,6 +26,8 @@ class CocktailSearchFragmentViewModel(private val handle: SavedStateHandle): Vie
             handle.set("page", value)
         }
 
+    var totalPage: Int = 0
+
     var size: Int
         get() = handle.get<Int>("size") ?: 20
         set(value) {
@@ -36,13 +38,20 @@ class CocktailSearchFragmentViewModel(private val handle: SavedStateHandle): Vie
     val cocktailList: LiveData<List<CocktailListResponse>>
         get() = _cocktailList
 
+    var currentSearchQuery: String? = null
+
+    var initSearch: Boolean = true
+
     fun getCocktailByName(name: String){
         viewModelScope.launch {
             runCatching {
                 RetrofitUtil.cocktailService.getCocktailByName(name, page, size)
             }.onSuccess {
                 insertSearchHistory(name)
+                totalPage = it.totalPages
                 _cocktailList.value = it.content
+                Log.d(TAG, "getCocktailByName: it.totalPage: ${it.totalPages}")
+                Log.d(TAG, "getCocktailByName: totalPage: $totalPage")
                 Log.d(TAG, "getCocktailByName: ${_cocktailList.value}")
             }.onFailure {
                 Log.d(TAG, "getCocktailByName: ${it.message}")
