@@ -70,6 +70,11 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         initEvent()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        activityViewModel.setBaseFromHome(false)
+    }
+
     private fun initAdapter() {
         binding.apply {
             val items = mutableListOf<CocktailListItem>().apply {
@@ -108,6 +113,13 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                 cocktailListAdapter.updateItems(updatedItems)
                 binding.recyclerViewCocktailList.smoothScrollToPosition(0)
             }
+        }
+
+        Log.d(TAG, "HomeFilter: ${activityViewModel.isBaseFromHome.value}")
+
+        if (activityViewModel.isBaseFromHome.value == true){
+            selectedFilterPosition = 3
+            cocktailListAdapter.updateSelectedFilter(selectedFilterPosition)
         }
     }
 

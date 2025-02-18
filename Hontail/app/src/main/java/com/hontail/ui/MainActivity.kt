@@ -86,10 +86,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 R.id.navigation_search -> {
                     if (activityViewModel.isBaseFromHome.value == true){
                         changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
-                        activityViewModel.setBaseFromHome(false)
+                        activityViewModel.setFilterSelectedList(listOf(false, false, false, true))
                     }else{
                         activityViewModel.setFilterClear()
                         changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                        activityViewModel.setFilterSelectedList(listOf(false, false, false, false))
                     }
 
                     true
