@@ -10,7 +10,6 @@ import com.hontail.data.local.SearchHistoryRepository
 import com.hontail.data.model.dto.SearchHistoryTable
 import com.hontail.data.model.response.CocktailListResponse
 import com.hontail.data.remote.RetrofitUtil
-import com.hontail.data.remote.RetrofitUtil.Companion.cocktailService
 import kotlinx.coroutines.launch
 
 private const val TAG = "CocktailSearchFragmentV_SSAFY"

@@ -17,6 +17,7 @@ private const val TAG = "CocktailDetailFragmentV_SSAFY"
 class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : ViewModel() {
 
     private val customCocktailService = RetrofitUtil.customCocktailService
+    private val recentCocktailIdRepository = RecentCocktailIdRepository.getInstance()
 
     var cocktailId = handle.get<Int>("cocktailId") ?: 0
         set(value) {
@@ -34,9 +35,6 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
     private val _cocktailInfo = MutableLiveData<CocktailDetailResponse>()
     val cocktailInfo: LiveData<CocktailDetailResponse>
         get() = _cocktailInfo
-
-    // Repository 객체를 ViewModel 내에서 직접 생성
-    private val recentCocktailIdRepository = RecentCocktailIdRepository.getInstance()
 
     fun addLikes(cocktailId: Int){
         viewModelScope.launch {
@@ -86,7 +84,7 @@ class CocktailDetailFragmentViewModel(private val handle: SavedStateHandle) : Vi
             runCatching {
                 recentCocktailIdRepository.getAllCocktails()
             }.onSuccess {
-                Log.d(TAG, "saveCocktailId: ${it}")
+                Log.d(TAG, "Recent saveCocktailId: ${it}")
             }
         }
     }

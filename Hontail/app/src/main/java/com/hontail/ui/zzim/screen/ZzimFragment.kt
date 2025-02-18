@@ -2,6 +2,7 @@ package com.hontail.ui.zzim.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -17,6 +18,8 @@ import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.zzim.adapter.ZzimAdapter
 import com.hontail.ui.zzim.viewmodel.ZzimViewModel
 import com.hontail.util.CommonUtils
+
+private const val TAG = "ZzimFragment_SSAFY"
 
 class ZzimFragment: BaseFragment<FragmentZzimBinding>(
     FragmentZzimBinding::bind,
@@ -58,7 +61,16 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
 
             // 최근 본 리스트
             viewModel.recentViewedList.observe(viewLifecycleOwner) { recentViewedList ->
+                Log.d(TAG, "Recent observeCocktailComment: ${recentViewedList}")
                 updateRecyclerView(viewModel.likedList.value, recentViewedList)
+            }
+
+            // 최근 본 칵테일 ID 옵저버 (불필요한 호출 제거)
+            viewModel.recentCoctailId.observe(viewLifecycleOwner) { newIds ->
+                if (newIds != null && newIds.isNotEmpty()) {
+                    Log.d(TAG, "Recent observeCocktailComment: ${newIds}")
+                    viewModel.getLikedRecentViewed()
+                }
             }
         }
     }
