@@ -321,7 +321,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
                     viewModel.insertCustomCocktail(userId!!, request!!,
                         onSuccess = { cocktailId ->
-                            Toast.makeText(requireContext(), "칵테일 등록 완료! $cocktailId", Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), "칵테일 등록 완료!", Toast.LENGTH_LONG).show()
 
                             activityViewModel.setCocktailId(cocktailId)
 
@@ -339,7 +339,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                             activityViewModel.clearRecipeStep()
                         },
                         onError = { errorMessage ->
-                            Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), "오류 발생:", Toast.LENGTH_LONG).show()
                             Log.d(TAG, "initEvent: $errorMessage")
                         }
                     )
@@ -432,7 +432,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
                     viewModel.updateCustomCocktail(activityViewModel.cocktailId.value!!, request!!,
                         onSuccess = { cocktailId ->
-                            Toast.makeText(requireContext(), "칵테일 수정 완료! $cocktailId", Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), "칵테일 수정 완료! ", Toast.LENGTH_LONG).show()
 
                             activityViewModel.setCocktailId(cocktailId)
 
@@ -442,7 +442,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                             activityViewModel.clearRecipeStep()
                         },
                         onError = { errorMessage ->
-                            Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), "오류 발생: ", Toast.LENGTH_LONG).show()
                             Log.d(TAG, "initEvent: $errorMessage")
                         }
                     )
