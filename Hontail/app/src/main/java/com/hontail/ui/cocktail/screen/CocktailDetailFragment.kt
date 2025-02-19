@@ -2,7 +2,11 @@ package com.hontail.ui.cocktail.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +20,9 @@ import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.adapter.CocktailDetailAdapter
 import com.hontail.ui.cocktail.viewmodel.CocktailDetailFragmentViewModel
+import com.hontail.util.CommonUtils
+
+private const val TAG = "CocktailDetailFragment_SSAFY"
 
 class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     FragmentCocktailDetailBinding::bind,
@@ -43,21 +50,37 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: wefwefwefwefwf")
         viewModel.getCocktailDetailInfo()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.d(TAG, "onCreateView: CocktailDetailFragment")
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG, "onViewCreated: CocktailDetailFragment")
+        
         mainActivity.hideBottomNav(true)  // 하단바 안보이게 설정
         initAdapter()
         initData()
         initEvent()
     }
 
-    fun initData(){
+    fun initData() {
         viewModel.cocktailInfo.observe(viewLifecycleOwner) { cocktailDetail ->
             updateAdapterData(cocktailDetail)
+        }
+
+        activityViewModel.isBottomSheetClosed.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onDismiss fragment: ")
+            if (it){
+                viewModel.getCocktailDetailInfo()
+                activityViewModel.setBottomSheetClosed(false)
+            }
         }
     }
 
@@ -65,7 +88,8 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
     private fun initAdapter() {
         binding.apply {
             cocktailDetailAdapter = CocktailDetailAdapter(mainActivity, mutableListOf())
-            recyclerViewCocktailDetail.layoutManager = LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
+            recyclerViewCocktailDetail.layoutManager =
+                LinearLayoutManager(mainActivity, LinearLayoutManager.VERTICAL, false)
             recyclerViewCocktailDetail.adapter = cocktailDetailAdapter
         }
     }
@@ -88,44 +112,50 @@ class CocktailDetailFragment : BaseFragment<FragmentCocktailDetailBinding>(
                 mainActivity.onBackPressed()
             }
 
-            cocktailDetailAdapter.cocktailDetailListener = object : CocktailDetailAdapter.ItemOnClickListener {
-                // 레시피 쿠킹모드 바텀 시트
-                override fun onClickRecipeBottomSheet() {
-                    val bottomSheet = CocktailCookBottomSheetFragment()
-                    bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-                }
+            cocktailDetailAdapter.cocktailDetailListener =
+                object : CocktailDetailAdapter.ItemOnClickListener {
+                    // 레시피 쿠킹모드 바텀 시트
+                    override fun onClickRecipeBottomSheet() {
+                        val bottomSheet = CocktailCookBottomSheetFragment()
+                        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+                    }
 
-                // 댓글 바텀 시트
-                override fun onClickCommentBottomSheet() {
-                    val bottomSheet = CocktailCommentBottomSheetFragment()
-                    bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-                }
+                    // 댓글 바텀 시트
+                    override fun onClickCommentBottomSheet() {
+                        val bottomSheet = CocktailCommentBottomSheetFragment()
+                        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+                    }
 
-                override fun onClickZzimButton(cocktailId: Int, isLiked: Boolean) {
-                    if (isLiked){
-                        viewModel.addLikes(cocktailId)
-                    }else{
-                        viewModel.deleteLikes(cocktailId)
+                    override fun onClickZzimButton(cocktailId: Int, isLiked: Boolean) {
+                        if (isLiked) {
+                            viewModel.addLikes(cocktailId)
+                        } else {
+                            viewModel.deleteLikes(cocktailId)
+                        }
+                    }
+
+                    // 수정
+                    override fun onClickModify() {
+                        activityViewModel.setRecipeMode(CommonUtils.CustomCocktailRecipeMode.MODIFY)
+                        mainActivity.changeFragment(CommonUtils.MainFragmentName.CUSTOM_COCKTAIL_RECIPE_FRAGMENT)
+                    }
+
+                    // 삭제
+                    override fun onClickDelete(cocktailId: Int) {
+                        val dialog = CocktailDeleteDialogFragment(cocktailId)
+                        dialog.show(parentFragmentManager, "CocktailDeleteDialogFragment")
                     }
                 }
-
-                // 수정
-                override fun onClickModify() {
-                    TODO("Not yet implemented")
-                }
-
-                // 삭제
-                override fun onClickDelete(cocktailId: Int) {
-                    val dialog = CocktailDeleteDialogFragment(cocktailId)
-                    dialog.show(parentFragmentManager, "CocktailDeleteDialogFragment")
-                }
-            }
         }
     }
 }
 
 sealed class CocktailDetailItem {
-    data class CocktailInfo(val cocktailDetail: CocktailDetailResponse, val userId: Int) : CocktailDetailItem()
-    data class IngredientList(val ingredients: List<com.hontail.data.model.response.CocktailIngredient>): CocktailDetailItem()
-    data class RecipeList(val recipes: List<Recipe>): CocktailDetailItem()
+    data class CocktailInfo(val cocktailDetail: CocktailDetailResponse, val userId: Int) :
+        CocktailDetailItem()
+
+    data class IngredientList(val ingredients: List<com.hontail.data.model.response.CocktailIngredient>) :
+        CocktailDetailItem()
+
+    data class RecipeList(val recipes: List<Recipe>) : CocktailDetailItem()
 }

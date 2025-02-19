@@ -96,6 +96,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
 
                 val cocktailCnt = viewModel.cocktailList.value?.size ?: 0
                 val currentItems = myPageAdapter.items.toMutableList()
+                activityViewModel.userNickname = userInfo.user_nickname
 
                 userInfo?.let {
                     val profileItem = MyPageItem.Profile(it, cocktailCnt)

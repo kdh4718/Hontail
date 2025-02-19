@@ -83,6 +83,11 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         }
     }
 
+    // 재료 리스트 초기화.
+    fun clearCustomCocktailIngredient() {
+        _customCocktailIngredients.value = mutableListOf()
+    }
+
     // 레시피 단계 리스트
     private val _recipeSteps = MutableLiveData<MutableList<Recipe>>(mutableListOf())
     val recipeSteps: LiveData<MutableList<Recipe>> get() = _recipeSteps
@@ -130,12 +135,21 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         }
     }
 
+    // 단계 리스트 초기화
+    fun clearRecipeStep() {
+        _recipeSteps.value = mutableListOf()
+    }
+
     // -------------------------------------------
     // 도수(알코올 농도) 계산 (가중 평균 방식)
     // 전체 도수 = (Σ (각 재료의 alcoholContent × 환산된 수량(ml))) / (Σ 환산된 수량(ml))
     // -------------------------------------------
     private val _overallAlcoholContent = MediatorLiveData<Double>()
     val overallAlcoholContent: LiveData<Double> get() = _overallAlcoholContent
+
+    fun setOverAllAlcoholContent(alcoholContent: Int) {
+        _overallAlcoholContent.value = alcoholContent.toDouble()
+    }
 
     init {
         // _customCocktailIngredients가 변경될 때마다 전체 도수를 다시 계산
@@ -217,6 +231,16 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         _recipeMode.value = mode
     }
 
+    private val _selectedZzimRadioId = MutableLiveData<Int>()
+    val selectedZzimRadioId: LiveData<Int> = _selectedZzimRadioId
+
+    private val _selectedTimeRadioId = MutableLiveData<Int>()
+    val selectedTimeRadioId: LiveData<Int> = _selectedTimeRadioId
+
+    private val _selectedAlcoholRadioId = MutableLiveData<Int>()
+    val selectedAlcoholRadioId: LiveData<Int> = _selectedAlcoholRadioId
+
+
     // 필터 관련 코드 추가
     private val _selectedZzimFilter = MutableLiveData<Int?>()
     val selectedZzimFilter: LiveData<Int?> = _selectedZzimFilter
@@ -234,8 +258,12 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         MutableLiveData<List<Boolean>>(listOf(false, false, false, false))
     val filterSelectedList: LiveData<List<Boolean>> get() = _filterSelectedList
 
+    private val _isBaseFromHome = MutableLiveData<Boolean>()
+    val isBaseFromHome: LiveData<Boolean>
+        get() = _isBaseFromHome
+
     fun setFilterSelectedList(newFilter: List<Boolean>){
-        _filterSelectedList.postValue(newFilter)
+        _filterSelectedList.value = newFilter
     }
 
     var zzimButtonSelected: Boolean
@@ -261,25 +289,33 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         set(value) {
             handle.set("baseButtonSelected", value)
         }
-    
+
+    // 라디오 버튼 ID 설정 함수 수정
     fun setZzimFilter(radioButtonId: Int) {
         _selectedZzimFilter.value = radioButtonId
+        _selectedZzimRadioId.value = radioButtonId  // 선택된 라디오 버튼 ID 저장
         clearOtherFilters("zzim")
     }
 
     fun setTimeFilter(radioButtonId: Int) {
         _selectedTimeFilter.value = radioButtonId
+        _selectedTimeRadioId.value = radioButtonId  // 선택된 라디오 버튼 ID 저장
         clearOtherFilters("time")
     }
 
     fun setAlcoholFilter(radioButtonId: Int) {
         _selectedAlcoholFilter.value = radioButtonId
+        _selectedAlcoholRadioId.value = radioButtonId  // 선택된 라디오 버튼 ID 저장
         clearOtherFilters("alcohol")
     }
 
     fun setBaseFilter(baseSpirit: String) {
         _selectedBaseFilter.value = baseSpirit
         clearOtherFilters("base")
+    }
+
+    fun setBaseFromHome(isFromHome: Boolean){
+        _isBaseFromHome.value = isFromHome
     }
 
     private fun clearOtherFilters(selected: String) {
@@ -333,12 +369,17 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
         )
     }
 
-    fun setFilterClear(){
+    fun setFilterClear() {
         _filterSelectedList.value = listOf(false, false, false, false)
         _selectedZzimFilter.value = -1
         _selectedTimeFilter.value = -1
         _selectedAlcoholFilter.value = -1
         _selectedBaseFilter.value = ""
+
+        // 라디오 버튼 선택 상태도 초기화
+        _selectedZzimRadioId.value = -1
+        _selectedTimeRadioId.value = -1
+        _selectedAlcoholRadioId.value = -1
     }
 
     fun updateZzimButtonState(selected: Boolean) {
@@ -450,11 +491,18 @@ class MainActivityViewModel(private val handle: SavedStateHandle) : ViewModel() 
             runCatching {
                 RetrofitUtil.recommendedCocktailService.getRecommendedCocktail(userId, 5)
             }.onSuccess {
-                setCocktailId(it)
+                Log.d(TAG, "getRecommendedCocktailId: ${it.recommended_cocktails}")
+                setCocktailId(it.recommended_cocktails)
             }.onFailure {
                 Log.d(TAG, "getRecommendedCocktailId: ${it.message}")
-                setCocktailId(1)
             }
         }
+    }
+
+    private val _isBottomSheetClosed = MutableLiveData<Boolean>()
+    val isBottomSheetClosed: LiveData<Boolean> get() = _isBottomSheetClosed
+
+    fun setBottomSheetClosed(isClosed: Boolean) {
+        _isBottomSheetClosed.value = isClosed
     }
 }

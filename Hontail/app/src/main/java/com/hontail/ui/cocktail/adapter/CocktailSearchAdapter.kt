@@ -29,6 +29,8 @@ class CocktailSearchAdapter(
         fun onClickSearch(text: String)
         fun onClickCocktailItem(cocktailId: Int)
         fun onClickSearchHistoryDelete(id: Int)
+        fun onClickPageDown()
+        fun onClickPageUp()
     }
 
     companion object {
@@ -87,9 +89,9 @@ class CocktailSearchAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         when (val item = items[position]) {
-            is CocktailSearchItem.SearchBar -> (holder as CocktailSearchBarViewHolder).bind()
+            is CocktailSearchItem.SearchBar -> (holder as CocktailSearchBarViewHolder).bind(item.initSearch)
             is CocktailSearchItem.Recent -> (holder as CocktailRecentViewHolder).bind(item.recentList)
-            is CocktailSearchItem.Result -> (holder as CocktailResultViewHolder).bind(item.resultList)
+            is CocktailSearchItem.Result -> (holder as CocktailResultViewHolder).bind(item.resultList, item.currentPage, item.totalPage)
         }
     }
 
@@ -97,16 +99,19 @@ class CocktailSearchAdapter(
     inner class CocktailSearchBarViewHolder(private val binding: ListItemCocktailSearchSearchBarBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind() {
+        fun bind(initSearch: Boolean) {
             binding.apply {
-                editTextCocktailSearchBar.requestFocus() // ✅ EditText에 포커스 설정
 
-                val imm =
-                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                if(initSearch) {
+                    editTextCocktailSearchBar.requestFocus() // ✅ EditText에 포커스 설정
 
-                editTextCocktailSearchBar.postDelayed({
-                    imm.showSoftInput(editTextCocktailSearchBar, InputMethodManager.SHOW_IMPLICIT)
-                }, 100)
+                    val imm =
+                        context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+                    editTextCocktailSearchBar.postDelayed({
+                        imm.showSoftInput(editTextCocktailSearchBar, InputMethodManager.SHOW_IMPLICIT)
+                    }, 100)
+                }
 
                 imageViewListItemCocktailSearchBarSearch.setOnClickListener {
                     val query = editTextCocktailSearchBar.text.toString().trim()
@@ -173,7 +178,7 @@ class CocktailSearchAdapter(
     inner class CocktailResultViewHolder(private val binding: ListItemCocktailSearchResultBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(cocktailList: List<CocktailListResponse>) {
+        fun bind(cocktailList: List<CocktailListResponse>, currentPage: Int, totalPage: Int) {
 
             binding.apply {
 
@@ -190,6 +195,18 @@ class CocktailSearchAdapter(
                             cocktailSearchListener.onClickCocktailItem(cocktailId)
                         }
                     }
+
+                // 페이지 다운
+                imageViewListItemCocktailListCocktailSearchResultPagePreview.setOnClickListener {
+                    cocktailSearchListener.onClickPageDown()
+                }
+
+                // 페이지 업
+                imageViewListItemCocktailListCocktailSearchResultPageNext.setOnClickListener {
+                    cocktailSearchListener.onClickPageUp()
+                }
+
+                textViewListItemCocktailListCocktailSearchResultPage.text = "${currentPage + 1} / $totalPage"
             }
         }
     }

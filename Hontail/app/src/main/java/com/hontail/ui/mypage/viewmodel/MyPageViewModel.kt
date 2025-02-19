@@ -88,7 +88,7 @@ class MyPageViewModel: ViewModel() {
             id = this.id,
             cocktailName = this.cocktailName,
             imageUrl = this.imageUrl,
-            likes = this.likesCnt,  // 이름이 다름 (likesCnt → likes)
+            likesCnt = this.likesCnt,
             alcoholContent = this.alcoholContent,
             baseSpirit = this.baseSpirit,
             createdAt = this.createdAt,

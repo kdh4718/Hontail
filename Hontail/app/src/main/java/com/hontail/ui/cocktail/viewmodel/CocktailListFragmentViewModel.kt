@@ -6,15 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.hontail.data.model.response.CocktailListResponse
-import com.hontail.data.paging.CocktailPagingSource
-import com.hontail.data.remote.RetrofitUtil
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import com.hontail.data.model.response.CocktailListResponse
+import com.hontail.data.remote.RetrofitUtil
 
 private const val TAG = "CocktailListFragmentVie_SSAFY"
 
@@ -47,6 +42,8 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             handle.set("page", value)
         }
 
+    var totalPage: Int = 0
+
     var size: Int
         get() = handle.get<Int>("size") ?: 20
         set(value) {
@@ -59,37 +56,69 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
             handle.set("isCustom", value)
         }
 
-    // Paging 데이터를 담을 LiveData 추가
-    val pagedCocktailList: Flow<PagingData<CocktailListResponse>> =
-        Pager(PagingConfig(
-            pageSize = 20,
-            prefetchDistance = 5,
-            maxSize = 100
-        )) {
-            CocktailPagingSource(orderBy, direction, baseSpirit, isCustom)
-        }.flow.cachedIn(viewModelScope) // ✅ 반드시 `cachedIn(viewModelScope)` 사용
-
     private val _cocktailList = MutableLiveData<List<CocktailListResponse>>()
     val cocktailList: LiveData<List<CocktailListResponse>>
         get() = _cocktailList
 
-    fun setUserId(userId: Int) {
-        _userId.postValue(userId)
+    private val _cocktailLikesCnt = MutableLiveData<Int>()
+    val cocktailLikesCnt: LiveData<Int>
+        get() = _cocktailLikesCnt
+
+
+    fun getUserCocktailLikesCnt(){
+        getUserCocktailLikesCnt(userId.value ?: 0)
     }
 
+    fun getUserCocktailLikesCnt(userId: Int){
+        Log.d(TAG, "Likes fwefwefwefgetUserCocktailLikesCnt: ")
 
-    fun getCocktailFiltering(){
-        Log.d(TAG, "Filter getCocktailFiltering: orderBy - ${orderBy}, direction - ${direction}, baseSpirit - ${baseSpirit}, isCustom - ${isCustom}, page - ${page}")
         viewModelScope.launch {
             runCatching {
-                RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
+                RetrofitUtil.cocktailService.getUserCocktailLikesCnt(userId)
             }.onSuccess {
-                _cocktailList.value = it.content
-                Log.d(TAG, "getCocktailFiltering: ${it.content}")
+                _cocktailLikesCnt.value = it
+                Log.d(TAG, "Likes Success getUserCocktailLikesCnt: ${_cocktailLikesCnt.value}")
             }.onFailure {
-                _cocktailList.value = emptyList()
-                Log.d(TAG, "getCocktailFiltering: ${it.message}")
+                Log.d(TAG, "Likes Failure getUserCocktailLikesCnt: ${it.message}")
+                _cocktailLikesCnt.value = 0
             }
+        }
+    }
+
+    // ✅ MutableSharedFlow 사용하여 이벤트 트리거 가능하게 변경
+    private val _filterRequestFlow = MutableSharedFlow<Unit>(replay = 0)
+
+    init {
+        viewModelScope.launch {
+            _filterRequestFlow
+                .debounce(100) // 0.1초 동안 추가 호출 없을 때 실행
+                .collectLatest {
+                    fetchCocktailFiltering()
+                }
+        }
+    }
+
+    fun setUserId(userId: Int) {
+        _userId.value = userId
+    }
+
+    fun getCocktailFiltering() {
+        viewModelScope.launch {
+            _filterRequestFlow.emit(Unit) // ✅ SharedFlow의 emit()을 사용해 항상 이벤트 트리거
+        }
+    }
+
+    private suspend fun fetchCocktailFiltering() {
+        Log.d(TAG, "Filter fetchCocktailFiltering: orderBy - $orderBy, direction - $direction, baseSpirit - $baseSpirit, isCustom - $isCustom, page - $page")
+        runCatching {
+            RetrofitUtil.cocktailService.getCocktailFiltering(orderBy, direction, baseSpirit, page, size, isCustom)
+        }.onSuccess {
+            _cocktailList.postValue(it.content)
+            totalPage = it.totalPages
+            Log.d(TAG, "fetchCocktailFiltering: ${it.content}")
+        }.onFailure {
+            _cocktailList.postValue(emptyList())
+            Log.d(TAG, "fetchCocktailFiltering: ${it.message}")
         }
     }
 }

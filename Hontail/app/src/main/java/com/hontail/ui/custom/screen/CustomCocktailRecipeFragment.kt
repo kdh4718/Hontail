@@ -5,6 +5,8 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
@@ -17,6 +19,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.data.model.request.CustomCocktailRecipeRequest
@@ -104,7 +107,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             // 레시피 모드 등록 / 수정
             activityViewModel.recipeMode.observe(viewLifecycleOwner) { mode ->
                 recipeMode = mode
-                viewModel.initializeRecipeData(mode)
+                viewModel.initializeRecipeData(mode, activityViewModel.cocktailId.value, activityViewModel.userId)
             }
 
             // 칵테일 이미지
@@ -146,7 +149,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
             // 도수
             activityViewModel.overallAlcoholContent.observe(viewLifecycleOwner) { alcoholContent ->
-                textViewListItemCustomCocktailRecipeAlcoholLevelAlcoholLevel.text = "${alcoholContent.toInt()}%"
+                textViewListItemCustomCocktailRecipeAlcoholLevelAlcoholLevel.text = "${alcoholContent.toInt()}도"
             }
 
             // 재료 리스트 새롭게 변환.
@@ -159,6 +162,18 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 customCocktailRecipeStepAdapter.items = newSteps.toMutableList()
                 Log.d(TAG, "observeCustomCocktailRecipe: $newSteps")
                 customCocktailRecipeStepAdapter.notifyDataSetChanged() // ✅ 전체 갱신 (혹은 notifyItemInserted 사용 가능)
+            }
+
+            viewModel.alcoholLevel.observe(viewLifecycleOwner) { alcoholContent ->
+                activityViewModel.setOverAllAlcoholContent(alcoholContent)
+            }
+
+            viewModel.uploadedImageUrl.observe(viewLifecycleOwner) { uploadedImageUrl ->
+
+                constraintLayoutListItemCustomCocktailRecipeImageGuide.visibility = View.GONE
+                Glide.with(mainActivity)
+                    .load(uploadedImageUrl)
+                    .into(imageViewListItemCustomCocktailRecipeImage)
             }
         }
     }
@@ -207,9 +222,23 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
             }
             
             // 등록
-            buttonCustomCocktailRecipeRegister.setOnClickListener { 
+            buttonCustomCocktailRecipeRegister.setOnClickListener {
 
-                if(editTextListItemCustomCocktailRecipeName.text.isNotBlank() || editTextListItemCustomCocktailRecipeDescription.text.isNotBlank()) {
+                Log.d(TAG, "initEvent: recipeMode : ${activityViewModel.recipeMode.value}")
+
+                // 등록 모드일 때
+                if(activityViewModel.recipeMode.value == CommonUtils.CustomCocktailRecipeMode.REGISTER) {
+
+                    if(editTextListItemCustomCocktailRecipeName.text.isNullOrEmpty() || editTextListItemCustomCocktailRecipeDescription.text.isNullOrEmpty() || viewModel.uploadedImageUrl.value.isNullOrEmpty() || activityViewModel.recipeSteps.value.isNullOrEmpty()) {
+
+                        Log.d(TAG, "initEvent: editTextListItemCustomCocktailRecipeName: ${editTextListItemCustomCocktailRecipeName.text}")
+                        Log.d(TAG, "initEvent: editTextListItemCustomCocktailRecipeDescription: ${editTextListItemCustomCocktailRecipeDescription.text}")
+                        Log.d(TAG, "initEvent: uploadedImageUrl: ${viewModel.uploadedImageUrl.value}")
+                        Log.d(TAG, "initEvent: recipeSteps: ${viewModel.recipeSteps.value}")
+
+                        Toast.makeText(mainActivity, "필수인 영역을 채워주세요.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
 
                     // 이미지 url
                     val imageUrl = viewModel.uploadedImageUrl.value
@@ -239,16 +268,30 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                     val baseSpirit = activityViewModel.customCocktailIngredients.value
                         ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // IngredientItem만 필터링
                         ?.filter { it.ingredientCategoryKor == "베이스 주류" } // 베이스 주류만 필터링
-                        ?.sortedBy { it.ingredientId } // ingredientId 기준 오름차순 정렬
+                        ?.sortedByDescending { it.alcoholContent } // ingredientId 기준 오름차순 정렬
                         ?.firstOrNull() // 가장 첫 번째 값 선택
-                        ?.ingredientType ?: "기본 베이스"
+                        ?.ingredientType
+                        ?.let { ingredientType ->
+                            when(ingredientType) {
+                                "Liqueur" -> "리큐어"
+                                "Rum" -> "럼"
+                                "Wine" -> "와인"
+                                "Others", null -> "기타"
+                                "Vodka" -> "보드카"
+                                "Brandy" -> "브랜디"
+                                "Whisky" -> "위스키"
+                                "Tequila" -> "데킬라"
+                                "Gin" -> "진"
+                                else -> "기타"
+                            }
+                        } ?: "기타"
                     Log.d(TAG, "initEvent: baseSpirit: $baseSpirit")
 
                     // 커스텀인지
                     val isCustom = 1
 
                     // 만든 사람
-                    val makerNickname = "admin" // 여기 나중에 수정해야 함.
+                    val makerNickname = activityViewModel.userNickname // 여기 나중에 수정해야 함.
 
                     // 레시피 스텝
                     val recipeSteps = activityViewModel.recipeSteps.value
@@ -279,7 +322,122 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                             Toast.makeText(requireContext(), "칵테일 등록 완료! $cocktailId", Toast.LENGTH_LONG).show()
 
                             activityViewModel.setCocktailId(cocktailId)
-                            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+
+                            // 🔥 CustomCocktailRecipeFragment 제거
+//                            parentFragmentManager.popBackStack("CustomCocktailRecipeFragment", 0)
+
+                            // 🔥 CustomCocktailFragment 제거
+                            parentFragmentManager.popBackStack("CustomCocktailFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+//
+//                            Log.d(TAG, "🎯 changeFragment 호출 전: $cocktailId")
+//                            mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
+//                            Log.d(TAG, "🎯 changeFragment 호출 후")
+
+                            activityViewModel.clearCustomCocktailIngredient()
+                            activityViewModel.clearRecipeStep()
+                        },
+                        onError = { errorMessage ->
+                            Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
+                            Log.d(TAG, "initEvent: $errorMessage")
+                        }
+                    )
+                }
+
+                if(activityViewModel.recipeMode.value == CommonUtils.CustomCocktailRecipeMode.MODIFY) {
+
+                    if(editTextListItemCustomCocktailRecipeName.text.isNullOrEmpty() || editTextListItemCustomCocktailRecipeDescription.text.isNullOrEmpty() || viewModel.uploadedImageUrl.value.isNullOrEmpty() || activityViewModel.recipeSteps.value.isNullOrEmpty()) {
+
+                        Toast.makeText(mainActivity, "필수인 영역을 채워주세요.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+                    // 이미지 url
+                    val imageUrl = viewModel.uploadedImageUrl.value
+                    Log.d(TAG, "initEvent: imageUrl: $imageUrl")
+
+                    // 칵테일 이름
+                    val name = viewModel.recipeName.value
+                    Log.d(TAG, "initEvent: name: $name")
+
+                    // 칵테일 도수
+                    val alcoholContent = activityViewModel.overallAlcoholContent.value
+                    Log.d(TAG, "initEvent: alcoholContent: $alcoholContent")
+
+                    // 칵테일 설명
+                    val description = viewModel.description.value
+                    Log.d(TAG, "initEvent: description: $description")
+
+                    // 칵테일 재료 리스트
+                    val ingredientList = viewModel.recipeIngredients.value
+                    if (ingredientList != null) {
+                        for (ingredient in ingredientList) {
+                            Log.d(TAG, "initEvent: ingredient: $ingredient")
+                        }
+                    }
+
+                    // ingredientList에서 IngredientItem만 필터링
+                    val baseSpirit = activityViewModel.customCocktailIngredients.value
+                        ?.filterIsInstance<CustomCocktailItem.IngredientItem>() // IngredientItem만 필터링
+                        ?.filter { it.ingredientCategoryKor == "베이스 주류" } // 베이스 주류만 필터링
+                        ?.sortedByDescending { it.alcoholContent } // ingredientId 기준 오름차순 정렬
+                        ?.firstOrNull() // 가장 첫 번째 값 선택
+                        ?.ingredientType
+                        ?.let { ingredientType ->
+                            when(ingredientType) {
+                                "Liqueur" -> "리큐어"
+                                "Rum" -> "럼"
+                                "Wine" -> "와인"
+                                "Others", null -> "기타"
+                                "Vodka" -> "보드카"
+                                "Brandy" -> "브랜디"
+                                "Whisky" -> "위스키"
+                                "Tequila" -> "데킬라"
+                                "Gin" -> "진"
+                                else -> "기타"
+                            }
+                        } ?: "기타"
+                    Log.d(TAG, "initEvent: baseSpirit: $baseSpirit")
+
+                    // 커스텀인지
+                    val isCustom = 1
+
+                    // 만든 사람
+                    val makerNickname = activityViewModel.userNickname // 여기 나중에 수정해야 함.
+
+                    // 레시피 스텝
+                    val recipeSteps = activityViewModel.recipeSteps.value
+                    if (recipeSteps != null) {
+                        for (recipe in recipeSteps) {
+                            Log.d(TAG, "initEvent: recipe : $recipe")
+                        }
+                    }
+
+                    val userId = activityViewModel.userId
+
+                    val request = recipeSteps?.let { it1 ->
+                        CustomCocktailRecipeRequest(
+                            alcoholContent = alcoholContent!!.toInt(),
+                            baseSpirit = baseSpirit.toString(),
+                            cocktailName = name!!,
+                            description = description!!,
+                            imageUrl = imageUrl!!,
+                            ingredients = ingredientList!!,
+                            isCustom = isCustom,
+                            makerNickname = makerNickname,
+                            recipes = it1
+                        )
+                    }
+
+                    viewModel.updateCustomCocktail(activityViewModel.cocktailId.value!!, request!!,
+                        onSuccess = { cocktailId ->
+                            Toast.makeText(requireContext(), "칵테일 수정 완료! $cocktailId", Toast.LENGTH_LONG).show()
+
+                            activityViewModel.setCocktailId(cocktailId)
+
+                            parentFragmentManager.popBackStack("CustomCocktailRecipeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+                            activityViewModel.clearCustomCocktailIngredient()
+                            activityViewModel.clearRecipeStep()
                         },
                         onError = { errorMessage ->
                             Toast.makeText(requireContext(), "오류 발생: $errorMessage", Toast.LENGTH_LONG).show()
