@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -96,7 +97,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
             viewModel.baseSpirit = it
         }
 
-        activityViewModel.filterSelectedList.observe(viewLifecycleOwner){
+        activityViewModel.filterSelectedList.observe(viewLifecycleOwner) {
             changeFilter(it)
             updateFilterUI()
             viewModel.getCocktailFiltering()
@@ -117,30 +118,36 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
 
         Log.d(TAG, "HomeFilter: ${activityViewModel.isBaseFromHome.value}")
 
-        if (activityViewModel.isBaseFromHome.value == true){
+        if (activityViewModel.isBaseFromHome.value == true) {
             selectedFilterPosition = 3
             cocktailListAdapter.updateSelectedFilter(selectedFilterPosition)
         }
+
+        Log.d(TAG, "Likes initData: ${viewModel.userId.value}")
+        viewModel.getUserCocktailLikesCnt()
     }
 
-    fun changeFilter(selectedFilter: List<Boolean>){
+    fun changeFilter(selectedFilter: List<Boolean>) {
         val firstTrueIndex = selectedFilter.indexOf(true)
-        when(firstTrueIndex) {
+        when (firstTrueIndex) {
             0 -> { // 좋아요
                 viewModel.orderBy = "likesCount"
                 viewModel.direction =
                     if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
             }
+
             1 -> { // 시간
                 viewModel.orderBy = "createdAt"
                 viewModel.direction =
                     if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
             }
+
             2 -> { // 도수
                 viewModel.orderBy = "alcoholContent"
                 viewModel.direction =
                     if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
             }
+
             3 -> {
                 viewModel.orderBy = "id"
                 viewModel.direction = "ASC"
@@ -153,8 +160,12 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
             cocktailListAdapter.cocktailListListener =
                 object : CocktailListAdapter.ItemOnClickListener {
                     override fun onClickRandom() {
-                        val dialog = CocktailRandomDialogFragment()
-                        dialog.show(parentFragmentManager, "CocktailRandomDialog")
+                        if (viewModel.cocktailLikesCnt.value!! > 0){
+                            val dialog = CocktailRandomDialogFragment()
+                            dialog.show(parentFragmentManager, "CocktailRandomDialog")
+                        }else{
+                            Toast.makeText(mainActivity, "찜한 칵테일을 추가해주세요.", Toast.LENGTH_SHORT).show()
+                        }
                     }
 
                     override fun onClickCocktailItem(cocktailId: Int) {
@@ -196,7 +207,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     }
 
                     override fun onClickPageUp() {
-                        if(viewModel.page < viewModel.totalPage - 1) {
+                        if (viewModel.page < viewModel.totalPage - 1) {
                             viewModel.page += 1
                             viewModel.getCocktailFiltering()
                         }
@@ -223,5 +234,9 @@ sealed class CocktailListItem {
     object SearchBar : CocktailListItem()
     object TabLayout : CocktailListItem()
     data class Filter(val filters: List<String>) : CocktailListItem()
-    data class CocktailItems(val cocktails: List<CocktailListResponse>, val currentPage: Int, val totalPage: Int) : CocktailListItem()
+    data class CocktailItems(
+        val cocktails: List<CocktailListResponse>,
+        val currentPage: Int,
+        val totalPage: Int
+    ) : CocktailListItem()
 }
