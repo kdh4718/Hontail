@@ -21,7 +21,6 @@ import com.hontail.ui.cocktail.screen.CocktailRecipeFragment
 import com.hontail.ui.cocktail.screen.CocktailSearchFragment
 import com.hontail.ui.home.screen.HomeFragment
 import com.hontail.ui.ingredient.screen.IngredientAddFragment
-import com.hontail.ui.ingredient.screen.IngredientListFragment
 import com.hontail.ui.mypage.screen.MyPageFragment
 import com.hontail.ui.mypage.screen.MyPageModifyFragment
 import com.hontail.ui.mypage.screen.MyPageNicknameModifyFragment
@@ -33,6 +32,7 @@ import com.hontail.ui.zzim.screen.ZzimFragment
 import com.hontail.util.CommonUtils
 import com.hontail.util.PermissionChecker
 import com.hontail.util.DialogToLoginFragment
+import io.grpc.netty.shaded.io.netty.util.internal.logging.CommonsLoggerFactory
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
@@ -84,8 +84,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_search -> {
-                    activityViewModel.setFilterClear()
-                    changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                    if (activityViewModel.isBaseFromHome.value == true){
+                        changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                        activityViewModel.setFilterSelectedList(listOf(false, false, false, true))
+                    }else{
+                        activityViewModel.setFilterClear()
+                        changeFragment(CommonUtils.MainFragmentName.COCKTAIL_LIST_FRAGMENT)
+                        activityViewModel.setFilterSelectedList(listOf(false, false, false, false))
+                    }
+
                     true
                 }
                 // 로그인이 필요한 메뉴들
@@ -144,6 +151,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         callback: () -> Unit
     ) {
         val transaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
 
         when (fragmentName) {
             CommonUtils.MainFragmentName.HOME_FRAGMENT -> {
@@ -195,9 +203,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 transaction.replace(R.id.frameLayoutMainFragment, IngredientAddFragment())
                     .addToBackStack("IngredientAddFragment")
             }
-            CommonUtils.MainFragmentName.INGREDIENT_LIST_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, IngredientListFragment())
-            }
             CommonUtils.MainFragmentName.MY_PAGE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, MyPageFragment())
             }
@@ -234,8 +239,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         callback.invoke()
     }
 
+    private var currentFragment : CommonUtils.MainFragmentName? = null
+
     fun changeFragment(name: CommonUtils.MainFragmentName) {
         val transaction = supportFragmentManager.beginTransaction()
+
+        val enterAnim = when {
+            currentFragment == null -> R.anim.anim_slide_in_from_right_fade_in
+            currentFragment!!.ordinal < name.ordinal -> R.anim.anim_slide_in_from_right_fade_in
+            else -> R.anim.anim_slide_in_from_left_fade_in
+        }
+
+        transaction.setCustomAnimations(enterAnim, 0)
 
         when (name) {
             CommonUtils.MainFragmentName.HOME_FRAGMENT -> {
@@ -250,6 +265,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     .addToBackStack("bartenderFragment")
             }
             CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT -> {
+
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+
                 transaction.replace(R.id.frameLayoutMainFragment, CocktailDetailFragment())
                     .addToBackStack("CocktailDetailFragment")
             }
@@ -287,9 +308,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 transaction.replace(R.id.frameLayoutMainFragment, IngredientAddFragment())
                     .addToBackStack("IngredientAddFragment")
             }
-            CommonUtils.MainFragmentName.INGREDIENT_LIST_FRAGMENT -> {
-                transaction.replace(R.id.frameLayoutMainFragment, IngredientListFragment())
-            }
             CommonUtils.MainFragmentName.MY_PAGE_FRAGMENT -> {
                 transaction.replace(R.id.frameLayoutMainFragment, MyPageFragment())
             }
@@ -322,6 +340,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
         transaction.commit()
+        currentFragment = name
     }
 
     fun hideBottomNav(state: Boolean) {

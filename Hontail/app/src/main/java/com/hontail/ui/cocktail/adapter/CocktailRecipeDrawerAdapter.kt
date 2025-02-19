@@ -12,7 +12,7 @@ class CocktailRecipeDrawerAdapter(
     private val recipes: List<Recipe>
 ) : RecyclerView.Adapter<CocktailRecipeDrawerAdapter.ViewHolder>() {
 
-    private var selectedPosition = 0  // 현재 선택된 위치 추적
+    private var selectedPosition = 0
     private var onItemClickListener: ((Int) -> Unit)? = null
 
     fun setOnItemClickListener(listener: (Int) -> Unit) {
@@ -40,11 +40,40 @@ class CocktailRecipeDrawerAdapter(
                 textViewCocktailRecipeDrawerNumber.text = recipe.sequence.toString()
                 textViewCocktailRecipeDrawerExplanation.text = recipe.recipeGuide
 
-                // 선택된 항목에 하이라이트 적용
+                // Set up Lottie animation based on recipe action
+                val animationFile = when (recipe.recipeAction?.lowercase() ?: "etc") {
+                    "pour" -> "cocktail_pour.json"
+                    "shake" -> "cocktail_shake.json"
+                    "stir" -> "cocktail_stir.json"
+                    else -> "cocktail_etc.json"
+                }
+
+                imageViewCocktailRecipeDrawerImage.apply {
+                    setAnimation(animationFile)
+                    if (bindingAdapterPosition == selectedPosition) {
+                        playAnimation()
+                    } else {
+                        pauseAnimation()
+                    }
+                }
+
+                // Highlight selected item
                 if (bindingAdapterPosition == selectedPosition) {
-                    root.setBackgroundColor(ContextCompat.getColor(root.context, R.color.basic_gray))
+                    root.setBackgroundColor(
+                        ContextCompat.getColor(
+                            root.context,
+                            R.color.basic_gray
+                        )
+                    )
+                    imageViewCocktailRecipeDrawerImage.playAnimation()
                 } else {
-                    root.setBackgroundColor(ContextCompat.getColor(root.context, android.R.color.transparent))
+                    root.setBackgroundColor(
+                        ContextCompat.getColor(
+                            root.context,
+                            android.R.color.transparent
+                        )
+                    )
+                    imageViewCocktailRecipeDrawerImage.pauseAnimation()
                 }
             }
         }
@@ -66,7 +95,6 @@ class CocktailRecipeDrawerAdapter(
         holder.bind(recipes[position])
     }
 
-    // ViewPager에서 페이지가 변경될 때 호출할 메서드
     fun updateSelectedPosition(position: Int) {
         val oldPosition = selectedPosition
         selectedPosition = position

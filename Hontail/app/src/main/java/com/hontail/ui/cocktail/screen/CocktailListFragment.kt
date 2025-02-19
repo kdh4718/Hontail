@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hontail.R
 import com.hontail.base.BaseFragment
 import com.hontail.data.model.response.CocktailListResponse
@@ -16,6 +18,7 @@ import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.viewmodel.CocktailListFragmentViewModel
 import com.hontail.ui.cocktail.adapter.CocktailListAdapter
 import com.hontail.util.CommonUtils
+import com.hontail.util.DialogToLoginFragment
 
 private const val TAG = "CocktailListFragment_SSAFY"
 
@@ -29,6 +32,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     private val filters = mutableListOf("찜", "시간", "도수", "베이스주")
 
     private lateinit var cocktailListAdapter: CocktailListAdapter
+    private var selectedFilterPosition: Int = -1
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,44 +52,15 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
     }
 
     private fun applySelectedFilters() {
-        val selectedFilters = listOf(
-                activityViewModel.zzimButtonSelected,
-                activityViewModel.timeButtonSelected,
-                activityViewModel.alcoholButtonSelected,
-                activityViewModel.baseButtonSelected)
-
-        Log.d(TAG, "Filter applySelectedFilters: ${selectedFilters}")
-
-        // 필터가 true인 경우에만 적용하도록
-        when {
-            selectedFilters[0] -> { // 찜
-                viewModel.orderBy = "likes"
-                viewModel.direction =
-                    if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
-            }
-
-            selectedFilters[1] -> { // 시간
-                viewModel.orderBy = "createdAt"
-                viewModel.direction =
-                    if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
-            }
-
-            selectedFilters[2] -> { // 도수
-                viewModel.orderBy = "alcoholContent"
-                viewModel.direction =
-                    if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
-            }
-
-            selectedFilters[3] -> { // 베이스주
-                viewModel.orderBy = "id"
-                viewModel.direction = "ASC"
-            }
-        }
+        val selectedFilters = activityViewModel.filterSelectedList
+        Log.d(TAG, "Filter applySelectedFilters: ${selectedFilters.value}")
+        changeFilter(selectedFilters.value ?: listOf(false, false, false, false))
     }
 
     override fun onResume() {
         super.onResume()
         mainActivity.hideBottomNav(false)
+        activityViewModel.setCocktailId(1)
         applySelectedFilters()
     }
 
@@ -97,13 +72,18 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         initEvent()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        activityViewModel.setBaseFromHome(false)
+    }
+
     private fun initAdapter() {
         binding.apply {
             val items = mutableListOf<CocktailListItem>().apply {
                 add(CocktailListItem.SearchBar)
                 add(CocktailListItem.TabLayout)
                 add(CocktailListItem.Filter(filters))
-                add(CocktailListItem.CocktailItems(emptyList()))
+                add(CocktailListItem.CocktailItems(emptyList(), 0, 0))
             }
 
             cocktailListAdapter = CocktailListAdapter(mainActivity, items)
@@ -118,29 +98,9 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
             viewModel.baseSpirit = it
         }
 
-        activityViewModel.filterSelectedList.observe(viewLifecycleOwner){
-            val firstTrueIndex = it.indexOf(true)
-            when(firstTrueIndex) {
-                0 -> { // 좋아요
-                    viewModel.orderBy = "likes"
-                    viewModel.direction =
-                        if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
-                }
-                1 -> { // 시간
-                    viewModel.orderBy = "createdAt"
-                    viewModel.direction =
-                        if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
-                }
-                2 -> { // 도수
-                    viewModel.orderBy = "alcoholContent"
-                    viewModel.direction =
-                        if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
-                }
-                3 -> {
-                    viewModel.orderBy = "id"
-                    viewModel.direction = "ASC"
-                }
-            }
+        activityViewModel.filterSelectedList.observe(viewLifecycleOwner) {
+            changeFilter(it)
+            updateFilterUI()
             viewModel.getCocktailFiltering()
         }
 
@@ -150,9 +110,48 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     add(CocktailListItem.SearchBar)
                     add(CocktailListItem.TabLayout)
                     add(CocktailListItem.Filter(filters))
-                    add(CocktailListItem.CocktailItems(it))
+                    add(CocktailListItem.CocktailItems(it, viewModel.page, viewModel.totalPage))
                 }
                 cocktailListAdapter.updateItems(updatedItems)
+                binding.recyclerViewCocktailList.smoothScrollToPosition(0)
+            }
+        }
+
+        Log.d(TAG, "HomeFilter: ${activityViewModel.isBaseFromHome.value}")
+
+        if (activityViewModel.isBaseFromHome.value == true) {
+            selectedFilterPosition = 3
+            cocktailListAdapter.updateSelectedFilter(selectedFilterPosition)
+        }
+
+        Log.d(TAG, "Likes initData: ${viewModel.userId.value}")
+        viewModel.getUserCocktailLikesCnt()
+    }
+
+    fun changeFilter(selectedFilter: List<Boolean>) {
+        val firstTrueIndex = selectedFilter.indexOf(true)
+        when (firstTrueIndex) {
+            0 -> { // 좋아요
+                viewModel.orderBy = "likesCount"
+                viewModel.direction =
+                    if (activityViewModel.selectedZzimFilter.value == 1) "DESC" else "ASC"
+            }
+
+            1 -> { // 시간
+                viewModel.orderBy = "createdAt"
+                viewModel.direction =
+                    if (activityViewModel.selectedTimeFilter.value == 1) "DESC" else "ASC"
+            }
+
+            2 -> { // 도수
+                viewModel.orderBy = "alcoholContent"
+                viewModel.direction =
+                    if (activityViewModel.selectedAlcoholFilter.value == 1) "DESC" else "ASC"
+            }
+
+            3 -> {
+                viewModel.orderBy = "id"
+                viewModel.direction = "ASC"
             }
         }
     }
@@ -162,8 +161,18 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
             cocktailListAdapter.cocktailListListener =
                 object : CocktailListAdapter.ItemOnClickListener {
                     override fun onClickRandom() {
-                        val dialog = CocktailRandomDialogFragment()
-                        dialog.show(parentFragmentManager, "CocktailRandomDialog")
+                        if (activityViewModel.userId == 0) {
+                            // 비로그인 상태일 때 로그인 다이얼로그 표시
+                            val dialog = DialogToLoginFragment()
+                            dialog.show(parentFragmentManager, "DialogToLoginFragment")
+                        } else {
+                            if (viewModel.cocktailLikesCnt.value!! > 0){
+                                val dialog = CocktailRandomDialogFragment()
+                                dialog.show(parentFragmentManager, "CocktailRandomDialog")
+                            }else{
+                                Toast.makeText(mainActivity, "찜한 칵테일을 추가해주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
 
                     override fun onClickCocktailItem(cocktailId: Int) {
@@ -179,20 +188,14 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                         when (position) {
                             0 -> {
                                 viewModel.isCustom = false
-                                viewModel.baseSpirit = ""
-                                viewModel.page = 0
-                                viewModel.direction = "ASC"
-                                viewModel.orderBy = "id"
                                 resetFilters()
+                                cocktailListAdapter.updateSelectedFilter(-1)
                             }
 
                             1 -> {
                                 viewModel.isCustom = true
-                                viewModel.baseSpirit = ""
-                                viewModel.page = 0
-                                viewModel.direction = "ASC"
-                                viewModel.orderBy = "id"
                                 resetFilters()
+                                cocktailListAdapter.updateSelectedFilter(-1)
                             }
                         }
                     }
@@ -200,9 +203,28 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
                     override fun onClickFilter(position: Int) {
                         val bottomSheetFragment = FilterBottomSheetFragment.newInstance(position)
                         bottomSheetFragment.show(parentFragmentManager, bottomSheetFragment.tag)
+                        selectedFilterPosition = position
+                    }
+
+                    override fun onClickPageDown() {
+                        if (viewModel.page > 0) {
+                            viewModel.page -= 1
+                            viewModel.getCocktailFiltering()
+                        }
+                    }
+
+                    override fun onClickPageUp() {
+                        if (viewModel.page < viewModel.totalPage - 1) {
+                            viewModel.page += 1
+                            viewModel.getCocktailFiltering()
+                        }
                     }
                 }
         }
+    }
+
+    private fun updateFilterUI() {
+        cocktailListAdapter.updateSelectedFilter(selectedFilterPosition)
     }
 
     private fun resetFilters() {
@@ -210,6 +232,7 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
         viewModel.direction = "ASC"
         viewModel.orderBy = "id"
         viewModel.baseSpirit = ""
+        activityViewModel.setFilterClear()
         viewModel.getCocktailFiltering()
     }
 }
@@ -218,5 +241,9 @@ sealed class CocktailListItem {
     object SearchBar : CocktailListItem()
     object TabLayout : CocktailListItem()
     data class Filter(val filters: List<String>) : CocktailListItem()
-    data class CocktailItems(val cocktails: List<CocktailListResponse>) : CocktailListItem()
+    data class CocktailItems(
+        val cocktails: List<CocktailListResponse>,
+        val currentPage: Int,
+        val totalPage: Int
+    ) : CocktailListItem()
 }

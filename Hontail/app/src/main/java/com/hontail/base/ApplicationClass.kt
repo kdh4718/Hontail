@@ -5,8 +5,8 @@ import retrofit2.Retrofit
 import android.Manifest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.hontail.R
 import com.hontail.data.local.IngredientRepository
+import com.hontail.data.local.RecentCocktailIdRepository
 import com.hontail.data.local.SearchHistoryRepository
 import com.hontail.data.local.SharedPreferencesUtil
 import com.hontail.data.model.dto.IngredientsTable
@@ -56,8 +56,8 @@ class ApplicationClass : Application() {
                 val newRequest = requestBuilder.build()
                 chain.proceed(newRequest)
             }
-            .readTimeout(5000, TimeUnit.MILLISECONDS)
-            .connectTimeout(5000, TimeUnit.MILLISECONDS)
+            .readTimeout(15000, TimeUnit.MILLISECONDS)
+            .connectTimeout(15000, TimeUnit.MILLISECONDS)
             .build()
 
         retrofit = Retrofit.Builder()
@@ -84,6 +84,7 @@ class ApplicationClass : Application() {
         IngredientRepository.getInstance().refreshIngredients()
 
         SearchHistoryRepository.initialize(this)
+        RecentCocktailIdRepository.initialize(this)
     }
 
     companion object{

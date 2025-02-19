@@ -1,5 +1,6 @@
 package com.hontail.data.remote
 
+import com.hontail.data.model.response.CocktailRecommendResponse
 import com.hontail.data.model.response.CocktailResponse
 import com.hontail.data.model.response.CocktailTopLikedResponse
 import retrofit2.http.GET
@@ -28,7 +29,7 @@ interface CocktailService {
     suspend fun getRecommendedCocktail(
         @Path("user_id") userId: Int,
         @Query("top_n") top_n: Int
-    ): Int
+    ): CocktailRecommendResponse
 
     // 칵테일 이름으로 조회
     @GET("api/cocktail/search")
@@ -37,4 +38,9 @@ interface CocktailService {
         @Query("page") page: Int,
         @Query("size") size: Int,
     ): CocktailResponse
+
+    @GET("api/mypage/me/likes/{user_id}")
+    suspend fun getUserCocktailLikesCnt(
+        @Path("user_id") userId: Int
+    ): Int
 }

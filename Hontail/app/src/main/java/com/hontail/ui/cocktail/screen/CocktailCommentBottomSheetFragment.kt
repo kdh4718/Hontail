@@ -2,6 +2,7 @@ package com.hontail.ui.cocktail.screen
 
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -46,6 +47,11 @@ class CocktailCommentBottomSheetFragment : BaseBottomSheetFragment<FragmentCockt
         bottomSheet?.layoutParams?.height = (resources.displayMetrics.heightPixels * 0.6).toInt() // ✅ 화면의 60% 크기로 설정
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        Log.d(TAG, "onDismiss: ")
+        activityViewModel.setBottomSheetClosed(true)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

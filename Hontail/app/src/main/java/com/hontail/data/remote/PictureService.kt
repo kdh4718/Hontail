@@ -1,6 +1,7 @@
 package com.hontail.data.remote
 
 import com.hontail.data.model.response.CocktailListResponse
+import com.hontail.data.model.response.CocktailListResponseX
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -11,5 +12,5 @@ interface PictureService {
     suspend fun ingredientAnalyze(
         @Query("userId") userId: Int,
         @Query("ingredientNames") analyzeTextList: List<String>
-    ): Response<List<CocktailListResponse>>
+    ): Response<List<CocktailListResponseX>>
 }

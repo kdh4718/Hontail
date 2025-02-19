@@ -20,6 +20,7 @@ private const val TAG = "CocktailListAdapter_SSAFY"
 class CocktailListAdapter(private val context: Context, private var items: MutableList<CocktailListItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     lateinit var cocktailListListener: ItemOnClickListener
+    private var selectedFilterPosition: Int = -1
 
     interface ItemOnClickListener {
         fun onClickRandom()
@@ -27,6 +28,8 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
         fun onClickSearch()
         fun onClickTab(position: Int)
         fun onClickFilter(position: Int)
+        fun onClickPageDown()
+        fun onClickPageUp()
     }
 
     companion object {
@@ -75,8 +78,8 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
         when(val item = items[position]) {
             is CocktailListItem.SearchBar -> (holder as CocktailListSearchBarViewHolder).bind()
             is CocktailListItem.TabLayout -> (holder as CocktailListTabLayoutViewHolder).bind()
-            is CocktailListItem.Filter -> (holder as CocktailListFilterViewHolder).bind(item.filters)
-            is CocktailListItem.CocktailItems -> (holder as CocktailListCocktailItemsViewHolder).bind(item.cocktails)
+            is CocktailListItem.Filter -> (holder as CocktailListFilterViewHolder).bind(item.filters, selectedFilterPosition)
+            is CocktailListItem.CocktailItems -> (holder as CocktailListCocktailItemsViewHolder).bind(item.cocktails, item.currentPage, item.totalPage)
         }
     }
 
@@ -118,11 +121,17 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
         }
     }
 
+    fun updateSelectedFilter(position: Int) {
+        selectedFilterPosition = position
+        Log.d(TAG, "HomeFilter adapter: ${selectedFilterPosition}")
+        notifyItemChanged(2)  // FILTER의 위치 (Index 2)
+    }
+
     // Filter
     inner class CocktailListFilterViewHolder(private val binding: ListItemCocktailListFilterBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(filters: List<String>) {
+        fun bind(filters: List<String>, selectedPosition: Int) {
             binding.apply {
-                val cocktailListFilterAdapter = CocktailListFilterAdapter(filters)
+                val cocktailListFilterAdapter = CocktailListFilterAdapter(filters, selectedPosition)
 
                 recyclerViewListItemCocktailListFilter.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 recyclerViewListItemCocktailListFilter.adapter = cocktailListFilterAdapter
@@ -138,11 +147,9 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
 
     // Cocktail Items
     inner class CocktailListCocktailItemsViewHolder(private val binding: ListItemCocktailListCocktailItemBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(cocktails: List<CocktailListResponse>) {
+        fun bind(cocktails: List<CocktailListResponse>, currentPage: Int, totalPage: Int) {
             binding.apply {
                 val cocktailListCocktailAdapter = CocktailItemAdapter(context, cocktails)
-
-//                Log.d(TAG, "Ingredients: ${cocktails}")
 
                 recyclerViewListItemCocktailListCocktailItem.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListItemCocktailListCocktailItem.adapter = cocktailListCocktailAdapter
@@ -153,6 +160,18 @@ class CocktailListAdapter(private val context: Context, private var items: Mutab
                         cocktailListListener.onClickCocktailItem(cocktailId)
                     }
                 }
+
+                // 페이지 다운
+                imageViewListItemCocktailListCocktailPagePreview.setOnClickListener {
+                    cocktailListListener.onClickPageDown()
+                }
+
+                // 페이지 업
+                imageViewListItemCocktailListCocktailPageNext.setOnClickListener {
+                    cocktailListListener.onClickPageUp()
+                }
+
+                textViewListItemCocktailListCocktailPage.text = "${currentPage + 1} / $totalPage"
             }
         }
     }

@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.core.content.contentValuesOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.hontail.R
 import com.hontail.databinding.ListItemCustomCocktailSearchBarBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchHeaderBinding
 import com.hontail.databinding.ListItemCustomCocktailSearchResultBinding
@@ -97,6 +99,14 @@ class CustomCocktailSearchAdapter(private var items: MutableList<CustomCocktailS
                     customCocktailSearchListener.onClickCancel()
                 }
 
+                editTextCustomCocktailSearchBar.requestFocus()
+
+                val imm = root.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+                editTextCustomCocktailSearchBar.postDelayed({
+                    imm.showSoftInput(editTextCustomCocktailSearchBar, InputMethodManager.SHOW_IMPLICIT)
+                }, 100)
+
                 // 현재 검색어 설정
                 editTextCustomCocktailSearchBar.setText(item.query ?: "")
 
@@ -145,7 +155,8 @@ class CustomCocktailSearchAdapter(private var items: MutableList<CustomCocktailS
 
                 Glide.with(root.context)
                     .load(item.ingredientImage)
-//                    .placeholder(R.drawable.logo_image)
+                    .placeholder(R.drawable.logo_final)
+                    .error(R.drawable.logo_final)
                     .into(imageViewListItemCustomCocktailSearchResultIngredient)
 
                 textViewListItemCustomCocktailSearchResultIngredientName.text = item.ingredientName

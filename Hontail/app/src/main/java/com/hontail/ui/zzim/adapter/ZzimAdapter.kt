@@ -18,6 +18,12 @@ import com.hontail.util.CocktailItemAdapter
 
 class ZzimAdapter(private val context: Context, private var items: List<ZzimItem>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    lateinit var zzimListListener: ItemOnClickListener
+
+    interface ItemOnClickListener{
+        fun onClickCocktailItem(cocktailId: Int)
+    }
+
     companion object {
         const val VIEW_TYPE_LIKED = 0
         const val VIEW_TYPE_RECENT_VIEWED = 1
@@ -84,6 +90,12 @@ class ZzimAdapter(private val context: Context, private var items: List<ZzimItem
 
                 recyclerViewListITemZzimLiked.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListITemZzimLiked.adapter = zzimLikedAdapter
+
+                zzimLikedAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener{
+                    override fun onClickCocktailItem(cocktailId: Int) {
+                        zzimListListener.onClickCocktailItem(cocktailId)
+                    }
+                }
             }
         }
     }
@@ -99,6 +111,12 @@ class ZzimAdapter(private val context: Context, private var items: List<ZzimItem
 
                 recyclerViewListITemZzimRecentViewed.layoutManager = GridLayoutManager(context, 2)
                 recyclerViewListITemZzimRecentViewed.adapter = zzimRecentViewedAdapter
+
+                zzimRecentViewedAdapter.cocktailItemListener = object : CocktailItemAdapter.ItemOnClickListener{
+                    override fun onClickCocktailItem(cocktailId: Int) {
+                        zzimListListener.onClickCocktailItem(cocktailId)
+                    }
+                }
             }
         }
     }
@@ -107,7 +125,6 @@ class ZzimAdapter(private val context: Context, private var items: List<ZzimItem
     inner class ZzimEmptyViewHolder(private val binding: ListItemZzimEmptyBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
-
             binding.apply {
 
             }

@@ -57,7 +57,7 @@ class PictureBottomAdapter(
                 adapter = cocktailAdapter
                 // ItemDecoration 추가
                 if (itemDecorationCount == 0) {
-                    addItemDecoration(GridSpacingItemDecoration(2, 20))
+                    addItemDecoration(GridSpacingItemDecoration(2, 0))
 
                 }
 
