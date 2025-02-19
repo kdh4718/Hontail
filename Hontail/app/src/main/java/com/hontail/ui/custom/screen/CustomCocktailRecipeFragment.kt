@@ -345,7 +345,7 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
 
                 if(activityViewModel.recipeMode.value == CommonUtils.CustomCocktailRecipeMode.MODIFY) {
 
-                    if(editTextListItemCustomCocktailRecipeName.text.isNullOrEmpty() || editTextListItemCustomCocktailRecipeDescription.text.isNullOrEmpty() || viewModel.uploadedImageUrl.value.isNullOrEmpty() || viewModel.recipeSteps.value.isNullOrEmpty()) {
+                    if(editTextListItemCustomCocktailRecipeName.text.isNullOrEmpty() || editTextListItemCustomCocktailRecipeDescription.text.isNullOrEmpty() || viewModel.uploadedImageUrl.value.isNullOrEmpty() || activityViewModel.recipeSteps.value.isNullOrEmpty()) {
 
                         Toast.makeText(mainActivity, "필수인 영역을 채워주세요.", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
