@@ -74,7 +74,7 @@ class CustomCocktailRecipeViewModel: ViewModel() {
             Log.d(TAG, "initializeRecipeData: 등록모드입니다.")
             _recipeImage.value = Uri.EMPTY
             _recipeName.value = ""
-            _alcoholLevel.value = 25
+            _alcoholLevel.value = -1
             _description.value = ""
         }
         else {
