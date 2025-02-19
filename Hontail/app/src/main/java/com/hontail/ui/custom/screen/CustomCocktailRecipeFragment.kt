@@ -164,8 +164,10 @@ class CustomCocktailRecipeFragment: BaseFragment<FragmentCustomCocktailRecipeBin
                 customCocktailRecipeStepAdapter.notifyDataSetChanged() // ✅ 전체 갱신 (혹은 notifyItemInserted 사용 가능)
             }
 
-            viewModel.alcoholLevel.observe(viewLifecycleOwner) { alcoholContent ->
-                activityViewModel.setOverAllAlcoholContent(alcoholContent)
+            if(activityViewModel.recipeMode.value == CommonUtils.CustomCocktailRecipeMode.MODIFY) {
+                viewModel.alcoholLevel.observe(viewLifecycleOwner) { alcoholContent ->
+                    activityViewModel.setOverAllAlcoholContent(alcoholContent)
+                }
             }
 
             viewModel.uploadedImageUrl.observe(viewLifecycleOwner) { uploadedImageUrl ->
