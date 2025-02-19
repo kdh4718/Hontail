@@ -1,6 +1,7 @@
 package com.hontail.back.mypage.service;
 
 import com.hontail.back.db.entity.User;
+import com.hontail.back.db.repository.LikeRepository;
 import com.hontail.back.db.repository.UserRepository;
 import com.hontail.back.mypage.dto.UpdateNicknameRequest;
 import com.hontail.back.mypage.dto.UserResponse;
@@ -18,6 +19,7 @@ public class MyPageService {
 
     private static final Logger log = LoggerFactory.getLogger(MyPageService.class);
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     public UserResponse getCurrentUser(String email) { //이메일을 기반으로 DB에서 사용자 정보를 조회.
         log.debug("현재 사용자 정보 조회 - Email: {}", email);
@@ -58,4 +60,9 @@ public class MyPageService {
 
         return UserResponse.fromEntity(user);
     }
+
+    public Long getUserLikeCount(Integer userId) {
+        return likeRepository.countByUserId(userId);
+    }
+
 }

@@ -137,4 +137,11 @@ public class MyPageController {
         Page<CocktailSummaryDto> cocktails = cocktailService.getMyCocktails(oAuth2User.getUserId(), page, size);
         return ResponseEntity.ok(cocktails);
     }
+
+    @GetMapping("/me/likes/{userId}")
+    @Operation(summary = "내가 좋아요한 칵테일 개수", description = "사용자가 좋아요한 칵테일 개수 리턴")
+    public ResponseEntity<Integer> getMyCocktailsLike(@PathVariable Integer userId) {
+        return ResponseEntity.ok(myPageService.getUserLikeCount(userId).intValue());
+    }
+
 }

@@ -42,7 +42,7 @@ public class Cocktail {
     private String cocktailName;
 
     @Lob
-    @Column(name = "cocktail_description")
+    @Column(name = "cocktail_description", nullable =false, length = 65535)
     private String cocktailDescription;
 
     @NotNull
