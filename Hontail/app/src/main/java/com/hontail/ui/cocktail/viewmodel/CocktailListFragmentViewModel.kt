@@ -60,6 +60,31 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
     val cocktailList: LiveData<List<CocktailListResponse>>
         get() = _cocktailList
 
+    private val _cocktailLikesCnt = MutableLiveData<Int>()
+    val cocktailLikesCnt: LiveData<Int>
+        get() = _cocktailLikesCnt
+
+
+    fun getUserCocktailLikesCnt(){
+        getUserCocktailLikesCnt(userId.value ?: 0)
+    }
+
+    fun getUserCocktailLikesCnt(userId: Int){
+        Log.d(TAG, "Likes fwefwefwefgetUserCocktailLikesCnt: ")
+
+        viewModelScope.launch {
+            runCatching {
+                RetrofitUtil.cocktailService.getUserCocktailLikesCnt(userId)
+            }.onSuccess {
+                _cocktailLikesCnt.value = it
+                Log.d(TAG, "Likes Success getUserCocktailLikesCnt: ${_cocktailLikesCnt.value}")
+            }.onFailure {
+                Log.d(TAG, "Likes Failure getUserCocktailLikesCnt: ${it.message}")
+                _cocktailLikesCnt.value = 0
+            }
+        }
+    }
+
     // ✅ MutableSharedFlow 사용하여 이벤트 트리거 가능하게 변경
     private val _filterRequestFlow = MutableSharedFlow<Unit>(replay = 0)
 
@@ -74,7 +99,7 @@ class CocktailListFragmentViewModel(private val handle: SavedStateHandle) : View
     }
 
     fun setUserId(userId: Int) {
-        _userId.postValue(userId)
+        _userId.value = userId
     }
 
     fun getCocktailFiltering() {

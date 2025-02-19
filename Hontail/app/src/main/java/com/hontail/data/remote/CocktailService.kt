@@ -38,4 +38,9 @@ interface CocktailService {
         @Query("page") page: Int,
         @Query("size") size: Int,
     ): CocktailResponse
+
+    @GET("api/mypage/me/likes/{user_id}")
+    suspend fun getUserCocktailLikesCnt(
+        @Path("user_id") userId: Int
+    ): Int
 }
