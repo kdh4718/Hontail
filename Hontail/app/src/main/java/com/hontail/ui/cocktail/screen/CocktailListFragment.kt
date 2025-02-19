@@ -17,6 +17,7 @@ import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.cocktail.viewmodel.CocktailListFragmentViewModel
 import com.hontail.ui.cocktail.adapter.CocktailListAdapter
 import com.hontail.util.CommonUtils
+import com.hontail.util.DialogToLoginFragment
 
 private const val TAG = "CocktailListFragment_SSAFY"
 
@@ -153,8 +154,15 @@ class CocktailListFragment : BaseFragment<FragmentCocktailListBinding>(
             cocktailListAdapter.cocktailListListener =
                 object : CocktailListAdapter.ItemOnClickListener {
                     override fun onClickRandom() {
-                        val dialog = CocktailRandomDialogFragment()
-                        dialog.show(parentFragmentManager, "CocktailRandomDialog")
+                        if (activityViewModel.userId == 0) {
+                            // 비로그인 상태일 때 로그인 다이얼로그 표시
+                            val dialog = DialogToLoginFragment()
+                            dialog.show(parentFragmentManager, "DialogToLoginFragment")
+                        } else {
+                            // 로그인 상태일 때 랜덤 다이얼로그 표시
+                            val dialog = CocktailRandomDialogFragment()
+                            dialog.show(parentFragmentManager, "CocktailRandomDialog")
+                        }
                     }
 
                     override fun onClickCocktailItem(cocktailId: Int) {
