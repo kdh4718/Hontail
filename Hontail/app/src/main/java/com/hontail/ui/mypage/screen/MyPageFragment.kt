@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -178,6 +179,15 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(
                     mainActivity.changeFragment(CommonUtils.MainFragmentName.INGREDIENT_ADD_FRAGMENT)
                 }
             }
+
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+                object : OnBackPressedCallback(true){
+                    override fun handleOnBackPressed() {
+                        mainActivity.changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
+
+                        mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_home
+                    }
+                })
         }
     }
 

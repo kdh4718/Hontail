@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -92,6 +93,15 @@ class ZzimFragment: BaseFragment<FragmentZzimBinding>(
                 mainActivity.changeFragment(CommonUtils.MainFragmentName.COCKTAIL_DETAIL_FRAGMENT)
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true){
+                override fun handleOnBackPressed() {
+                    mainActivity.changeFragment(CommonUtils.MainFragmentName.HOME_FRAGMENT)
+
+                    mainActivity.binding.bottomNavigation.selectedItemId = R.id.navigation_home
+                }
+            })
     }
 
     // RecyclerView Update
