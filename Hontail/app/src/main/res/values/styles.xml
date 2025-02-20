@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="MyRadioButton" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="colorControlActivated">@color/basic_pink</item> <!-- 선택된 색상 -->
+        <item name="colorControlNormal">@color/basic_gray</item> <!-- 기본 색상 -->
+    </style>
+
+    <!-- Bold 22 basic white -->
+    <style name="Font_Bold_22_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 22 basic black -->
+    <style name="Font_Bold_22_Basic_Black">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_black</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 22 basic gray -->
+    <style name="Font_Bold_22_Basic_Gray">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 22 basic pink -->
+    <style name="Font_Bold_22_Basic_Pink">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 22 basic sky -->
+    <style name="Font_Bold_22_Basic_Sky">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_sky</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 20 basic white -->
+    <style name="Font_Bold_20_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 20 basic gray -->
+    <style name="Font_Bold_20_Basic_Gray">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 20 basic black -->
+    <style name="Font_Bold_20_Basic_Black">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_black</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 18 basic white -->
+    <style name="Font_Bold_18_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 16 basic white -->
+    <style name="Font_Bold_16_Basic_White">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Bold 16 basic pink -->
+    <style name="Font_Bold_16_Basic_Pink">
+        <item name="fontFamily">@font/suit_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 22 basic white -->
+    <style name="Font_SemiBold_22_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 20 basic white -->
+    <style name="Font_SemiBold_20_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 20 basic gray -->
+    <style name="Font_SemiBold_20_Basic_Gray">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 18 basic white -->
+    <style name="Font_SemiBold_18_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 18 basic sky -->
+    <style name="Font_SemiBold_18_Basic_Sky">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_sky</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 18 basic pink -->
+    <style name="Font_SemiBold_18_Basic_Pink">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic white -->
+    <style name="Font_SemiBold_16_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic gray -->
+    <style name="Font_SemiBold_16_Basic_Gray">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic sky -->
+    <style name="Font_SemiBold_16_Basic_Sky">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_sky</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 16 basic pink -->
+    <style name="Font_SemiBold_16_Basic_Pink">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 14 basic white -->
+    <style name="Font_SemiBold_14_Basic_White">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SemiBold 14 basic pink -->
+    <style name="Font_SemiBold_14_Basic_Pink">
+        <item name="fontFamily">@font/suit_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 22 basic white -->
+    <style name="Font_Medium_22_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 18 basic white -->
+    <style name="Font_Medium_18_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 18 basic gray -->
+    <style name="Font_Medium_18_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 16 basic white -->
+    <style name="Font_Medium_16_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 16 basic gray -->
+    <style name="Font_Medium_16_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="Font_Medium_16_Basic_Gray_Check_Box">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="buttonTint">@drawable/selector_check_box</item>
+        <item name="buttonIconTint">@drawable/selector_check_box_icon</item>
+    </style>
+
+    <!-- Medium 16 basic pink -->
+    <style name="Font_Medium_16_Basic_Pink">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_pink</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 16 basic sky -->
+    <style name="Font_Medium_16_Basic_Sky">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/basic_sky</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 14 basic white -->
+    <style name="Font_Medium_14_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 14 basic gray -->
+    <style name="Font_Medium_14_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 12 basic white -->
+    <style name="Font_Medium_12_Basic_White">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/basic_white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- Medium 12 basic gray -->
+    <style name="Font_Medium_12_Basic_Gray">
+        <item name="fontFamily">@font/suit_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/basic_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TransparentDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+</resources>

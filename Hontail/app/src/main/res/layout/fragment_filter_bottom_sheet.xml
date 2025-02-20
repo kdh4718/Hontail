@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--fragment_filter_bottom_sheet.xml-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_background"
+    android:fillViewport="true">
+
+    <TextView
+        android:id="@+id/textViewFilterBottomSheetTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="필터"
+        style="@style/Font_Bold_20_Basic_White"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutFilterBottomSheetZzim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="32dp"
+        android:layout_marginHorizontal="20dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFilterBottomSheetTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/dividerFilterBottomSheet">
+
+        <TextView
+        android:id="@+id/textViewFilterZzim"
+        style="@style/Font_SemiBold_20_Basic_White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="찜"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupFilterZzim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFilterZzim">
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterZzimHigh"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.08"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="찜 많은 순"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterZzimLow"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/custom_radio_button"
+                android:buttonTint="@color/basic_pink"
+                android:padding="10dp"
+                android:text="찜 적은 순"
+                android:textColor="@drawable/custom_radio_button_text" />
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutFilterBottomSheetTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="32dp"
+        android:layout_marginHorizontal="20dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFilterBottomSheetTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/dividerFilterBottomSheet">
+
+        <TextView
+            android:id="@+id/textViewFilterTime"
+            style="@style/Font_SemiBold_20_Basic_White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupFilterTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFilterTime">
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterTimeHigh"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="최신순"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterTimeLow"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="오래된순"
+                android:textColor="@drawable/custom_radio_button_text" />
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutFilterBottomSheetAlcoholContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="32dp"
+        android:layout_marginHorizontal="20dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFilterBottomSheetTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/dividerFilterBottomSheet">
+
+        <TextView
+            android:id="@+id/textViewFilterAlcoholContent"
+            style="@style/Font_SemiBold_20_Basic_White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="도수"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupFilterAlcoholContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFilterAlcoholContent">
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterAlcoholContentHigh"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="도수 높은 순"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterAlcoholContentLow"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="도수 낮은 순"
+                android:textColor="@drawable/custom_radio_button_text" />
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutFilterBottomSheetBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="32dp"
+        android:layout_marginHorizontal="20dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFilterBottomSheetTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/dividerFilterBottomSheet">
+
+        <TextView
+            android:id="@+id/textViewFilterBase"
+            style="@style/Font_SemiBold_20_Basic_White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="베이스주"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <GridLayout
+            android:id="@+id/gridLayoutFilterBase"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:columnCount="3"
+            android:rowCount="3"
+            app:layout_constraintTop_toBottomOf="@+id/textViewFilterBase"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseJin"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1.5"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="진"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseRum"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1.5"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="럼"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseVodka"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="보드카"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseWhiskey"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="위스키"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseTequila"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="데킬라"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseLiqueur"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="리큐어"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseWine"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="와인"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseBrandy"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="브랜디"
+                android:textColor="@drawable/custom_radio_button_text" />
+
+            <RadioButton
+                android:id="@+id/radioButtonFilterBaseEtc"
+                style="@style/Font_Medium_16_Basic_Gray_Check_Box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:button="@drawable/custom_radio_button"
+                android:padding="10dp"
+                android:text="기타"
+                android:textColor="@drawable/custom_radio_button_text" />
+        </GridLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dividerFilterBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:dividerColor="@color/basic_gray"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewFilterSearch"/>
+
+    <TextView
+        android:id="@+id/textViewFilterSearch"
+        style="@style/Font_Bold_20_Basic_White"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:padding="10dp"
+        android:text="찾기"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
