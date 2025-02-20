@@ -2,6 +2,8 @@ package com.hontail.ui.bartender.screen
 
 import android.content.Context
 import android.os.Bundle
+import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
@@ -14,20 +16,38 @@ import com.hontail.ui.MainActivity
 import com.hontail.ui.MainActivityViewModel
 import com.hontail.ui.bartender.adapter.BartenderAdapter
 import com.hontail.util.CommonUtils
+import java.util.Locale
 
 class BartenderFragment : BaseFragment<FragmentBatenderBinding>(
     FragmentBatenderBinding::bind,
     layout.fragment_batender
-) {
+), TextToSpeech.OnInitListener {
     private lateinit var mainActivity: MainActivity
 
     private val activityViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var bartenderAdapter: BartenderAdapter
 
+    private var textToSpeech: TextToSpeech? = null  // ✅ TTS 객체 추가
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // ✅ TTS 초기화 (영어 기본)
+        textToSpeech = TextToSpeech(mainActivity, this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        textToSpeech?.apply {
+            stop()
+            shutdown()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,13 +76,17 @@ class BartenderFragment : BaseFragment<FragmentBatenderBinding>(
 
     // ViewModel Observe 등록
     private fun observeBartender() {
-
         binding.apply {
-
-            // 메시지 리스트
-            activityViewModel.messages.observe(viewLifecycleOwner)  { messages ->
+            activityViewModel.messages.observe(viewLifecycleOwner) { messages ->
                 bartenderAdapter.updateMessages(messages)
                 scrollToLastMessage()
+
+                // ✅ 새로운 메시지가 추가되었을 때, 마지막 메시지를 읽음
+                messages.lastOrNull()?.let { lastMessage ->
+                    if (!lastMessage.isUser) {  // ✅ 사용자 메시지가 아닐 때만 읽기
+                        speakMessage(lastMessage.message)
+                    }
+                }
             }
         }
     }
@@ -121,6 +145,38 @@ class BartenderFragment : BaseFragment<FragmentBatenderBinding>(
             }, 100)
         }
     }
+
+    // ✅ TTS를 활용한 메시지 음성 출력
+    private fun speakMessage(text: String) {
+        textToSpeech?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
+    }
+
+    override fun onInit(status: Int) {
+        if (status == TextToSpeech.SUCCESS) {
+            textToSpeech?.let { tts ->
+                tts.language = Locale.KOREAN  // ✅ 한국어 설정
+                tts.setSpeechRate(1.0f)  // ✅ 속도 조절
+                tts.setPitch(1.0f)       // ✅ 피치 조절
+
+                // ✅ 사용할 음성의 이름 지정
+                val voiceName = "ko-KR-default"  // 원하는 목소리 설정 (예: SMTl08)
+
+                // ✅ 해당 목소리가 있는지 확인 후 설정
+                val selectedVoice = tts.voices.find { it.name == voiceName }
+                if (selectedVoice != null) {
+                    tts.voice = selectedVoice
+                    Log.d("TTS", "Selected voice: ${selectedVoice.name}")
+                } else {
+                    Log.e("TTS", "목소리를 찾을 수 없습니다: $voiceName")
+                }
+            }
+        } else {
+            Log.e("TTS", "초기화 실패")
+        }
+    }
+
+
+
 
 }
 
