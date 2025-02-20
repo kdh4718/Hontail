@@ -24,7 +24,7 @@ public class BartenderServiceImpl implements BartenderService {
     private final OpenAiService openAiService;
     private final Map<Integer, List<ChatMessageDto>> chatHistory = new HashMap<>();    // 사용자별 채팅 기록
     private final List<Integer> recentRecommendations = new ArrayList<>();           // 최근 추천 기록
-    private static final int MAX_HISTORY_SIZE = 5;                                   // 최근 추천 기록 최대 크기
+    private static final int MAX_HISTORY_SIZE = 50;                                   // 최근 추천 기록 최대 크기
 
     // 응답 마커 상수
     private static final String RECOMMENDATION_MARKER = "###RECOMMENDATION###";
@@ -128,7 +128,7 @@ public class BartenderServiceImpl implements BartenderService {
         messages.add(new com.theokanning.openai.completion.chat.ChatMessage("user", "첫 인사말 생성해주세요."));
 
         ChatCompletionRequest request = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o")
                 .messages(messages)
                 .maxTokens(150)
                 .temperature(0.7)
@@ -208,6 +208,9 @@ public class BartenderServiceImpl implements BartenderService {
                 "   - 전문적이고 따뜻한 톤 유지\n" +
                 "   - 이전 대화 맥락 유지\n" +
                 "   - 다른 칵테일 언급하지 않기\n\n" +
+                "   - 칵테일의 도수는 언급하지 않기\n\n" +
+                "   - 대화를 최대한 상대방의 현재 기분이나 오늘 있었던 일을 묻도록 유도하기\n\n" +
+                "   - 사용자가 특정한 종류의 술을 추천해달라고 한다면, 죄송하다는 어투로 기분이나 경험을 듣고 추천해드릴 수 있다고 유도하기\n\n" +
                 "3. 칵테일 추천 규칙:\n" +
                 "   - 추천해야 하는 경우:\n" +
                 "     * 손님이 직접적으로 추천을 요청할 때 ('추천해주세요', '다른 거 없나요?', '다른거는요?' 등)\n" +
@@ -260,7 +263,7 @@ public class BartenderServiceImpl implements BartenderService {
 
         // OpenAI API 요청 설정
         ChatCompletionRequest request = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4o")
                 .messages(messages)
                 .maxTokens(400)
                 .temperature(0.7)
