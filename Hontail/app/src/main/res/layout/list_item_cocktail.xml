@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="16dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cradViewListItemCocktailCocktail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewListItemCocktailCocktail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_sample"
+            android:tintMode="src_over"
+            app:tint="#10000000" />
+    </androidx.cardview.widget.CardView>
+    
+    <ImageView
+        android:id="@+id/imageViewListItemCocktailZzim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_bottom_navi_zzim_unselected"
+        app:layout_constraintEnd_toEndOf="@+id/cradViewListItemCocktailCocktail"
+        app:layout_constraintTop_toTopOf="@+id/cradViewListItemCocktailCocktail" />
+
+    <TextView
+        android:id="@+id/textViewListItemCocktailBaseSpirit"
+        style="@style/Font_Medium_12_Basic_White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/textview_list_item_cocktail_label_background"
+        android:text="리큐어"
+        app:layout_constraintStart_toStartOf="@+id/cradViewListItemCocktailCocktail"
+        app:layout_constraintTop_toBottomOf="@+id/cradViewListItemCocktailCocktail" />
+
+    <TextView
+        android:id="@+id/textViewListItemCocktailIngredientCount"
+        style="@style/Font_Medium_12_Basic_White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/textview_list_item_cocktail_label_background"
+        android:text="재료 2개"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewListItemCocktailBaseSpirit"
+        app:layout_constraintStart_toEndOf="@+id/textViewListItemCocktailBaseSpirit"
+        app:layout_constraintTop_toTopOf="@+id/textViewListItemCocktailBaseSpirit" />
+
+    <TextView
+        android:id="@+id/textViewListItemCocktailName"
+        style="@style/Font_SemiBold_20_Basic_White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="깔루아 밀크"
+        app:layout_constraintStart_toStartOf="@+id/cradViewListItemCocktailCocktail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailBaseSpirit" />
+
+    <ImageView
+        android:id="@+id/imageViewListItemCocktailTotalZzim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_bottom_navi_zzim_selected"
+        app:layout_constraintStart_toStartOf="@+id/cradViewListItemCocktailCocktail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemCocktailName"
+        app:tint="@color/basic_pink" />
+
+    <TextView
+        android:id="@+id/textViewListItemCocktailTotalZzim"
+        style="@style/Font_Medium_12_Basic_White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="1,231"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"
+        app:layout_constraintStart_toEndOf="@+id/imageViewListItemCocktailTotalZzim"
+        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim" />
+
+    <TextView
+        android:id="@+id/textViewListItemCocktailAlcoholContent"
+        style="@style/Font_SemiBold_16_Basic_Sky"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5%"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewListItemCocktailTotalZzim"
+        app:layout_constraintEnd_toEndOf="@+id/cradViewListItemCocktailCocktail"
+        app:layout_constraintTop_toTopOf="@+id/imageViewListItemCocktailTotalZzim" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

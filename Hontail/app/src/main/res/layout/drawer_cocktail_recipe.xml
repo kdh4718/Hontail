@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayoutDrawerCocktailRecipeDrawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:openDrawer="end"
+    android:clickable="true"
+    android:focusable="true">
+
+    <include
+        android:id="@+id/includeDrawerCocktailRecipeInclude"
+        layout="@layout/fragment_cocktail_recipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationViewDrawerCocktailRecipeNavigation"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:clickable="true"
+        android:focusable="true"
+        android:backgroundTint="@color/secondary_black">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp">
+
+            <TextView
+                android:id="@+id/textViewDrawerCocktailRecipeTitle"
+                style="@style/Font_Bold_22_Basic_White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="레시피"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageViewDrawerCocktailRecipeClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:src="@drawable/close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewDrawerCocktailRecipeStep"
+                style="@style/Font_SemiBold_16_Basic_White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="총 6단계 중 1단계 제조중"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDrawerCocktailRecipeTitle" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewDrawerRecipes"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDrawerCocktailRecipeStep" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.navigation.NavigationView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

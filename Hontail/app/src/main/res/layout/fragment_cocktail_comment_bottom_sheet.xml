@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/bottom_sheet_background"
+    tools:context=".ui.cocktail.screen.CocktailCommentBottomSheetFragment">
+
+    <TextView
+        android:id="@+id/textViewCocktailCommentBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="댓글"
+        style="@style/Font_SemiBold_20_Basic_White"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCocktailCommentBottomSheet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailCommentBottomSheet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayoutCocktailCommentBottomSheetMessage"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutCocktailCommentBottomSheetMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCocktailCommentBottomSheet"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- 메시지 입력창 -->
+        <EditText
+            android:id="@+id/editTextCocktailCommentBottomSheetMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="메시지 입력"
+            android:textColorHint="@color/basic_gray"
+            android:background="@drawable/comment_send_background"
+            style="@style/Font_Medium_16_Basic_White"
+            android:inputType="textMultiLine"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageViewCocktailCommentBottomSheetSend"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- 메시지 전송 버튼 -->
+        <ImageView
+            android:id="@+id/imageViewCocktailCommentBottomSheetSend"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_send"
+            android:src="@drawable/ic_send"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextCocktailCommentBottomSheetMessage"
+            app:layout_constraintTop_toTopOf="@+id/editTextCocktailCommentBottomSheetMessage"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
