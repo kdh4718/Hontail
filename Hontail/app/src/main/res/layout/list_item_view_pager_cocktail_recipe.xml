@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="60dp"
+    android:layout_marginEnd="80dp"
+    android:layout_marginBottom="40dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCocktailRecipeRecipeCard"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- ImageView를 LottieAnimationView로 변경 -->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/imageViewCocktailRecipeImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:lottie_fileName="cocktail_pour.json"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/secondary_black"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintStart_toEndOf="@+id/cardViewCocktailRecipeRecipeCard"
+        app:layout_constraintTop_toTopOf="@+id/cardViewCocktailRecipeRecipeCard">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:id="@+id/textViewCocktailRecipeStep"
+                style="@style/Font_SemiBold_16_Basic_White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Step 1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textViewCocktailRecipeStepExplanation"
+        style="@style/Font_Medium_18_Basic_White"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="쉐이커에 슈퍼파인 슈가를 넣고 레몬과 오렌지 슬라이스를 추가합니다."
+        android:maxLines="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cardViewCocktailRecipeRecipeCard"
+        app:layout_constraintTop_toBottomOf="@+id/cardView3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

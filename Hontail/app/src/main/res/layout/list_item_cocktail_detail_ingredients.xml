@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textViewCocktailDetailIngredientTitle"
+        style="@style/Font_Bold_22_Basic_White"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="재료"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCocktailDetailIngredientIngredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCocktailDetailIngredientTitle" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dividerListItemCocktailDetailIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="32dp"
+        app:dividerColor="@color/basic_gray"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewCocktailDetailIngredientIngredient"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dividerListItemZzimRecentViewed"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="32dp"
+        app:dividerColor="@color/basic_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewListItemZzimRecentViewedTitle"/>
+
+    <TextView
+        android:id="@+id/textViewListItemZzimRecentViewedTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="최근 본 상품"
+        style="@style/Font_SemiBold_22_Basic_White"
+        android:layout_marginTop="32dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/dividerListItemZzimRecentViewed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewListITemZzimRecentViewed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintTop_toBottomOf="@+id/textViewListItemZzimRecentViewedTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
