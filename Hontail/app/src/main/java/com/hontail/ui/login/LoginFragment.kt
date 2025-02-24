@@ -75,7 +75,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
     }
 
     fun initLogin() {
-        NaverIdLoginSDK.initialize(requireContext(), "KY6PkSapyHMt232etHJz", "${NAVER_CLIENT_SECRET}", "hontail")
+        NaverIdLoginSDK.initialize(requireContext(), "KY6PkSapyHMt232etHJz", "uh6XzJK04p", "hontail")
 
         viewModel.isUserDataReady.observe(viewLifecycleOwner) { isReady ->
             if (isReady) {

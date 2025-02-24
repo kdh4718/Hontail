@@ -29,7 +29,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    private static final String SECRET_KEY = "{JWT_SECRET}";
+    private static final String SECRET_KEY = "7mBEksrGJsdMNp0HsZF19itdK0ttod3axSjbKgi770viCBHF1ca8LQQp-QKFuexBed5TWV9K-skOcNewv6rBdQ==";
     private static final long ACCESS_TOKEN_EXPIRATION =  60 * 60* 1000; // 1시간
     private static final long REFRESH_TOKEN_EXPIRATION = 14 * 24 * 60 * 60 * 1000; // 14일
 
