@@ -9,6 +9,10 @@
 
 ## 📋 프로젝트 소개
 
+**🚩 소개영상**   
+      
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/4toVMLdLZ2E/0.jpg)](https://www.youtube.com/watch?v=4toVMLdLZ2E)
+
 **🚩 서비스 한 줄 소개**
 
 ```bash
